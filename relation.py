@@ -81,6 +81,13 @@ class relation (object):
 		if fields[0].__class__ == list().__class__:
 			fields=fields[0]
 		
+		#Avoiding duplicated fields
+		fields1=[]
+		for i in fields:
+			if i not in fields1:
+				fields1.append(i)
+		fields=fields1
+		
 		ids=self.header.getFieldsId(fields)
 		
 		if len(ids)==0:
