@@ -54,7 +54,24 @@ class relation (object):
 		fp=file(filename,'w')
 		fp.write(res)
 		fp.close()
-	
+	def selection(self,expr):
+		'''Selection, expr must be a valid boolean expression, can contain field names,
+		constant, math operations and boolean ones.'''
+		fields={}
+		newt=relation()
+		newt.header=header(list(self.header.fields))
+		for i in self.content:
+			for j in range(len(self.header.fields)):
+				if i[j].isdigit():
+					fields[self.header.fields[j]]=int(i[j])
+				else:
+					fields[self.header.fields[j]]=i[j]
+				
+			
+			
+			if eval(expr,fields):
+				newt.content.append(i)
+		return newt
 	def product (self,other):
 		'''Cartesian product, fields must be different to avoid collisions
 		Doing this operation on relations with colliding fields will 
