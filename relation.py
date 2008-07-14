@@ -68,7 +68,9 @@ class relation (object):
 		
 		for i in self.content:
 			for j in other.content:
-				newt.content.append(i+j)
+				n=i+j
+				if n not in newt.content:
+					newt.content.append(i+j)
 		return newt
 		
 	
