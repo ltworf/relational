@@ -198,6 +198,46 @@ class relation (object):
 			if e not in newt.content:
 				newt.content.append(list(e))
 		return newt
+	def join(self,other):
+		'''Natural join, using field's names'''
+		shared=[]
+		for i in self.header.fields:
+			if i in other.header.fields:
+				shared.append(i)
+		newt=relation() #Creates the new relation
+		
+		#Adds all the fields of the 1st relation
+		newt.header=header(list(self.header.fields))
+		
+		#Adds all the fields of the 2nd, when non shared
+		for i in other.header.fields:
+			if i not in shared:
+				newt.header.fields.append(i)
+		#Shared ids of self
+		sid=self.header.getFieldsId(shared)
+		#Shared ids of the other relation
+		oid=other.header.getFieldsId(shared)
+		
+		#Non shared ids of the other relation
+		noid=[]
+		for i in range(len(other.header.fields)):
+			if i not in oid:
+				noid.append(i)
+		
+		for i in self.content:
+			for j in other.content:
+				match=True
+				for k in range(len(sid)):
+					match=match and ( i[sid[k]]== j[oid[k]])
+						
+				if match:
+					item=list(i)
+					for l in noid:
+						item.append(j[l])
+					
+					newt.content.append(item)
+		
+		return newt
 		
 	def __str__(self):
 		'''Returns a string representation of the relation, can be printed with 
@@ -227,7 +267,7 @@ class relation (object):
 				col+=1
 			
 		return res
-
+	
 class header (object):
 	'''This class defines the header of a relation.
 	It is used within relations to know if requested operations are accepted'''
