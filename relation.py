@@ -54,6 +54,18 @@ class relation (object):
 		fp=file(filename,'w')
 		fp.write(res)
 		fp.close()
+	def rearrange(self,other):
+		'''If two relations share the same attributes in a different order, this method
+		will use projection to make them have the same attributes' order.
+		It is not exactely related to relational algebra. Just a method used 
+		internally.
+		Will return None if they don't share the same attributes'''
+		if (self.__class__!=other.__class__):
+			return None
+		if self.header.sharedAttributes(other.header) == len(self.header.attributes) == len(other.header.attributes):
+			return other.projection(list(self.header.attributes))
+		return None
+		
 	def selection(self,expr):
 		'''Selection, expr must be a valid boolean expression, can contain field names,
 		constant, math operations and boolean ones.'''
@@ -150,6 +162,7 @@ class relation (object):
 		Will return an empty one if there are no common items.
 		Will return None if headers are different.
 		It is possible to use projection and rename to make headers match.'''
+		other=self.rearrange(other) #Rearranges attributes' order
 		if (self.__class__!=other.__class__)or(self.header!=other.header):
 			return None
 		newt=relation()
@@ -167,6 +180,7 @@ class relation (object):
 		Will return an empty one if the second is a superset of first.
 		Will return None if headers are different.
 		It is possible to use projection and rename to make headers match.'''
+		other=self.rearrange(other) #Rearranges attributes' order
 		if (self.__class__!=other.__class__)or(self.header!=other.header):
 			return None
 		newt=relation()
@@ -185,6 +199,7 @@ class relation (object):
 		Will not insert tuplicated items.
 		Will return None if headers are different.
 		It is possible to use projection and rename to make headers match.'''
+		other=self.rearrange(other) #Rearranges attributes' order
 		if (self.__class__!=other.__class__)or(self.header!=other.header):
 			return None
 		newt=relation()
@@ -198,7 +213,81 @@ class relation (object):
 			if e not in newt.content:
 				newt.content.append(list(e))
 		return newt
+	def outer(self,other):
+		'''Does a left and a right outer join and returns their union.'''
+		a=self.outer_right(other)
+		b=self.outer_left(other)
+		print a
+		print b
 		
+		return a.union(b)
+		
+	def outer_right(self,other):
+		'''Same as left join, with swapped parameters'''
+		return self.outer_left(other,True)
+	
+	def outer_left(self,other,swap=False):
+		'''Outer left join. Considers self as left and param as right. If the 
+		tuple has no corrispondence, empty attributes are filled with a "---" 
+		string. This is due to the fact that empty string or a space would cause
+		problems when saving the relation.
+		Just like natural join, it works considering shared attributes.
+		If swap is True, it will behave as a right join'''
+		
+		if swap:
+			tmp=other
+			other=self
+			self=tmp
+		
+		shared=[]
+		for i in self.header.attributes:
+			if i in other.header.attributes:
+				shared.append(i)
+		
+		newt=relation() #Creates the new relation
+		
+		#Adds all the attributes of the 1st relation
+		newt.header=header(list(self.header.attributes))
+		
+		#Adds all the attributes of the 2nd, when non shared
+		for i in other.header.attributes:
+			if i not in shared:
+				newt.header.attributes.append(i)
+		#Shared ids of self
+		sid=self.header.getAttributesId(shared)
+		#Shared ids of the other relation
+		oid=other.header.getAttributesId(shared)
+		
+		#Non shared ids of the other relation
+		noid=[]
+		for i in range(len(other.header.attributes)):
+			if i not in oid:
+				noid.append(i)
+		
+		for i in self.content:
+			#Tuple partecipated to the join?
+			added=False
+			for j in other.content:
+				match=True
+				for k in range(len(sid)):
+					match=match and ( i[sid[k]]== j[oid[k]])
+						
+				if match:
+					item=list(i)
+					for l in noid:
+						item.append(j[l])
+					
+					newt.content.append(item)
+					added=True
+			#If it didn't partecipate, adds it
+			if not added:
+				item=list(i)
+				for l in range(len(noid)):
+					item.append("---")
+				newt.content.append(item)
+		
+		return newt
+	
 	def join(self,other):
 		'''Natural join, joins on shared attributes (one or more). If there are no
 		shared attributes, it will behave as cartesian product.'''
