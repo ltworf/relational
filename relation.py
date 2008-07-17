@@ -43,7 +43,7 @@ class relation (object):
 	def save(self,filename):
 		'''Saves the relation in a file'''
 		res=""
-		for f in self.header.fields:
+		for f in self.header.attributes:
 			res+="%s "%(f)
 		
 		
@@ -57,31 +57,31 @@ class relation (object):
 	def selection(self,expr):
 		'''Selection, expr must be a valid boolean expression, can contain field names,
 		constant, math operations and boolean ones.'''
-		fields={}
+		attributes={}
 		newt=relation()
-		newt.header=header(list(self.header.fields))
+		newt.header=header(list(self.header.attributes))
 		for i in self.content:
-			for j in range(len(self.header.fields)):
+			for j in range(len(self.header.attributes)):
 				if i[j].isdigit():
-					fields[self.header.fields[j]]=int(i[j])
+					attributes[self.header.attributes[j]]=int(i[j])
 				else:
-					fields[self.header.fields[j]]=i[j]
+					attributes[self.header.attributes[j]]=i[j]
 				
 			
 			
-			if eval(expr,fields):
+			if eval(expr,attributes):
 				newt.content.append(i)
 		return newt
 	def product (self,other):
-		'''Cartesian product, fields must be different to avoid collisions
-		Doing this operation on relations with colliding fields will 
+		'''Cartesian product, attributes must be different to avoid collisions
+		Doing this operation on relations with colliding attributes will 
 		cause the return of a None value.
-		It is possible to use rename on fields and then use the product'''
+		It is possible to use rename on attributes and then use the product'''
 		
-		if (self.__class__!=other.__class__)or(self.header.sharedFields(other.header)!=0):
+		if (self.__class__!=other.__class__)or(self.header.sharedAttributes(other.header)!=0):
 			return None
 		newt=relation()
-		newt.header=header(self.header.fields+other.header.fields)
+		newt.header=header(self.header.attributes+other.header.attributes)
 		
 		for i in self.content:
 			for j in other.content:
@@ -89,23 +89,23 @@ class relation (object):
 		return newt
 		
 	
-	def projection(self,* fields):
+	def projection(self,* attributes):
 		'''Projection operator, takes many parameters, for each field to use.
 		Can also use a single parameter with a list.
 		Will delete duplicate items
 		If an empty list or no parameters are provided, returns None'''	
 		#Parameters are supplied in a list, instead with multiple parameters
-		if fields[0].__class__ == list().__class__:
-			fields=fields[0]
+		if attributes[0].__class__ == list().__class__:
+			attributes=attributes[0]
 		
-		#Avoiding duplicated fields
-		fields1=[]
-		for i in fields:
-			if i not in fields1:
-				fields1.append(i)
-		fields=fields1
+		#Avoiding duplicated attributes
+		attributes1=[]
+		for i in attributes:
+			if i not in attributes1:
+				attributes1.append(i)
+		attributes=attributes1
 		
-		ids=self.header.getFieldsId(fields)
+		ids=self.header.getAttributesId(attributes)
 		
 		if len(ids)==0:
 			return None
@@ -113,7 +113,7 @@ class relation (object):
 		#Create the header
 		h=[]
 		for i in ids:
-			h.append(self.header.fields[i])
+			h.append(self.header.attributes[i])
 		newt.header=header(h)
 		
 		#Create the body
@@ -134,7 +134,7 @@ class relation (object):
 		result=[]
 		
 		newt=relation()
-		newt.header=header(list(self.header.fields))
+		newt.header=header(list(self.header.attributes))
 		
 		for i in range(len(params)):
 			if i%2==0:
@@ -153,7 +153,7 @@ class relation (object):
 		if (self.__class__!=other.__class__)or(self.header!=other.header):
 			return None
 		newt=relation()
-		newt.header=header(list(self.header.fields))
+		newt.header=header(list(self.header.attributes))
 		
 		#Adds only element not in other, duplicating them
 		for e in self.content:
@@ -170,7 +170,7 @@ class relation (object):
 		if (self.__class__!=other.__class__)or(self.header!=other.header):
 			return None
 		newt=relation()
-		newt.header=header(list(self.header.fields))
+		newt.header=header(list(self.header.attributes))
 		
 		#Adds only element not in other, duplicating them
 		for e in self.content:
@@ -188,7 +188,7 @@ class relation (object):
 		if (self.__class__!=other.__class__)or(self.header!=other.header):
 			return None
 		newt=relation()
-		newt.header=header(list(self.header.fields))
+		newt.header=header(list(self.header.attributes))
 		
 		#Adds element from self, duplicating them all
 		for e in self.content:
@@ -198,29 +198,32 @@ class relation (object):
 			if e not in newt.content:
 				newt.content.append(list(e))
 		return newt
+		
 	def join(self,other):
-		'''Natural join, using field's names'''
+		'''Natural join, joins on shared attributes (one or more). If there are no
+		shared attributes, it will behave as cartesian product.'''
 		shared=[]
-		for i in self.header.fields:
-			if i in other.header.fields:
+		for i in self.header.attributes:
+			if i in other.header.attributes:
 				shared.append(i)
+		
 		newt=relation() #Creates the new relation
 		
-		#Adds all the fields of the 1st relation
-		newt.header=header(list(self.header.fields))
+		#Adds all the attributes of the 1st relation
+		newt.header=header(list(self.header.attributes))
 		
-		#Adds all the fields of the 2nd, when non shared
-		for i in other.header.fields:
+		#Adds all the attributes of the 2nd, when non shared
+		for i in other.header.attributes:
 			if i not in shared:
-				newt.header.fields.append(i)
+				newt.header.attributes.append(i)
 		#Shared ids of self
-		sid=self.header.getFieldsId(shared)
+		sid=self.header.getAttributesId(shared)
 		#Shared ids of the other relation
-		oid=other.header.getFieldsId(shared)
+		oid=other.header.getAttributesId(shared)
 		
 		#Non shared ids of the other relation
 		noid=[]
-		for i in range(len(other.header.fields)):
+		for i in range(len(other.header.attributes)):
 			if i not in oid:
 				noid.append(i)
 		
@@ -243,7 +246,7 @@ class relation (object):
 		'''Returns a string representation of the relation, can be printed with 
 		monospaced fonts'''
 		m_len=[] #Maximum lenght string
-		for f in self.header.fields:
+		for f in self.header.attributes:
 			m_len.append(len(f))
 		
 		for f in self.content:
@@ -255,8 +258,8 @@ class relation (object):
 				
 		
 		res=""
-		for f in range(len(self.header.fields)):
-			res+="%s"%(self.header.fields[f].ljust(2+m_len[f]))
+		for f in range(len(self.header.attributes)):
+			res+="%s"%(self.header.attributes[f].ljust(2+m_len[f]))
 		
 		
 		for r in self.content:
@@ -272,46 +275,46 @@ class header (object):
 	'''This class defines the header of a relation.
 	It is used within relations to know if requested operations are accepted'''
 	
-	def __init__(self,fields):
-		'''Accepts a list with fields' names. Names MUST be unique'''
-		self.fields=fields
+	def __init__(self,attributes):
+		'''Accepts a list with attributes' names. Names MUST be unique'''
+		self.attributes=attributes
 	def __repr__(self):
-		return "header(%s)" % (self.fields.__repr__())
+		return "header(%s)" % (self.attributes.__repr__())
 		
 	
 	def rename(self,old,new):
 		'''Renames a field. Doesn't check if it is a duplicate.
 		Returns True if the field was renamed, False otherwise'''
-		for i in range(len(self.fields)):
-			if self.fields[i]==old:
-				self.fields[i]=new
+		for i in range(len(self.attributes)):
+			if self.attributes[i]==old:
+				self.attributes[i]=new
 				return True
 		return False #Requested field was not found	
 		
 	
-	def sharedFields(self,other):
-		'''Returns how many fields this header has in common with a given one'''
+	def sharedAttributes(self,other):
+		'''Returns how many attributes this header has in common with a given one'''
 		res=0
-		for i in self.fields:
-			if i in other.fields:
+		for i in self.attributes:
+			if i in other.attributes:
 				res+=1
 		return res
 	
 	def __str__(self):
 		'''Returns String representation of the field's list'''
-		return self.fields.__str__()
+		return self.attributes.__str__()
 	
 	def __eq__(self,other):
-		return self.fields==other.fields
+		return self.attributes==other.attributes
 	def __ne__(self,other):
-		return self.fields!=other.fields
+		return self.attributes!=other.attributes
 	
-	def getFieldsId(self,param):
+	def getAttributesId(self,param):
 		'''Returns a list with numeric index corresponding to field's name'''	
 		res=[]
 		for i in param:
-			for j in range(len(self.fields)):
-				if i==self.fields[j]:
+			for j in range(len(self.attributes)):
+				if i==self.attributes[j]:
 					res.append(j)
 		return res
 		
