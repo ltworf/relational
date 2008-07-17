@@ -213,7 +213,7 @@ class relation (object):
 			if e not in newt.content:
 				newt.content.append(list(e))
 		return newt
-	def equijoin(self,other,expr):
+	def thetajoin(self,other,expr):
 		'''Defined as product and then selection with the given expression.'''
 		return self.product(other).selection(expr)
 	
