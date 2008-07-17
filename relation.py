@@ -213,6 +213,10 @@ class relation (object):
 			if e not in newt.content:
 				newt.content.append(list(e))
 		return newt
+	def equijoin(self,other,expr):
+		'''Defined as product and then selection with the given expression.'''
+		return self.product(other).selection(expr)
+	
 	def outer(self,other):
 		'''Does a left and a right outer join and returns their union.'''
 		a=self.outer_right(other)
