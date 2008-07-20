@@ -23,20 +23,30 @@ def parse(expr):
 	
 	expr=expr.strip()
 	
+	print "====PARSING: ",expr
 	
 	start=-1
+	end=-1
+	parenthesis=0
+	lexpr=list(expr)
 	#Parses the string from end to begin
-	for i in range(len(expr),-1,-1):
-		if expr[i:i+1]=="(":
-			start=i+1
+	for i in range(len(lexpr)):
+		if lexpr[i]=="(":
+			if parenthesis==0:
+				start=i+1
+			parenthesis+=1
+		elif lexpr[i]==")":
+			parenthesis-=1
+			if parenthesis==0:
+				end=i
 			break
 	
 	if start==-1: #No complex operators
 		return parse_op(expr)
-	end=expr.find(")",start)
-	
-	internal=parse(expr[start:end])
-	print "Internal: %s" % (internal)
+	else:
+		#internal=expr[0:start]+ parse(expr[start:end])+expr[end:]
+		internal=parse(expr[start:end])
+	print "EXPRESSION: %s" % (internal)
 	
 	endp=start-1
 	start=-1
@@ -46,8 +56,9 @@ def parse(expr):
 			symbol=expr[i:i+2]
 			start=i+2
 			break
-	parameters=parse(expr[start:endp])
-	print "Parameters: %s"% ( parameters)
+	parameters=expr[start:endp]
+	print "===Internal: %s\t Parameters: %s" %(internal,parameters)
+	
 	
 	res=""
 	if symbol=="π":#Projection
@@ -68,11 +79,11 @@ def parse(expr):
 		res="%s.rename(\"%s\")" % (internal,params)
 	print res
 	res= ("%s%s%s") % (expr[0:start-2],res.replace(" ",""),expr[end+1:])
-	print res
 	return parse_op(res)
 	#Selection σage > 25 Λ rank = weight(A)
 	#Projection Q ᐅᐊ π a,b(A) ᐅᐊ B
 	#Rename ρid➡i,name➡n(A)
+	#π a,b(π a,b(A))
 	#ρid➡i,name➡n(π a,b(A))
 	#A ᐅᐊ B
 	
@@ -94,16 +105,19 @@ def parse_op(expr):
 	symbols["ᐅᐊRIGHT"]=".outer_right(%s)"
 	symbols["ᐅᐊFULL"]=".outer(%s)"
 	
-	tokens=expr.split(" ")
+	for i in symbols:
+		expr=expr.replace(i,"_____%s_____"% (i))
+	
+	tokens=expr.split("_____")
 	
 	i=0;
 	tk_l=len(tokens)
 	while i<tk_l:
 		if tokens[i] not in symbols:
-			result+=tokens[i]
+			result+=tokens[i].strip()
 		else:
 			
-			result+=symbols[tokens[i]] % (tokens[i+1])
+			result+=symbols[tokens[i]] % (tokens[i+1].strip())
 			i+=1
 		i+=1
 	return result
