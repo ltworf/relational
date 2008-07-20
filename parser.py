@@ -16,18 +16,73 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-
 def parse(expr):
 	'''This function parses a relational algebra expression, converting it into python, 
 	executable by eval function to get the result of the expression.'''
+	symbols=("σ","π","ρ")
 	
+	expr=expr.strip()
+	
+	
+	start=-1
+	#Parses the string from end to begin
+	for i in range(len(expr),-1,-1):
+		if expr[i:i+1]=="(":
+			start=i+1
+			break
+	
+	if start==-1: #No complex operators
+		return parse_op(expr)
+	end=expr.find(")",start)
+	
+	internal=parse(expr[start:end])
+	print "Internal: %s" % (internal)
+	
+	endp=start-1
+	start=-1
+	symbol=""
+	for i in range(endp,-1,-1):
+		if expr[i:i+2] in symbols:
+			symbol=expr[i:i+2]
+			start=i+2
+			break
+	parameters=parse(expr[start:endp])
+	print "Parameters: %s"% ( parameters)
+	
+	res=""
+	if symbol=="π":#Projection
+		params=""
+		count=0
+		for i in parameters.split(","):
+			if count!=0:
+				params+=","
+			else:
+				count=1
+			params+="\"%s\"" % (i.strip())
+			
+		res="%s.projection(%s)" % (internal,params)
+	elif symbol== "σ": #Selection
+		res="%s.selection(\"%s\")" % (internal,parameters)
+	elif symbol=="ρ": #Rename
+		params=parameters.replace(",","\",\"").replace("➡","\",\"")
+		res="%s.rename(\"%s\")" % (internal,params)
+	print res
+	res= ("%s%s%s") % (expr[0:start-2],res.replace(" ",""),expr[end+1:])
+	print res
+	return parse_op(res)
 	#Selection σage > 25 Λ rank = weight(A)
-	#Projection π a,b(A)
+	#Projection Q ᐅᐊ π a,b(A) ᐅᐊ B
 	#Rename ρid➡i,name➡n(A)
-	#A ᑌ B
+	#ρid➡i,name➡n(π a,b(A))
 	#A ᐅᐊ B
-	#A ᑎ B
-
+	
+	
+	
+def parse_op(expr):
+	'''This function parses a relational algebra expression including only operators 
+	(not functions) and no parenthesis, converting it into python, 
+	executable by eval function to get the result of the expression.'''
+	
 	result=""
 	symbols={}
 	symbols["*"]=".product(%s)"
