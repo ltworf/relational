@@ -18,81 +18,103 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 def parse(expr):
 	'''This function parses a relational algebra expression, converting it into python, 
-	executable by eval function to get the result of the expression.'''
+	executable by eval function to get the result of the expression.
+	It has 2 class of operators:
+	without parameters
+	*, -, ᑌ, ᑎ, ᐅᐊ, ᐅᐊLEFT, ᐅᐊRIGHT, ᐅᐊFULL
+	with parameters:
+	σ, π, ρ
+	
+	Syntax for operators without parameters is:
+	relation operator relation
+	
+	Syntax for operators with parameters is:
+	operator parameters (relation)
+	
+	Since a*b is a relation itself, you can parse π a,b (a*b).
+	And since π a,b (A) is a relation, you can parse π a,b (A) ᑌ B.
+	
+	You can't use parenthesis to change priority: a ᐅᐊ (q ᑌ d)
+	must be written as q ᑌ d ᐅᐊ a
+	
+	IMPORTANT: The encoding used by this module is UTF-8
+	
+	EXAMPLES
+	σage > 25 and rank == weight(A)
+	Q ᐅᐊ π a,b(A) ᐅᐊ B
+	ρid➡i,name➡n(A) - π a,b(π a,b(A)) ᑎ σage > 25 or rank = weight(A)
+	π a,b(π a,b(A))
+	ρid➡i,name➡n(π a,b(A))
+	A ᐅᐊ B
+	'''
 	symbols=("σ","π","ρ")
 	
-	expr=expr.strip()
-	
-	print "====PARSING: ",expr
-	
-	start=-1
-	end=-1
+	starts=[]#List with starts and ends
 	parenthesis=0
 	lexpr=list(expr)
-	#Parses the string from end to begin
+	#Parses the string finding all 1st level parenthesis
 	for i in range(len(lexpr)):
 		if lexpr[i]=="(":
 			if parenthesis==0:
-				start=i+1
+				starts.append(i+1)
 			parenthesis+=1
 		elif lexpr[i]==")":
 			parenthesis-=1
 			if parenthesis==0:
-				end=i
-			break
-	
-	if start==-1: #No complex operators
-		return parse_op(expr)
-	else:
-		#internal=expr[0:start]+ parse(expr[start:end])+expr[end:]
-		internal=parse(expr[start:end])
-	print "EXPRESSION: %s" % (internal)
-	
-	endp=start-1
-	start=-1
-	symbol=""
-	for i in range(endp,-1,-1):
-		if expr[i:i+2] in symbols:
-			symbol=expr[i:i+2]
-			start=i+2
-			break
-	parameters=expr[start:endp]
-	print "===Internal: %s\t Parameters: %s" %(internal,parameters)
-	
-	
-	res=""
-	if symbol=="π":#Projection
-		params=""
-		count=0
-		for i in parameters.split(","):
-			if count!=0:
-				params+=","
-			else:
-				count=1
-			params+="\"%s\"" % (i.strip())
+				starts.append(i)
 			
-		res="%s.projection(%s)" % (internal,params)
-	elif symbol== "σ": #Selection
-		res="%s.selection(\"%s\")" % (internal,parameters)
-	elif symbol=="ρ": #Rename
-		params=parameters.replace(",","\",\"").replace("➡","\",\"")
-		res="%s.rename(\"%s\")" % (internal,params)
-	print res
-	res= ("%s%s%s") % (expr[0:start-2],res.replace(" ",""),expr[end+1:])
-	return parse_op(res)
-	#Selection σage > 25 Λ rank = weight(A)
-	#Projection Q ᐅᐊ π a,b(A) ᐅᐊ B
-	#Rename ρid➡i,name➡n(A)
-	#π a,b(π a,b(A))
-	#ρid➡i,name➡n(π a,b(A))
-	#A ᐅᐊ B
+	
+	if len(starts)==0: #No parenthesis: no operators with parameters
+		return parse_op(expr)
 	
 	
+	
+	while len(starts)>0:
+		
+		#Converting the last complex operator into python
+		
+		end=starts.pop()
+		start=starts.pop()
+		
+		internal=parse(expr[start:end])
+		
+		endp=start-1
+		start=-1
+		symbol=""
+		for i in range(endp,-1,-1):
+			if expr[i:i+2] in symbols:
+				symbol=expr[i:i+2]
+				start=i+2
+				break
+		parameters=expr[start:endp]
+		
+		res="" #String for result
+		if symbol=="π":#Projection
+			params=""
+			count=0
+			for i in parameters.split(","):
+				if count!=0:
+					params+=","
+				else:
+					count=1
+				params+="\"%s\"" % (i.strip())
+				
+			res="%s.projection(%s)" % (internal,params)
+		elif symbol== "σ": #Selection
+			res="%s.selection(\"%s\")" % (internal,parameters)
+		elif symbol=="ρ": #Rename
+			params=parameters.replace(",","\",\"").replace("➡","\",\"")
+			res="%s.rename(\"%s\")" % (internal,params)
+		#Last complex operator is replaced with it's python code
+		#Next cycle will do the same to the new last unparsed complex operator
+		#At the end, parse_op will convert operators without parameters
+		expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
+	return parse_op(expr)
 	
 def parse_op(expr):
 	'''This function parses a relational algebra expression including only operators 
-	(not functions) and no parenthesis, converting it into python, 
-	executable by eval function to get the result of the expression.'''
+	without parameters, converting it into python.
+	Executable by eval function to get the result of the expression.'''
 	
 	result=""
 	symbols={}
