@@ -1,1 +1,20 @@
-- Created
+0.1
+- Created header class to handle attributes
+- Created relation class
+- Added union
+- Added intersection
+- Added difference
+- Added product
+- Added projection
+- Added rename
+- Projection can use a list or several parameters
+- Added selection
+- Added left join
+- Added right join
+- Added capability of operation even if attributes aren't in the same order
+- Added full outher join
+
+0.2
+- Created parser module
+- Created function to parse expression with operators without parameters
+- Created recoursive function to parse expressions
