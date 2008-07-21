@@ -103,7 +103,7 @@ def parse(expr):
 		elif symbol== "σ": #Selection
 			res="%s.selection(\"%s\")" % (internal,parameters)
 		elif symbol=="ρ": #Rename
-			params=parameters.replace(",","\",\"").replace("➡","\",\"")
+			params=parameters.replace(",","\",\"").replace("➡","\",\"").replace(" ","")
 			res="%s.rename(\"%s\")" % (internal,params)
 		#Last complex operator is replaced with it's python code
 		#Next cycle will do the same to the new last unparsed complex operator
