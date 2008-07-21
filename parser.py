@@ -21,7 +21,7 @@ def parse(expr):
 	executable by eval function to get the result of the expression.
 	It has 2 class of operators:
 	without parameters
-	*, -, ᑌ, ᑎ, ᐅᐊ, ᐅᐊLEFT, ᐅᐊRIGHT, ᐅᐊFULL
+	*, -, ᑌ, ᑎ, ᐅᐊ, ᐅLEFTᐊ, ᐅRIGHTᐊ, ᐅFULLᐊ
 	with parameters:
 	σ, π, ρ
 	
@@ -118,14 +118,16 @@ def parse_op(expr):
 	
 	result=""
 	symbols={}
+	
 	symbols["*"]=".product(%s)"
 	symbols["-"]=".difference(%s)"
 	symbols["ᑌ"]=".union(%s)"
 	symbols["ᑎ"]=".intersection(%s)"
+	symbols["ᐅLEFTᐊ"]=".outer_left(%s)"
+	symbols["ᐅRIGHTᐊ"]=".outer_right(%s)"
+	symbols["ᐅFULLᐊ"]=".outer(%s)"
 	symbols["ᐅᐊ"]=".join(%s)"
-	symbols["ᐅᐊLEFT"]=".outer_left(%s)"
-	symbols["ᐅᐊRIGHT"]=".outer_right(%s)"
-	symbols["ᐅᐊFULL"]=".outer(%s)"
+	
 	
 	for i in symbols:
 		expr=expr.replace(i,"_____%s_____"% (i))
