@@ -79,13 +79,15 @@ def parse(expr):
 		internal=parse(expr[start:end])
 		
 		endp=start-1
-		start=-1
 		symbol=""
 		for i in range(endp,-1,-1):
 			if expr[i:i+2] in symbols:
 				symbol=expr[i:i+2]
 				start=i+2
 				break
+			elif expr[i:i+1] ==")":
+				break #No symbol before
+				
 		parameters=expr[start:endp]
 		
 		res="" #String for result
@@ -100,15 +102,22 @@ def parse(expr):
 				params+="\"%s\"" % (i.strip())
 				
 			res="%s.projection(%s)" % (internal,params)
+			expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
 		elif symbol== "σ": #Selection
 			res="%s.selection(\"%s\")" % (internal,parameters)
+			expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
 		elif symbol=="ρ": #Rename
 			params=parameters.replace(",","\",\"").replace("➡","\",\"").replace(" ","")
 			res="%s.rename(\"%s\")" % (internal,params)
+			expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
+		else:
+			res="(%s)" % (internal)
+			expr= ("%s%s%s") % (expr[0:start-1],res,expr[end+1:])
 		#Last complex operator is replaced with it's python code
 		#Next cycle will do the same to the new last unparsed complex operator
 		#At the end, parse_op will convert operators without parameters
-		expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
+		
+		
 	return parse_op(expr)
 	
 def parse_op(expr):
