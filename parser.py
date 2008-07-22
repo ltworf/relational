@@ -34,8 +34,7 @@ def parse(expr):
 	Since a*b is a relation itself, you can parse π a,b (a*b).
 	And since π a,b (A) is a relation, you can parse π a,b (A) ᑌ B.
 	
-	You can't use parenthesis to change priority: a ᐅᐊ (q ᑌ d)
-	must be written as q ᑌ d ᐅᐊ a
+	You can use parenthesis to change priority: a ᐅᐊ (q ᑌ d).
 	
 	IMPORTANT: The encoding used by this module is UTF-8
 	
