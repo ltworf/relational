@@ -14,5 +14,4 @@ if __name__ == "__main__":
 	ui = maingui.Ui_Form()
 	ui.setupUi(Form)
 	Form.show()
-	Form.setWindowTitle("Relational")
 	sys.exit(app.exec_())

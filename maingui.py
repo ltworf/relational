@@ -8,11 +8,61 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-
+import relation
+import parser
 class Ui_Form(object):
+	def __init__(self):
+		self.relations={} #Dictionary for relations
+	def execute(self):
+		self.txtQuery.text()
+		expr=parser.parse(self.txtQuery.text())
+		result=eval(expr,self.relations)
+		if len(self.txtResult.text())!=0:
+			self.relations[showAttributes]=result
+			self.updateRelations()
+		self.showRelation(result)
+	def showRelation(self,rel):
+		self.table.clear()
+		
+		for i in range(len(rel.header.attributes)):
+			self.table.headerItem().setText(i,rel.header.attributes[i])
+		
+		for i in rel.content:
+			item = QtGui.QTreeWidgetItem()
+			for j in range(len(i)):
+				item.setText(j, i[j])
+			self.table.addTopLevelItem(item)
+		
+	def printRelation(self,*rel):
+		for i in rel:
+			self.showRelation(self.relations[i.text()])
+			
+	def showAttributes(self,*other):
+		for i in other:
+			rel=i.text()
+			self.lstAttributes.clear()
+			for j in self.relations[rel].header.attributes:
+				self.lstAttributes.addItem (j)
+			
+	def updateRelations(self):
+		self.lstRelations.clear()
+		for i in self.relations:
+			self.lstRelations.addItem(i)
+	def unloadRelation(self):
+		for i in self.lstRelations.selectedItems():
+			del self.relations[i.text()]
+		self.updateRelations()
 	def showAbout(self):
 		QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "About"),
 		QtGui.QApplication.translate("Form", "Relational Algebra by Salvo 'LtWorf' Tomaselli", None, QtGui.QApplication.UnicodeUTF8))
+	def loadRelation(self):
+		res=QtGui.QInputDialog.getText(None, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"))
+		if res[1]==False:
+			return
+		filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
+		self.relations[res[0]]=relation.relation(filename)
+		self.updateRelations()
+		
 	def addProduct(self):
 		self.txtQuery.setText(self.txtQuery.text()+"*")
 	def addDifference(self):
@@ -115,9 +165,11 @@ class Ui_Form(object):
 		spacerItem = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
 		self.verticalLayout_4.addItem(spacerItem)
 		self.horizontalLayout_4.addLayout(self.verticalLayout_4)
-		self.tableView = QtGui.QTableView(Form)
-		self.tableView.setObjectName("tableView")
-		self.horizontalLayout_4.addWidget(self.tableView)
+		self.table = QtGui.QTreeWidget(Form) #QtGui.QTableView(Form)
+		self.table.setAlternatingRowColors(True)
+        	self.table.setRootIsDecorated(False)
+		self.table.setObjectName("table")
+		self.horizontalLayout_4.addWidget(self.table)
 		self.verticalLayout_3 = QtGui.QVBoxLayout()
 		self.verticalLayout_3.setObjectName("verticalLayout_3")
 		self.groupBox_2 = QtGui.QGroupBox(Form)
@@ -125,10 +177,10 @@ class Ui_Form(object):
 		self.groupBox_2.setObjectName("groupBox_2")
 		self.verticalLayout_5 = QtGui.QVBoxLayout(self.groupBox_2)
 		self.verticalLayout_5.setObjectName("verticalLayout_5")
-		self.listWidget_2 = QtGui.QListWidget(self.groupBox_2)
-		self.listWidget_2.setMaximumSize(QtCore.QSize(300,16777215))
-		self.listWidget_2.setObjectName("listWidget_2")
-		self.verticalLayout_5.addWidget(self.listWidget_2)
+		self.lstRelations = QtGui.QListWidget(self.groupBox_2)
+		self.lstRelations.setMaximumSize(QtCore.QSize(300,16777215))
+		self.lstRelations.setObjectName("lstRelations")
+		self.verticalLayout_5.addWidget(self.lstRelations)
 		self.cmdLoad = QtGui.QPushButton(self.groupBox_2)
 		self.cmdLoad.setObjectName("cmdLoad")
 		self.verticalLayout_5.addWidget(self.cmdLoad)
@@ -141,10 +193,10 @@ class Ui_Form(object):
 		self.groupBox_3.setObjectName("groupBox_3")
 		self.horizontalLayout_6 = QtGui.QHBoxLayout(self.groupBox_3)
 		self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-		self.listWidget = QtGui.QListWidget(self.groupBox_3)
-		self.listWidget.setMaximumSize(QtCore.QSize(300,16777215))
-		self.listWidget.setObjectName("listWidget")
-		self.horizontalLayout_6.addWidget(self.listWidget)
+		self.lstAttributes = QtGui.QListWidget(self.groupBox_3)
+		self.lstAttributes.setMaximumSize(QtCore.QSize(300,16777215))
+		self.lstAttributes.setObjectName("lstAttributes")
+		self.horizontalLayout_6.addWidget(self.lstAttributes)
 		self.verticalLayout_3.addWidget(self.groupBox_3)
 		self.horizontalLayout_4.addLayout(self.verticalLayout_3)
 		self.verticalLayout_7.addLayout(self.horizontalLayout_4)
@@ -153,10 +205,10 @@ class Ui_Form(object):
 		self.label = QtGui.QLabel(Form)
 		self.label.setObjectName("label")
 		self.horizontalLayout.addWidget(self.label)
-		self.	txtResult = QtGui.QLineEdit(Form)
-		self.	txtResult.setMaximumSize(QtCore.QSize(70,16777215))
-		self.	txtResult.setObjectName("	txtResult")
-		self.horizontalLayout.addWidget(self.	txtResult)
+		self.txtResult = QtGui.QLineEdit(Form)
+		self.txtResult.setMaximumSize(QtCore.QSize(70,16777215))
+		self.txtResult.setObjectName("txtResult")
+		self.horizontalLayout.addWidget(self.txtResult)
 		self.label_2 = QtGui.QLabel(Form)
 		self.label_2.setObjectName("label_2")
 		self.horizontalLayout.addWidget(self.label_2)
@@ -170,7 +222,7 @@ class Ui_Form(object):
 		self.cmdExecute.setObjectName("cmdExecute")
 		self.horizontalLayout.addWidget(self.cmdExecute)
 		self.verticalLayout_7.addLayout(self.horizontalLayout)
-		self.label.setBuddy(self.	txtResult)
+		self.label.setBuddy(self.txtResult)
 		self.label_2.setBuddy(self.txtQuery)
 
 		self.retranslateUi(Form)
@@ -187,20 +239,20 @@ class Ui_Form(object):
 		QtCore.QObject.connect(self.cmdSelection,QtCore.SIGNAL("clicked()"),self.addSelection)
 		QtCore.QObject.connect(self.cmdRename,QtCore.SIGNAL("clicked()"),self.addRename)
 		QtCore.QObject.connect(self.cmdArrow,QtCore.SIGNAL("clicked()"),self.addArrow)
-		#QtCore.QObject.connect(self.cmdExecute,QtCore.SIGNAL("clicked()"),Form.execute)
-		#QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),Form.loadRelation)
-		#QtCore.QObject.connect(self.cmdUnload,QtCore.SIGNAL("clicked()"),Form.unloadRelation)
-		#QtCore.QObject.connect(self.listWidget_2,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),Form.showRelation)
-		#QtCore.QObject.connect(self.listWidget_2,QtCore.SIGNAL("itemActivated(QListWidgetItem*)"),Form.showAttributes)
+		QtCore.QObject.connect(self.cmdExecute,QtCore.SIGNAL("clicked()"),self.execute)
+		QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),self.loadRelation)
+		QtCore.QObject.connect(self.cmdUnload,QtCore.SIGNAL("clicked()"),self.unloadRelation)
+		QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),self.printRelation)
+		QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemActivated(QListWidgetItem*)"),self.showAttributes)
 		QtCore.QMetaObject.connectSlotsByName(Form)
 		Form.setTabOrder(self.	txtResult,self.txtQuery)
 		Form.setTabOrder(self.txtQuery,self.cmdExecute)
-		Form.setTabOrder(self.cmdExecute,self.listWidget_2)
-		Form.setTabOrder(self.listWidget_2,self.cmdLoad)
+		Form.setTabOrder(self.cmdExecute,self.lstRelations)
+		Form.setTabOrder(self.lstRelations,self.cmdLoad)
 		Form.setTabOrder(self.cmdLoad,self.cmdUnload)
-		Form.setTabOrder(self.cmdUnload,self.listWidget)
-		Form.setTabOrder(self.listWidget,self.tableView)
-		Form.setTabOrder(self.tableView,self.cmdProduct)
+		Form.setTabOrder(self.cmdUnload,self.lstAttributes)
+		Form.setTabOrder(self.lstAttributes,self.table)
+		Form.setTabOrder(self.table,self.cmdProduct)
 		Form.setTabOrder(self.cmdProduct,self.cmdUnion)
 		Form.setTabOrder(self.cmdUnion,self.cmdJoin)
 		Form.setTabOrder(self.cmdJoin,self.cmdOuterLeft)
@@ -238,14 +290,14 @@ class Ui_Form(object):
 		self.cmdArrow.setToolTip(QtGui.QApplication.translate("Form", "Rename attribute", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdArrow.setText(QtGui.QApplication.translate("Form", "➡", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox_2.setTitle(QtGui.QApplication.translate("Form", "Relations", None, QtGui.QApplication.UnicodeUTF8))
-		self.listWidget_2.setToolTip(QtGui.QApplication.translate("Form", "List all the relations.\n"
+		self.lstRelations.setToolTip(QtGui.QApplication.translate("Form", "List all the relations.\n"
 "Double click on a relation to show it in the table.", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdLoad.setWhatsThis(QtGui.QApplication.translate("Form", "Loads a relation from a file", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdLoad.setText(QtGui.QApplication.translate("Form", "Load relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdUnload.setToolTip(QtGui.QApplication.translate("Form", "Unloads a relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdUnload.setText(QtGui.QApplication.translate("Form", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox_3.setTitle(QtGui.QApplication.translate("Form", "Attributes", None, QtGui.QApplication.UnicodeUTF8))
-		self.listWidget.setToolTip(QtGui.QApplication.translate("Form", "Shows the attributes of the current relation", None, QtGui.QApplication.UnicodeUTF8))
+		self.lstAttributes.setToolTip(QtGui.QApplication.translate("Form", "Shows the attributes of the current relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.label.setText(QtGui.QApplication.translate("Form", "Query", None, QtGui.QApplication.UnicodeUTF8))
 		self.label_2.setText(QtGui.QApplication.translate("Form", "=", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdExecute.setText(QtGui.QApplication.translate("Form", "Execute", None, QtGui.QApplication.UnicodeUTF8))
