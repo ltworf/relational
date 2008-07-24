@@ -24,6 +24,7 @@ import about
 
 class Ui_Form(object):
 	def __init__(self):
+		self.Dialog=None
 		self.relations={} #Dictionary for relations
 	def execute(self):
 		try:
@@ -37,32 +38,32 @@ class Ui_Form(object):
 			self.txtResult.setText("")
 			if len(res_rel)==0:
 				res_rel="last_"
-				
+			
 			self.relations[res_rel]=result
 			self.updateRelations()
 			
 			self.showRelation(result)
 		except:
-			print
-			#QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),  str(traceback.print_exc()))
+			QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Check your query!")  )
 	def showRelation(self,rel):
 		self.table.clear()
 		
-		for i in range(self.table.headerItem().columnCount()):
-			self.table.headerItem().setText(i,"")
-		
 		if rel==None:
+			self.table.setColumnCount(1)
 			self.table.headerItem().setText(0,"Empty relation")
 			return
-		
-		for i in range(len(rel.header.attributes)):
-			self.table.headerItem().setText(i,rel.header.attributes[i])
+		self.table.setColumnCount(len(rel.header.attributes))
 		
 		for i in rel.content:
 			item = QtGui.QTreeWidgetItem()
 			for j in range(len(i)):
 				item.setText(j, i[j])
 			self.table.addTopLevelItem(item)
+			
+		for i in range(len(rel.header.attributes)):
+			self.table.headerItem().setText(i,rel.header.attributes[i])
+			self.table.resizeColumnToContents(i)
+		
 		
 	def printRelation(self,*rel):
 		for i in rel:
@@ -85,11 +86,12 @@ class Ui_Form(object):
 			del self.relations[str(i.text().toUtf8())]
 		self.updateRelations()
 	def showAbout(self):
-		Dialog = QtGui.QDialog()
-		ui = about.Ui_Dialog()
-		ui.setupUi(Dialog)
-		Dialog.show()
-		sys.exit(app.exec_())
+		if self.Dialog==None:
+			self.Dialog = QtGui.QDialog()
+			ui = about.Ui_Dialog()
+			ui.setupUi(self.Dialog)
+		self.Dialog.show()
+		#sys.exit(app.exec_())
 
 	def loadRelation(self):
 		res=QtGui.QInputDialog.getText(None, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"))
@@ -98,31 +100,43 @@ class Ui_Form(object):
 		filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
 		self.relations[str(res[0].toUtf8())]=relation.relation(filename)
 		self.updateRelations()
-		
+	
 	def addProduct(self):
-		self.txtQuery.setText(self.txtQuery.text()+"*")
+		self.txtQuery.insert(u"*")
+		self.txtQuery.setFocus()
 	def addDifference(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"-")
+		self.txtQuery.insert(u"-")
+		self.txtQuery.setFocus()
 	def addUnion(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ᑌ")
+		self.txtQuery.insert(u"ᑌ")
+		self.txtQuery.setFocus()
 	def addIntersection(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ᑎ")
+		self.txtQuery.insert(u"ᑎ")
+		self.txtQuery.setFocus()
 	def addOLeft(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ᐅLEFTᐊ")
+		self.txtQuery.insert(u"ᐅLEFTᐊ")
+		self.txtQuery.setFocus()
 	def addJoin(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ᐅᐊ")
+		self.txtQuery.insert(u"ᐅᐊ")
+		self.txtQuery.setFocus()
 	def addORight(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ᐅRIGHTᐊ")
+		self.txtQuery.insert(u"ᐅRIGHTᐊ")
+		self.txtQuery.setFocus()
 	def addOuter(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ᐅFULLᐊ")
+		self.txtQuery.insert(u"ᐅFULLᐊ")
+		self.txtQuery.setFocus()
 	def addProjection(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"π")
+		self.txtQuery.insert(u"π")
+		self.txtQuery.setFocus()
 	def addSelection(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"σ")
+		self.txtQuery.insert(u"σ")
+		self.txtQuery.setFocus()
 	def addRename(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"ρ")
+		self.txtQuery.insert(u"ρ")
+		self.txtQuery.setFocus()
 	def addArrow(self):
-		self.txtQuery.setText(self.txtQuery.text()+u"➡")
+		self.txtQuery.insert(u"➡")
+		self.txtQuery.setFocus()
 		
 	def setupUi(self, Form):
 		Form.setObjectName("Form")
@@ -263,6 +277,7 @@ class Ui_Form(object):
 		self.label_2.setBuddy(self.txtQuery)
 
 		self.retranslateUi(Form)
+		QtCore.QObject.connect(self.txtQuery,QtCore.SIGNAL("returnPressed()"),self.execute)
 		QtCore.QObject.connect(self.cmdAbout,QtCore.SIGNAL("clicked()"),self.showAbout)
 		QtCore.QObject.connect(self.cmdProduct,QtCore.SIGNAL("clicked()"),self.addProduct)
 		QtCore.QObject.connect(self.cmdDifference,QtCore.SIGNAL("clicked()"),self.addDifference)

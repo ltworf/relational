@@ -21,3 +21,6 @@
 
 0.3
 - Added support for parenthesis in relational queries
+
+0.4
+- Created GUI

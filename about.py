@@ -22,7 +22,7 @@ import relational
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
-        Dialog.setObjectName("Documentation")
+        Dialog.setObjectName("Dialog")
         Dialog.resize(510,453)
         self.verticalLayout_2 = QtGui.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -96,7 +96,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Documentation", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+relational.version, None, QtGui.QApplication.UnicodeUTF8))
