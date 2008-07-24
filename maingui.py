@@ -1,17 +1,26 @@
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'main.ui'
-#
-# Created: Wed Jul 23 13:58:26 2008
-#	  by: PyQt4 UI code generator 4.4.2
-#
-# WARNING! All changes made in this file will be lost!
-
+# Relational
+# Copyright (C) 2008  Salvo "LtWorf" Tomaselli
+# 
+# Relation is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# 
+# author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 from PyQt4 import QtCore, QtGui
 import relation
 import parser
-import traceback
 import sys
+import about
 
 class Ui_Form(object):
 	def __init__(self):
@@ -21,10 +30,11 @@ class Ui_Form(object):
 			#Converting string to utf8 and then from qstring to normal string
 			query=str(self.txtQuery.text().toUtf8())
 			expr=parser.parse(query)
-			print query, expr
+			print query,"-->" , expr
 			result=eval(expr,self.relations)
 			
 			res_rel=str(self.txtResult.text())#result relation's name
+			self.txtResult.setText("")
 			if len(res_rel)==0:
 				res_rel="last_"
 				
@@ -68,15 +78,19 @@ class Ui_Form(object):
 	def updateRelations(self):
 		self.lstRelations.clear()
 		for i in self.relations:
-			if i != "__builtin__":
-			self.lstRelations.addItem(i)
+			if i != "__builtins__":
+				self.lstRelations.addItem(i)
 	def unloadRelation(self):
 		for i in self.lstRelations.selectedItems():
-			del self.relations[i.text().toUtf8()]
+			del self.relations[str(i.text().toUtf8())]
 		self.updateRelations()
 	def showAbout(self):
-		QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "About"),
-		QtGui.QApplication.translate("Form", "Relational Algebra by Salvo 'LtWorf' Tomaselli", None, QtGui.QApplication.UnicodeUTF8))
+		Dialog = QtGui.QDialog()
+		ui = about.Ui_Dialog()
+		ui.setupUi(Dialog)
+		Dialog.show()
+		sys.exit(app.exec_())
+
 	def loadRelation(self):
 		res=QtGui.QInputDialog.getText(None, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"))
 		if res[1]==False:
@@ -286,7 +300,7 @@ class Ui_Form(object):
 	def retranslateUi(self, Form):
 		Form.setWindowTitle(QtGui.QApplication.translate("Form", "Relational", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox_4.setTitle(QtGui.QApplication.translate("Form", "Menu", None, QtGui.QApplication.UnicodeUTF8))
-		self.cmdAbout.setText(QtGui.QApplication.translate("Form", "About", None, QtGui.QApplication.UnicodeUTF8))
+		self.cmdAbout.setText(QtGui.QApplication.translate("Form", "Docs", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox.setTitle(QtGui.QApplication.translate("Form", "Operators", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdProduct.setToolTip(QtGui.QApplication.translate("Form", "Product operator", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdProduct.setText(QtGui.QApplication.translate("Form", "*", None, QtGui.QApplication.UnicodeUTF8))

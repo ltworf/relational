@@ -1,4 +1,4 @@
-# Relation
+# Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 # 
 # Relation is free software: you can redistribute it and/or modify
