@@ -10,19 +10,40 @@
 from PyQt4 import QtCore, QtGui
 import relation
 import parser
+import traceback
+import sys
+
 class Ui_Form(object):
 	def __init__(self):
 		self.relations={} #Dictionary for relations
 	def execute(self):
-		self.txtQuery.text()
-		expr=parser.parse(self.txtQuery.text())
-		result=eval(expr,self.relations)
-		if len(self.txtResult.text())!=0:
-			self.relations[showAttributes]=result
+		try:
+			#Converting string to utf8 and then from qstring to normal string
+			query=str(self.txtQuery.text().toUtf8())
+			expr=parser.parse(query)
+			print query, expr
+			result=eval(expr,self.relations)
+			
+			res_rel=str(self.txtResult.text())#result relation's name
+			if len(res_rel)==0:
+				res_rel="last_"
+				
+			self.relations[res_rel]=result
 			self.updateRelations()
-		self.showRelation(result)
+			
+			self.showRelation(result)
+		except:
+			print
+			#QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),  str(traceback.print_exc()))
 	def showRelation(self,rel):
 		self.table.clear()
+		
+		for i in range(self.table.headerItem().columnCount()):
+			self.table.headerItem().setText(i,"")
+		
+		if rel==None:
+			self.table.headerItem().setText(0,"Empty relation")
+			return
 		
 		for i in range(len(rel.header.attributes)):
 			self.table.headerItem().setText(i,rel.header.attributes[i])
@@ -35,11 +56,11 @@ class Ui_Form(object):
 		
 	def printRelation(self,*rel):
 		for i in rel:
-			self.showRelation(self.relations[i.text()])
+			self.showRelation(self.relations[str(i.text().toUtf8())])
 			
 	def showAttributes(self,*other):
 		for i in other:
-			rel=i.text()
+			rel=str(i.text().toUtf8())
 			self.lstAttributes.clear()
 			for j in self.relations[rel].header.attributes:
 				self.lstAttributes.addItem (j)
@@ -50,7 +71,7 @@ class Ui_Form(object):
 			self.lstRelations.addItem(i)
 	def unloadRelation(self):
 		for i in self.lstRelations.selectedItems():
-			del self.relations[i.text()]
+			del self.relations[i.text().toUtf8()]
 		self.updateRelations()
 	def showAbout(self):
 		QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "About"),
@@ -60,7 +81,7 @@ class Ui_Form(object):
 		if res[1]==False:
 			return
 		filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
-		self.relations[res[0]]=relation.relation(filename)
+		self.relations[str(res[0].toUtf8())]=relation.relation(filename)
 		self.updateRelations()
 		
 	def addProduct(self):
@@ -169,6 +190,7 @@ class Ui_Form(object):
 		self.table.setAlternatingRowColors(True)
         	self.table.setRootIsDecorated(False)
 		self.table.setObjectName("table")
+		self.showRelation(None)
 		self.horizontalLayout_4.addWidget(self.table)
 		self.verticalLayout_3 = QtGui.QVBoxLayout()
 		self.verticalLayout_3.setObjectName("verticalLayout_3")
