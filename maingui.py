@@ -68,6 +68,7 @@ class Ui_Form(object):
 	def updateRelations(self):
 		self.lstRelations.clear()
 		for i in self.relations:
+			if i != "__builtin__":
 			self.lstRelations.addItem(i)
 	def unloadRelation(self):
 		for i in self.lstRelations.selectedItems():
