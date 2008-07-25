@@ -24,7 +24,7 @@ import about
 
 class Ui_Form(object):
 	def __init__(self):
-		self.Dialog=None
+		self.About=None
 		self.relations={} #Dictionary for relations
 	def execute(self):
 		try:
@@ -86,12 +86,11 @@ class Ui_Form(object):
 			del self.relations[str(i.text().toUtf8())]
 		self.updateRelations()
 	def showAbout(self):
-		if self.Dialog==None:
-			self.Dialog = QtGui.QDialog()
+		if self.About==None:
+			self.About = QtGui.QDialog()
 			ui = about.Ui_Dialog()
-			ui.setupUi(self.Dialog)
-		self.Dialog.show()
-		#sys.exit(app.exec_())
+			ui.setupUi(self.About)
+		self.About.show()
 
 	def loadRelation(self):
 		res=QtGui.QInputDialog.getText(None, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"))
