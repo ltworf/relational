@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# coding=UTF-8
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 # 
@@ -18,19 +16,13 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-import sys
-from PyQt4 import QtCore, QtGui
-import parser
-import relation
-import maingui
-
-version="0.5"
-
-if __name__ == "__main__":
-	app = QtGui.QApplication(sys.argv)
-	Form = QtGui.QWidget()
-	
-	ui = maingui.Ui_Form()
-	ui.setupUi(Form)
-	Form.show()
-	sys.exit(app.exec_())
+'''Custom types for relational algebra'''
+class rstring (str):
+	'''String subclass with some custom methods'''
+	def isFloat(self):
+		'''True if the string is a float number, false otherwise'''
+		lst=['0','1','2','3','4','5','6','7','8','9','.']
+		for i in self:
+			if i not in lst:
+				return False;
+		return True;
