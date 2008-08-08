@@ -16,7 +16,7 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-import rtypes
+from rtypes import *
 
 class relation (object):
 	'''This objects defines a relation (as a group of consistent tuples) and operations
@@ -78,8 +78,10 @@ class relation (object):
 			for j in range(len(self.header.attributes)):
 				if i[j].isdigit():
 					attributes[self.header.attributes[j]]=int(i[j])
-				elif rtypes.rstring(i[j]).isFloat():
+				elif rstring(i[j]).isFloat():
 					attributes[self.header.attributes[j]]=float(i[j])
+				elif isDate(i[j]):
+					attributes[self.header.attributes[j]]=rdate(i[j])
 				else:
 					attributes[self.header.attributes[j]]=i[j]
 				
