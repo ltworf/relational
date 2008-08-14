@@ -28,3 +28,6 @@
 0.5
 - Added support for float numbers
 - Added support for dates
+
+0.6
+- Fixes to run on Mac OsX

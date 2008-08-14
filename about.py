@@ -17,7 +17,13 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
+
 from PyQt4 import QtCore, QtGui
+try: #If QtWebKit is available, uses it
+	from PyQt4 import QtWebKit
+	webk=True
+except:
+	webk=False
 import relational
 
 class Ui_Dialog(object):
@@ -77,10 +83,17 @@ class Ui_Dialog(object):
         self.tab_2.setObjectName("tab_2")
         self.verticalLayout_7 = QtGui.QVBoxLayout(self.tab_2)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.webView = QtWebKit.QWebView(self.tab_2)
-        self.webView.setUrl(QtCore.QUrl("http://galileo.dmi.unict.it/wiki/relational/doku.php"))
-        self.webView.setObjectName("webView")
-        self.verticalLayout_7.addWidget(self.webView)
+        if (webk):
+		self.webView = QtWebKit.QWebView(self.tab_2)
+        	self.webView.setUrl(QtCore.QUrl("http://galileo.dmi.unict.it/wiki/relational/doku.php"))
+        	self.webView.setObjectName("webView")
+		self.verticalLayout_7.addWidget(self.webView)
+	else:
+		self.webError = QtGui.QLabel(self.groupBox)
+		self.webError.setFont(font)
+        	self.webError.setObjectName("lblError")
+        	self.verticalLayout_7.addWidget(self.webError)
+		self.webError.setText(QtGui.QApplication.translate("Dialog", "Error! Unable to import QtWebKit module.", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.addTab(self.tab_2,"")
         self.verticalLayout_2.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(Dialog)
@@ -250,7 +263,7 @@ class Ui_Dialog(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.License), QtGui.QApplication.translate("Dialog", "License", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("Dialog", "Docs", None, QtGui.QApplication.UnicodeUTF8))
 
-from PyQt4 import QtWebKit
+
 
 if __name__ == "__main__":
     import sys
