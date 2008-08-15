@@ -31,3 +31,4 @@
 
 0.6
 - Fixes to run on Mac OsX
+- Added Makefile
