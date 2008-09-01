@@ -32,3 +32,5 @@
 0.6
 - Fixes to run on Mac OsX
 - Added Makefile
+- Able to create .app MacOsX files using "make app"
+- Able to create tar.gz file containing Mac OsX application and samples using "make mac"

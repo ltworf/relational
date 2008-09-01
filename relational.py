@@ -23,14 +23,25 @@ from PyQt4 import QtCore, QtGui
 import parser
 import relation
 import maingui
+import signal
 
 version="0.6"
 
+def term(signal,frame):
+	print "Interrupt----\n"
+	#sys.exit(0)
+
 if __name__ == "__main__":
+	signal.signal(signal.SIGTERM,term)
+	signal.signal(signal.SIGINT,term)
 	app = QtGui.QApplication(sys.argv)
 	Form = QtGui.QWidget()
 	
 	ui = maingui.Ui_Form()
 	ui.setupUi(Form)
 	Form.show()
+	
 	sys.exit(app.exec_())
+	
+	
+
