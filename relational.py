@@ -24,7 +24,7 @@ import parser
 import relation
 import maingui
 
-version="0.6"
+version="0.7"
 
 if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)

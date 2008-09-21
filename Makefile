@@ -5,7 +5,8 @@ clean:
 	rm *~ || echo ok
 	rm *pyc || echo ok
 	rm -rf Relational.app || echo ok
-	rm -rf relational
+	rm -rf relational || echo ok
+	rm relational.tar.gz || echo ok
 mac: app
 	mkdir relational || echo Exists
 	mv Relational.app relational
