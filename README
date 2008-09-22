@@ -1,0 +1,6 @@
+To launch the application, run 
+
+./relational.py
+
+If it needs some dependencies, check this page:
+http://galileo.dmi.unict.it/wiki/relational/doku.php?id=download#install
