@@ -142,14 +142,17 @@ def parse_op(expr):
 	quotes=expr.split('"');
 	
 	
-	if (len(quotes)>1):
-	  for i in range (0,len(quotes),2):
-	    for j in symbols:
-		  quotes[i]=quotes[i].replace(j,"_____%s_____"% (j))
-	  #The parts outside the quotes was parsed, put the string together again
-	  expr= '"'.join(quotes)
 	
-	  
+	for i in range (0,len(quotes),2):
+	   for j in symbols:
+	    quotes[i]=quotes[i].replace(j,"_____%s_____"% (j))
+	 
+	 
+	 #The parts outside the quotes was parsed, put the string together again 
+	if (len(quotes)>1):  
+	  expr= '"'.join(quotes)
+	else:
+	  expr= quotes[0]
 	
 	tokens=expr.split("_____")
 	
