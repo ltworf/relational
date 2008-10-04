@@ -141,13 +141,15 @@ def parse_op(expr):
 	#We split the string into an array, and we parse only the ones with even index
 	quotes=expr.split('"');
 	
-	for i in range (0,len(quotes),2):
-	  for j in symbols:
-		quotes[i]=quotes[i].replace(j,"_____%s_____"% (j))
-	#The parts outside the quotes was parsed, put the string together again
 	
 	if (len(quotes)>1):
+	  for i in range (0,len(quotes),2):
+	    for j in symbols:
+		  quotes[i]=quotes[i].replace(j,"_____%s_____"% (j))
+	  #The parts outside the quotes was parsed, put the string together again
 	  expr= '"'.join(quotes)
+	
+	  
 	
 	tokens=expr.split("_____")
 	
