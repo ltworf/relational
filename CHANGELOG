@@ -37,3 +37,4 @@
 
 0.7
 - Added README
+- Expressions between quotes aren't parsed anymore
