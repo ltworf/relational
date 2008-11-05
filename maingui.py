@@ -21,6 +21,7 @@ import relation
 import parser
 import sys
 import about
+import os
 
 class Ui_Form(object):
 	def __init__(self):
@@ -93,10 +94,21 @@ class Ui_Form(object):
 		self.About.show()
 
 	def loadRelation(self):
-		res=QtGui.QInputDialog.getText(None, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"))
+		#Asking for file to load
+		filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
+		
+		#Default relation's name
+		f=str(filename.toUtf8()).split(os.sep) #Split the full path
+		defname=f[len(f)-1].lower() #Takes only the lowercase filename
+		
+		if (defname.endswith(".tlb")): #removes the extension
+		  defname=defname[:-4]
+		
+		res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"),
+		QtGui.QLineEdit.Normal,defname)
 		if res[1]==False:
 			return
-		filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
+		
 		self.relations[str(res[0].toUtf8())]=relation.relation(filename)
 		self.updateRelations()
 	
@@ -138,6 +150,7 @@ class Ui_Form(object):
 		self.txtQuery.setFocus()
 		
 	def setupUi(self, Form):
+		self.Form=Form
 		Form.setObjectName("Form")
 		Form.resize(932,592)
 		Form.setMinimumSize(QtCore.QSize(100,50))
