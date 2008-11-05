@@ -39,3 +39,4 @@
 - Added README
 - Expressions between quotes aren't parsed anymore
 - When adding a relation, the file must be choosen 1st, and then the default relation's name is the same as the filename
+- Changed internal rename method. Now uses a dictionary

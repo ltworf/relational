@@ -106,8 +106,8 @@ def parse(expr):
 			res="%s.selection(\"%s\")" % (internal,parameters)
 			expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
 		elif symbol=="ρ": #Rename
-			params=parameters.replace(",","\",\"").replace("➡","\",\"").replace(" ","")
-			res="%s.rename(\"%s\")" % (internal,params)
+			params=parameters.replace(",","\",\"").replace("➡","\":\"").replace(" ","")
+			res="%s.rename({\"%s\"})" % (internal,params)
 			expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
 		else:
 			res="(%s)" % (internal)

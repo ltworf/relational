@@ -145,19 +145,19 @@ class relation (object):
 		
 		
 	
-	def rename(self,*params):
-		'''Operation rename. Takes an even number of parameters: (old,new,old,new....)
-		Will replace the 1st parameter with the 2nd, the 3rd with 4th, and so on...
+	def rename(self,params):
+		'''Operation rename. Takes a dictionatu
+		Will replace the itmem with its content.
+		For example if you want to rename a to b, provide {"a":"b"}
 		If an "old" field doesn't exist, None will be returned'''
 		result=[]
 		
 		newt=relation()
 		newt.header=header(list(self.header.attributes))
 		
-		for i in range(len(params)):
-			if i%2==0:
-				if (newt.header.rename(params[i],params[i+1])) == False:
-					return None
+		for i in params:
+			if (newt.header.rename(i,params[i])) == False:
+				return None
 		
 		newt.content=list(self.content)
 		return newt
