@@ -84,6 +84,18 @@ class Ui_Form(object):
 		for i in self.relations:
 			if i != "__builtins__":
 				self.lstRelations.addItem(i)
+	def saveRelation(self):
+	  filename = QtGui.QFileDialog.getSaveFileName(self.Form,QtGui.QApplication.translate("Form", "Save Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.tlb)"))
+	  
+	  filename=str(filename.toUtf8()) #Converts QString to string
+	  if (len(filename)==0):#Returns if no file was selected
+	    return
+	  if (not filename.endswith(".tlb")):#Adds extension if needed
+	    filename+=".tlb"
+	  
+	  for i in self.lstRelations.selectedItems():
+			self.relations[str(i.text().toUtf8())].save(filename)
+	  return
 	def unloadRelation(self):
 		for i in self.lstRelations.selectedItems():
 			del self.relations[str(i.text().toUtf8())]
@@ -251,7 +263,11 @@ class Ui_Form(object):
 		self.verticalLayout_5.addWidget(self.cmdLoad)
 		self.cmdUnload = QtGui.QPushButton(self.groupBox_2)
 		self.cmdUnload.setObjectName("cmdUnload")
+		self.cmdSave = QtGui.QPushButton(self.groupBox_2)
+		self.cmdSave.setObjectName("cmdSave")
+		self.verticalLayout_5.addWidget(self.cmdSave)
 		self.verticalLayout_5.addWidget(self.cmdUnload)
+		
 		self.verticalLayout_3.addWidget(self.groupBox_2)
 		self.groupBox_3 = QtGui.QGroupBox(Form)
 		self.groupBox_3.setMaximumSize(QtCore.QSize(200,16777215))
@@ -307,6 +323,7 @@ class Ui_Form(object):
 		QtCore.QObject.connect(self.cmdArrow,QtCore.SIGNAL("clicked()"),self.addArrow)
 		QtCore.QObject.connect(self.cmdExecute,QtCore.SIGNAL("clicked()"),self.execute)
 		QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),self.loadRelation)
+		QtCore.QObject.connect(self.cmdSave,QtCore.SIGNAL("clicked()"),self.saveRelation)
 		QtCore.QObject.connect(self.cmdUnload,QtCore.SIGNAL("clicked()"),self.unloadRelation)
 		QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),self.printRelation)
 		QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemActivated(QListWidgetItem*)"),self.showAttributes)
@@ -316,6 +333,7 @@ class Ui_Form(object):
 		Form.setTabOrder(self.cmdExecute,self.lstRelations)
 		Form.setTabOrder(self.lstRelations,self.cmdLoad)
 		Form.setTabOrder(self.cmdLoad,self.cmdUnload)
+		Form.setTabOrder(self.cmdLoad,self.cmdSave)
 		Form.setTabOrder(self.cmdUnload,self.lstAttributes)
 		Form.setTabOrder(self.lstAttributes,self.table)
 		Form.setTabOrder(self.table,self.cmdProduct)
@@ -358,8 +376,10 @@ class Ui_Form(object):
 		self.groupBox_2.setTitle(QtGui.QApplication.translate("Form", "Relations", None, QtGui.QApplication.UnicodeUTF8))
 		self.lstRelations.setToolTip(QtGui.QApplication.translate("Form", "List all the relations.\n"
 "Double click on a relation to show it in the table.", None, QtGui.QApplication.UnicodeUTF8))
-		self.cmdLoad.setWhatsThis(QtGui.QApplication.translate("Form", "Loads a relation from a file", None, QtGui.QApplication.UnicodeUTF8))
+		self.cmdLoad.setToolTip(QtGui.QApplication.translate("Form", "Loads a relation from a file", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdLoad.setText(QtGui.QApplication.translate("Form", "Load relation", None, QtGui.QApplication.UnicodeUTF8))
+		self.cmdSave.setToolTip(QtGui.QApplication.translate("Form", "Saves a relation to a file", None, QtGui.QApplication.UnicodeUTF8))
+		self.cmdSave.setText(QtGui.QApplication.translate("Form", "Save relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdUnload.setToolTip(QtGui.QApplication.translate("Form", "Unloads a relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdUnload.setText(QtGui.QApplication.translate("Form", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox_3.setTitle(QtGui.QApplication.translate("Form", "Attributes", None, QtGui.QApplication.UnicodeUTF8))
