@@ -31,39 +31,41 @@ class Ui_Form(object):
 		try:
 			#Converting string to utf8 and then from qstring to normal string
 			query=str(self.txtQuery.text().toUtf8())
-			expr=parser.parse(query)
-			print query,"-->" , expr
-			result=eval(expr,self.relations)
+			expr=parser.parse(query)#Converting expression to python code
+			print query,"-->" , expr #Printing debug
+			result=eval(expr,self.relations) #Evaluating the expression
 			
 			res_rel=str(self.txtResult.text())#result relation's name
-			self.txtResult.setText("")
-			if len(res_rel)==0:
+			self.txtResult.setText("") #Sets the result relation name to none
+			if len(res_rel)==0: #If no name is set use the default last_
 				res_rel="last_"
 			
-			self.relations[res_rel]=result
-			self.updateRelations()
+			self.relations[res_rel]=result #Add the relation to the dictionary
+			self.updateRelations() #update the list
 			
-			self.showRelation(result)
+			self.showRelation(result) #Show the result in the table
 		except:
 			QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Check your query!")  )
 	def showRelation(self,rel):
 		self.table.clear()
 		
-		if rel==None:
+		if rel==None: #No relation to show
 			self.table.setColumnCount(1)
 			self.table.headerItem().setText(0,"Empty relation")
 			return
 		self.table.setColumnCount(len(rel.header.attributes))
 		
+		#Set content
 		for i in rel.content:
 			item = QtGui.QTreeWidgetItem()
 			for j in range(len(i)):
 				item.setText(j, i[j])
 			self.table.addTopLevelItem(item)
-			
+		
+		#Sets columns
 		for i in range(len(rel.header.attributes)):
 			self.table.headerItem().setText(i,rel.header.attributes[i])
-			self.table.resizeColumnToContents(i)
+			self.table.resizeColumnToContents(i) #Must be done in order to avoid  too small columns
 		
 		
 	def printRelation(self,*rel):

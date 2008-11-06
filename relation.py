@@ -45,14 +45,11 @@ class relation (object):
 	def save(self,filename):
 		'''Saves the relation in a file'''
 		res=""
-		for f in self.header.attributes:
-			res+="%s "%(f)
-		
+		res+=" ".join(self.header.attributes)
 		
 		for r in self.content:
 			res+="\n"
-			for i in r:
-				res+="%s "% (i)
+			res+=" ".join(r)
 		fp=file(filename,'w')
 		fp.write(res)
 		fp.close()
