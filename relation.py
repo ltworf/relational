@@ -143,7 +143,7 @@ class relation (object):
 		
 	
 	def rename(self,params):
-		'''Operation rename. Takes a dictionatu
+		'''Operation rename. Takes a dictionary
 		Will replace the itmem with its content.
 		For example if you want to rename a to b, provide {"a":"b"}
 		If an "old" field doesn't exist, None will be returned'''
@@ -416,14 +416,4 @@ class header (object):
 		
 
 if __name__=="__main__":
-	a=["id","nome","cognome"]
-	
-	b=header(a)
-	print "b=", b.__repr__()
-	b.rename("nome","nick")
-	
-	a=["id","nome","cognome"]
-	c=header(a)
-	print b, c
-	print b==c
-	
+  pass
