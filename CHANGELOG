@@ -42,3 +42,4 @@
 - Changed internal rename method. Now uses a dictionary
 - Optimized saving of relations
 - Can save relations from gui
+- Outer join methods simplified

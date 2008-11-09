@@ -230,21 +230,19 @@ class relation (object):
 		return a.union(b)
 		
 	def outer_right(self,other):
-		'''Same as left join, with swapped parameters'''
-		return self.outer_left(other,True)
+		'''Outer right join. Considers self as left and param as right. If the
+		tuple has no corrispondence, empy attributes are filled with a "---"
+		string. This is due to the fact that empty string or a space would cause
+		problems when saving the relation.
+		Just like natural join, it works considering shared attributes.'''
+		return other.outer_left(self)
 	
 	def outer_left(self,other,swap=False):
 		'''Outer left join. Considers self as left and param as right. If the 
 		tuple has no corrispondence, empty attributes are filled with a "---" 
 		string. This is due to the fact that empty string or a space would cause
 		problems when saving the relation.
-		Just like natural join, it works considering shared attributes.
-		If swap is True, it will behave as a right join'''
-		
-		if swap:
-			tmp=other
-			other=self
-			self=tmp
+		Just like natural join, it works considering shared attributes.'''
 		
 		shared=[]
 		for i in self.header.attributes:
