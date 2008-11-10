@@ -152,8 +152,8 @@ class relation (object):
 		newt=relation()
 		newt.header=header(list(self.header.attributes))
 		
-		for i in params:
-			if (newt.header.rename(i,params[i])) == False:
+		for old,new in params.iteritems():
+			if (newt.header.rename(old,new)) == False:
 				return None
 		
 		newt.content=list(self.content)
