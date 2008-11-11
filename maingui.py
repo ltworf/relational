@@ -22,11 +22,14 @@ import relation
 import parser
 import sys
 import about
+import survey
 import os
+import surveyForm
 
 class Ui_Form(object):
 	def __init__(self):
 		self.About=None
+		self.Survey=None
 		self.relations={} #Dictionary for relations
 	def execute(self):
 		try:
@@ -101,6 +104,13 @@ class Ui_Form(object):
 		for i in self.lstRelations.selectedItems():
 			del self.relations[str(i.text().toUtf8())]
 		self.updateRelations()
+	def showSurvey(self):
+	  if self.Survey==None:
+	    self.Survey=surveyForm.surveyForm()
+	    ui = survey.Ui_Form()
+	    self.Survey.setUi(ui)
+	    ui.setupUi(self.Survey)
+	  self.Survey.show()
 	def showAbout(self):
 		if self.About==None:
 			self.About = QtGui.QDialog()
@@ -180,8 +190,11 @@ class Ui_Form(object):
 		self.verticalLayout_8 = QtGui.QVBoxLayout(self.groupBox_4)
 		self.verticalLayout_8.setObjectName("verticalLayout_8")
 		self.cmdAbout = QtGui.QPushButton(self.groupBox_4)
+		self.cmdSurvey = QtGui.QPushButton(self.groupBox_4)
 		self.cmdAbout.setObjectName("cmdAbout")
+		self.cmdSurvey.setObjectName("cmdSurvey")
 		self.verticalLayout_8.addWidget(self.cmdAbout)
+		self.verticalLayout_8.addWidget(self.cmdSurvey)
 		self.verticalLayout_4.addWidget(self.groupBox_4)
 		self.groupBox = QtGui.QGroupBox(Form)
 		self.groupBox.setObjectName("groupBox")
@@ -310,6 +323,7 @@ class Ui_Form(object):
 		self.retranslateUi(Form)
 		QtCore.QObject.connect(self.txtQuery,QtCore.SIGNAL("returnPressed()"),self.execute)
 		QtCore.QObject.connect(self.cmdAbout,QtCore.SIGNAL("clicked()"),self.showAbout)
+		QtCore.QObject.connect(self.cmdSurvey,QtCore.SIGNAL("clicked()"),self.showSurvey)
 		QtCore.QObject.connect(self.cmdProduct,QtCore.SIGNAL("clicked()"),self.addProduct)
 		QtCore.QObject.connect(self.cmdDifference,QtCore.SIGNAL("clicked()"),self.addDifference)
 		QtCore.QObject.connect(self.cmdUnion,QtCore.SIGNAL("clicked()"),self.addUnion)
@@ -344,11 +358,13 @@ class Ui_Form(object):
 		Form.setTabOrder(self.cmdOuterLeft,self.cmdProjection)
 		Form.setTabOrder(self.cmdProjection,self.cmdRename)
 		Form.setTabOrder(self.cmdRename,self.cmdAbout)
+		Form.setTabOrder(self.cmdAbout,self.cmdSurvey)
 
 	def retranslateUi(self, Form):
 		Form.setWindowTitle(QtGui.QApplication.translate("Form", "Relational", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox_4.setTitle(QtGui.QApplication.translate("Form", "Menu", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdAbout.setText(QtGui.QApplication.translate("Form", "Docs", None, QtGui.QApplication.UnicodeUTF8))
+		self.cmdSurvey.setText(QtGui.QApplication.translate("Form", "Survey", None, QtGui.QApplication.UnicodeUTF8))
 		self.groupBox.setTitle(QtGui.QApplication.translate("Form", "Operators", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdProduct.setToolTip(QtGui.QApplication.translate("Form", "Product operator", None, QtGui.QApplication.UnicodeUTF8))
 		self.cmdProduct.setText(QtGui.QApplication.translate("Form", "*", None, QtGui.QApplication.UnicodeUTF8))
@@ -387,8 +403,7 @@ class Ui_Form(object):
 		self.lstAttributes.setToolTip(QtGui.QApplication.translate("Form", "Shows the attributes of the current relation", None, QtGui.QApplication.UnicodeUTF8))
 		self.label.setText(QtGui.QApplication.translate("Form", "Query", None, QtGui.QApplication.UnicodeUTF8))
 		self.label_2.setText(QtGui.QApplication.translate("Form", "=", None, QtGui.QApplication.UnicodeUTF8))
-		self.cmdExecute.setText(QtGui.QApplication.translate("Form", "Execute", None, QtGui.QApplication.UnicodeUTF8))
-
+		self.cmdExecute.setText(QtGui.QApplication.translate("Form", "Execute", None, QtGui.QApplication.UnicodeUTF8))    
 
 if __name__ == "__main__":
 	import sys

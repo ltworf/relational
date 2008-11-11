@@ -1,0 +1,388 @@
+<ui version="4.0" >
+ <class>Form</class>
+ <widget class="QWidget" name="Form" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>322</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Survey</string>
+  </property>
+  <property name="locale" >
+   <locale country="UnitedStates" language="English" />
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <layout class="QGridLayout" name="formLayout" >
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="txtSystem" />
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="label" >
+       <property name="locale" >
+        <locale country="UnitedStates" language="English" />
+       </property>
+       <property name="text" >
+        <string>Country</string>
+       </property>
+       <property name="buddy" >
+        <cstring>txtCountry</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="QLineEdit" name="txtCountry" />
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="label_2" >
+       <property name="locale" >
+        <locale country="UnitedStates" language="English" />
+       </property>
+       <property name="text" >
+        <string>School</string>
+       </property>
+       <property name="buddy" >
+        <cstring>txtSchool</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <widget class="QLineEdit" name="txtSchool" />
+     </item>
+     <item row="3" column="0" >
+      <widget class="QLabel" name="label_3" >
+       <property name="locale" >
+        <locale country="UnitedStates" language="English" />
+       </property>
+       <property name="text" >
+        <string>Age</string>
+       </property>
+       <property name="buddy" >
+        <cstring>txtAge</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" >
+      <widget class="QLineEdit" name="txtAge" />
+     </item>
+     <item row="4" column="0" >
+      <widget class="QLabel" name="label_4" >
+       <property name="locale" >
+        <locale country="UnitedStates" language="English" />
+       </property>
+       <property name="text" >
+        <string>How did you find relational</string>
+       </property>
+       <property name="buddy" >
+        <cstring>txtFind</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1" >
+      <widget class="QLineEdit" name="txtFind" />
+     </item>
+     <item row="0" column="0" >
+      <widget class="QLabel" name="label_5" >
+       <property name="locale" >
+        <locale country="UnitedStates" language="English" />
+       </property>
+       <property name="text" >
+        <string>System</string>
+       </property>
+       <property name="buddy" >
+        <cstring>txtSystem</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" >
+      <widget class="QLabel" name="label_6" >
+       <property name="text" >
+        <string>Comments</string>
+       </property>
+       <property name="buddy" >
+        <cstring>txtComments</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1" >
+      <widget class="QTextEdit" name="txtComments" >
+       <property name="tabChangesFocus" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <item>
+      <spacer name="horizontalSpacer" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdCancel" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdClear" >
+       <property name="text" >
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdSend" >
+       <property name="text" >
+        <string>Send</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>txtSystem</tabstop>
+  <tabstop>txtCountry</tabstop>
+  <tabstop>txtSchool</tabstop>
+  <tabstop>txtAge</tabstop>
+  <tabstop>txtFind</tabstop>
+  <tabstop>txtComments</tabstop>
+  <tabstop>cmdSend</tabstop>
+  <tabstop>cmdClear</tabstop>
+  <tabstop>cmdCancel</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cmdCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>228</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>180</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtComments</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>288</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>291</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtFind</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>270</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>284</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtAge</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>269</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>257</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtSchool</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>310</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>317</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtCountry</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>298</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>326</x>
+     <y>47</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtSystem</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>287</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>302</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtSystem</sender>
+   <signal>returnPressed()</signal>
+   <receiver>txtCountry</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>213</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>224</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtCountry</sender>
+   <signal>returnPressed()</signal>
+   <receiver>txtSchool</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>268</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>276</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtSchool</sender>
+   <signal>returnPressed()</signal>
+   <receiver>txtAge</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>355</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>358</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtAge</sender>
+   <signal>returnPressed()</signal>
+   <receiver>txtFind</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>375</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>375</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtFind</sender>
+   <signal>returnPressed()</signal>
+   <receiver>txtComments</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>332</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>335</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdSend</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>send()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>381</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>396</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>send()</slot>
+ </slots>
+</ui>
