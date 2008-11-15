@@ -26,31 +26,44 @@ app:
 	cp mac/PythonApplet.icns mac/__argvemulator_relational.py Relational.app/Contents/Resources/
 
 debian:    
-	mkdir data
 	#Python files
-	mkdir data/usr/
-	mkdir data/usr/share/
-	mkdir data/usr/share/python-support/
-	mkdir data/usr/share/python-support/relational/
+	mkdir -p data/usr/share/python-support/relational/
 
 	cp *py data/usr/share/python-support/relational/
+
+	#man
+	mkdir -p data/usr/share/man/man1
+	cp relational.1 data/usr/share/man/man1
+	gzip --best data/usr/share/man/man1/relational.1
+
 	#doc
-	mkdir data/usr/share/doc/
-	mkdir data/usr/share/doc/relational
-	cp COPYING data/usr/share/doc/relational/copyright
+	mkdir -p data/usr/share/doc/relational
+
+	echo "Copyright (C) 2008  Salvo "LtWorf" Tomaselli" >> data/usr/share/doc/relational/copyright
+	echo "" >> data/usr/share/doc/relational/copyright
+	echo "License:" >> data/usr/share/doc/relational/copyright
+	echo "This program is under the GPLv3 license" >> data/usr/share/doc/relational/copyright
+
 	cp CHANGELOG data/usr/share/doc/relational/changelog
-	gzip data/usr/share/doc/relational/changelog
+	echo "relational ("`./relational.py -v | cut -d. -f1`":"`./relational.py -v`") unstable; urgency=low" >> data/usr/share/doc/relational/changelog.Debian
+	echo "" >> data/usr/share/doc/relational/changelog.Debian
+	echo "  * Automatically generated package, see changelog.gz" >> data/usr/share/doc/relational/changelog.Debian
+	echo "" >> data/usr/share/doc/relational/changelog.Debian
+	echo " -- Make <make@make.org>  Fri, 10 Oct 2008 19:18:35 +0200">> data/usr/share/doc/relational/changelog.Debian
+
+	gzip --best data/usr/share/doc/relational/changelog.Debian
+	gzip --best data/usr/share/doc/relational/changelog
 	cp -r samples data/usr/share/doc/relational/examples
 	rm -rf data/usr/share/doc/relational/examples/.svn
 
 	#start script
-	mkdir data/usr/bin
+	mkdir -p data/usr/bin
 	echo "#!/bin/bash" >> data/usr/bin/relational
 	echo "python /usr/share/python-support/relational/relational.py $@" >> data/usr/bin/relational
 	chmod a+x data/usr/bin/relational
 	
 	#desktop file
-	mkdir data/usr/share/applications/
+	mkdir -p data/usr/share/applications/
 	echo "[Desktop Entry]" >> data/usr/share/applications/relational.desktop
 	echo "Name=Relational">> data/usr/share/applications/relational.desktop
 	echo "Comment=Relational Algebra">> data/usr/share/applications/relational.desktop
@@ -61,19 +74,19 @@ debian:
 	echo "Encoding=UTF-8">> data/usr/share/applications/relational.desktop
 	echo "Categories=Education;">> data/usr/share/applications/relational.desktop
 	
-	mkdir data/DEBIAN
+	mkdir -p data/DEBIAN
 	#package description
 	echo "Package: relational" >> data/DEBIAN/control
 	echo "Version: "`./relational.py -v | cut -d. -f1`":"`./relational.py -v` >> data/DEBIAN/control
 	echo "Architecture: all" >> data/DEBIAN/control
 	echo "Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>" >> data/DEBIAN/control
 	echo "Installed-Size: "`du -bs --apparent-size data/ | cut -f1` >> data/DEBIAN/control
-	echo "Depends: python-qt4 (>= 4.0.1-5)" >> data/DEBIAN/control
+	echo "Depends: python-qt4 (>= 4.0.1-5), python (>= 2.3)" >> data/DEBIAN/control
 	echo "Recommends: libqt4-webkit (>= 4.4.3-1)" >> data/DEBIAN/control
-	echo "Section: developement" >> data/DEBIAN/control
+	echo "Section: devel" >> data/DEBIAN/control
 	echo "Priority: optional" >> data/DEBIAN/control
 	echo "Homepage: http://galileo.dmi.unict.it/wiki/relational/" >> data/DEBIAN/control
-	echo "Description: Relational algebra in python.">> data/DEBIAN/control
+	echo "Description: Python implementation of Relational algebra.">> data/DEBIAN/control
 	echo " This program provides a GUI to execute relational algebra queries.">> data/DEBIAN/control
 	echo " It is meant to be used for educational purposes.">> data/DEBIAN/control
 	su -c "chown -R root:root data/*; dpkg -b data/ relational.deb; rm -rf data/"
