@@ -6,7 +6,7 @@ clean:
 	rm *pyc || echo ok
 	rm -rf Relational.app || echo ok
 	rm -rf relational || echo ok
-	rm relational.tar.gz || echo ok
+	rm relational*.tar.gz || echo ok
 	rm -rf data || echo ok
 	rm -rf *.deb || echo ok
 mac: app
@@ -14,7 +14,7 @@ mac: app
 	mv Relational.app relational
 	mkdir relational/samples || echo Exists
 	cp samples/*tlb relational/samples
-	tar -zcvvf relational.tar.gz relational/
+	tar -zcvvf relational_`./relational.py -v`.tar.gz relational/
 app:
 	mkdir Relational.app/ || echo Exists
 	mkdir Relational.app/Contents || echo Exists
@@ -25,7 +25,7 @@ app:
 	cp mac/relational mac/Python Relational.app/Contents/MacOS
 	cp mac/PythonApplet.icns mac/__argvemulator_relational.py Relational.app/Contents/Resources/
 
-deb:    
+debian:    
 	mkdir data
 	#Python files
 	mkdir data/usr/
@@ -76,6 +76,8 @@ deb:
 	echo "Description: Relational algebra in python.">> data/DEBIAN/control
 	echo " This program provides a GUI to execute relational algebra queries.">> data/DEBIAN/control
 	echo " It is meant to be used for educational purposes.">> data/DEBIAN/control
-
-	dpkg -b data/ relational_`./relational.py -v`.deb
-	rm -rf data/
+	su -c "chown -R root:root data/*; dpkg -b data/ relational.deb; rm -rf data/"
+	cp relational.deb relational_`./relational.py -v`.deb
+	rm -f relational.deb
+	
+	
