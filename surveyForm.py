@@ -22,35 +22,38 @@ import urllib
 
 
 class surveyForm (QtGui.QWidget):
-  '''This class is the form used for the survey, needed to intercept the events'''
-  def setUi(self,ui):
-    self.ui=ui
-  def send(self):
-    #Creates the string
-    post="Relational algebra\n"
-    post+="system:" + str(self.ui.txtSystem.text().toUtf8())+ "\n"
-    post+="country:" + str(self.ui.txtCountry.text().toUtf8())+ "\n"
-    post+="school:" + str(self.ui.txtSchool.text().toUtf8())+ "\n"
-    post+="age:" + str(self.ui.txtAge.text().toUtf8())+ "\n"
-    post+="find:" + str(self.ui.txtFind.text().toUtf8())+ "\n"
-    post+="comments:" + str(self.ui.txtComments.toPlainText().toUtf8())
+    '''This class is the form used for the survey, needed to intercept the events.
+    It also sends the data with http POST to a page hosted on galileo'''
+    def setUi(self,ui):
+        self.ui=ui
+    def send(self):
+        '''Sends the data inserted in the form'''
+        #Creates the string
+        post="Relational algebra\n"
+        post+="system:" + str(self.ui.txtSystem.text().toUtf8())+ "\n"
+        post+="country:" + str(self.ui.txtCountry.text().toUtf8())+ "\n"
+        post+="school:" + str(self.ui.txtSchool.text().toUtf8())+ "\n"
+        post+="age:" + str(self.ui.txtAge.text().toUtf8())+ "\n"
+        post+="find:" + str(self.ui.txtFind.text().toUtf8())+ "\n"
+        post+="comments:" + str(self.ui.txtComments.toPlainText().toUtf8())
     
-    self.ui.txtSystem.clear()
-    self.ui.txtCountry.clear()
-    self.ui.txtSchool.clear()
-    self.ui.txtAge.clear()
-    self.ui.txtFind.clear()
-    self.ui.txtComments.clear()
+        #Clears the form
+        self.ui.txtSystem.clear()
+        self.ui.txtCountry.clear()
+        self.ui.txtSchool.clear()
+        self.ui.txtAge.clear()
+        self.ui.txtFind.clear()
+        self.ui.txtComments.clear()
     
-    #sends the string
-    params = urllib.urlencode({'survey':post})
-    headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    connection = httplib.HTTPConnection('galileo.dmi.unict.it')
-    connection.request("POST","/~ltworf/survey.php",params,headers)
-    response=connection.getresponse()
-    if response.status!=200:
-      QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Unable to send the data!")  )
-    else:
-      QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Thanks"),QtGui.QApplication.translate("Form", "Thanks for sending!")  )
+        #sends the string
+        params = urllib.urlencode({'survey':post})
+        headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
+        connection = httplib.HTTPConnection('galileo.dmi.unict.it')
+        connection.request("POST","/~ltworf/survey.php",params,headers)
+        response=connection.getresponse()
+        if response.status!=200:
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Unable to send the data!")  )
+        else:
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Thanks"),QtGui.QApplication.translate("Form", "Thanks for sending!")  )
       
-    self.hide()
+        self.hide()

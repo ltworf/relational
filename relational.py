@@ -27,11 +27,14 @@ import maingui
 version="0.7"
 
 if __name__ == "__main__":
-	app = QtGui.QApplication(sys.argv)
-	Form = QtGui.QWidget()
-	
-	ui = maingui.Ui_Form()
-	ui.setupUi(Form)
-	Form.show()
-	
-	sys.exit(app.exec_())
+    if len (sys.argv) > 1 and sys.argv[1] == "-v":
+        print version
+        sys.exit(0)
+    app = QtGui.QApplication(sys.argv)
+    Form = QtGui.QWidget()
+    
+    ui = maingui.Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    
+    sys.exit(app.exec_())
