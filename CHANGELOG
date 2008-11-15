@@ -44,3 +44,4 @@
 - Can save relations from gui
 - Outer join methods simplified
 - Form to send a survey
+- Makefile to create .deb package
