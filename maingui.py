@@ -98,7 +98,7 @@ class Ui_Form(object):
         filename+=".csv"
       
       for i in self.lstRelations.selectedItems():
-            self.relations[str(i.text().toUtf8())].save(filename,use_csv)
+            self.relations[str(i.text().toUtf8())].save(filename)
       return
     def unloadRelation(self):
         for i in self.lstRelations.selectedItems():

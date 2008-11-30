@@ -20,10 +20,10 @@
 
 from PyQt4 import QtCore, QtGui
 try: #If QtWebKit is available, uses it
-	from PyQt4 import QtWebKit
-	webk=True
+    from PyQt4 import QtWebKit
+    webk=True
 except:
-	webk=False
+    webk=False
 import relational
 
 class Ui_Dialog(object):
@@ -84,16 +84,18 @@ class Ui_Dialog(object):
         self.verticalLayout_7 = QtGui.QVBoxLayout(self.tab_2)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         if (webk):
-		self.webView = QtWebKit.QWebView(self.tab_2)
-        	self.webView.setUrl(QtCore.QUrl("http://galileo.dmi.unict.it/wiki/relational/doku.php"))
-        	self.webView.setObjectName("webView")
-		self.verticalLayout_7.addWidget(self.webView)
-	else:
-		self.webError = QtGui.QLabel(self.groupBox)
-		self.webError.setFont(font)
-        	self.webError.setObjectName("lblError")
-        	self.verticalLayout_7.addWidget(self.webError)
-		self.webError.setText(QtGui.QApplication.translate("Dialog", "Error! Unable to import QtWebKit module.", None, QtGui.QApplication.UnicodeUTF8))
+            self.webView = QtWebKit.QWebView(self.tab_2)
+            self.webView.setUrl(QtCore.QUrl("http://galileo.dmi.unict.it/wiki/relational/doku.php"))
+            self.webView.setObjectName("webView")
+            self.verticalLayout_7.addWidget(self.webView)
+        else:
+            self.webError = QtGui.QLabel(self.groupBox)
+            self.webError.setFont(font)
+            self.webError.setObjectName("lblError")
+            self.verticalLayout_7.addWidget(self.webError)
+            self.webError.setText(QtGui.QApplication.translate("Dialog", "Error! Unable to import QtWebKit module.", None, 
+        
+        QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.addTab(self.tab_2,"")
         self.verticalLayout_2.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(Dialog)
@@ -106,7 +108,7 @@ class Ui_Dialog(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.buttonBox,QtCore.SIGNAL("accepted()"),Dialog.accept)
         QtCore.QObject.connect(self.buttonBox,QtCore.SIGNAL("rejected()"),Dialog.reject)
-	#QtCore.QObject.connect(self.label_4,QtCore.SIGNAL("linkActivated()"),self.openSite)
+    #QtCore.QObject.connect(self.label_4,QtCore.SIGNAL("linkActivated()"),self.openSite)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
     def openSite(self):
       print "ciao"
@@ -115,14 +117,13 @@ class Ui_Dialog(object):
         self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+relational.version, None, QtGui.QApplication.UnicodeUTF8))
-	self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>", None, QtGui.QApplication.UnicodeUTF8))
-	self.label_2.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
+        self.label_2.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Links", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("Dialog", "http://galileo.dmi.unict.it/wiki/relational/", None, QtGui.QApplication.UnicodeUTF8))
-	self.label_4.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
-	
+        self.label_4.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("Dialog", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.textEdit.setHtml(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><title>GNU General Public License - GNU Project - Free Software Foundation (FSF)</title><style type=\"text/css\">\n"
