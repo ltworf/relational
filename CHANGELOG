@@ -48,3 +48,5 @@
 
 0.8
 - Added __eq__ to relation object, will compare ignoring order.
+- New default relation's format is csv, as defined in RFC4180
+- Converted sample's relations to csv

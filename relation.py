@@ -17,42 +17,74 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 from rtypes import *
+import csv
 
 class relation (object):
     '''This objects defines a relation (as a group of consistent tuples) and operations
     A relation can be represented using a table
     Calling an operation and providing a non relation parameter when it is expected will
     result in a None value'''    
-    def __init__(self,filename=""):
+    def __init__(self,filename="",comma_separated=True):
         '''Creates a relation, accepts a filename and then it will load the relation from
         that file. If no parameter is supplied an empty relation is created. Empty
-        relations are used in internal operations'''
+        relations are used in internal operations.
+        By default the file will be handled like a comma separated as described in
+        RFC4180, but it can also be handled like a space separated file (previous
+        default format) setting to false the 2nd parameter.
+        The old format is deprecated since it doesn't permit fields
+        with spaces, you should avoid using it.'''
         if len(filename)==0:#Empty relation
             self.content=[]
             self.header=header([])
             return
+        #Opening file
         fp=file(filename)
-        self.header=header(fp.readline().replace("\n","").strip().split(" "))
+        if comma_separated:
+            reader=csv.reader(fp) #Creating a csv reader
+            self.header=header(reader.next()) # read 1st line
+            self.content=[]
+            for i in reader.__iter__(): #Iterating rows
+                self.content.append(i)
+        else: #Old format
+            self.header=header(fp.readline().replace("\n","").strip().split(" "))
         
-        self.content=[]
-        row=fp.readline()
-        while len(row)!=0:#Reads the content of the relation
-            self.content.append(row.replace("\n","").strip().split(" "))
+            self.content=[]
             row=fp.readline()
+            while len(row)!=0:#Reads the content of the relation
+                self.content.append(row.replace("\n","").strip().split(" "))
+                row=fp.readline()
+        
+        #Closing file
         fp.close()
         
     
-    def save(self,filename):
-        '''Saves the relation in a file'''
-        res=""
-        res+=" ".join(self.header.attributes)
+    def save(self,filename,comma_separated=True):
+        '''Saves the relation in a file. By default will save using the csv
+        format as defined in RFC4180, but setting comma_separated to False,
+        it will use the old format with space separated values.
+        The old format is deprecated since it doesn't permit fields
+        with spaces, you should avoid using it.'''
         
-        for r in self.content:
-            res+="\n"
-            res+=" ".join(r)
-        fp=file(filename,'w')
-        fp.write(res)
-        fp.close()
+        fp=file(filename,'w') #Opening file in write mode
+        if comma_separated:
+            writer=csv.writer(fp) #Creating csv writer
+            
+            #It wants an iterable containing iterables
+            head=[]
+            head.append(self.header.attributes)
+            writer.writerows(head)
+            
+            #Writing content, already in the correct format
+            writer.writerows(self.content)
+        else:
+            res=""
+            res+=" ".join(self.header.attributes)
+            
+            for r in self.content:
+                res+="\n"
+                res+=" ".join(r)
+            fp.write(res)
+        fp.close() #Closing file
     def rearrange(self,other):
         '''If two relations share the same attributes in a different order, this method
         will use projection to make them have the same attributes' order.
