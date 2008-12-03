@@ -125,7 +125,8 @@ class Ui_Form(object):
         #Default relation's name
         f=str(filename.toUtf8()).split(os.sep) #Split the full path
         defname=f[len(f)-1].lower() #Takes only the lowercase filename
-        
+        if len(defname)==0:
+            return
         use_csv=True
         
         if defname.endswith(".tlb"):
