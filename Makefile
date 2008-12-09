@@ -99,12 +99,9 @@ debian:
 	printf "    py_compile.compile(\"/usr/share/python-support/relational/\"+i)\n" >> data/DEBIAN/postinst
 
 	#Postrm file to remove optimized generated python files
-	echo "#!/bin/sh" > data/DEBIAN/postrm
-	echo "set -e" >> data/DEBIAN/postrm
-	echo "rm -rf /usr/share/python-support/relational/" >> data/DEBIAN/postrm
-	echo "exit 0" >> data/DEBIAN/postrm
+	cp debscript/prerm data/DEBIAN/prerm
 
-	chmod 0755 data/DEBIAN/postrm data/DEBIAN/postinst
+	chmod 0755 data/DEBIAN/prerm data/DEBIAN/postinst
 	
 	su -c "chown -R root:root data/*; dpkg -b data/ relational.deb; rm -rf data/"
 	cp relational.deb relational_`./relational.py -v`+SVN`svn update | cut -d" " -f3 | tr -d "."`.deb
