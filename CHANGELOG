@@ -50,4 +50,4 @@
 - Added __eq__ to relation object, will compare ignoring order.
 - New default relation's format is csv, as defined in RFC4180
 - Converted sample's relations to csv
-- Deb postinstall generates optimized files
+- Deb postinstall generates optimized files, this will increase loading speed
