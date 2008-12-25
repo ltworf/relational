@@ -417,6 +417,27 @@ class relation (object):
                 col+=1
             
         return res
+
+    def delete(self,expr):
+        '''Delete, expr must be a valid boolean expression, can contain field names,
+        constant, math operations and boolean ones.
+        This operation will change the relation itself instead of generating a new one,
+        deleting all the touples that make expr true.'''
+        attributes={}
+        new_content=[] #New content of the relation
+        for i in self.content:
+            for j in range(len(self.header.attributes)):
+                if i[j].isdigit():
+                    attributes[self.header.attributes[j]]=int(i[j])
+                elif rstring(i[j]).isFloat():
+                    attributes[self.header.attributes[j]]=float(i[j])
+                elif isDate(i[j]):
+                    attributes[self.header.attributes[j]]=rdate(i[j])
+                else:
+                    attributes[self.header.attributes[j]]=i[j]
+            if not eval(expr,attributes):
+                new_content.append(i)
+        self.content=new_content
     
 class header (object):
     '''This class defines the header of a relation.
