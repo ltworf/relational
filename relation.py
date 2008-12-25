@@ -424,7 +424,9 @@ class relation (object):
         This operation will change the relation itself instead of generating a new one,
         updating all the touples that make expr true.
         Dic must be a dictionary that has the form field name:value. Every kind of value
-        will be converted into a string'''
+        will be converted into a string.
+        Returns the number of affected rows.'''
+        affected=0
         attributes={}
         keys=dic.keys() #List of headers to modify
         f_ids=self.header.getAttributesId(keys) #List of indexes corresponding to keys
@@ -442,15 +444,18 @@ class relation (object):
                 else:
                     attributes[self.header.attributes[j]]=i[j]
             if eval(expr,attributes): #If expr is true, changing the touple
+                affected+=1
                 for k in range(len(keys)):
                     i[f_ids[k]]=str(dic[keys[k]])
-
+        return affected
     def delete(self,expr):
         '''Delete, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.
         This operation will change the relation itself instead of generating a new one,
-        deleting all the touples that make expr true.'''
+        deleting all the touples that make expr true.
+        Returns the number of affected rows.'''
         attributes={}
+        affected=len(self.content)
         new_content=[] #New content of the relation
         for i in self.content:
             for j in range(len(self.header.attributes)):
@@ -463,8 +468,10 @@ class relation (object):
                 else:
                     attributes[self.header.attributes[j]]=i[j]
             if not eval(expr,attributes):
+                affected-=1
                 new_content.append(i)
         self.content=new_content
+        return affected
     
 class header (object):
     '''This class defines the header of a relation.
