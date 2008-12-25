@@ -418,6 +418,33 @@ class relation (object):
             
         return res
 
+    def update(self,expr,dic):
+        '''Update, expr must be a valid boolean expression, can contain field names,
+        constant, math operations and boolean ones.
+        This operation will change the relation itself instead of generating a new one,
+        updating all the touples that make expr true.
+        Dic must be a dictionary that has the form field name:value. Every kind of value
+        will be converted into a string'''
+        attributes={}
+        keys=dic.keys() #List of headers to modify
+        f_ids=self.header.getAttributesId(keys) #List of indexes corresponding to keys
+        
+        #new_content=[] #New content of the relation
+        for i in self.content:
+            for j in range(len(self.header.attributes)):
+                #Giving to the field it's right format (hopefully)
+                if i[j].isdigit():
+                    attributes[self.header.attributes[j]]=int(i[j])
+                elif rstring(i[j]).isFloat():
+                    attributes[self.header.attributes[j]]=float(i[j])
+                elif isDate(i[j]):
+                    attributes[self.header.attributes[j]]=rdate(i[j])
+                else:
+                    attributes[self.header.attributes[j]]=i[j]
+            if eval(expr,attributes): #If expr is true, changing the touple
+                for k in range(len(keys)):
+                    i[f_ids[k]]=str(dic[keys[k]])
+
     def delete(self,expr):
         '''Delete, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.
