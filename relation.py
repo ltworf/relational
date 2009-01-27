@@ -448,6 +448,32 @@ class relation (object):
                 for k in range(len(keys)):
                     i[f_ids[k]]=str(dic[keys[k]])
         return affected
+    def insert(self,values):
+        '''Inserts the values in the relation. If values[0] is not a list | tuple,
+        values will be inserted as a tuple. Otherwise values will be considered as a
+        table containing many tuples that will be inserted.
+        This function will not insert duplicate tuples.
+        All the values will be converted in string.
+        Will return the number of inserted rows.'''
+        affected=0
+        l=len(self.header.attributes)
+        if str(values[0].__class__) == "<type 'tuple'>" or str(values[0].__class__) == "<type 'list'>":
+            for i in values:
+                if l==len(i) and i not in self.content:
+                    affected+=1
+                    t=[]
+                    for q in i:
+                        t.append(str(i))
+                    self.content.append(t)
+        else:
+            if len(values)== l and values not in self.content:
+                t=[]
+                for q in values:
+                    t.append(str(q))
+                self.content.append(t)
+                return 1
+        return affected
+    
     def delete(self,expr):
         '''Delete, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.
