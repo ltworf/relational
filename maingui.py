@@ -163,7 +163,18 @@ class Ui_Form(object):
             
         return
     def deleteTuple(self):
-        pass
+        '''Shows an input dialog and removes the tuples corresponding to the condition.'''
+        res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Remove tuples: insert where condition"),
+        QtGui.QLineEdit.Normal,"")
+        if res[1]==False:
+            return
+        
+        for i in self.lstRelations.selectedItems():
+            rel=self.relations[str(i.text().toUtf8())]
+            if rel.delete(str(res[0].toUtf8())) > 0:
+                self.showRelation(rel)
+            
+        return
     def addProduct(self):
         self.txtQuery.insert(u"*")
         self.txtQuery.setFocus()
