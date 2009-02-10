@@ -144,7 +144,10 @@ class Ui_Form(object):
         
         self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
         self.updateRelations()
-    
+    def insertTuple(self):
+        pass
+    def deleteTuple(self):
+        pass
     def addProduct(self):
         self.txtQuery.insert(u"*")
         self.txtQuery.setFocus()
@@ -263,12 +266,36 @@ class Ui_Form(object):
         spacerItem = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
         self.horizontalLayout_4.addLayout(self.verticalLayout_4)
+        
+        
+        self.centerLayout = QtGui.QVBoxLayout()
+        self.centerLayout.setObjectName("centerLayout")
+        
+        
         self.table = QtGui.QTreeWidget(Form) #QtGui.QTableView(Form)
         self.table.setAlternatingRowColors(True)
         self.table.setRootIsDecorated(False)
         self.table.setObjectName("table")
         self.showRelation(None)
-        self.horizontalLayout_4.addWidget(self.table)
+        self.centerLayout.addWidget(self.table)
+        
+        
+        
+        self.cmdInsert = QtGui.QPushButton(self.groupBox)
+        self.cmdInsert.setMaximumSize(QtCore.QSize(16777215,16777215))
+        self.cmdInsert.setObjectName("cmdInsert")
+        self.cmdDelete = QtGui.QPushButton(self.groupBox)
+        self.cmdDelete.setMaximumSize(QtCore.QSize(16777215,16777215))
+        self.cmdDelete.setObjectName("cmdDelete")
+        self.bottomButtonsLayout = QtGui.QHBoxLayout()
+        self.bottomButtonsLayout.setObjectName("bottomButtonsLayout")
+        self.bottomButtonsLayout.addWidget(self.cmdInsert)
+        self.bottomButtonsLayout.addWidget(self.cmdDelete)
+        
+        self.centerLayout.addLayout(self.bottomButtonsLayout)
+        self.horizontalLayout_4.addLayout(self.centerLayout)
+        
+        
         self.verticalLayout_3 = QtGui.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.groupBox_2 = QtGui.QGroupBox(Form)
@@ -348,6 +375,8 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),self.loadRelation)
         QtCore.QObject.connect(self.cmdSave,QtCore.SIGNAL("clicked()"),self.saveRelation)
         QtCore.QObject.connect(self.cmdUnload,QtCore.SIGNAL("clicked()"),self.unloadRelation)
+        QtCore.QObject.connect(self.cmdInsert,QtCore.SIGNAL("clicked()"),self.insertTuple)
+        QtCore.QObject.connect(self.cmdDelete,QtCore.SIGNAL("clicked()"),self.deleteTuple)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),self.printRelation)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemActivated(QListWidgetItem*)"),self.showAttributes)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -407,6 +436,8 @@ class Ui_Form(object):
         self.cmdSave.setText(QtGui.QApplication.translate("Form", "Save relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUnload.setToolTip(QtGui.QApplication.translate("Form", "Unloads a relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUnload.setText(QtGui.QApplication.translate("Form", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdInsert.setText(QtGui.QApplication.translate("Form", "Insert", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdDelete.setText(QtGui.QApplication.translate("Form", "Delete", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Form", "Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.lstAttributes.setToolTip(QtGui.QApplication.translate("Form", "Shows the attributes of the current relation", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Form", "Query", None, QtGui.QApplication.UnicodeUTF8))
