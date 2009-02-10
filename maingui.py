@@ -145,7 +145,23 @@ class Ui_Form(object):
         self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
         self.updateRelations()
     def insertTuple(self):
-        pass
+        '''Shows an input dialog and inserts the inserted tuple into the selected relation'''
+        res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the values, comma separated"),
+        QtGui.QLineEdit.Normal,"")
+        if res[1]==False:
+            return
+        
+        t=[]
+        for i in str(res[0].toUtf8()).split(","):
+            t.append(i.strip())
+        
+        
+        for i in self.lstRelations.selectedItems():
+            rel=self.relations[str(i.text().toUtf8())]
+            if rel.insert(t) > 0:
+                self.showRelation(rel)
+            
+        return
     def deleteTuple(self):
         pass
     def addProduct(self):
@@ -278,8 +294,6 @@ class Ui_Form(object):
         self.table.setObjectName("table")
         self.showRelation(None)
         self.centerLayout.addWidget(self.table)
-        
-        
         
         self.cmdInsert = QtGui.QPushButton(self.groupBox)
         self.cmdInsert.setMaximumSize(QtCore.QSize(16777215,16777215))
