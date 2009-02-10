@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 # 
@@ -449,30 +450,25 @@ class relation (object):
                     i[f_ids[k]]=str(dic[keys[k]])
         return affected
     def insert(self,values):
-        '''Inserts the values in the relation. If values[0] is not a list | tuple,
-        values will be inserted as a tuple. Otherwise values will be considered as a
-        table containing many tuples that will be inserted.
+        '''Inserts a touple in the relation.
         This function will not insert duplicate tuples.
         All the values will be converted in string.
         Will return the number of inserted rows.'''
-        affected=0
-        l=len(self.header.attributes)
-        if str(values[0].__class__) == "<type 'tuple'>" or str(values[0].__class__) == "<type 'list'>":
-            for i in values:
-                if l==len(i) and i not in self.content:
-                    affected+=1
-                    t=[]
-                    for q in i:
-                        t.append(str(i))
-                    self.content.append(t)
+        
+        #Returns if touple doesn't fit the number of attributes
+        if len(self.header.attributes) != len(values):
+            return 0
+            
+        #Creating list containing only strings
+        t=[]
+        for i in values:
+            t.append(str(i))
+        
+        if t not in self.content:
+            self.content.append(t)
+            return 1
         else:
-            if len(values)== l and values not in self.content:
-                t=[]
-                for q in values:
-                    t.append(str(q))
-                self.content.append(t)
-                return 1
-        return affected
+            return 0
     
     def delete(self,expr):
         '''Delete, expr must be a valid boolean expression, can contain field names,
