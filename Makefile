@@ -81,7 +81,7 @@ debian:
 	echo "Architecture: all" >> data/DEBIAN/control
 	echo "Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>" >> data/DEBIAN/control
 	echo "Installed-Size: "`du -s --apparent-size data/ | cut -f1` >> data/DEBIAN/control
-	echo "Depends: python-qt4 (>= 4.0.1-5), python (>= 2.3)" >> data/DEBIAN/control
+	echo "Depends: python-qt4 (>= 4.0.1-5), python (>= 2.3), ttf-dejavu-core (>= 2.25-3)" >> data/DEBIAN/control
 	echo "Recommends: libqt4-webkit (>= 4.4.3-1)" >> data/DEBIAN/control
 	echo "Section: devel" >> data/DEBIAN/control
 	echo "Priority: optional" >> data/DEBIAN/control
