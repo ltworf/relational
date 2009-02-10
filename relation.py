@@ -423,7 +423,7 @@ class relation (object):
         '''Update, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.
         This operation will change the relation itself instead of generating a new one,
-        updating all the touples that make expr true.
+        updating all the tuples that make expr true.
         Dic must be a dictionary that has the form field name:value. Every kind of value
         will be converted into a string.
         Returns the number of affected rows.'''
@@ -444,18 +444,18 @@ class relation (object):
                     attributes[self.header.attributes[j]]=rdate(i[j])
                 else:
                     attributes[self.header.attributes[j]]=i[j]
-            if eval(expr,attributes): #If expr is true, changing the touple
+            if eval(expr,attributes): #If expr is true, changing the tuple
                 affected+=1
                 for k in range(len(keys)):
                     i[f_ids[k]]=str(dic[keys[k]])
         return affected
     def insert(self,values):
-        '''Inserts a touple in the relation.
+        '''Inserts a tuple in the relation.
         This function will not insert duplicate tuples.
         All the values will be converted in string.
         Will return the number of inserted rows.'''
         
-        #Returns if touple doesn't fit the number of attributes
+        #Returns if tuple doesn't fit the number of attributes
         if len(self.header.attributes) != len(values):
             return 0
             
@@ -474,7 +474,7 @@ class relation (object):
         '''Delete, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.
         This operation will change the relation itself instead of generating a new one,
-        deleting all the touples that make expr true.
+        deleting all the tuples that make expr true.
         Returns the number of affected rows.'''
         attributes={}
         affected=len(self.content)
