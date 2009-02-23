@@ -53,3 +53,6 @@
 - Deb postinstall generates optimized files, this will increase loading speed
 - Relation module has SQL-like delete
 - Relation module has SQL-like update
+- Relation module has SQL-like insert
+- GUI can be used to insert and delete tuples
+- Showing fields of selected relation will work with themes different than oxygen

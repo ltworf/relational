@@ -405,7 +405,7 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),self.printRelation)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"),self.showAttributes)
         QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.    txtResult,self.txtQuery)
+        Form.setTabOrder(self.txtResult,self.txtQuery)
         Form.setTabOrder(self.txtQuery,self.cmdExecute)
         Form.setTabOrder(self.cmdExecute,self.lstRelations)
         Form.setTabOrder(self.lstRelations,self.cmdLoad)
