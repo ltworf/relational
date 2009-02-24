@@ -24,7 +24,7 @@ import parser
 import relation
 import maingui
 
-version="0.8"
+version="0.9"
 
 if __name__ == "__main__":
     if len (sys.argv) > 1 and sys.argv[1] == "-v":
