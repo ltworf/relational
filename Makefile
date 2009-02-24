@@ -6,7 +6,8 @@ source: clean
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
 	rm -rf /tmp/relational/samples/.svn/ /tmp/relational/debscript/.svn/ /tmp/relational/mac/.svn/
-	tar -jcvvf relational_`./relational.py -v`.tar.bz /tmp/relational
+	echo "cd /tmp ; tar -jcvvf relational.tar.bz relational/" | bash
+	mv /tmp/relational.tar.bz ./relational_`./relational.py -v`.tar.bz
 
 clean:
 	rm -rf *~ || echo ok
@@ -21,7 +22,7 @@ mac: app
 	mkdir relational || echo Exists
 	mv Relational.app relational
 	mkdir relational/samples || echo Exists
-	cp samples/*tlb relational/samples
+	cp samples/*csv relational/samples
 	tar -zcvvf relational_`./relational.py -v`.tar.gz relational/
 app:
 	mkdir Relational.app/ || echo Exists
