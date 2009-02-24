@@ -1,13 +1,21 @@
 default:
 	echo "sorry, no default action"
 
+source: clean
+	rm -rf /tmp/relational/
+	mkdir /tmp/relational/
+	cp -R * /tmp/relational/
+	rm -rf /tmp/relational/samples/.svn/ /tmp/relational/debscript/.svn/ /tmp/relational/mac/.svn/
+	tar -jcvvf relational_`./relational.py -v`.tar.bz /tmp/relational
+
 clean:
-	rm *~ || echo ok
-	rm *pyc || echo ok
+	rm -rf *~ || echo ok
+	rm -rf *.pyc *.pyo || echo ok
 	rm -rf Relational.app || echo ok
 	rm -rf relational || echo ok
 	rm relational*.tar.gz || echo ok
 	rm -rf data || echo ok
+	rm -rf *tar.bz || echo ok
 	rm -rf *.deb || echo ok
 mac: app
 	mkdir relational || echo Exists
