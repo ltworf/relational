@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # coding=UTF-8
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
@@ -20,9 +21,8 @@
 
 import sys
 from PyQt4 import QtCore, QtGui
-import parser
-import relation
-import maingui
+from relational_gui import maingui
+from relational import relation, parser
 
 version="0.9"
 

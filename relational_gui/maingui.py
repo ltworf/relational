@@ -18,8 +18,6 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 from PyQt4 import QtCore, QtGui
 
-import relation
-import parser
 import sys
 import about
 import survey
