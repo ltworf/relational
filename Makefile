@@ -67,48 +67,19 @@ debian:
 
 	#start script
 	mkdir -p data/usr/bin
-	echo "#!/bin/bash" >> data/usr/bin/relational
-	echo "python /usr/share/python-support/relational/relational.py $@" >> data/usr/bin/relational
+	cp debscript/relational data/usr/bin/relational
 	chmod a+x data/usr/bin/relational
 	
 	#desktop file
 	mkdir -p data/usr/share/applications/
-	echo "[Desktop Entry]" >> data/usr/share/applications/relational.desktop
-	echo "Name=Relational">> data/usr/share/applications/relational.desktop
-	echo "Comment=Relational Algebra">> data/usr/share/applications/relational.desktop
-	echo "Exec=relational">> data/usr/share/applications/relational.desktop
-	echo "Icon=kexi">> data/usr/share/applications/relational.desktop
-	echo "Terminal=0">> data/usr/share/applications/relational.desktop
-	echo "Type=Application">> data/usr/share/applications/relational.desktop
-	echo "Encoding=UTF-8">> data/usr/share/applications/relational.desktop
-	echo "Categories=Education;">> data/usr/share/applications/relational.desktop
+	cp debscript/relational.desktop data/usr/share/applications/
 	
 	mkdir -p data/DEBIAN
 	#package description
-	echo "Package: relational" >> data/DEBIAN/control
-	echo "Version: "`./relational.py -v | cut -d. -f1`":"`./relational.py -v`+SVN`svn update | cut -d" " -f3 | tr -d "."`>> data/DEBIAN/control
-	echo "Architecture: all" >> data/DEBIAN/control
-	echo "Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>" >> data/DEBIAN/control
-	echo "Installed-Size: "`du -s --apparent-size data/ | cut -f1` >> data/DEBIAN/control
-	echo "Depends: python-qt4 (>= 4.0.1-5), python (>= 2.3), ttf-dejavu-core (>= 2.25-3)" >> data/DEBIAN/control
-	echo "Recommends: libqt4-webkit (>= 4.4.3-1)" >> data/DEBIAN/control
-	echo "Section: devel" >> data/DEBIAN/control
-	echo "Priority: optional" >> data/DEBIAN/control
-	echo "Homepage: http://galileo.dmi.unict.it/wiki/relational/" >> data/DEBIAN/control
-	echo "Description: Python implementation of Relational algebra.">> data/DEBIAN/control
-	echo " This program provides a GUI to execute relational algebra queries.">> data/DEBIAN/control
-	echo " It is meant to be used for educational purposes.">> data/DEBIAN/control
-
-	#Postinst to generate optimized files
-	echo "#!/usr/bin/python" > data/DEBIAN/postinst
-	echo "import py_compile" >> data/DEBIAN/postinst
-	echo "import os" >> data/DEBIAN/postinst
-	printf "for i in os.listdir(\"/usr/share/python-support/relational/\"):\n" >> data/DEBIAN/postinst
-	printf "  if i.endswith(\".py\"):\n" >> data/DEBIAN/postinst
-	printf "    py_compile.compile(\"/usr/share/python-support/relational/\"+i)\n" >> data/DEBIAN/postinst
+	debscript/gencontrol.sh data/DEBIAN/control
 
 	#Postrm file to remove optimized generated python files
-	cp debscript/prerm data/DEBIAN/prerm
+	#cp debscript/prerm data/DEBIAN/prerm
 
 	chmod 0755 data/DEBIAN/prerm data/DEBIAN/postinst
 	
