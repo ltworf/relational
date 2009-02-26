@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+case $1 in
+	remove)
+		rm -rf /usr/share/python-support/relational/;;
+esac
+
+exit 0
+
