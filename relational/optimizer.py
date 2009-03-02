@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # coding=UTF-8
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
@@ -17,7 +18,8 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-'''This module optimizes relational expressions into ones that require less time to be executed'''
+'''This module optimizes relational expressions into ones that require less time to be executed
+For now it is highly experimental, and it shouldn't be used in 3rd party applications.'''
 
 RELATION=0
 UNARY=1
