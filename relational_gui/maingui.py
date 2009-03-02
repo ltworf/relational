@@ -17,6 +17,7 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 from PyQt4 import QtCore, QtGui
+from relational import relation, parser
 
 import sys
 import about

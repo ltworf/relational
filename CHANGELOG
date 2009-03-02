@@ -58,3 +58,4 @@
 - Showing fields of selected relation will work with themes different than oxygen
 
 0.9
+- Splitted into independent packages (gui and library)

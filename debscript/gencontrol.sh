@@ -1,6 +1,6 @@
 #!/bin/bash
 	echo "Package: relational"
-	echo "Version: "`./relational.py -v | cut -d. -f1`":"`./relational.py -v`+SVN`svn update | cut -d" " -f3 | tr -d "."`
+	echo "Version: "`./relational_gui.py -v | cut -d. -f1`":"`./relational_gui.py -v`+SVN`svn update | cut -d" " -f3 | tr -d "."`
 	echo "Architecture: all"
 	echo "Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>"
 	echo "Installed-Size: "`du -s --apparent-size data/ | cut -f1`

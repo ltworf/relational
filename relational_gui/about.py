@@ -24,7 +24,8 @@ try: #If QtWebKit is available, uses it
     webk=True
 except:
     webk=False
-import relational
+
+version=0
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -116,7 +117,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Documentation", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+relational.version, None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+version, None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>", None, QtGui.QApplication.UnicodeUTF8))

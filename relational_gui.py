@@ -21,10 +21,11 @@
 
 import sys
 from PyQt4 import QtCore, QtGui
-from relational_gui import maingui
+from relational_gui import maingui, about
 from relational import relation, parser
 
 version="0.9"
+about.version=version
 
 if __name__ == "__main__":
     if len (sys.argv) > 1 and sys.argv[1] == "-v":
