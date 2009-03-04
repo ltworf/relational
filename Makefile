@@ -88,7 +88,7 @@ debian:
 	mkdir -p data/DEBIAN
 	#package description
 	debscript/gencontrol.sh > data/DEBIAN/control
-	cp debscript/rules data/DEBIAN
+	#cp debscript/rules data/DEBIAN
 	#Postrm file to remove optimized generated python files
 	cp debscript/prerm data/DEBIAN/prerm
 	cp debscript/postinst data/DEBIAN/postinst
