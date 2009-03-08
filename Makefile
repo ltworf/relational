@@ -38,18 +38,16 @@ mac: app
 	tar -zcvvf relational_`./relational_gui.py -v`.tar.gz relational_mac/
 	rm -rf relational_mac
 app:
-	mkdir Relational.app/ || echo Exists
-	mkdir Relational.app/Contents || echo Exists
-	mkdir Relational.app/Contents/Resources || echo Exists
+	mkdir -p Relational.app/Contents/Resources || echo Exists
 	cp *py Relational.app/Contents/Resources
-	mkdir Relational.app/Contents/Resources/relational
+	mkdir -p Relational.app/Contents/Resources/relational || echo Exists
 	cp  relational/*py Relational.app/Contents/Resources/relational
-	mkdir Relational.app/Contents/Resources/relational_gui
+	mkdir -p Relational.app/Contents/Resources/relational_gui || echo Exists
 	cp relational_gui/*py Relational.app/Contents/Resources/relational_gui
 	cp mac/Info.plist mac/PkgInfo Relational.app/Contents
-	mkdir Relational.app/Contents/MacOS || echo Exists
-	cp mac/relational mac/Python Relational.app/Contents/MacOS
-	cp mac/PythonApplet.icns mac/__argvemulator_relational.py Relational.app/Contents/Resources/
+	mkdir -p Relational.app/Contents/MacOS || echo Exists
+	cp mac/relational_gui mac/Python Relational.app/Contents/MacOS
+	cp mac/PythonApplet.icns mac/__argvemulator_relational_gui.py Relational.app/Contents/Resources/
 
 debian:    
 	#Python files

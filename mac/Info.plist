@@ -18,15 +18,15 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>relational</string>
+	<string>relational_gui</string>
 	<key>CFBundleIconFile</key>
 	<string>PythonApplet.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>relational</string>
+	<string>relational_gui</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>relational</string>
+	<string>relational_gui</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
