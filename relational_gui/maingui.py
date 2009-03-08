@@ -30,6 +30,8 @@ class Ui_Form(object):
         self.About=None
         self.Survey=None
         self.relations={} #Dictionary for relations
+        self.selectedRelation=None
+        
     def execute(self):
         try:
             #Converting string to utf8 and then from qstring to normal string
@@ -45,8 +47,8 @@ class Ui_Form(object):
             
             self.relations[res_rel]=result #Add the relation to the dictionary
             self.updateRelations() #update the list
-            
-            self.showRelation(result) #Show the result in the table
+            self.selectedRelation=result
+            self.showRelation(self.selectedRelation) #Show the result in the table
         except:
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Check your query!")  )
     def showRelation(self,rel):
@@ -73,7 +75,8 @@ class Ui_Form(object):
         
     def printRelation(self,*rel):
         for i in rel:
-            self.showRelation(self.relations[str(i.text().toUtf8())])
+            self.selectedRelation=self.relations[str(i.text().toUtf8())]
+            self.showRelation(self.selectedRelation)
             
     def showAttributes(self,*other):
         for i in other:
@@ -154,11 +157,8 @@ class Ui_Form(object):
         for i in str(res[0].toUtf8()).split(","):
             t.append(i.strip())
         
-        
-        for i in self.lstRelations.selectedItems():
-            rel=self.relations[str(i.text().toUtf8())]
-            if rel.insert(t) > 0:
-                self.showRelation(rel)
+        if self.selectedRelation!=None and self.selectedRelation.insert(t) > 0:
+            self.showRelation(self.selectedRelation)
             
         return
     def deleteTuple(self):
@@ -168,10 +168,8 @@ class Ui_Form(object):
         if res[1]==False:
             return
         
-        for i in self.lstRelations.selectedItems():
-            rel=self.relations[str(i.text().toUtf8())]
-            if rel.delete(str(res[0].toUtf8())) > 0:
-                self.showRelation(rel)
+        if self.selectedRelation!=None and self.selectedRelation.delete(str(res[0].toUtf8())) > 0:
+            self.showRelation(self.selectedRelation)
             
         return
     def addProduct(self):
@@ -302,7 +300,7 @@ class Ui_Form(object):
         self.table.setAlternatingRowColors(True)
         self.table.setRootIsDecorated(False)
         self.table.setObjectName("table")
-        self.showRelation(None)
+        self.showRelation(self.selectedRelation)
         self.centerLayout.addWidget(self.table)
         
         self.cmdInsert = QtGui.QPushButton(self.groupBox)
