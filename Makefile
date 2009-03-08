@@ -29,12 +29,14 @@ clean:
 	rm -rf relational/*.pyc *.pyo || echo ok
 	rm -rf relational_gui/*~ || echo ok
 	rm -rf relational_gui/*.pyc *.pyo || echo ok
+	rm -rf relational_mac
 mac: app
 	mkdir relational_mac || echo Exists
 	mv Relational.app relational_mac
 	mkdir relational_mac/samples || echo Exists
 	cp samples/*csv relational_mac/samples
 	tar -zcvvf relational_`./relational_gui.py -v`.tar.gz relational_mac/
+	rm -rf relational_mac
 app:
 	mkdir Relational.app/ || echo Exists
 	mkdir Relational.app/Contents || echo Exists
