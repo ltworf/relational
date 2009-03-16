@@ -21,94 +21,16 @@
 '''This module optimizes relational expressions into ones that require less time to be executed
 For now it is highly experimental, and it shouldn't be used in 3rd party applications.'''
 
-RELATION=0
-UNARY=1
-BINARY=2
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.'''
+    
+    RELATION=0
+    UNARY=1
+    BINARY=2
+    
     def __init__(self,expression):
-        expression=expression.strip()
-            
-        print "Parsing: ",expression
-        '''expression must be a valid relational algrbra expression that would be accepted by the parser
-        and must be utf16'''
-        self.kind=0
-        self.name="a"
-        self.prop=""
-        '''*-ᑌᑎᐅᐊᐅLEFTᐊᐅRIGHTᐊᐅFULLᐊπσρ'''
-        
-        binary=(u"*",u"-",u"ᑌ",u"ᑎ")
-        unary=(u"π",u"σ",u"ρ")
-        '''(a ᑌ (a ᑌ b ᑌ c ᑌ d)) ᑎ c - σ i==3(πa,b(aᑌ b ᑎ c))'''
-        level=0 #Current parentesis level
-        start=-1 #Start of the parentesis
-        end=-1 #End of the parentesis.
-        tokens=list(expression) #Splitted expression
-        r=range(len(tokens))
-        r.reverse()
-        lev_non_zero_chars=0 #Number of chars inside parentesis
-        for i in r: #Parses expression from end to begin, to preserve operation's order
-            if tokens[i]==u"(":
-                if level==0:
-                    start=i
-                    print start
-                level+=1
-            elif tokens[i]==u")":
-                level-=1
-                if level==0:
-                    end=i
-                    print end
-            
-            if level!=0:
-                lev_non_zero_chars+=1
-            
-            if i==0 and level==0 and tokens[i] in unary: #Unary operator found, must grab its parameters and its child relation they
-                child=""
-                for q in tokens[start+1:end]:
-                    child+=q
-                self.name= tokens[i]
-                print "-----",tokens[i]
-                print "---",start,end,lev_non_zero_chars
-                print child
-                #print prop
-                #self.child=node(child)
-                
-            if level==0 and tokens[i] in binary: #Binary operator found, everything on left will go in the left subree and everhthing on the right will go in the right subtree
-                self.kind=BINARY
-                left=""
-                right=""
-                
-                if start==end==-1:#No parentesis before
-                    end=i
-                
-                for q in tokens[start+1:end]:
-                    left+=q
-                self.name= tokens[i]
-                for q in tokens[i+1:]:
-                    right+=q
-                print "self: ",tokens[i]
-                print "left: ",left
-                print "right:" ,right
-                self.left=node(left)
-                self.right=node(right)
-
-                return
-        
-        if lev_non_zero_chars!=0 and lev_non_zero_chars+1==len(expression):#Expression is entirely contained in parentesis, removing them
-            n=node(expression[1:-1])
-            self.name=n.name
-            self.kind=n.kind
-            if n.kind==UNARY:
-                self.child=n.child
-            elif n.kind==BINARY:
-                self.left=n.left
-                self.right=n.right
-            self.prop=n.prop
-            return
-                
-        self.kind=RELATION
-        self.name=expression
+        pass
         
     def __str__(self):
         if (self.kind==RELATION):
@@ -207,6 +129,11 @@ def tokenize(expression):
     
     return items
 
+def tree(expression):
+    '''This function parses a relational algebra expression into a tree and returns
+    the root node using the Node class defined in this module.'''
+    #isinstance(k,list)
+    pass
 
 if __name__=="__main__":
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
