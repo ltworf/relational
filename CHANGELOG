@@ -64,3 +64,5 @@
 - "make source_all" generates the old style tarball containing all the files
 - Bug: relational script installed with debian package now passes arguments to the python executable
 - Insert and delete from GUI are now done on the displayed relation, not on the selected one
+
+0.10

@@ -127,6 +127,47 @@ class node (object):
                 
             return (left+ self.name +right)
 
+def parseList(expression):
+    '''This function converts an expression into a list where
+    every token of the expression is an item of a list. Expressions into
+    parenthesis will be converted into sublists.'''
+    items=[] #List for the tokens
+    par_count=0 #Count of parenthesis
+    
+    '''This is a state machine. Initial status is determined by the starting of the
+    expression. There are the following statuses:
+    
+    relation: this is the status if the expressions begins with something else than an
+        operator or a parenthesis.
+    binary operator: this is the status when parsing a binary operator, nothing much to say
+    unary operator: this status is more complex, since it will be followed by a parameter AND a
+        sub-expression.
+    sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
+        means that the others open must be counted to determine which close is the right one.'''
+    
+    expression=expression.strip()
+    
+    if expression.startswith('('): #Parenthesis state
+        pass
+    elif expression.startswith("σ"): or expression.startswith("π") or expression.startswith("ρ"): #Unary
+        items.append(expression[0:2]) #Adding operator in the top of the list
+        
+        expression=expression[2:].strip() #Removing operator from the expression
+        par=expression.find('(')
+        
+        items.append(expression[:par]) #Inserting parameter of the operator
+        expression=expression[par:].strip() #Removing parameter from the expression
+        pass
+    elif expression.startswith("*") or expression.startswith("-") or  expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short
+        pass
+    elif expression.startswith("ᐅ"): #Binary long
+        pass
+    else:
+        pass
+    
+    return items
+
+
 if __name__=="__main__":
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
     #n=node(u"((((((((((((2)))))))))))) - (3 * 5) - 2")
