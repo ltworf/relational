@@ -127,12 +127,11 @@ class node (object):
                 
             return (left+ self.name +right)
 
-def parseList(expression):
+def tokenize(expression):
     '''This function converts an expression into a list where
     every token of the expression is an item of a list. Expressions into
     parenthesis will be converted into sublists.'''
     items=[] #List for the tokens
-    par_count=0 #Count of parenthesis
     
     '''This is a state machine. Initial status is determined by the starting of the
     expression. There are the following statuses:
@@ -146,9 +145,31 @@ def parseList(expression):
         means that the others open must be counted to determine which close is the right one.'''
     
     expression=expression.strip()
+    state=0
+    '''
+    0 initial and useless
+    1 previous stuff was a relation
+    2 previous stuff was a sub-expression
+    3 previous stuff was a unary operator
+    4 previous stuff was a binary operator
+    '''
     
     if expression.startswith('('): #Parenthesis state
-        pass
+        state=2
+        par_count=0 #Count of parenthesis
+        end=0
+        
+        for i in len(expression):
+            if expression[i]=='(':
+                par_count+=1
+            elif expression[i]==')':
+                par_count-=1
+                if par_count==0:
+                    end=i
+                    break
+        items.append(tokenize(expression[1:end]))
+        epression=expression[end+1:].strip()
+        
     elif expression.startswith("σ"): or expression.startswith("π") or expression.startswith("ρ"): #Unary
         items.append(expression[0:2]) #Adding operator in the top of the list
         
@@ -157,13 +178,21 @@ def parseList(expression):
         
         items.append(expression[:par]) #Inserting parameter of the operator
         expression=expression[par:].strip() #Removing parameter from the expression
-        pass
-    elif expression.startswith("*") or expression.startswith("-") or  expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short
-        pass
+    elif expression.startswith("*") or expression.startswith("-"):
+        state=4
+    elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short
+        state=4
     elif expression.startswith("ᐅ"): #Binary long
-        pass
-    else:
-        pass
+        state=4
+    else: #Relation (hopefully)
+        if state==1: #Previous was a relation, appending to the last token
+            i=items.pop()
+            items.append(i+expression[0])
+            expression=expression[1:].strip() #1 char from the expression
+        else:
+            state=1
+            items.append(expression[0])
+            expression=expression[1:].strip() #1 char from the expression
     
     return items
 
