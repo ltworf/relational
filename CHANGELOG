@@ -66,3 +66,4 @@
 - Insert and delete from GUI are now done on the displayed relation, not on the selected one
 
 0.10
+- In optimizer, added a function that tokenizes an expression
