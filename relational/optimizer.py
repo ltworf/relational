@@ -153,46 +153,57 @@ def tokenize(expression):
     3 previous stuff was a unary operator
     4 previous stuff was a binary operator
     '''
-    
-    if expression.startswith('('): #Parenthesis state
-        state=2
-        par_count=0 #Count of parenthesis
-        end=0
+
+    while len(expression)>0:
+        print "Expression", expression
+        print "Items" ,items
+        if expression.startswith('('): #Parenthesis state
+            state=2
+            par_count=0 #Count of parenthesis
+            end=0
+            
+            for i in range(len(expression)):
+                if expression[i]=='(':
+                    par_count+=1
+                elif expression[i]==')':
+                    par_count-=1
+                    if par_count==0:
+                        end=i
+                        break
+            items.append(tokenize(expression[1:end]))
+            expression=expression[end+1:].strip()
         
-        for i in len(expression):
-            if expression[i]=='(':
-                par_count+=1
-            elif expression[i]==')':
-                par_count-=1
-                if par_count==0:
-                    end=i
-                    break
-        items.append(tokenize(expression[1:end]))
-        epression=expression[end+1:].strip()
+        elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary
+            items.append(expression[0:2]) #Adding operator in the top of the list
+            expression=expression[2:].strip() #Removing operator from the expression
+            par=expression.find('(')
         
-    elif expression.startswith("σ"): or expression.startswith("π") or expression.startswith("ρ"): #Unary
-        items.append(expression[0:2]) #Adding operator in the top of the list
-        
-        expression=expression[2:].strip() #Removing operator from the expression
-        par=expression.find('(')
-        
-        items.append(expression[:par]) #Inserting parameter of the operator
-        expression=expression[par:].strip() #Removing parameter from the expression
-    elif expression.startswith("*") or expression.startswith("-"):
-        state=4
-    elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short
-        state=4
-    elif expression.startswith("ᐅ"): #Binary long
-        state=4
-    else: #Relation (hopefully)
-        if state==1: #Previous was a relation, appending to the last token
-            i=items.pop()
-            items.append(i+expression[0])
-            expression=expression[1:].strip() #1 char from the expression
-        else:
-            state=1
+            items.append(expression[:par]) #Inserting parameter of the operator
+            expression=expression[par:].strip() #Removing parameter from the expression
+        elif expression.startswith("*") or expression.startswith("-"):
             items.append(expression[0])
             expression=expression[1:].strip() #1 char from the expression
+            state=4
+        elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short
+            items.append(expression[0:3]) #Adding operator in the top of the list
+            expression=expression[3:].strip() #Removing operator from the expression
+
+            state=4
+        elif expression.startswith("ᐅ"): #Binary long
+            i=expression.find("ᐊ")
+            items.append(expression[:i+3])
+            expression=expression[i+3:].strip()
+            
+            state=4
+        else: #Relation (hopefully)
+            if state==1: #Previous was a relation, appending to the last token
+                i=items.pop()
+                items.append(i+expression[0])
+                expression=expression[1:].strip() #1 char from the expression
+            else:
+                state=1
+                items.append(expression[0])
+                expression=expression[1:].strip() #1 char from the expression
     
     return items
 
@@ -200,5 +211,8 @@ def tokenize(expression):
 if __name__=="__main__":
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
     #n=node(u"((((((((((((2)))))))))))) - (3 * 5) - 2")
-    n=node(u"π a,b (d-a*b)")
-    print n.__str__()
+    #n=node(u"π a,b (d-a*b)")
+    
+    #print n.__str__()
+    print tokenize("((a ᑌ b) - c ᑌ d) ᐅRIGHTᐊ a * (π a,b (a))")
+    #print tokenize("(a)")
