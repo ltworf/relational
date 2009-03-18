@@ -1,4 +1,3 @@
-Request for Comments: 2026                            Harvard University
 
               Complexity
 
@@ -19,6 +18,31 @@ Notation
 
 1.  UNARY OPERATORS
 
+   Relational defines three unary operations, and they will be studied
+   in this section. It doesn't mean that they should have similar
+   complexity.
+
 1.1  Selection
+
+   Selection works on a relation and on a python expression. For each
+   tuple of the relation, it will create a dictionary with name:value
+   where name are names of the fields in the relation and value is the
+   value for the specific row.
+   We can consider the inner cycle as constant as its value doesn't
+   depend on the relation itself but only on the kind of the relation
+   (how many field it has).
+   Then comes the evaluation. A python expression in truth could do
+   much more things than just checking if a>b. Anyway, ssuming that
+   nobody would ever write cycles into a selection condition, we have
+   another constant complexity for this operation.
+   Then, the tuple is inserted in a new relation if it satisfies the
+   condition. Since no check on duplicated tuples is performed, this
+   operation is constant too.
+   
+   In the end we have O(|n|) as complexity for a selection on the
+   relation n.
+
 1.2  Rename
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 1.3  Projection

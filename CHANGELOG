@@ -67,3 +67,4 @@
 
 0.10
 - In optimizer, added a function that tokenizes an expression
+- Document about complexity of operations
