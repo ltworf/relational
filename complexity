@@ -1,0 +1,24 @@
+Request for Comments: 2026                            Harvard University
+
+              Complexity
+
+Abstract
+   Purpose of this document is to describe in a detailed way the 
+   complexity of relational algebra operations. The evaluation will be
+   done on the specific implementation of this program, not on theorical
+   lower limits.
+
+   Latest implementation can be found at:
+   http://galileo.dmi.unict.it/svn/trunk
+
+Notation
+   Big O notation will be used. Constant values will be ignored.
+
+   Single letters will be used to indicate relations and letters between
+   | will indicate the cardinality (number of tuples) of the relation.
+
+1.  UNARY OPERATORS
+
+1.1  Selection
+1.2  Rename
+1.3  Projection
