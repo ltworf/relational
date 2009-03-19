@@ -95,18 +95,18 @@ def tokenize(expression):
             items.append(tokenize(expression[1:end]))
             expression=expression[end+1:].strip()
         
-        elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary
+        elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary 2 bytes
             items.append(expression[0:2]) #Adding operator in the top of the list
             expression=expression[2:].strip() #Removing operator from the expression
             par=expression.find('(')
         
             items.append(expression[:par]) #Inserting parameter of the operator
             expression=expression[par:].strip() #Removing parameter from the expression
-        elif expression.startswith("*") or expression.startswith("-"):
+        elif expression.startswith("*") or expression.startswith("-"): # Binary 1 byte
             items.append(expression[0])
             expression=expression[1:].strip() #1 char from the expression
             state=4
-        elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short
+        elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short 3 bytes
             items.append(expression[0:3]) #Adding operator in the top of the list
             expression=expression[3:].strip() #Removing operator from the expression
 
