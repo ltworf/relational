@@ -189,7 +189,9 @@ class relation (object):
             if (newt.header.rename(old,new)) == False:
                 return None
         
-        newt.content=list(self.content)
+        newt.content=[]
+        for i in self.content:
+            newt.content.append(list(i))
         return newt
         
     def intersection(self,other):
