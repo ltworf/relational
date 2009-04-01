@@ -16,6 +16,11 @@ Notation
    Single letters will be used to indicate relations and letters between
    | will indicate the cardinality (number of tuples) of the relation.
    
+   Number of tuples can't be enough. For example a relation with one
+   touple and thousands of fields, will not take O(1) in general to be
+   evaluated. So we assume that relations will have a reasonable and
+   comparable number of fields.
+   
    Then after evaluating the big O notation, an attempt to find more
    precise results will be done, since it will be important to know
    with a certain precision the weight of the operation.
@@ -45,13 +50,6 @@ Notation
    
    In the end we have O(|n|) as complexity for a selection on the
    relation n.
-   
-   The assumption made of considering constant the number of fields is
-   a bit strong. For example a relation could have hundreds of fields
-   and two tuples.
-   
-   So in general, the complexity is something more like O(|n| * f) where
-   f is the number of the fields.
 
 1.2  Rename
 
@@ -60,37 +58,69 @@ Notation
    The big issue is to copy the content of the relation into a new
    relation object, so the new one can be modified.
    
-   So the operation depends on the size of the relation: O(|n| * f).
+   So the operation depends on the size of the relation: O(|n|).
    
 1.3  Projection
 
    The projection operation creates a copy of the original relation
    using only a subset of its fields. Time for the copy is something
-   like O(|n|*f) where f is the number of fields to copy.
+   like O(|n|) where f is the number of fields to copy.
    But that's not all. Since relations are set, duplicated items are not
    allowed. So after extracting the wanted elements, it has to check if
    the new tuple was already added to the new relation. And this brings
-   the complexity to O((|n|*f)²).
+   the complexity to O(|n|²).
 
 2.  BINARY OPERATORS
 
    Relational defines nine binary operations, and they will be studied
-   in this section.
+   in this section. Since we will deal with two relations per operation
+   here, we will call them m and n, and f and g will be the number of
+   their fields.
    
-2.1  Product 
+2.1  Product
+
+   Product is a very complex operations. It is O(|n|*|m|).
+   Obvious.
 
 2.2 Intersection
 
+   Same as product even if it does a different thing. But it has to
+   compare every tuple from n with every tuple from m, to see if they
+   match, and in this case, put them in the resulting relation.
+   So this operation is O(|n|*|m|) as well.
+
 2.3  Difference
+
+   Same as above:
 
 2.4  Union
 
+   This operation first creates a new relation copying all the tuples
+   from one of the originating relations, then compares them all with
+   tuples from the other relation, and if they aren't in, they will be
+   added.
+   In fact it is same as above: O(|n|*|m|)
+
 2.5  Thetajoin
+
+   This operation is the combination of a product and a selection. So it
+   is O(|n|*|m|) too.
 
 2.6  Outher
 
+    This operation is the union of the outer left and the outer right
+    join. Makes it O(|n|*|m|) too.
+
 2.7  Outher_left
+   
+   O(|n|*|m|), very depending on the number of the fields, because they
+   are compared.
 
 2.8  Outher_right
 
+   Mirror operation of outer_lef
+
 2.9  Join 
+
+   Same as above.  
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   
