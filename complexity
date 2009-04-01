@@ -72,3 +72,25 @@ Notation
    the new tuple was already added to the new relation. And this brings
    the complexity to O((|n|*f)²).
 
+2.  BINARY OPERATORS
+
+   Relational defines nine binary operations, and they will be studied
+   in this section.
+   
+2.1  Product 
+
+2.2 Intersection
+
+2.3  Difference
+
+2.4  Union
+
+2.5  Thetajoin
+
+2.6  Outher
+
+2.7  Outher_left
+
+2.8  Outher_right
+
+2.9  Join 
