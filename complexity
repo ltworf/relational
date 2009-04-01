@@ -64,5 +64,11 @@ Notation
    
 1.3  Projection
 
+   The projection operation creates a copy of the original relation
+   using only a subset of its fields. Time for the copy is something
+   like O(|n|*f) where f is the number of fields to copy.
+   But that's not all. Since relations are set, duplicated items are not
+   allowed. So after extracting the wanted elements, it has to check if
+   the new tuple was already added to the new relation. And this brings
+   the complexity to O((|n|*f)²).
 
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
