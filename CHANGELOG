@@ -68,4 +68,4 @@
 0.10
 - In optimizer, added a function that tokenizes an expression
 - Document about complexity of operations
-- Bug: error in rename operator, it didn't perform a fullcopy of the relation
+- Bug: error in update operation, it changed the original tuple, so also other relations using the same tuple would change. Now it copies it.

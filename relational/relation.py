@@ -446,8 +446,14 @@ class relation (object):
                     attributes[self.header.attributes[j]]=i[j]
             if eval(expr,attributes): #If expr is true, changing the tuple
                 affected+=1
+                new_tuple=list(i)
+                #Deleting the tuple, instead of changing it, so other
+                #relations can still point to the same list without
+                #being affected.
+                self.content.remove(i) 
                 for k in range(len(keys)):
-                    i[f_ids[k]]=str(dic[keys[k]])
+                    new_tuple[f_ids[k]]=str(dic[keys[k]])
+                self.content.append(new_tuple)
         return affected
     def insert(self,values):
         '''Inserts a tuple in the relation.
