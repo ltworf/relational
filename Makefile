@@ -1,6 +1,20 @@
 default:
 	echo "sorry, no default action"
 
+uninstall:
+	rm -rf /opt/relational
+	rm -f /usr/local/bin/relational
+
+install:
+	mkdir /opt/relational
+	cp -R relational relational_gui /opt/relational/
+	cp relational_gui.py /opt/relational
+	chmod -R 555 /opt/relational/
+	echo "#!/bin/bash" > /usr/local/bin/relational
+	echo "/opt/relational/relational_gui.py" >> /usr/local/bin/relational
+	chmod 555 /usr/local/bin/relational
+
+
 source: clean
 	rm -rf /tmp/relational/
 	mkdir /tmp/relational/
