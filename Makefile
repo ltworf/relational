@@ -4,6 +4,7 @@ default:
 uninstall:
 	rm -rf /opt/relational
 	rm -f /usr/local/bin/relational
+	rm -f /usr/share/applications/relational.desktop
 
 install:
 	mkdir /opt/relational
@@ -13,7 +14,8 @@ install:
 	echo "#!/bin/bash" > /usr/local/bin/relational
 	echo "/opt/relational/relational_gui.py" >> /usr/local/bin/relational
 	chmod 555 /usr/local/bin/relational
-
+	cp relational.desktop /usr/share/applications/
+	chmod a+r /usr/share/applications/relational.desktop
 
 source: clean
 	rm -rf /tmp/relational/
@@ -97,7 +99,7 @@ debian:
 	chmod a+x data/usr/bin/relational
 	#desktop file
 	mkdir -p data/usr/share/applications/
-	cp debscript/relational.desktop data/usr/share/applications/
+	cp relational.desktop data/usr/share/applications/
 	mkdir -p data/DEBIAN
 	#package description
 	debscript/gencontrol.sh > data/DEBIAN/control
