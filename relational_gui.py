@@ -24,7 +24,7 @@ from PyQt4 import QtCore, QtGui
 from relational_gui import maingui, about
 from relational import relation, parser
 
-version="0.9"
+version="0.10"
 about.version=version
 
 if __name__ == "__main__":
