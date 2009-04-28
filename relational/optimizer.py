@@ -20,6 +20,9 @@
 
 '''This module optimizes relational expressions into ones that require less time to be executed
 For now it is highly experimental, and it shouldn't be used in 3rd party applications.'''
+
+import optimizations
+
 RELATION=0
 UNARY=1
 BINARY=2
@@ -165,12 +168,14 @@ def tokenize(expression):
 def tree(expression):
     '''This function parses a relational algebra expression into a tree and returns
     the root node using the Node class defined in this module.'''
-    #isinstance(k,list)
     return node(tokenize(expression))
 
-def optimize(expression):
+def general_optimize(expression):
+    '''This function performs general optimizations. Means that it will not need to
+    know the fields used by the relations'''
     n=tree(expression) #Gets the tree
-    
+    for i in optimizations.general_optimizations:
+        n=i(n) #Performs the optimization
     return n.__str__()
 
 if __name__=="__main__":
