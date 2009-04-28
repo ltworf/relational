@@ -67,7 +67,7 @@ class relation (object):
         with spaces, you should avoid using it.'''
         
         fp=file(filename,'w') #Opening file in write mode
-        if comma_separated:
+        if comma_separated: #writing csv
             writer=csv.writer(fp) #Creating csv writer
             
             #It wants an iterable containing iterables
@@ -77,7 +77,7 @@ class relation (object):
             
             #Writing content, already in the correct format
             writer.writerows(self.content)
-        else:
+        else: #Writing in the old, deprecated, format
             res=""
             res+=" ".join(self.header.attributes)
             
