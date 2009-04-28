@@ -20,16 +20,38 @@
 
 '''This module optimizes relational expressions into ones that require less time to be executed
 For now it is highly experimental, and it shouldn't be used in 3rd party applications.'''
+RELATION=0
+UNARY=1
+BINARY=2
+b_operators=('*','-','ᑌ','ᑎ','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ')
+u_operators=('π','σ','ρ')
 
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.'''
-    
-    RELATION=0
-    UNARY=1
-    BINARY=2
+    kind=None
     
     def __init__(self,expression):
+        '''Generates the tree from the tokenized expression'''
+        if len(expression)==1:
+            print "Relation: ",expression[0]
+            self.kind=RELATION
+            self.name=expression[0]
+            return
+        for i in range(len(expression)-1,-1,-1): #Expression from right to left
+            if expression[i] in b_operators: #Binary operator
+                print "Operator: ",expression[i]
+                print "left subtree: ",expression[:i]
+                print "right subtree: ",expression[i+1:]
+                
+                self.kind=BINARY
+                self.name=expression[i]
+                self.left=node(expression[:i]) 
+                self.right=node(expression[i+1:])
+                return
+            elif expression[i] in u_operators: #Unary operator
+                self.kind=UNARY
+                return       
         pass
         
     def __str__(self):
@@ -39,15 +61,15 @@ class node (object):
             return self.name + " "+ self.prop+ " (" + self.child +")"
         elif (self.kind==BINARY):
             if self.left.kind==RELATION:
-                left=self.left.__str__()
+                le=self.left.__str__()
             else:
-                left=u"("+self.left.__str__()+u")"
+                le="("+self.left.__str__()+")"
             if self.right.kind==RELATION:
-                right=self.right.__str__()
+                re=self.right.__str__()
             else:
-                right=u"("+self.right.__str__()+u")"
+                re="("+self.right.__str__()+")"
                 
-            return (left+ self.name +right)
+            return (le+ self.name +re)
 
 def tokenize(expression):
     '''This function converts an expression into a list where
@@ -77,8 +99,6 @@ def tokenize(expression):
     '''
 
     while len(expression)>0:
-        print "Expression", expression
-        print "Items" ,items
         if expression.startswith('('): #Parenthesis state
             state=2
             par_count=0 #Count of parenthesis
@@ -136,10 +156,14 @@ def tree(expression):
     pass
 
 if __name__=="__main__":
+    
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
     #n=node(u"((((((((((((2)))))))))))) - (3 * 5) - 2")
     #n=node(u"π a,b (d-a*b)")
     
     #print n.__str__()
-    print tokenize("((a ᑌ b) - c ᑌ d) ᐅRIGHTᐊ a * (π a,b (a))")
+    #a= tokenize("((a ᑌ b) - c ᑌ d) ᐅRIGHTᐊ a * (π a,b (a))")
+    a=tokenize("a*b-c")
+    print a
+    print node(a)
     #print tokenize("(a)")
