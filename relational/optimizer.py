@@ -33,10 +33,10 @@ class node (object):
     
     def __init__(self,expression):
         '''Generates the tree from the tokenized expression'''
-        while len(expression)==1 and expression[0].__class__==[].__class__: #We have a list, removing
+        while len(expression)==1 and isinstance(expression[0],list): #We have a list, removing
                 expression=expression[0]
         
-        if len(expression)==1 and expression[0].__class__=="".__class__: #We have a string!
+        if len(expression)==1 and isinstance(expression[0],str): #We have a string (relation name)
             print "Relation: ",expression[0]
             self.kind=RELATION
             self.name=expression[0]
@@ -167,6 +167,11 @@ def tree(expression):
     the root node using the Node class defined in this module.'''
     #isinstance(k,list)
     return node(tokenize(expression))
+
+def optimize(expression):
+    n=tree(expression) #Gets the tree
+    
+    return n.__str__()
 
 if __name__=="__main__":
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
