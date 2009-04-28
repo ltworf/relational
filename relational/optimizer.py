@@ -34,10 +34,13 @@ class node (object):
     def __init__(self,expression):
         '''Generates the tree from the tokenized expression'''
         if len(expression)==1:
-            print "Relation: ",expression[0]
-            self.kind=RELATION
-            self.name=expression[0]
-            return
+            if expression[0].__class__==[].__class__: #We have a list!
+                expression=expression[0]
+            if len(expression)==1 and expression[0].__class__=="".__class__: #We have a string!
+                print "Relation: ",expression[0]
+                self.kind=RELATION
+                self.name=expression[0]
+                return
         for i in range(len(expression)-1,-1,-1): #Expression from right to left
             if expression[i] in b_operators: #Binary operator
                 print "Operator: ",expression[i]
@@ -49,8 +52,18 @@ class node (object):
                 self.left=node(expression[:i]) 
                 self.right=node(expression[i+1:])
                 return
-            elif expression[i] in u_operators: #Unary operator
+        for i in range(len(expression)-1,-1,-1): #Expression from right to left
+            if expression[i] in u_operators: #Unary operator
                 self.kind=UNARY
+                self.name=expression[i]
+                self.prop=expression[1+i]
+                self.child=node(expression[2+i])
+                
+                print "Operator: ",expression[i]
+                print "prop: ",expression[1+i]
+                print "child: ",self.child
+                
+                
                 return       
         pass
         
@@ -58,7 +71,7 @@ class node (object):
         if (self.kind==RELATION):
             return self.name
         elif (self.kind==UNARY):
-            return self.name + " "+ self.prop+ " (" + self.child +")"
+            return self.name + " "+ self.prop+ " (" + self.child.__str__() +")"
         elif (self.kind==BINARY):
             if self.left.kind==RELATION:
                 le=self.left.__str__()
@@ -162,8 +175,9 @@ if __name__=="__main__":
     #n=node(u"π a,b (d-a*b)")
     
     #print n.__str__()
-    #a= tokenize("((a ᑌ b) - c ᑌ d) ᐅRIGHTᐊ a * (π a,b (a))")
-    a=tokenize("a*b-c")
+    a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
+    #a= tokenize(u"π a,b (a*b)")
+    #a=tokenize("(a-b*c)*(b-c)")
     print a
     print node(a)
     #print tokenize("(a)")
