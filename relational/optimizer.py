@@ -174,6 +174,7 @@ def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
     know the fields used by the relations'''
     n=tree(expression) #Gets the tree
+    print n
     for i in optimizations.general_optimizations:
         n=i(n) #Performs the optimization
     return n.__str__()
@@ -187,7 +188,7 @@ if __name__=="__main__":
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
-    a=tokenize("((((((((a)))))))) * b -c ")
+    a=general_optimize("σ b>5 ( σ a>2 (C)) * σ a>2 ( σ a>2 (C))")
     print a
-    print node(a)
+    #print node(a)
     #print tokenize("(a)")

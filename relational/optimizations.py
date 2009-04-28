@@ -21,8 +21,22 @@
 The list general_optimizations contains pointers to general functions, so they can be called
 within a cycle.'''
 
-def duplicated_select(n):
-    pass
+import optimizer
 
+def duplicated_select(n):
+    '''This function locates and deletes things like
+    σ a ( σ a(C)) and the ones like σ a ( σ b(C))'''
+    if n.name=='σ' and n.child.name=='σ':        
+        if n.prop != n.child.prop: #Nested but different, joining them
+            n.prop = n.prop + " and " + n.child.prop
+        n.child=n.child.child
+
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        duplicated_select(n.child)
+    elif n.kind==optimizer.BINARY:
+        duplicated_select(n.right)
+        duplicated_select(n.left)
+    return n
 
 general_optimizations=[duplicated_select]
