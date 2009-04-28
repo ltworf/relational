@@ -40,16 +40,11 @@ class node (object):
                 expression=expression[0]
         
         if len(expression)==1 and isinstance(expression[0],str): #We have a string (relation name)
-            print "Relation: ",expression[0]
             self.kind=RELATION
             self.name=expression[0]
             return
         for i in range(len(expression)-1,-1,-1): #Expression from right to left
-            if expression[i] in b_operators: #Binary operator
-                print "Operator: ",expression[i]
-                print "left subtree: ",expression[:i]
-                print "right subtree: ",expression[i+1:]
-                
+            if expression[i] in b_operators: #Binary operator              
                 self.kind=BINARY
                 self.name=expression[i]
                 self.left=node(expression[:i]) 
@@ -59,13 +54,8 @@ class node (object):
             if expression[i] in u_operators: #Unary operator
                 self.kind=UNARY
                 self.name=expression[i]
-                self.prop=expression[1+i]
+                self.prop=expression[1+i].strip()
                 self.child=node(expression[2+i])
-                
-                print "Operator: ",expression[i]
-                print "prop: ",expression[1+i]
-                print "child: ",self.child
-                
                 
                 return       
         pass
@@ -174,7 +164,6 @@ def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
     know the fields used by the relations'''
     n=tree(expression) #Gets the tree
-    print n
     for i in optimizations.general_optimizations:
         n=i(n) #Performs the optimization
     return n.__str__()
