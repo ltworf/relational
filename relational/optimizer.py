@@ -33,14 +33,14 @@ class node (object):
     
     def __init__(self,expression):
         '''Generates the tree from the tokenized expression'''
-        if len(expression)==1:
-            if expression[0].__class__==[].__class__: #We have a list!
+        while len(expression)==1 and expression[0].__class__==[].__class__: #We have a list, removing
                 expression=expression[0]
-            if len(expression)==1 and expression[0].__class__=="".__class__: #We have a string!
-                print "Relation: ",expression[0]
-                self.kind=RELATION
-                self.name=expression[0]
-                return
+        
+        if len(expression)==1 and expression[0].__class__=="".__class__: #We have a string!
+            print "Relation: ",expression[0]
+            self.kind=RELATION
+            self.name=expression[0]
+            return
         for i in range(len(expression)-1,-1,-1): #Expression from right to left
             if expression[i] in b_operators: #Binary operator
                 print "Operator: ",expression[i]
@@ -169,15 +169,15 @@ def tree(expression):
     return node(tokenize(expression))
 
 if __name__=="__main__":
-    
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
     #n=node(u"((((((((((((2)))))))))))) - (3 * 5) - 2")
     #n=node(u"π a,b (d-a*b)")
     
     #print n.__str__()
-    a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
+    #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
+    a=tokenize("((((((((a)))))))) * b -c ")
     print a
     print node(a)
     #print tokenize("(a)")
