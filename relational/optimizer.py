@@ -166,7 +166,7 @@ def tree(expression):
     '''This function parses a relational algebra expression into a tree and returns
     the root node using the Node class defined in this module.'''
     #isinstance(k,list)
-    pass
+    return node(tokenize(expression))
 
 if __name__=="__main__":
     
