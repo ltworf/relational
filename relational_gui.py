@@ -19,6 +19,12 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
+try:
+    import psyco
+    psyco.full()
+except:
+    pass
+
 import sys
 from PyQt4 import QtCore, QtGui
 from relational_gui import maingui, about
