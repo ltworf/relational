@@ -24,20 +24,23 @@ within a cycle.'''
 import optimizer
 
 def duplicated_select(n):
+    changes=0
     '''This function locates and deletes things like
     σ a ( σ a(C)) and the ones like σ a ( σ b(C))'''
     if n.name=='σ' and n.child.name=='σ':        
         if n.prop != n.child.prop: #Nested but different, joining them
             n.prop = n.prop + " and " + n.child.prop
         n.child=n.child.child
-        duplicated_select(n)
+        changes=1
+        changes+=duplicated_select(n)
+        
 
     #recoursive scan
     if n.kind==optimizer.UNARY:
-        duplicated_select(n.child)
+        changes+=duplicated_select(n.child)
     elif n.kind==optimizer.BINARY:
-        duplicated_select(n.right)
-        duplicated_select(n.left)
-    return n
+        changes+=duplicated_select(n.right)
+        changes+=duplicated_select(n.left)
+    return changes
 
 general_optimizations=[duplicated_select]

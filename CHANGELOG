@@ -70,3 +70,4 @@
 - Document about complexity of operations
 - Bug: error in update operation, it changed the original tuple, so also other relations using the same tuple would change. Now it copies it.
 - Added make install and uninstall
+- Optimizer generate a tree from the expression
