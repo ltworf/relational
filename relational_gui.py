@@ -19,12 +19,6 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-try:
-    import psyco
-    psyco.full()
-except:
-    pass
-
 import sys
 from PyQt4 import QtCore, QtGui
 from relational_gui import maingui, about
@@ -37,6 +31,13 @@ if __name__ == "__main__":
     if len (sys.argv) > 1 and sys.argv[1] == "-v":
         print version
         sys.exit(0)
+        
+    try:
+        import psyco
+        psyco.full()
+    except:
+        pass
+            
     app = QtGui.QApplication(sys.argv)
     Form = QtGui.QWidget()
     
