@@ -177,7 +177,7 @@ if __name__=="__main__":
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
-    a=general_optimize("σ b>5 ( σ a>2 (C)) * σ a>2 ( σ a>2 (C))")
+    a=general_optimize("σ i==2 (σ b>5 ( σ a>2 (C))) * σ a>2 ( σ a>2 (C))")
     print a
     #print node(a)
     #print tokenize("(a)")

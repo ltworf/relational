@@ -30,6 +30,7 @@ def duplicated_select(n):
         if n.prop != n.child.prop: #Nested but different, joining them
             n.prop = n.prop + " and " + n.child.prop
         n.child=n.child.child
+        duplicated_select(n)
 
     #recoursive scan
     if n.kind==optimizer.UNARY:
