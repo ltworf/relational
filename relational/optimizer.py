@@ -166,8 +166,11 @@ def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
     know the fields used by the relations'''
     n=tree(expression) #Gets the tree
-    for i in optimizations.general_optimizations:
-        print "Changes done: ", i(n) #Performs the optimization
+    total=1
+    while total!=0:
+        total=0
+        for i in optimizations.general_optimizations:
+            total+=i(n) #Performs the optimization
     return n.__str__()
 
 if __name__=="__main__":
