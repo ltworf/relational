@@ -46,11 +46,7 @@ def duplicated_select(n):
 def down_to_unions_subtractions_intersections(n):
     '''This funcion locates things like σ i==2 (c ᑌ d), where the union
     can be a subtraction and an intersection and replaces them with
-    σ i==2 (c) ᑌ σ i==2(d).
-    
-    If the operator is not Union and the right expression is a relation, 
-    the resulting expression will be: σ i==2 (c) - d.
-    
+    σ i==2 (c) ᑌ σ i==2(d).   
     '''
     changes=0
     _o=('ᑌ','-','ᑎ')
@@ -61,14 +57,11 @@ def down_to_unions_subtractions_intersections(n):
         left.name=n.name
         left.child=n.child.left
         left.kind=optimizer.UNARY
-        if n.child.name=='ᑌ' or n.child.right.kind!=optimizer.RELATION:
-            right=optimizer.node()
-            right.prop=n.prop
-            right.name=n.name
-            right.child=n.child.right
-            right.kind=optimizer.UNARY
-        else:
-            right=n.child.right
+        right=optimizer.node()
+        right.prop=n.prop
+        right.name=n.name
+        right.child=n.child.right
+        right.kind=optimizer.UNARY
         
         n.name=n.child.name
         n.left=left
