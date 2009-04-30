@@ -35,6 +35,8 @@ class node (object):
     kind=None
     
     def __init__(self,expression):
+        if expression==None or len(expression)==0:
+            return
         '''Generates the tree from the tokenized expression'''
         while len(expression)==1 and isinstance(expression[0],list): #We have a list, removing
                 expression=expression[0]
@@ -177,7 +179,7 @@ if __name__=="__main__":
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
-    a=general_optimize("σ i==2 (σ b>5 ( σ a>2 (C))) * σ a>2 ( σ a>2 (C))")
+    a=general_optimize("σ i==2 (c ᑌ d- b)")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print a
     #print node(a)
