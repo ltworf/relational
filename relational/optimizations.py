@@ -43,4 +43,48 @@ def duplicated_select(n):
         changes+=duplicated_select(n.left)
     return changes
 
-general_optimizations=[duplicated_select]
+def down_to_unions_subtractions_intersections(n):
+    '''This funcion locates things like σ i==2 (c ᑌ d), where the union
+    can be a subtraction and an intersection and replaces them with
+    σ i==2 (c) ᑌ σ i==2(d).
+    
+    If the operator is not Union and the right expression is a relation, 
+    the resulting expression will be: σ i==2 (c) - d.
+    
+    '''
+    changes=0
+    _o=('ᑌ','-','ᑎ')
+    if n.name=='σ' and n.child.name in _o:
+        
+        left=optimizer.node()
+        left.prop=n.prop
+        left.name=n.name
+        left.child=n.child.left
+        left.kind=optimizer.UNARY
+        if n.child.name=='ᑌ' or n.child.right.kind!=optimizer.RELATION:
+            right=optimizer.node()
+            right.prop=n.prop
+            right.name=n.name
+            right.child=n.child.right
+            right.kind=optimizer.UNARY
+        else:
+            right=n.child.right
+        
+        n.name=n.child.name
+        n.left=left
+        n.right=right
+        n.child=None
+        n.prop=None
+        n.kind=optimizer.BINARY
+        changes+=1
+    
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        changes+=down_to_unions_subtractions_intersections(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=down_to_unions_subtractions_intersections(n.right)
+        changes+=down_to_unions_subtractions_intersections(n.left)
+    return changes
+    
+
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections]

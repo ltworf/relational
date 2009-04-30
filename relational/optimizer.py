@@ -34,7 +34,7 @@ class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.'''
     kind=None
     
-    def __init__(self,expression):
+    def __init__(self,expression=None):
         if expression==None or len(expression)==0:
             return
         '''Generates the tree from the tokenized expression'''
@@ -179,7 +179,7 @@ if __name__=="__main__":
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
-    a=general_optimize("σ i==2 (c ᑌ d- b)")
+    a=general_optimize("σ i==2 (c ᑌ d - (aᑎb))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print a
     #print node(a)
