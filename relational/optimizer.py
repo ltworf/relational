@@ -61,7 +61,17 @@ class node (object):
                 
                 return       
         pass
+    def __eq__(self,other):
+        if not (isinstance(other,node) and self.name==other.name and self.kind==other.kind):
+            return False
         
+        if self.kind==UNARY:
+            if other.prop!=self.prop:
+                return False
+            return self.child==other.child
+        if self.kind==BINARY:
+            return self.left==other.left and self.right==other.right
+        return True
     def __str__(self):
         if (self.kind==RELATION):
             return self.name
@@ -182,6 +192,7 @@ if __name__=="__main__":
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
+    print tree("σ i==2 (c ᑌ d - (aᑎb))") == tree("σ i==3 (c ᑌ d - (aᑎb))")
     a=general_optimize("σ i==2 (c ᑌ d - (aᑎb))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print a
