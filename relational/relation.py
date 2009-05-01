@@ -173,8 +173,8 @@ class relation (object):
             row=[]
             for j in ids:
                 row.append(i[j])
-                if attributes_same_count or row not in newt.content:
-                    newt.content.append(row)
+            if attributes_same_count or row not in newt.content:
+                newt.content.append(row)
         return newt
     
     def rename(self,params):
