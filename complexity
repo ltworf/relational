@@ -69,6 +69,14 @@ Notation
    allowed. So after extracting the wanted elements, it has to check if
    the new tuple was already added to the new relation. And this brings
    the complexity to O(|n|²).
+   
+   But the projection can also be used to "rearrange" fields, which
+   makes no sense in pure relational algebra, but can be usefull to make
+   two relations match (in fact it is used internally to make relations
+   match if they have the same fields in different order). In this case
+   there is no need to check if the tuple already exists, because it is
+   assumed that the relation was correct. This gives a complexity of
+   O(|n|) in the best case.
 
 2.  BINARY OPERATORS
 
@@ -123,4 +131,5 @@ Notation
 2.9  Join 
 
    Same as above.
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   
+  
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

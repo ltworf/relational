@@ -143,7 +143,7 @@ class relation (object):
         Will delete duplicate items
         If an empty list or no parameters are provided, returns None'''    
         #Parameters are supplied in a list, instead with multiple parameters
-        if attributes[0].__class__ == list().__class__:
+        if isinstance(attributes[0],list):
             attributes=attributes[0]
         
         #Avoiding duplicated attributes
@@ -152,6 +152,10 @@ class relation (object):
             if i not in attributes1:
                 attributes1.append(i)
         attributes=attributes1
+        
+        #If source and dest has the same number of attributes, we are just rearranging
+        #so we won't need to check for duplicated entries
+        attributes_same_count=len(attributes)==len(self.header.attributes)
         
         ids=self.header.getAttributesId(attributes)
         
@@ -169,11 +173,9 @@ class relation (object):
             row=[]
             for j in ids:
                 row.append(i[j])
-            if row not in newt.content:#Avoids duplicated items
-                newt.content.append(row)
+                if attributes_same_count or row not in newt.content:
+                    newt.content.append(row)
         return newt
-        
-        
     
     def rename(self,params):
         '''Operation rename. Takes a dictionary
