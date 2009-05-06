@@ -72,3 +72,5 @@
 - Added make install and uninstall
 - Optimizer generate a tree from the expression
 - Uses python-psyco when it is available
+- Ability to perform optimizations from GUI
+- Able to (temporarily) store queries with a name

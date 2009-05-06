@@ -33,8 +33,8 @@ class Ui_Form(object):
         self.undo=[] #UndoQueue for relations
         self.selectedRelation=None
     def load_query(self,*index):
-        print index
-        pass
+        self.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
+        
     def save_query(self):
         defname=""
         res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New query"),QtGui.QApplication.translate("Form", "Insert the name for the query"),
@@ -480,7 +480,7 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdDelete,QtCore.SIGNAL("clicked()"),self.deleteTuple)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),self.printRelation)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"),self.showAttributes)
-        QtCore.QObject.connect(self.savedQ,QtCore.SIGNAL("currentIndexChanged(QString*)"),self.load_query)
+        QtCore.QObject.connect(self.savedQ,QtCore.SIGNAL("currentIndexChanged(int)"),self.load_query)
         
         QtCore.QMetaObject.connectSlotsByName(Form)
         Form.setTabOrder(self.txtResult,self.txtQuery)
