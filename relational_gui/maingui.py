@@ -17,7 +17,7 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 from PyQt4 import QtCore, QtGui
-from relational import relation, parser
+from relational import relation, parser, optimizer
 
 import sys
 import about
@@ -31,7 +31,10 @@ class Ui_Form(object):
         self.Survey=None
         self.relations={} #Dictionary for relations
         self.selectedRelation=None
-        
+    def optimize(self):
+        result=optimizer.general_optimize(str(self.txtQuery.text().toUtf8()))
+        self.txtQuery.setText(QtCore.QString.fromUtf8(result))
+        #self.txtQuery.setText(result)
     def execute(self):
         try:
             #Converting string to utf8 and then from qstring to normal string
@@ -373,6 +376,16 @@ class Ui_Form(object):
         self.cmdExecute.setFlat(False)
         self.cmdExecute.setObjectName("cmdExecute")
         self.horizontalLayout.addWidget(self.cmdExecute)
+        
+        
+        self.cmdOptimize = QtGui.QPushButton(Form)
+        self.cmdOptimize.setAutoDefault(False)
+        self.cmdOptimize.setDefault(True)
+        self.cmdOptimize.setFlat(False)
+        self.cmdOptimize.setObjectName("cmdOptimize")
+        self.horizontalLayout.addWidget(self.cmdOptimize)
+        
+        
         self.verticalLayout_7.addLayout(self.horizontalLayout)
         self.label.setBuddy(self.txtResult)
         self.label_2.setBuddy(self.txtQuery)
@@ -394,6 +407,7 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdRename,QtCore.SIGNAL("clicked()"),self.addRename)
         QtCore.QObject.connect(self.cmdArrow,QtCore.SIGNAL("clicked()"),self.addArrow)
         QtCore.QObject.connect(self.cmdExecute,QtCore.SIGNAL("clicked()"),self.execute)
+        QtCore.QObject.connect(self.cmdOptimize,QtCore.SIGNAL("clicked()"),self.optimize)
         QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),self.loadRelation)
         QtCore.QObject.connect(self.cmdSave,QtCore.SIGNAL("clicked()"),self.saveRelation)
         QtCore.QObject.connect(self.cmdUnload,QtCore.SIGNAL("clicked()"),self.unloadRelation)
@@ -404,7 +418,9 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
         Form.setTabOrder(self.txtResult,self.txtQuery)
         Form.setTabOrder(self.txtQuery,self.cmdExecute)
+        Form.setTabOrder(self.txtQuery,self.cmdOptimize)
         Form.setTabOrder(self.cmdExecute,self.lstRelations)
+        Form.setTabOrder(self.cmdOptimize,self.lstRelations)
         Form.setTabOrder(self.lstRelations,self.cmdLoad)
         Form.setTabOrder(self.cmdLoad,self.cmdUnload)
         Form.setTabOrder(self.cmdLoad,self.cmdSave)
@@ -465,6 +481,7 @@ class Ui_Form(object):
         self.label.setText(QtGui.QApplication.translate("Form", "Query", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Form", "=", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdExecute.setText(QtGui.QApplication.translate("Form", "Execute", None, QtGui.QApplication.UnicodeUTF8))    
+        self.cmdOptimize.setText(QtGui.QApplication.translate("Form", "Optimize", None, QtGui.QApplication.UnicodeUTF8))    
 
 if __name__ == "__main__":
     import sys
