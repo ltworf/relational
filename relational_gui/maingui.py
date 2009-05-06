@@ -32,6 +32,13 @@ class Ui_Form(object):
         self.relations={} #Dictionary for relations
         self.undo=[] #UndoQueue for relations
         self.selectedRelation=None
+        
+    def toggle_advanced(self):
+        if self.advancedBox.isVisible():
+            self.advancedBox.hide()
+        else:
+            self.advancedBox.show()
+        
     def undo_optimize(self):
         try:
             self.txtQuery.setText(self.undo.pop())
@@ -365,45 +372,61 @@ class Ui_Form(object):
         self.verticalLayout_3.addWidget(self.groupBox_3)
         self.horizontalLayout_4.addLayout(self.verticalLayout_3)
         self.verticalLayout_7.addLayout(self.horizontalLayout_4)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
+        
+        
+        
+        
+        self.queryLayout = QtGui.QHBoxLayout()
+        self.queryLayout.setObjectName("queryLayout")
         self.label = QtGui.QLabel(Form)
         self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
+        self.queryLayout.addWidget(self.label)
         self.txtResult = QtGui.QLineEdit(Form)
         self.txtResult.setMaximumSize(QtCore.QSize(70,16777215))
         self.txtResult.setObjectName("txtResult")
-        self.horizontalLayout.addWidget(self.txtResult)
+        self.queryLayout.addWidget(self.txtResult)
         self.label_2 = QtGui.QLabel(Form)
         self.label_2.setObjectName("label_2")
-        self.horizontalLayout.addWidget(self.label_2)
+        self.queryLayout.addWidget(self.label_2)
         self.txtQuery = QtGui.QLineEdit(Form)
         self.txtQuery.setObjectName("txtQuery")
-        self.horizontalLayout.addWidget(self.txtQuery)
+        self.queryLayout.addWidget(self.txtQuery)
         self.cmdExecute = QtGui.QPushButton(Form)
         self.cmdExecute.setAutoDefault(False)
         self.cmdExecute.setDefault(True)
         self.cmdExecute.setFlat(False)
         self.cmdExecute.setObjectName("cmdExecute")
-        self.horizontalLayout.addWidget(self.cmdExecute)
+        self.queryLayout.addWidget(self.cmdExecute)
         
+        self.cmdAdvanced = QtGui.QPushButton(Form)
+        self.cmdAdvanced.setAutoDefault(False)
+        self.cmdAdvanced.setFlat(False)
+        self.cmdAdvanced.setObjectName("cmdAdvanced")
+        self.queryLayout.addWidget(self.cmdAdvanced)
+        
+        
+        self.advancedBox = QtGui.QGroupBox(Form)
+        self.advancedBox.setObjectName("advancedBox")
+        self.advancedLayout = QtGui.QHBoxLayout(self.advancedBox)
+        self.advancedLayout.setObjectName("AdvancedLayout")
+        self.advancedBox.hide()
         
         self.cmdOptimize = QtGui.QPushButton(Form)
         self.cmdOptimize.setAutoDefault(False)
-        self.cmdOptimize.setDefault(True)
         self.cmdOptimize.setFlat(False)
         self.cmdOptimize.setObjectName("cmdOptimize")
-        self.horizontalLayout.addWidget(self.cmdOptimize)
+        self.advancedLayout.addWidget(self.cmdOptimize)
         
         self.cmdUndoOptimize = QtGui.QPushButton(Form)
         self.cmdUndoOptimize.setAutoDefault(False)
         self.cmdUndoOptimize.setDefault(True)
         self.cmdUndoOptimize.setFlat(False)
         self.cmdUndoOptimize.setObjectName("cmdUndoOptimize")
-        self.horizontalLayout.addWidget(self.cmdUndoOptimize)
+        self.advancedLayout.addWidget(self.cmdUndoOptimize)
         
+        self.verticalLayout_7.addLayout(self.queryLayout)
+        self.verticalLayout_7.addWidget(self.advancedBox)
         
-        self.verticalLayout_7.addLayout(self.horizontalLayout)
         self.label.setBuddy(self.txtResult)
         self.label_2.setBuddy(self.txtQuery)
 
@@ -424,6 +447,7 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdRename,QtCore.SIGNAL("clicked()"),self.addRename)
         QtCore.QObject.connect(self.cmdArrow,QtCore.SIGNAL("clicked()"),self.addArrow)
         QtCore.QObject.connect(self.cmdExecute,QtCore.SIGNAL("clicked()"),self.execute)
+        QtCore.QObject.connect(self.cmdAdvanced,QtCore.SIGNAL("clicked()"),self.toggle_advanced)
         QtCore.QObject.connect(self.cmdOptimize,QtCore.SIGNAL("clicked()"),self.optimize)
         QtCore.QObject.connect(self.cmdUndoOptimize,QtCore.SIGNAL("clicked()"),self.undo_optimize)
         QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),self.loadRelation)
@@ -436,6 +460,7 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
         Form.setTabOrder(self.txtResult,self.txtQuery)
         Form.setTabOrder(self.txtQuery,self.cmdExecute)
+        Form.setTabOrder(self.txtQuery,self.cmdAdvanced)
         Form.setTabOrder(self.txtQuery,self.cmdOptimize)
         Form.setTabOrder(self.txtQuery,self.cmdUndoOptimize)
         Form.setTabOrder(self.lstRelations,self.cmdLoad)
@@ -458,6 +483,7 @@ class Ui_Form(object):
         self.cmdAbout.setText(QtGui.QApplication.translate("Form", "Docs", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSurvey.setText(QtGui.QApplication.translate("Form", "Survey", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("Form", "Operators", None, QtGui.QApplication.UnicodeUTF8))
+        self.advancedBox.setTitle(QtGui.QApplication.translate("Form", "Advanced", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdProduct.setToolTip(QtGui.QApplication.translate("Form", "Product operator", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdProduct.setText(QtGui.QApplication.translate("Form", "*", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdDifference.setToolTip(QtGui.QApplication.translate("Form", "Difference operator", None, QtGui.QApplication.UnicodeUTF8))
@@ -498,6 +524,7 @@ class Ui_Form(object):
         self.label.setText(QtGui.QApplication.translate("Form", "Query", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Form", "=", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdExecute.setText(QtGui.QApplication.translate("Form", "Execute", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdAdvanced.setText(QtGui.QApplication.translate("Form", "Advanced", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOptimize.setText(QtGui.QApplication.translate("Form", "Optimize", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUndoOptimize.setText(QtGui.QApplication.translate("Form", "Undo optimize", None, QtGui.QApplication.UnicodeUTF8))
 
