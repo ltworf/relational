@@ -32,7 +32,17 @@ class Ui_Form(object):
         self.relations={} #Dictionary for relations
         self.undo=[] #UndoQueue for relations
         self.selectedRelation=None
-        
+    def load_query(self,*index):
+        print index
+        pass
+    def save_query(self):
+        defname=""
+        res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New query"),QtGui.QApplication.translate("Form", "Insert the name for the query"),
+        QtGui.QLineEdit.Normal,defname)
+        if res[1]==False:
+            return
+            
+        self.savedQ.addItem(res[0],QtCore.QVariant(self.txtQuery.text()))
     def toggle_advanced(self):
         if self.advancedBox.isVisible():
             self.advancedBox.hide()
@@ -424,6 +434,18 @@ class Ui_Form(object):
         self.cmdUndoOptimize.setObjectName("cmdUndoOptimize")
         self.advancedLayout.addWidget(self.cmdUndoOptimize)
         
+        
+        self.savedQ= QtGui.QComboBox(Form)
+        self.advancedLayout.addWidget(self.savedQ)
+        
+        self.cmdSaveQ = QtGui.QPushButton(Form)
+        self.cmdSaveQ.setAutoDefault(False)
+        self.cmdSaveQ.setFlat(False)
+        self.cmdSaveQ.setObjectName("cmdSaveQ")
+        self.advancedLayout.addWidget(self.cmdSaveQ)
+        
+        
+        
         self.verticalLayout_7.addLayout(self.queryLayout)
         self.verticalLayout_7.addWidget(self.advancedBox)
         
@@ -450,6 +472,7 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdAdvanced,QtCore.SIGNAL("clicked()"),self.toggle_advanced)
         QtCore.QObject.connect(self.cmdOptimize,QtCore.SIGNAL("clicked()"),self.optimize)
         QtCore.QObject.connect(self.cmdUndoOptimize,QtCore.SIGNAL("clicked()"),self.undo_optimize)
+        QtCore.QObject.connect(self.cmdSaveQ,QtCore.SIGNAL("clicked()"),self.save_query)
         QtCore.QObject.connect(self.cmdLoad,QtCore.SIGNAL("clicked()"),self.loadRelation)
         QtCore.QObject.connect(self.cmdSave,QtCore.SIGNAL("clicked()"),self.saveRelation)
         QtCore.QObject.connect(self.cmdUnload,QtCore.SIGNAL("clicked()"),self.unloadRelation)
@@ -457,12 +480,16 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdDelete,QtCore.SIGNAL("clicked()"),self.deleteTuple)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem*)"),self.printRelation)
         QtCore.QObject.connect(self.lstRelations,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"),self.showAttributes)
+        QtCore.QObject.connect(self.savedQ,QtCore.SIGNAL("currentIndexChanged(QString*)"),self.load_query)
+        
         QtCore.QMetaObject.connectSlotsByName(Form)
         Form.setTabOrder(self.txtResult,self.txtQuery)
         Form.setTabOrder(self.txtQuery,self.cmdExecute)
         Form.setTabOrder(self.txtQuery,self.cmdAdvanced)
         Form.setTabOrder(self.txtQuery,self.cmdOptimize)
         Form.setTabOrder(self.txtQuery,self.cmdUndoOptimize)
+        Form.setTabOrder(self.txtQuery,self.savedQ)
+        Form.setTabOrder(self.txtQuery,self.cmdSaveQ)
         Form.setTabOrder(self.lstRelations,self.cmdLoad)
         Form.setTabOrder(self.cmdLoad,self.cmdUnload)
         Form.setTabOrder(self.cmdLoad,self.cmdSave)
@@ -527,6 +554,7 @@ class Ui_Form(object):
         self.cmdAdvanced.setText(QtGui.QApplication.translate("Form", "Advanced", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOptimize.setText(QtGui.QApplication.translate("Form", "Optimize", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUndoOptimize.setText(QtGui.QApplication.translate("Form", "Undo optimize", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdSaveQ.setText(QtGui.QApplication.translate("Form", "Save query", None, QtGui.QApplication.UnicodeUTF8))
 
 if __name__ == "__main__":
     import sys
