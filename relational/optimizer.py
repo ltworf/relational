@@ -193,8 +193,8 @@ if __name__=="__main__":
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
     print tree("σ i==2 (c ᑌ d - (aᑎb))") == tree("σ i==3 (c ᑌ d - (aᑎb))")
-    a=general_optimize("σ i==2 (c ᑌ d - (aᑎb))")
+    a=general_optimize("π age➡a(π ciccio➡age(R))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
-    print a
+    print '=========',a
     #print node(a)
     #print tokenize("(a)")

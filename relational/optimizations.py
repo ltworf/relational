@@ -117,5 +117,31 @@ def selection_inside_projection(n):
         changes+=selection_inside_projection(n.right)
         changes+=selection_inside_projection(n.left)
     return changes
+
+def subsequent_renames(n):
+    '''This function removes redoundant subsequent renames'''
+    changes=0
+    print "in"
+    if n.name=='π' and n.child.name==n.name:
+        changes=1
+        print "in-in"
+        
+        n.prop+=','+n.child.prop
+
+        _vars={}
+        for i in n.child.prop.split(','):
+            q=i.split('➡')
+            c_vars[q[0]]=q[1]
+        n.child=n.child.child
+        
     
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection]
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        changes+=subsequent_renames(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=subsequent_renames(n.right)
+        changes+=subsequent_renames(n.left)
+    return changes
+
+
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames]
