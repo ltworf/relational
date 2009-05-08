@@ -78,6 +78,29 @@ def down_to_unions_subtractions_intersections(n):
         changes+=down_to_unions_subtractions_intersections(n.right)
         changes+=down_to_unions_subtractions_intersections(n.left)
     return changes
-    
 
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections]
+def duplicated_projection(n):
+    '''This function locates thing like π i ( π j (R)) and replaces
+    them with π i (R)'''
+    changes=0
+    
+    
+    if n.name=='π' and n.child.name=='π':
+        n.child=n.child.child
+        changes+=1
+    
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        changes+=duplicated_projection(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=duplicated_projection(n.right)
+        changes+=duplicated_projection(n.left)
+    return changes
+
+def selection_inside_projection(n):
+    '''This function locates things like  σ j (π k(R)) and
+    converts them into π k(σ j (R))'''
+    changes=0
+    return changes
+    
+    general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection]
