@@ -74,3 +74,4 @@
 - Uses python-psyco when it is available
 - Ability to perform optimizations from GUI
 - Able to (temporarily) store queries with a name
+- Mechanism to add new kind of optimizations, without having to edit all the code

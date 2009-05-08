@@ -101,6 +101,21 @@ def selection_inside_projection(n):
     '''This function locates things like  σ j (π k(R)) and
     converts them into π k(σ j (R))'''
     changes=0
+    
+    if n.name=='σ' and n.child.name=='π':
+        changes=1
+        temp=n.prop
+        n.prop=n.child.prop
+        n.child.prop=temp
+        n.name='π'
+        n.child.name='σ'
+    
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        changes+=selection_inside_projection(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=selection_inside_projection(n.right)
+        changes+=selection_inside_projection(n.left)
     return changes
     
-    general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection]
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection]
