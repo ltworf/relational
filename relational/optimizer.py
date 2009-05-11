@@ -192,8 +192,11 @@ if __name__=="__main__":
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
-    print tree("σ i==2 (c ᑌ d - (aᑎb))") == tree("σ i==3 (c ᑌ d - (aᑎb))")
-    a=general_optimize("π age➡a(π ciccio➡age(R))")
+    #print tree("σ i==2 (c ᑌ d - (aᑎb))") == tree("σ i==3 (c ᑌ d - (aᑎb))")
+    print tree("ρ age➡a,cognome➡cogn(ρ ciccio➡age,nome➡nom(R))")
+    
+    
+    a=general_optimize("ρ age➡a(ρ ciccio➡age(R))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print '=========',a
     #print node(a)

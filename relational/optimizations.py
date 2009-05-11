@@ -121,22 +121,34 @@ def selection_inside_projection(n):
 def subsequent_renames(n):
     '''This function removes redoundant subsequent renames'''
     changes=0
-    print "in"
-    if n.name=='π' and n.child.name==n.name:
-        changes=1
-        print "in-in"
-        
-        n.prop+=','+n.child.prop
-
-        _vars={}
-        for i in n.child.prop.split(','):
-            q=i.split('➡')
-            c_vars[q[0]]=q[1]
-        n.child=n.child.child
-        
     
+    if n.name=='ρ' and n.child.name==n.name:
+        changes=1
+        
+        
+        print "PROP",n.prop,"==========",n.child.prop
+        n.prop+=','+n.child.prop
+        
+        _vars={}
+        for i in n.prop.split(','):
+            q=i.split('➡')
+            _vars[q[0]]=q[1]
+        n.child=n.child.child
+        print _vars
+        for i in list(_vars.keys()):
+            print i
+            if _vars[i] in _vars.keys():
+                #Double rename on attribute
+                print "i:%s\tvars[i]:%s\t_vars[_vars[i]]: %s\n" % (i,_vars[i],_vars[_vars[i]])
+                _vars[i] =  _vars[_vars[i]]
+                _vars.pop(i)
+        n.prop=""
+        print _vars
+        for i in _vars.items():
+            n.prop+="%s➡%s" % (i[0],i[1])
+            
     #recoursive scan
-    if n.kind==optimizer.UNARY:
+    if n.kind==optimizer.UNARY:        
         changes+=subsequent_renames(n.child)
     elif n.kind==optimizer.BINARY:
         changes+=subsequent_renames(n.right)
