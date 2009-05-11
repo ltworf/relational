@@ -100,6 +100,8 @@ def duplicated_projection(n):
 def selection_inside_projection(n):
     '''This function locates things like  σ j (π k(R)) and
     converts them into π k(σ j (R))'''
+    #TODO Document this in the wiki.
+    
     changes=0
     
     if n.name=='σ' and n.child.name=='π':
@@ -132,7 +134,7 @@ def subsequent_renames(n):
         _vars={}
         for i in n.prop.split(','):
             q=i.split('➡')
-            _vars[q[0]]=q[1]
+            _vars[q[0].strip()]=q[1].strip()
         n.child=n.child.child
         print _vars
         for i in list(_vars.keys()):
@@ -145,8 +147,8 @@ def subsequent_renames(n):
         n.prop=""
         print _vars
         for i in _vars.items():
-            n.prop+="%s➡%s" % (i[0],i[1])
-            
+            n.prop+="%s➡%s," % (i[0],i[1])
+        n.prop=n.prop[:-1] #Removing ending comma     
     #recoursive scan
     if n.kind==optimizer.UNARY:        
         changes+=subsequent_renames(n.child)
