@@ -99,9 +99,7 @@ def duplicated_projection(n):
 
 def selection_inside_projection(n):
     '''This function locates things like  σ j (π k(R)) and
-    converts them into π k(σ j (R))'''
-    #TODO Document this in the wiki.
-    
+    converts them into π k(σ j (R))'''    
     changes=0
     
     if n.name=='σ' and n.child.name=='π':
@@ -125,30 +123,34 @@ def subsequent_renames(n):
     changes=0
     
     if n.name=='ρ' and n.child.name==n.name:
+        #Located two nested renames.
         changes=1
         
-        
-        print "PROP",n.prop,"==========",n.child.prop
+        #Joining the attribute into one
         n.prop+=','+n.child.prop
-        
+        n.child=n.child.child
+
+        #Creating a dictionary with the attributes
         _vars={}
         for i in n.prop.split(','):
             q=i.split('➡')
             _vars[q[0].strip()]=q[1].strip()
-        n.child=n.child.child
-        print _vars
+
+        #Scans dictionary to locate things like "a->b,b->c" and replace them with "a->c"
         for i in list(_vars.keys()):
-            print i
             if _vars[i] in _vars.keys():
                 #Double rename on attribute
-                print "i:%s\tvars[i]:%s\t_vars[_vars[i]]: %s\n" % (i,_vars[i],_vars[_vars[i]])
-                _vars[i] =  _vars[_vars[i]]
-                _vars.pop(i)
+                _vars[i] =  _vars[_vars[i]] #Sets value
+                _vars.pop(i) #Removes the unused one
+        
+        #Reset prop var
         n.prop=""
-        print _vars
+        
+        #Generates new prop var
         for i in _vars.items():
             n.prop+="%s➡%s," % (i[0],i[1])
         n.prop=n.prop[:-1] #Removing ending comma     
+
     #recoursive scan
     if n.kind==optimizer.UNARY:        
         changes+=subsequent_renames(n.child)
