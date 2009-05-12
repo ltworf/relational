@@ -437,6 +437,7 @@ class Ui_Form(object):
         
         
         self.savedQ= QtGui.QComboBox(Form)
+        self.savedQ.addItem(QtGui.QApplication.translate("Form", "Select query"),QtCore.QVariant(None))
         self.advancedLayout.addWidget(self.savedQ)
         
         self.cmdSaveQ = QtGui.QPushButton(Form)
