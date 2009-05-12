@@ -257,7 +257,7 @@ def selection_and_product(n,rels):
     #TODO document in the wiki
     changes=0
     
-    if n.name=='σ' and n.child.name=='*':
+    if n.name=='σ' and n.child.name in ('*','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
         l_attr=n.child.left.result_format(rels)
         r_attr=n.child.right.result_format(rels)
         
@@ -354,7 +354,5 @@ def selection_and_product(n,rels):
         changes+=selection_and_product(n.left,rels)
     return changes
         
-    
-
 general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select]
 specific_optimizations=[selection_and_product]

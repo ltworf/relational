@@ -279,7 +279,7 @@ if __name__=="__main__":
     #n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
     #print optimizations.selection_and_product(n,rels)
     
-    print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1*S1)",rels)
+    print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1ᐅᐊS1)",rels)
     
     #print n
     #print n.result_format(rels)
