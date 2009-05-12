@@ -216,7 +216,7 @@ def swap_rename_select(n):
     changes=0
     
     if n.name=='σ' and n.child.name=='ρ':
-        
+        changes=1
         #Dictionary containing attributes of rename
         _vars={}
         for i in n.child.prop.split(','):
@@ -225,13 +225,11 @@ def swap_rename_select(n):
         
         #tokenizes expression in select
         _tokens=tokenize_select(n.prop)
-        print _tokens, _vars
         
         #Renaming stuff
         for i in range(len(_tokens)):
             if _tokens[i] in _vars:
                 _tokens[i]=_vars[_tokens[i]]
-        print _tokens, _vars
         
         n.name='ρ'
         n.child.name='σ'
@@ -241,9 +239,6 @@ def swap_rename_select(n):
         for i in _tokens:
             n.child.prop+=i+ " "
         
-        
-        pass
-    
     #recoursive scan
     if n.kind==optimizer.UNARY:        
         changes+=swap_rename_select(n.child)
