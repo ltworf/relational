@@ -213,6 +213,7 @@ def swap_rename_select(n):
     them with ρ j(σ k(R)). Renaming the attributes used in the
     selection, so the operation is still valid.'''
     #TODO document into the wiki
+    #FIXME selection of date.day won't work.
     changes=0
     
     if n.name=='σ' and n.child.name=='ρ':
@@ -248,4 +249,117 @@ def swap_rename_select(n):
         changes+=swap_rename_select(n.left)
     return changes
 
+def selection_and_product(n,rels):
+    '''This function locates things like σ k (R*Q) and converts them into
+    σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
+    i contains attributes belonging to Q and l contains attributes belonging to both'''
+    
+    #TODO document in the wiki
+    changes=0
+    
+    if n.name=='σ' and n.child.name=='*':
+        changes=1
+        
+        l_attr=n.child.left.result_format(rels)
+        r_attr=n.child.right.result_format(rels)
+        
+        tokens=tokenize_select(n.prop)
+        
+        groups=[]
+        temp=[]
+        
+        for i in tokens:
+            if i=='and':
+                groups.append(temp)
+                temp=[]
+            else:
+                temp.append(i)
+        if len(temp)!=0:
+            groups.append(temp)
+            temp=[]
+        
+        left=[]
+        right=[]
+        both=[]
+        
+        print "Attributi R",r_attr, "Attributi L",l_attr
+        print "Gruppi",groups
+        
+        for i in groups:
+            l_fields=False #has fields in left?
+            r_fields=False #has fields in left?
+            
+            for j in i:
+                if j in l_attr:#Field in left
+                    l_fields=True
+                if j in r_attr:#Field in right
+                    r_fields=True
+            
+            if l_fields and r_fields:#Fields in both
+                both.append(i)
+            elif l_fields:
+                left.append(i)
+            elif r_fields:
+                right.append(i)
+            else:#Unknown.. adding in both
+                both.append(i)
+        
+        print "left", left, "right",right,"both",both
+        
+        #Preparing left selection
+        if len(left)>0:
+            l_node=optimizer.node()
+            l_node.name='σ'
+            l_node.kind=optimizer.UNARY
+            l_node.child=n.child.left
+            l_node.prop=''
+            n.child.left=l_node
+            while len(left)>0:
+                c=left.pop(0)
+                for i in c:
+                    l_node.prop+=i+ ' '
+                if len(left)>0:
+                    l_node.prop+=' and '
+        
+        #Preparing right selection
+        if len(right)>0:
+            r_node=optimizer.node()
+            r_node.name='σ'
+            r_node.prop=''
+            r_node.kind=optimizer.UNARY
+            r_node.child=n.child.right
+            n.child.right=r_node
+            while len(right)>0:
+                c=right.pop(0)
+                for i in c:
+                    r_node.prop+=i+ ' '
+                if len(right)>0:
+                    r_node.prop+=' and '
+                    
+        #Changing main selection
+        n.prop=''
+        if len(both)!=0:
+            while len(both)>0:
+                c=both.pop(0)
+                for i in c:
+                    n.prop+=i+ ' '
+                if len(both)>1:
+                    n.prop+=' and '                    
+        else:#No need for general select
+            n.name=n.child.name
+            n.kind=n.child.kind
+            n.left=n.child.left
+            n.right=n.child.right
+            
+    #recoursive scan
+    if n.kind==optimizer.UNARY:        
+        changes+=selection_and_product(n.child,rels)
+    elif n.kind==optimizer.BINARY:
+        changes+=selection_and_product(n.right,rels)
+        changes+=selection_and_product(n.left,rels)
+    return changes
+        
+    
+
 general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select]
+specific_optimizations=[selection_and_product]

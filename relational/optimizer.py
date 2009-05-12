@@ -39,11 +39,7 @@ class node (object):
     If the node is a binary operator, it will have left and right properties.
     
     If the node is a unary operator, it will have a child, pointing to the child node and a prop containing
-    the string with the props of the operation.
-    
-    It can be helpful to know the fields returned by an operation. Providing a dictionary with names and instances
-    of relations in the constructor, the node is able to return the list of fields that the result will have.
-    '''
+    the string with the props of the operation.'''
     kind=None
     
     def __init__(self,expression=None):
@@ -80,14 +76,12 @@ class node (object):
         '''This function returns a list containing the fields that the resulting relation will have.
         Since it needs to know real instances of relations, it requires a dictionary where keys are
         the names of the relations and the values are the relation objects.'''
-        print "Rels========",rels
         if rels==None:            
             return
         
         if self.kind==RELATION:
             return rels[self.name].header.attributes
         elif self.kind==BINARY and self.name in ('-','ᑌ','ᑎ'):
-            print "OK"
             return self.left.result_format(rels)
         elif self.name=='π':
             l=[]
@@ -246,19 +240,23 @@ if __name__=="__main__":
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
     
-    import relation
+    import relation,optimizations
     
     rels={}
     rels["P1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
     rels["P2"]= relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
     rels["R1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/person_room.csv")
     rels["R2"]= relation.relation("/home/salvo/dev/relational/trunk/samples/person_room.csv")
+    rels["D1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/dates.csv")
+    rels["S1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/skillo.csv")
     print rels
     #n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
-    n=tree("P1 ᐅᐊ R2")
+    n=tree("σ id==3 and id==indice and indice==2 and name==5(P1 * S1)")
+    print optimizations.selection_and_product(n,rels)
+    
     print n
     print n.result_format(rels)
-        
+    
     #a=general_optimize("σ age==3 and qq<=2 or nome!='ciccio d\\'urso'(ρ ciccio➡age,nome➡nom(R-Q))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     #print a
