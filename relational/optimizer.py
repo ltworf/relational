@@ -31,12 +31,26 @@ u_operators=('π','σ','ρ')
 
 
 class node (object):
-    '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.'''
+    '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
+    
+    The kind property says if the node is a binary operator, unary operator or relation.
+    Since relations are leaves, a relation node will have no attribute for children.
+    
+    If the node is a binary operator, it will have left and right properties.
+    
+    If the node is a unary operator, it will have a child, pointing to the child node and a prop containing
+    the string with the props of the operation.
+    
+    It can be helpful to know the fields returned by an operation. Providing a dictionary with names and instances
+    of relations in the constructor, the node is able to return the list of fields that the result will have.
+    '''
     kind=None
     
     def __init__(self,expression=None):
+        
         if expression==None or len(expression)==0:
             return
+        
         '''Generates the tree from the tokenized expression'''
         while len(expression)==1 and isinstance(expression[0],list): #We have a list, removing
                 expression=expression[0]
@@ -61,6 +75,46 @@ class node (object):
                 
                 return       
         pass
+    
+    def result_format(self,rels):
+        '''This function returns a list containing the fields that the resulting relation will have.
+        Since it needs to know real instances of relations, it requires a dictionary where keys are
+        the names of the relations and the values are the relation objects.'''
+        print "Rels========",rels
+        if rels==None:            
+            return
+        
+        if self.kind==RELATION:
+            return rels[self.name].header.attributes
+        elif self.kind==BINARY and self.name in ('-','ᑌ','ᑎ'):
+            print "OK"
+            return self.left.result_format(rels)
+        elif self.name=='π':
+            l=[]
+            for i in self.prop.split(','):
+                l.append(i.strip())
+            return l
+        elif self.name=='*':
+            return self.left.result_format(rels)+self.right.result_format(rels)
+        elif self.name=='σ' :
+            return self.child.result_format(rels)
+        elif self.name=='ρ':
+            _vars={}
+            for i in n.prop.split(','):
+                q=i.split('➡')
+                _vars[q[0].strip()]=q[1].strip()
+            
+            _fields=self.child.result_format(rels)
+            for i in range(len(_fields)):
+                if _fields[i] in _vars:
+                    _fields[i]=_vars[_fields[i]]
+            return _fields
+        elif self.name in ('ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
+            return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
+            
+            
+        pass
+    
     def __eq__(self,other):
         if not (isinstance(other,node) and self.name==other.name and self.kind==other.kind):
             return False
@@ -185,17 +239,28 @@ def general_optimize(expression):
 
 if __name__=="__main__":
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
-    #n=node(u"((((((((((((2)))))))))))) - (3 * 5) - 2")
     #n=node(u"π a,b (d-a*b)")
     
     #print n.__str__()
     #a= tokenize("(a - (a ᑌ b) * π a,b (a-b)) - ρ 123 (a)")
     #a= tokenize(u"π a,b (a*b)")
     #a=tokenize("(a-b*c)*(b-c)")
-    #print tree("σ i==2 (c ᑌ d - (aᑎb))") == tree("σ i==3 (c ᑌ d - (aᑎb))")
+    
+    import relation
+    
+    rels={}
+    rels["P1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
+    rels["P2"]= relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
+    rels["R1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/person_room.csv")
+    rels["R2"]= relation.relation("/home/salvo/dev/relational/trunk/samples/person_room.csv")
+    print rels
+    #n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
+    n=tree("P1 ᐅᐊ R2")
+    print n
+    print n.result_format(rels)
         
-    a=general_optimize("σ age==3 and qq<=2 or nome!='ciccio d\\'urso'(ρ ciccio➡age,nome➡nom(R-Q))")
+    #a=general_optimize("σ age==3 and qq<=2 or nome!='ciccio d\\'urso'(ρ ciccio➡age,nome➡nom(R-Q))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
-    print a
+    #print a
     #print node(a)
     #print tokenize("(a)")

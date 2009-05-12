@@ -173,28 +173,28 @@ def tokenize_select(expression):
     selection. The expression can't contain parenthesis.'''
     op=('//=','**=','and','not','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or','+','-','*','/','&','|','^','~','<','>','%','=')
     tokens=[]
-    temp=""
+    temp=''
     
     while len(expression)!=0:
         expression=expression.strip()
         if expression[0:3] in op:#3char op
             tokens.append(temp)
-            temp=""
+            temp=''
             tokens.append(expression[0:3])
             expression=expression[3:]
         elif expression[0:2] in op:#2char op
             tokens.append(temp)
-            temp=""
+            temp=''
             tokens.append(expression[0:2])
             expression=expression[2:]
         elif expression[0:1] in op:#1char op
             tokens.append(temp)
-            temp=""
+            temp=''
             tokens.append(expression[0:1])
             expression=expression[1:]
-        elif expression[0:1]=="'":#Quote
+        elif expression[0:1]=="'":#String
             end=expression.index("'",1)
-            while expression[end-1]=="\\":
+            while expression[end-1]=='\\':
                 end=expression.index("'",end+1)
             
             #Add string to list
@@ -231,13 +231,14 @@ def swap_rename_select(n):
             if _tokens[i] in _vars:
                 _tokens[i]=_vars[_tokens[i]]
         
+        #Swapping operators
         n.name='ρ'
         n.child.name='σ'
         
         n.prop=n.child.prop
-        n.child.prop=""
+        n.child.prop=''
         for i in _tokens:
-            n.child.prop+=i+ " "
+            n.child.prop+=i+ ' '
         
     #recoursive scan
     if n.kind==optimizer.UNARY:        
