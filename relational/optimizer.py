@@ -220,6 +220,33 @@ def tree(expression):
     the root node using the Node class defined in this module.'''
     return node(tokenize(expression))
 
+def optimize_all(expression,rels):
+    '''This function performs all the available optimizations'''
+    n=tree(expression) #Gets the tree
+    total=1
+    while total!=0:
+        total=0
+        for i in optimizations.specific_optimizations:
+            total+=i(n,rels) #Performs the optimization
+            print n
+        for i in optimizations.general_optimizations:
+            total+=i(n) #Performs the optimization
+            print n
+    return n.__str__()
+            
+
+def specific_optimize(expression,rels):
+    '''This function performs specific optimizations. Means that it will need to
+    know the fields used by the relations'''
+    n=tree(expression) #Gets the tree
+    total=1
+    while total!=0:
+        total=0
+        for i in optimizations.specific_optimizations:
+            total+=i(n,rels) #Performs the optimization
+    return n.__str__()
+            
+
 def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
     know the fields used by the relations'''
@@ -251,11 +278,13 @@ if __name__=="__main__":
     rels["S1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/skillo.csv")
     print rels
     #n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
-    n=tree("σ id==3 and id==indice and indice==2 and name==5 or name<2(P1 * S1)")
-    print optimizations.selection_and_product(n,rels)
+    #n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
+    #print optimizations.selection_and_product(n,rels)
     
-    print n
-    print n.result_format(rels)
+    print specific_optimize("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)",rels)
+    
+    #print n
+    #print n.result_format(rels)
     
     #a=general_optimize("σ age==3 and qq<=2 or nome!='ciccio d\\'urso'(ρ ciccio➡age,nome➡nom(R-Q))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")

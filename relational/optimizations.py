@@ -258,8 +258,6 @@ def selection_and_product(n,rels):
     changes=0
     
     if n.name=='σ' and n.child.name=='*':
-        changes=1
-        
         l_attr=n.child.left.result_format(rels)
         r_attr=n.child.right.result_format(rels)
         
@@ -282,9 +280,6 @@ def selection_and_product(n,rels):
         right=[]
         both=[]
         
-        print "Attributi R",r_attr, "Attributi L",l_attr
-        print "Gruppi",groups
-        
         for i in groups:
             l_fields=False #has fields in left?
             r_fields=False #has fields in left?
@@ -304,10 +299,9 @@ def selection_and_product(n,rels):
             else:#Unknown.. adding in both
                 both.append(i)
         
-        print "left", left, "right",right,"both",both
-        
         #Preparing left selection
         if len(left)>0:
+            changes=1
             l_node=optimizer.node()
             l_node.name='σ'
             l_node.kind=optimizer.UNARY
@@ -323,6 +317,7 @@ def selection_and_product(n,rels):
         
         #Preparing right selection
         if len(right)>0:
+            changes=1
             r_node=optimizer.node()
             r_node.name='σ'
             r_node.prop=''
