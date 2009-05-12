@@ -168,12 +168,81 @@ def subsequent_renames(n):
         changes+=subsequent_renames(n.left)
     return changes
 
+def tokenize_select(expression):
+    '''This function returns the list of tokens present in a
+    selection. The expression can't contain parenthesis.'''
+    op=('//=','**=','and','not','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or','+','-','*','/','&','|','^','~','<','>','%','=')
+    tokens=[]
+    temp=""
+    
+    while len(expression)!=0:
+        expression=expression.strip()
+        if expression[0:3] in op:#3char op
+            tokens.append(temp)
+            temp=""
+            tokens.append(expression[0:3])
+            expression=expression[3:]
+        elif expression[0:2] in op:#2char op
+            tokens.append(temp)
+            temp=""
+            tokens.append(expression[0:2])
+            expression=expression[2:]
+        elif expression[0:1] in op:#1char op
+            tokens.append(temp)
+            temp=""
+            tokens.append(expression[0:1])
+            expression=expression[1:]
+        elif expression[0:1]=="'":#Quote
+            end=expression.index("'",1)
+            while expression[end-1]=="\\":
+                end=expression.index("'",end+1)
+            
+            #Add string to list
+            tokens.append(expression[0:end+1])
+            expression=expression[end+1:]
+        else:
+            temp+=expression[0:1]
+            expression=expression[1:]
+            pass
+    if len(temp)!=0:
+        tokens.append(temp)
+    return tokens
+
 def swap_rename_select(n):
     '''This function locates things like σ k(ρ j(R)) and replaces
     them with ρ j(σ k(R)). Renaming the attributes used in the
     selection, so the operation is still valid.'''
     #TODO document into the wiki
     changes=0
+    
+    if n.name=='σ' and n.child.name=='ρ':
+        
+        #Dictionary containing attributes of rename
+        _vars={}
+        for i in n.child.prop.split(','):
+            q=i.split('➡')
+            _vars[q[1].strip()]=q[0].strip()
+        
+        #tokenizes expression in select
+        _tokens=tokenize_select(n.prop)
+        print _tokens, _vars
+        
+        #Renaming stuff
+        for i in range(len(_tokens)):
+            if _tokens[i] in _vars:
+                _tokens[i]=_vars[_tokens[i]]
+        print _tokens, _vars
+        
+        n.name='ρ'
+        n.child.name='σ'
+        
+        n.prop=n.child.prop
+        n.child.prop=""
+        for i in _tokens:
+            n.child.prop+=i+ " "
+        
+        
+        pass
     
     #recoursive scan
     if n.kind==optimizer.UNARY:        
