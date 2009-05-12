@@ -168,5 +168,19 @@ def subsequent_renames(n):
         changes+=subsequent_renames(n.left)
     return changes
 
+def swap_rename_select(n):
+    '''This function locates things like σ k(ρ j(R)) and replaces
+    them with ρ j(σ k(R)). Renaming the attributes used in the
+    selection, so the operation is still valid.'''
+    #TODO document into the wiki
+    changes=0
+    
+    #recoursive scan
+    if n.kind==optimizer.UNARY:        
+        changes+=swap_rename_select(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=swap_rename_select(n.right)
+        changes+=swap_rename_select(n.left)
+    return changes
 
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames]
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select]
