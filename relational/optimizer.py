@@ -251,7 +251,7 @@ if __name__=="__main__":
     rels["S1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/skillo.csv")
     print rels
     #n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
-    n=tree("σ id==3 and id==indice and indice==2 and name==5(P1 * S1)")
+    n=tree("σ id==3 and id==indice and indice==2 and name==5 or name<2(P1 * S1)")
     print optimizations.selection_and_product(n,rels)
     
     print n
