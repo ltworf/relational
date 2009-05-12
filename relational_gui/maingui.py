@@ -56,7 +56,8 @@ class Ui_Form(object):
             pass
     def optimize(self):
         self.undo.insert(len(self.undo),self.txtQuery.text()) #Storing the query in undo list
-        result=optimizer.general_optimize(str(self.txtQuery.text().toUtf8()))
+        
+        result=optimizer.optimize_all(str(self.txtQuery.text().toUtf8()),self.relations)
         self.txtQuery.setText(QtCore.QString.fromUtf8(result))
         
         #self.txtQuery.setText(result)

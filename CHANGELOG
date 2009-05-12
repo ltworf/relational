@@ -75,3 +75,10 @@
 - Ability to perform optimizations from GUI
 - Able to (temporarily) store queries with a name
 - Mechanism to add new kind of optimizations, without having to edit all the code
+- Implemented duplicated_select general optimization
+- Implemented down_to_unions_subtractions_intersections general optimization
+- Implemented duplicated_projection general optimization
+- Implemented selection_inside_projection general optimization
+- Implemented subsequent_renames general optimization
+- Implemented swap_rename_select general optimization
+- Implemented selection_and_product specific optimization
