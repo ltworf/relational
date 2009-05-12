@@ -338,7 +338,7 @@ def selection_and_product(n,rels):
                 c=both.pop(0)
                 for i in c:
                     n.prop+=i+ ' '
-                if len(both)>1:
+                if len(both)>0:
                     n.prop+=' and '                    
         else:#No need for general select
             n.name=n.child.name

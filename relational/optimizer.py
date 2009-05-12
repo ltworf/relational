@@ -228,10 +228,8 @@ def optimize_all(expression,rels):
         total=0
         for i in optimizations.specific_optimizations:
             total+=i(n,rels) #Performs the optimization
-            print n
         for i in optimizations.general_optimizations:
             total+=i(n) #Performs the optimization
-            print n
     return n.__str__()
             
 
@@ -281,7 +279,7 @@ if __name__=="__main__":
     #n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
     #print optimizations.selection_and_product(n,rels)
     
-    print specific_optimize("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)",rels)
+    print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1*S1)",rels)
     
     #print n
     #print n.result_format(rels)
