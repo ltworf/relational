@@ -288,6 +288,7 @@ def selection_and_product(n,rels):
             r_fields=False #has fields in left?
             
             for j in i:
+                j=j.split('.')[0]
                 if j in l_attr:#Field in left
                     l_fields=True
                 if j in r_attr:#Field in right
