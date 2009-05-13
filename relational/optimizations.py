@@ -212,7 +212,6 @@ def swap_rename_select(n):
     '''This function locates things like σ k(ρ j(R)) and replaces
     them with ρ j(σ k(R)). Renaming the attributes used in the
     selection, so the operation is still valid.'''
-    #TODO document into the wiki
     changes=0
     
     if n.name=='σ' and n.child.name=='ρ':
@@ -256,8 +255,6 @@ def selection_and_product(n,rels):
     '''This function locates things like σ k (R*Q) and converts them into
     σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
     i contains attributes belonging to Q and l contains attributes belonging to both'''
-    
-    #TODO document in the wiki
     changes=0
     
     if n.name=='σ' and n.child.name in ('*','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
