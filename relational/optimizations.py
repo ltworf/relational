@@ -213,7 +213,6 @@ def swap_rename_select(n):
     them with ρ j(σ k(R)). Renaming the attributes used in the
     selection, so the operation is still valid.'''
     #TODO document into the wiki
-    #FIXME selection of date.day won't work.
     changes=0
     
     if n.name=='σ' and n.child.name=='ρ':
@@ -229,8 +228,12 @@ def swap_rename_select(n):
         
         #Renaming stuff
         for i in range(len(_tokens)):
-            if _tokens[i] in _vars:
-                _tokens[i]=_vars[_tokens[i]]
+            splitted=_tokens[i].split('.',1)
+            if splitted[0] in _vars:
+                if len(splitted)==1:
+                    _tokens[i]=_vars[_tokens[i].split('.')[0]]
+                else:
+                    _tokens[i]=_vars[_tokens[i].split('.')[0]]+'.'+splitted[1]
         
         #Swapping operators
         n.name='ρ'
