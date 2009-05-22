@@ -284,8 +284,8 @@ if __name__=="__main__":
     #print n
     #print n.result_format(rels)
     
-    a=general_optimize("ρ i➡index(ρ id➡i (people))")
+    a=general_optimize("ρ index➡index(ρ index➡id(ρ index➡index(σ index==3(ρ id➡index (people)))))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
-    #print a
+    print a
     #print node(a)
     #print tokenize("(a)")

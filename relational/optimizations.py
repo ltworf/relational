@@ -160,14 +160,65 @@ def selection_inside_projection(n):
         changes+=selection_inside_projection(n.left)
     return changes
 
+def futile_renames(n):
+    '''This function removes redoundant subsequent renames'''
+    #TODO document in the wiki
+    changes=0
+    
+    if n.name=='ρ':
+        #Located two nested renames.
+        changes=1
+
+        #Creating a dictionary with the attributes
+        _vars={}
+        for i in n.prop.split(','):
+            q=i.split('➡')
+            _vars[q[0].strip()]=q[1].strip()
+        #Scans dictionary to locate things like "a->b,b->c" and replace them with "a->c"
+        for key in list(_vars.keys()):
+            try:
+                value=_vars[key]
+            except:
+                value=None
+            if key==value:
+                _vars.pop(value) #Removes the unused one        
+        #Reset prop var
+        n.prop=""
+        
+        #Generates new prop var
+        for i in _vars.items():
+            n.prop+="%s➡%s," % (i[0],i[1])
+        n.prop=n.prop[:-1] #Removing ending comma
+        
+        if len(n.prop)==0: #Nothing to rename, removing the rename op
+            n.name=n.child.name
+            n.kind=n.child.kind
+            if n.kind==optimizer.UNARY:
+                n.prop=n.child.prop
+                n.child=n.child.child
+            elif n.kind==optimizer.BINARY:
+                n.left=n.child.left
+                n.right=n.child.right
+
+    #recoursive scan
+    if n.kind==optimizer.UNARY:        
+        changes+=futile_renames(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=futile_renames(n.right)
+        changes+=futile_renames(n.left)
+    return changes
+    
 def subsequent_renames(n):
     '''This function removes redoundant subsequent renames'''
+    
+    '''Purges renames like id->id Since it's needed to be performed BEFORE this one
+    so it is not in the list with the other optimizations'''
+    futile_renames(n) 
     changes=0
     
     if n.name=='ρ' and n.child.name==n.name:
         #Located two nested renames.
         changes=1
-        
         #Joining the attribute into one
         n.prop+=','+n.child.prop
         n.child=n.child.child
@@ -177,13 +228,20 @@ def subsequent_renames(n):
         for i in n.prop.split(','):
             q=i.split('➡')
             _vars[q[0].strip()]=q[1].strip()
-
         #Scans dictionary to locate things like "a->b,b->c" and replace them with "a->c"
-        for i in list(_vars.keys()):
-            if _vars[i] in _vars.keys():
-                #Double rename on attribute
-                _vars[i] =  _vars[_vars[i]] #Sets value
-                _vars.pop(i) #Removes the unused one
+        for key in list(_vars.keys()):
+            try:
+                value=_vars[key]
+            except:
+                value=None
+            if value in _vars.keys():
+                if _vars[value]!=key:
+                    #Double rename on attribute
+                    _vars[key] =  _vars[_vars[key]] #Sets value
+                    _vars.pop(value) #Removes the unused one
+                else: #Cycle rename a->b,b->a
+                    _vars.pop(value) #Removes the unused one
+                    _vars.pop(key) #Removes the unused one
         
         #Reset prop var
         n.prop=""
@@ -191,7 +249,17 @@ def subsequent_renames(n):
         #Generates new prop var
         for i in _vars.items():
             n.prop+="%s➡%s," % (i[0],i[1])
-        n.prop=n.prop[:-1] #Removing ending comma     
+        n.prop=n.prop[:-1] #Removing ending comma
+        
+        if len(n.prop)==0: #Nothing to rename, removing the rename op
+            n.name=n.child.name
+            n.kind=n.child.kind
+            if n.kind==optimizer.UNARY:
+                n.prop=n.child.prop
+                n.child=n.child.child
+            elif n.kind==optimizer.BINARY:
+                n.left=n.child.left
+                n.right=n.child.right
 
     #recoursive scan
     if n.kind==optimizer.UNARY:        
