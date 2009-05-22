@@ -52,6 +52,39 @@ def duplicated_select(n):
         changes+=duplicated_select(n.left)
     return changes
 
+def futile_union_intersection_subtraction(n):
+    '''This function locates things like r ᑌ r, and replaces them with r'''
+    #TODO document into the wiki
+    changes=0
+    
+    if n.name in ('ᑌ','ᑎ') and n.left==n.right:
+        changes=1
+        n.name=n.left.name
+        n.kind=n.left.kind
+        if n.kind==optimizer.UNARY:
+            n.child=n.left.child
+            n.prop=n.left.prop
+        elif n.kind==optimizer.BINARY:
+            n.right=n.left.right
+            n.left=n.left.left
+        pass
+    elif n.name=='-' and n.left==n.right:#Empty relation
+        changes=1
+        n.kind=optimizer.UNARY
+        n.name='σ'
+        n.prop='False'
+        n.child=n.left
+        #n.left=n.right=None
+
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        changes+=futile_union_intersection_subtraction(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=futile_union_intersection_subtraction(n.right)
+        changes+=futile_union_intersection_subtraction(n.left)
+    return changes
+        
+
 def down_to_unions_subtractions_intersections(n):
     '''This funcion locates things like σ i==2 (c ᑌ d), where the union
     can be a subtraction and an intersection and replaces them with
@@ -355,5 +388,5 @@ def selection_and_product(n,rels):
         changes+=selection_and_product(n.left,rels)
     return changes
         
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select]
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction]
 specific_optimizations=[selection_and_product]

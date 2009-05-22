@@ -17,22 +17,10 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-'''This module offers capability of executing relational queries in parallel.'''
+'''This module converts SQL queries into relational algebra expressions'''
 
-import optimizer
-
-def weight (n,rels):
-    '''This function returns a weight that tries to give an approssimation of the
-    time that will be required to execute the expression'''
-    if n.kind==optimizer.RELATION: #Weight of a relation is its size
-        r=rels[n.name]
-        return len(r.content) * len(r.header.attributes)
-    elif n.kind==optimizer.BINARY and n.name=='ρ':
-        pass
-    elif n.kind==optimizer.BINARY and n.name=='σ':
-        pass
-    elif n.kind==optimizer.BINARY and n.name=='π':
-        pass
+def stub():
+    "NATURAL JOIN"
+    "CROSS JOIN" ,
     
-        
-    pass
+    

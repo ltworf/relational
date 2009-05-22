@@ -267,24 +267,24 @@ if __name__=="__main__":
     
     import relation,optimizations
     
-    rels={}
+    '''rels={}
     rels["P1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
     rels["P2"]= relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
     rels["R1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/person_room.csv")
     rels["R2"]= relation.relation("/home/salvo/dev/relational/trunk/samples/person_room.csv")
     rels["D1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/dates.csv")
     rels["S1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/skillo.csv")
-    print rels
+    print rels'''
     #n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
     #n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
     #print optimizations.selection_and_product(n,rels)
     
-    print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1ᐅᐊS1)",rels)
+    #print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1ᐅᐊS1)",rels)
     
     #print n
     #print n.result_format(rels)
     
-    #a=general_optimize("σ age==3 and qq<=2 or nome!='ciccio d\\'urso'(ρ ciccio➡age,nome➡nom(R-Q))")
+    a=general_optimize("ρ i➡index(ρ id➡i (people))")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     #print a
     #print node(a)
