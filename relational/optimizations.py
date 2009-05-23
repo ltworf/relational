@@ -160,9 +160,54 @@ def selection_inside_projection(n):
         changes+=selection_inside_projection(n.left)
     return changes
 
+def swap_union_renames(n):
+    '''This function locates things like 
+    ρ a➡b(R) ᑌ ρ a➡b(Q)
+    and replaces them with
+    ρ a➡b(R ᑌ Q).
+    Does the same with subtraction and intersection'''
+    #TODO document into the wiki
+    changes=0
+    
+    if n.name in ('-','ᑌ','ᑎ') and n.left.name==n.right.name and n.left.name=='ρ':
+        l_vars={}
+        for i in n.left.prop.split(','):
+            q=i.split('➡')
+            l_vars[q[0].strip()]=q[1].strip()
+            
+        r_vars={}
+        for i in n.right.prop.split(','):
+            q=i.split('➡')
+            r_vars[q[0].strip()]=q[1].strip()
+            
+        if r_vars==l_vars:
+            changes=1
+            
+            #Copying self, but child will be child of renames
+            q=optimizer.node()
+            q.name=n.name
+            q.kind=optimizer.BINARY
+            q.left=n.left.child
+            q.right=n.right.child
+            
+            n.name='ρ'
+            n.kind=optimizer.UNARY
+            n.child=q
+            n.prop=n.left.prop
+            n.left=n.right=None
+            
+            
+    #recoursive scan
+    if n.kind==optimizer.UNARY:
+        changes+=swap_union_renames(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=swap_union_renames(n.right)
+        changes+=swap_union_renames(n.left)
+    return changes
+            
+
 def futile_renames(n):
-    '''This function removes redoundant subsequent renames'''
-    #TODO document in the wiki
+    '''This function purges renames like id->id'''
     changes=0
     
     if n.name=='ρ':
@@ -209,7 +254,7 @@ def futile_renames(n):
     return changes
     
 def subsequent_renames(n):
-    '''This function removes redoundant subsequent renames'''
+    '''This function removes redoundant subsequent renames joining them into one'''
     
     '''Purges renames like id->id Since it's needed to be performed BEFORE this one
     so it is not in the list with the other optimizations'''
@@ -456,5 +501,5 @@ def selection_and_product(n,rels):
         changes+=selection_and_product(n.left,rels)
     return changes
         
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction]
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames]
 specific_optimizations=[selection_and_product]
