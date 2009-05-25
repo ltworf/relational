@@ -80,7 +80,7 @@ class node (object):
             return
         
         if self.kind==RELATION:
-            return rels[self.name].header.attributes
+            return list(rels[self.name].header.attributes)
         elif self.kind==BINARY and self.name in ('-','ᑌ','ᑎ'):
             return self.left.result_format(rels)
         elif self.name=='π':
@@ -94,7 +94,7 @@ class node (object):
             return self.child.result_format(rels)
         elif self.name=='ρ':
             _vars={}
-            for i in n.prop.split(','):
+            for i in self.prop.split(','):
                 q=i.split('➡')
                 _vars[q[0].strip()]=q[1].strip()
             
