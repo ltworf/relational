@@ -37,9 +37,11 @@ if __name__ == "__main__":
         psyco.full()
     except:
         pass
-            
+    
     app = QtGui.QApplication(sys.argv)
     Form = QtGui.QWidget()
+    
+    Form.setFont(QtGui.QFont("Lucida Sans Unicode"))
     
     ui = maingui.Ui_Form()
     ui.setupUi(Form)

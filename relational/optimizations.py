@@ -354,6 +354,56 @@ def tokenize_select(expression):
         tokens.append(temp)
     return tokens
 
+def swap_rename_projection(n):
+    '''This function locates things like π k(ρ j(R))
+    and replaces them with ρ j(π k(R)).
+    This will let rename work on a hopefully smaller set
+    and more important, will hopefully allow further optimizations.
+    Will also eliminate fields in the rename that are cutted in the projection.
+    '''
+    #TODO document into the wiki
+    changes=0
+    
+    if n.name=='π' and n.child.name=='ρ':
+        changes=1
+        
+        #π index,name(ρ id➡index(R))
+        _vars={}
+        for i in n.child.prop.split(','):
+            q=i.split('➡')
+            _vars[q[1].strip()]=q[0].strip()
+        
+        _pr=n.prop.split(',')
+        for i in range(len(_pr)):
+            try:
+                _pr[i]=_vars[_pr[i].strip()]
+            except:
+                pass
+        
+        _pr_reborn=n.prop.split(',')
+        for i in list(_vars.keys()):
+            if i not in _pr_reborn:
+                _vars.pop(i)
+        n.name=n.child.name
+        n.prop=''
+        for i in _vars.keys():
+            n.prop+='%s➡%s,' % (_vars[i],i)
+        n.prop=n.prop[:-1]
+        
+        n.child.name='π'
+        n.child.prop=''
+        for i in _pr:
+            n.child.prop+=i+','
+        n.child.prop=n.child.prop[:-1]
+    
+    #recoursive scan
+    if n.kind==optimizer.UNARY:        
+        changes+=swap_rename_projection(n.child)
+    elif n.kind==optimizer.BINARY:
+        changes+=swap_rename_projection(n.right)
+        changes+=swap_rename_projection(n.left)
+    return changes
+
 def swap_rename_select(n):
     '''This function locates things like σ k(ρ j(R)) and replaces
     them with ρ j(σ k(R)). Renaming the attributes used in the
@@ -501,5 +551,5 @@ def selection_and_product(n,rels):
         changes+=selection_and_product(n.left,rels)
     return changes
         
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames]
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames,swap_rename_projection]
 specific_optimizations=[selection_and_product]

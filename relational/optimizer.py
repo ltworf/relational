@@ -284,7 +284,7 @@ if __name__=="__main__":
     #print n
     #print n.result_format(rels)
     
-    a=general_optimize("ρ id➡ciao(R) - ρ id➡ciao(Q) ")
+    a=general_optimize('π index,name,turiddu (ρ qq➡ii,id➡index(R))')#"ρ id➡ciao(R) - ρ id➡ciao(Q) ")
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print a
     #print node(a)

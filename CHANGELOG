@@ -84,3 +84,4 @@
 - Implemented selection_and_product specific optimization
 - Added stub for converting SQL to relational algebra
 - Implemented futile_union_intersection_subtraction general optimization
+- Implemented swap_rename_projection general optimization
