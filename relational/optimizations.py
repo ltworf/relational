@@ -32,6 +32,37 @@ A function will have to return the number of changes performed on the tree.
 
 import optimizer
 
+def replace_node(replace,replacement):
+    '''This function replaces "replace" node with the node "with",
+    the father of the node will now point to the with node'''
+    replace.name=replacement.name
+    replace.kind=replacement.kind
+
+    if replace.kind==optimizer.UNARY:
+        replace.child=replacement.child
+        replace.prop=replacement.prop
+    elif replace.kind==optimizer.BINARY:
+        replace.right=replacement.right
+        replace.left=replacement.left
+
+def recoursive_scan(function,node,rels=None):
+    changes=0
+    #recoursive scan
+    if node.kind==optimizer.UNARY:
+        if rels!=None:
+            changes+=function(node.child,rels)
+        else:
+            changes+=function(node.child)
+    elif n.kind==optimizer.BINARY:
+        if rels!=None:
+            changes+=function(node.right,rels)
+            changes+=function(node.left,rels)
+        else:
+            changes+=function(node.right)
+            changes+=function(node.left)
+    return changes
+    
+
 def duplicated_select(n):
     changes=0
     '''This function locates and deletes things like
@@ -53,21 +84,29 @@ def duplicated_select(n):
     return changes
 
 def futile_union_intersection_subtraction(n):
-    '''This function locates things like r ᑌ r, and replaces them with r'''
+    '''This function locates things like r ᑌ r, and replaces them with r.
+    σ k (r) ᑌ r with r
+    σ k (r) ᑎ r with σ k (r)
+    '''
     #TODO document into the wiki
     changes=0
     
     if n.name in ('ᑌ','ᑎ') and n.left==n.right:
         changes=1
-        n.name=n.left.name
-        n.kind=n.left.kind
-        if n.kind==optimizer.UNARY:
-            n.child=n.left.child
-            n.prop=n.left.prop
-        elif n.kind==optimizer.BINARY:
-            n.right=n.left.right
-            n.left=n.left.left
-        pass
+        replace_node(n,n.left)
+    elif (n.name == 'ᑌ' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Union of two equal things, but one has a selection
+        changes=1
+        if n.left!='σ':#Selection on left. replacing self with right.
+            replace_node(n,n.right)
+        else:#Selection on left. replacing self with right.
+            replace_node(n,n.left)
+    elif (n.name == 'ᑎ' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Intersection of two equal things, but one has a selection
+        changes=1
+        if n.left!='σ':#Swapping with the selection
+            replace_node(n,n.left)
+        else:
+            replace_node(n,n.right)
+    #elif (n.name == '-' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Intersection of two equal things, but one has a selection
     elif n.name=='-' and n.left==n.right:#Empty relation
         changes=1
         n.kind=optimizer.UNARY
@@ -236,15 +275,7 @@ def futile_renames(n):
         n.prop=n.prop[:-1] #Removing ending comma
         
         if len(n.prop)==0: #Nothing to rename, removing the rename op
-            n.name=n.child.name
-            n.kind=n.child.kind
-            if n.kind==optimizer.UNARY:
-                n.prop=n.child.prop
-                n.child=n.child.child
-            elif n.kind==optimizer.BINARY:
-                n.left=n.child.left
-                n.right=n.child.right
-
+            replace_node(n,n.child)
     #recoursive scan
     if n.kind==optimizer.UNARY:        
         changes+=futile_renames(n.child)
@@ -297,14 +328,7 @@ def subsequent_renames(n):
         n.prop=n.prop[:-1] #Removing ending comma
         
         if len(n.prop)==0: #Nothing to rename, removing the rename op
-            n.name=n.child.name
-            n.kind=n.child.kind
-            if n.kind==optimizer.UNARY:
-                n.prop=n.child.prop
-                n.child=n.child.child
-            elif n.kind==optimizer.BINARY:
-                n.left=n.child.left
-                n.right=n.child.right
+            replace_node(n,n.child)
 
     #recoursive scan
     if n.kind==optimizer.UNARY:        
@@ -538,10 +562,7 @@ def selection_and_product(n,rels):
                 if len(both)>0:
                     n.prop+=' and '                    
         else:#No need for general select
-            n.name=n.child.name
-            n.kind=n.child.kind
-            n.left=n.child.left
-            n.right=n.child.right
+            replace_node(n,n.child)
             
     #recoursive scan
     if n.kind==optimizer.UNARY:        

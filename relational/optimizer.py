@@ -283,8 +283,10 @@ if __name__=="__main__":
     
     #print n
     #print n.result_format(rels)
+    '''σ k (r) ᑌ r with r
+    σ k (r) ᑎ r with σ k (r)'''
     
-    a=general_optimize('π index,name,turiddu (ρ qq➡ii,id➡index(R))')#"ρ id➡ciao(R) - ρ id➡ciao(Q) ")
+    a=general_optimize('σ k (r) ᑎ r')
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print a
     #print node(a)
