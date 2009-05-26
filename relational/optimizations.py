@@ -46,6 +46,7 @@ def replace_node(replace,replacement):
         replace.left=replacement.left
 
 def recoursive_scan(function,node,rels=None):
+    '''Does a recoursive optimization on the tree'''
     changes=0
     #recoursive scan
     if node.kind==optimizer.UNARY:
@@ -53,7 +54,7 @@ def recoursive_scan(function,node,rels=None):
             changes+=function(node.child,rels)
         else:
             changes+=function(node.child)
-    elif n.kind==optimizer.BINARY:
+    elif node.kind==optimizer.BINARY:
         if rels!=None:
             changes+=function(node.right,rels)
             changes+=function(node.left,rels)
@@ -74,14 +75,7 @@ def duplicated_select(n):
         changes=1
         changes+=duplicated_select(n)
         
-
-    #recoursive scan
-    if n.kind==optimizer.UNARY:
-        changes+=duplicated_select(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=duplicated_select(n.right)
-        changes+=duplicated_select(n.left)
-    return changes
+    return changes+recoursive_scan(duplicated_select,n)
 
 def futile_union_intersection_subtraction(n):
     '''This function locates things like r ᑌ r, and replaces them with r.
@@ -115,14 +109,7 @@ def futile_union_intersection_subtraction(n):
         n.child=n.left
         #n.left=n.right=None
 
-    #recoursive scan
-    if n.kind==optimizer.UNARY:
-        changes+=futile_union_intersection_subtraction(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=futile_union_intersection_subtraction(n.right)
-        changes+=futile_union_intersection_subtraction(n.left)
-    return changes
-        
+    return changes+recoursive_scan(futile_union_intersection_subtraction,n)
 
 def down_to_unions_subtractions_intersections(n):
     '''This funcion locates things like σ i==2 (c ᑌ d), where the union
@@ -152,31 +139,18 @@ def down_to_unions_subtractions_intersections(n):
         n.kind=optimizer.BINARY
         changes+=1
     
-    #recoursive scan
-    if n.kind==optimizer.UNARY:
-        changes+=down_to_unions_subtractions_intersections(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=down_to_unions_subtractions_intersections(n.right)
-        changes+=down_to_unions_subtractions_intersections(n.left)
-    return changes
+    return changes+recoursive_scan(down_to_unions_subtractions_intersections,n)
 
 def duplicated_projection(n):
     '''This function locates thing like π i ( π j (R)) and replaces
     them with π i (R)'''
     changes=0
-    
-    
+        
     if n.name=='π' and n.child.name=='π':
         n.child=n.child.child
         changes+=1
     
-    #recoursive scan
-    if n.kind==optimizer.UNARY:
-        changes+=duplicated_projection(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=duplicated_projection(n.right)
-        changes+=duplicated_projection(n.left)
-    return changes
+    return changes+recoursive_scan(duplicated_projection,n)
 
 def selection_inside_projection(n):
     '''This function locates things like  σ j (π k(R)) and
@@ -191,13 +165,7 @@ def selection_inside_projection(n):
         n.name='π'
         n.child.name='σ'
     
-    #recoursive scan
-    if n.kind==optimizer.UNARY:
-        changes+=selection_inside_projection(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=selection_inside_projection(n.right)
-        changes+=selection_inside_projection(n.left)
-    return changes
+    return changes+recoursive_scan(selection_inside_projection,n)
 
 def swap_union_renames(n):
     '''This function locates things like 
@@ -235,15 +203,7 @@ def swap_union_renames(n):
             n.prop=n.left.prop
             n.left=n.right=None
             
-            
-    #recoursive scan
-    if n.kind==optimizer.UNARY:
-        changes+=swap_union_renames(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=swap_union_renames(n.right)
-        changes+=swap_union_renames(n.left)
-    return changes
-            
+    return changes+recoursive_scan(swap_union_renames,n)
 
 def futile_renames(n):
     '''This function purges renames like id->id'''
@@ -276,13 +236,8 @@ def futile_renames(n):
         
         if len(n.prop)==0: #Nothing to rename, removing the rename op
             replace_node(n,n.child)
-    #recoursive scan
-    if n.kind==optimizer.UNARY:        
-        changes+=futile_renames(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=futile_renames(n.right)
-        changes+=futile_renames(n.left)
-    return changes
+        
+    return changes+recoursive_scan(futile_renames,n)
     
 def subsequent_renames(n):
     '''This function removes redoundant subsequent renames joining them into one'''
@@ -330,13 +285,7 @@ def subsequent_renames(n):
         if len(n.prop)==0: #Nothing to rename, removing the rename op
             replace_node(n,n.child)
 
-    #recoursive scan
-    if n.kind==optimizer.UNARY:        
-        changes+=subsequent_renames(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=subsequent_renames(n.right)
-        changes+=subsequent_renames(n.left)
-    return changes
+    return changes+recoursive_scan(subsequent_renames,n)
 
 def tokenize_select(expression):
     '''This function returns the list of tokens present in a
@@ -420,13 +369,8 @@ def swap_rename_projection(n):
             n.child.prop+=i+','
         n.child.prop=n.child.prop[:-1]
     
-    #recoursive scan
-    if n.kind==optimizer.UNARY:        
-        changes+=swap_rename_projection(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=swap_rename_projection(n.right)
-        changes+=swap_rename_projection(n.left)
-    return changes
+    
+    return changes+recoursive_scan(swap_rename_projection,n)
 
 def swap_rename_select(n):
     '''This function locates things like σ k(ρ j(R)) and replaces
@@ -462,14 +406,8 @@ def swap_rename_select(n):
         n.child.prop=''
         for i in _tokens:
             n.child.prop+=i+ ' '
-        
-    #recoursive scan
-    if n.kind==optimizer.UNARY:        
-        changes+=swap_rename_select(n.child)
-    elif n.kind==optimizer.BINARY:
-        changes+=swap_rename_select(n.right)
-        changes+=swap_rename_select(n.left)
-    return changes
+    
+    return changes+recoursive_scan(swap_rename_select,n)
 
 def selection_and_product(n,rels):
     '''This function locates things like σ k (R*Q) and converts them into
@@ -564,13 +502,7 @@ def selection_and_product(n,rels):
         else:#No need for general select
             replace_node(n,n.child)
             
-    #recoursive scan
-    if n.kind==optimizer.UNARY:        
-        changes+=selection_and_product(n.child,rels)
-    elif n.kind==optimizer.BINARY:
-        changes+=selection_and_product(n.right,rels)
-        changes+=selection_and_product(n.left,rels)
-    return changes
+    return changes+recoursive_scan(selection_and_product,n,rels)
         
 general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames,swap_rename_projection]
 specific_optimizations=[selection_and_product]

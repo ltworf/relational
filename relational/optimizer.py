@@ -286,7 +286,7 @@ if __name__=="__main__":
     '''σ k (r) ᑌ r with r
     σ k (r) ᑎ r with σ k (r)'''
     
-    a=general_optimize('σ k (r) ᑎ r')
+    a=general_optimize('π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))')
     #a=general_optimize("σ i==2 (σ b>5 (d))")
     print a
     #print node(a)
