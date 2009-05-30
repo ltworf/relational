@@ -90,13 +90,13 @@ def futile_union_intersection_subtraction(n):
         replace_node(n,n.left)
     elif (n.name == 'ᑌ' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Union of two equal things, but one has a selection
         changes=1
-        if n.left!='σ':#Selection on left. replacing self with right.
+        if n.left=='σ':#Selection on left. replacing self with right.
             replace_node(n,n.right)
         else:#Selection on left. replacing self with right.
             replace_node(n,n.left)
     elif (n.name == 'ᑎ' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Intersection of two equal things, but one has a selection
         changes=1
-        if n.left!='σ':#Swapping with the selection
+        if n.left=='σ':#Swapping with the selection
             replace_node(n,n.left)
         else:
             replace_node(n,n.right)
