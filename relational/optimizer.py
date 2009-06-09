@@ -48,21 +48,37 @@ class node (object):
             return
         
         '''Generates the tree from the tokenized expression'''
-        while len(expression)==1 and isinstance(expression[0],list): #We have a list, removing
+        
+        #If the list contains only a list, it will consider the lower level list.
+        #This will allow things like ((((((a))))) to work
+        while len(expression)==1 and isinstance(expression[0],list): 
                 expression=expression[0]
         
-        if len(expression)==1 and isinstance(expression[0],str): #We have a string (relation name)
+        #The list contains only 1 string. Means it is the name of a relation
+        if len(expression)==1 and isinstance(expression[0],str): 
             self.kind=RELATION
             self.name=expression[0]
             return
-        for i in range(len(expression)-1,-1,-1): #Expression from right to left
+            
+        '''Expression from right to left, searching for binary operators
+        this means that binary operators have lesser priority than
+        unary operators.
+        It find the operator with lesser priority, uses it as root of this
+        (sub)tree using everything on its left as left parameter (so building
+        a left subtree with the part of the list located on left) and doing 
+        the same on right.
+        Since it searches for strings, and expressions into parenthesis are
+        within sub-lists, they won't be found here, ensuring that they will
+        have highest priority.'''
+        for i in range(len(expression)-1,-1,-1): 
             if expression[i] in b_operators: #Binary operator              
                 self.kind=BINARY
                 self.name=expression[i]
                 self.left=node(expression[:i]) 
                 self.right=node(expression[i+1:])
                 return
-        for i in range(len(expression)-1,-1,-1): #Expression from right to left
+        '''Searches for unary operators, parsing from right to left'''
+        for i in range(len(expression)-1,-1,-1):
             if expression[i] in u_operators: #Unary operator
                 self.kind=UNARY
                 self.name=expression[i]
@@ -154,7 +170,7 @@ def tokenize(expression):
     sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
         means that the others open must be counted to determine which close is the right one.'''
     
-    expression=expression.strip()
+    expression=expression.strip() #Removes initial and endind spaces
     state=0
     '''
     0 initial and useless
@@ -178,7 +194,9 @@ def tokenize(expression):
                     if par_count==0:
                         end=i
                         break
+            #Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
+            #Removes the entire parentesis and content from the expression
             expression=expression[end+1:].strip()
         
         elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary 2 bytes
