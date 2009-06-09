@@ -22,240 +22,20 @@
 For now it is highly experimental, and it shouldn't be used in 3rd party applications.'''
 
 import optimizations
+import parser
 
-RELATION=0
-UNARY=1
-BINARY=2
-b_operators=('*','-','ᑌ','ᑎ','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ')
-u_operators=('π','σ','ρ')
 
-op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'}
-
-class node (object):
-    '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
-    
-    The kind property says if the node is a binary operator, unary operator or relation.
-    Since relations are leaves, a relation node will have no attribute for children.
-    
-    If the node is a binary operator, it will have left and right properties.
-    
-    If the node is a unary operator, it will have a child, pointing to the child node and a prop containing
-    the string with the props of the operation.'''
-    kind=None
-    
-    def __init__(self,expression=None):
-        
-        if expression==None or len(expression)==0:
-            return
-        
-        '''Generates the tree from the tokenized expression'''
-        
-        #If the list contains only a list, it will consider the lower level list.
-        #This will allow things like ((((((a))))) to work
-        while len(expression)==1 and isinstance(expression[0],list): 
-                expression=expression[0]
-        
-        #The list contains only 1 string. Means it is the name of a relation
-        if len(expression)==1 and isinstance(expression[0],str): 
-            self.kind=RELATION
-            self.name=expression[0]
-            return
-            
-        '''Expression from right to left, searching for binary operators
-        this means that binary operators have lesser priority than
-        unary operators.
-        It find the operator with lesser priority, uses it as root of this
-        (sub)tree using everything on its left as left parameter (so building
-        a left subtree with the part of the list located on left) and doing 
-        the same on right.
-        Since it searches for strings, and expressions into parenthesis are
-        within sub-lists, they won't be found here, ensuring that they will
-        have highest priority.'''
-        for i in range(len(expression)-1,-1,-1): 
-            if expression[i] in b_operators: #Binary operator              
-                self.kind=BINARY
-                self.name=expression[i]
-                self.left=node(expression[:i]) 
-                self.right=node(expression[i+1:])
-                return
-        '''Searches for unary operators, parsing from right to left'''
-        for i in range(len(expression)-1,-1,-1):
-            if expression[i] in u_operators: #Unary operator
-                self.kind=UNARY
-                self.name=expression[i]
-                self.prop=expression[1+i].strip()
-                self.child=node(expression[2+i])
-                
-                return       
-        pass
-    def toPython(self):
-        '''This method converts the expression into python code'''
-        if self.name in b_operators:
-            return '%s.%s(%s)' % (self.left.toPython(),op_functions[self.name],self.right.toPython())
-        elif self.name in u_operators:
-            prop =self.prop
-            
-            #Converting parameters
-            if self.name=='π':#Projection
-                prop='\"%s\"' %  prop.replace(' ','').replace(',','\",\"')
-            elif self.name=="ρ": #Rename
-                prop='{\"%s\"}' % prop.replace(',','\",\"').replace('➡','\":\"').replace(' ','')
-            else: #Selection
-                prop='\"%s\"' %  prop
-                        
-            return '%s.%s(%s)' % (self.child.toPython(),op_functions[self.name],prop)
-        else:
-            return self.name
-        pass
-    def result_format(self,rels):
-        '''This function returns a list containing the fields that the resulting relation will have.
-        Since it needs to know real instances of relations, it requires a dictionary where keys are
-        the names of the relations and the values are the relation objects.'''
-        if rels==None:            
-            return
-        
-        if self.kind==RELATION:
-            return list(rels[self.name].header.attributes)
-        elif self.kind==BINARY and self.name in ('-','ᑌ','ᑎ'):
-            return self.left.result_format(rels)
-        elif self.name=='π':
-            l=[]
-            for i in self.prop.split(','):
-                l.append(i.strip())
-            return l
-        elif self.name=='*':
-            return self.left.result_format(rels)+self.right.result_format(rels)
-        elif self.name=='σ' :
-            return self.child.result_format(rels)
-        elif self.name=='ρ':
-            _vars={}
-            for i in self.prop.split(','):
-                q=i.split('➡')
-                _vars[q[0].strip()]=q[1].strip()
-            
-            _fields=self.child.result_format(rels)
-            for i in range(len(_fields)):
-                if _fields[i] in _vars:
-                    _fields[i]=_vars[_fields[i]]
-            return _fields
-        elif self.name in ('ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
-            return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
-            
-            
-        pass
-    
-    def __eq__(self,other):
-        if not (isinstance(other,node) and self.name==other.name and self.kind==other.kind):
-            return False
-        
-        if self.kind==UNARY:
-            if other.prop!=self.prop:
-                return False
-            return self.child==other.child
-        if self.kind==BINARY:
-            return self.left==other.left and self.right==other.right
-        return True
-    def __str__(self):
-        if (self.kind==RELATION):
-            return self.name
-        elif (self.kind==UNARY):
-            return self.name + " "+ self.prop+ " (" + self.child.__str__() +")"
-        elif (self.kind==BINARY):
-            if self.left.kind==RELATION:
-                le=self.left.__str__()
-            else:
-                le="("+self.left.__str__()+")"
-            if self.right.kind==RELATION:
-                re=self.right.__str__()
-            else:
-                re="("+self.right.__str__()+")"
-                
-            return (le+ self.name +re)
-
-def tokenize(expression):
-    '''This function converts an expression into a list where
-    every token of the expression is an item of a list. Expressions into
-    parenthesis will be converted into sublists.'''
-    items=[] #List for the tokens
-    
-    '''This is a state machine. Initial status is determined by the starting of the
-    expression. There are the following statuses:
-    
-    relation: this is the status if the expressions begins with something else than an
-        operator or a parenthesis.
-    binary operator: this is the status when parsing a binary operator, nothing much to say
-    unary operator: this status is more complex, since it will be followed by a parameter AND a
-        sub-expression.
-    sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
-        means that the others open must be counted to determine which close is the right one.'''
-    
-    expression=expression.strip() #Removes initial and endind spaces
-    state=0
-    '''
-    0 initial and useless
-    1 previous stuff was a relation
-    2 previous stuff was a sub-expression
-    3 previous stuff was a unary operator
-    4 previous stuff was a binary operator
-    '''
-
-    while len(expression)>0:
-        if expression.startswith('('): #Parenthesis state
-            state=2
-            par_count=0 #Count of parenthesis
-            end=0
-            
-            for i in range(len(expression)):
-                if expression[i]=='(':
-                    par_count+=1
-                elif expression[i]==')':
-                    par_count-=1
-                    if par_count==0:
-                        end=i
-                        break
-            #Appends the tokenization of the content of the parenthesis
-            items.append(tokenize(expression[1:end]))
-            #Removes the entire parentesis and content from the expression
-            expression=expression[end+1:].strip()
-        
-        elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary 2 bytes
-            items.append(expression[0:2]) #Adding operator in the top of the list
-            expression=expression[2:].strip() #Removing operator from the expression
-            par=expression.find('(')
-        
-            items.append(expression[:par]) #Inserting parameter of the operator
-            expression=expression[par:].strip() #Removing parameter from the expression
-        elif expression.startswith("*") or expression.startswith("-"): # Binary 1 byte
-            items.append(expression[0])
-            expression=expression[1:].strip() #1 char from the expression
-            state=4
-        elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short 3 bytes
-            items.append(expression[0:3]) #Adding operator in the top of the list
-            expression=expression[3:].strip() #Removing operator from the expression
-
-            state=4
-        elif expression.startswith("ᐅ"): #Binary long
-            i=expression.find("ᐊ")
-            items.append(expression[:i+3])
-            expression=expression[i+3:].strip()
-            
-            state=4
-        else: #Relation (hopefully)
-            if state==1: #Previous was a relation, appending to the last token
-                i=items.pop()
-                items.append(i+expression[0])
-                expression=expression[1:].strip() #1 char from the expression
-            else:
-                state=1
-                items.append(expression[0])
-                expression=expression[1:].strip() #1 char from the expression
-    
-    return items
-
-def tree(expression):
-    '''This function parses a relational algebra expression into a tree and returns
-    the root node using the Node class defined in this module.'''
-    return node(tokenize(expression))
+#Stuff that was here before, keeping it for compatibility
+RELATION=parser.RELATION
+UNARY=parser.UNARY
+BINARY=parser.BINARY
+b_operators=parser.b_operators
+u_operators=parser.u_operators
+op_functions=parser.op_functions
+node=parser.node
+tokenize=parser.tokenize
+tree=parser.tree
+#End of the stuff
 
 def optimize_all(expression,rels):
     '''This function performs all the available optimizations'''
@@ -281,7 +61,6 @@ def specific_optimize(expression,rels):
             total+=i(n,rels) #Performs the optimization
     return n.__str__()
             
-
 def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
     know the fields used by the relations'''
@@ -321,9 +100,7 @@ if __name__=="__main__":
     
     '''
     σ skill=='C' (π id,name,chief,age (σ chief==i and age>a (ρ id➡i,age➡a(π id,age(people))*people)) ᐅᐊ skills)
-    (π id,name,chief,age (σ chief == i  and age > a  ((ρ age➡a,id➡i (π id,age (people)))*people)))ᐅᐊ(σ skill == 'C'  (skills))
-    
-    
+    (π id,name,chief,age (σ chief == i  and age > a  ((ρ age➡a,id➡i (π id,age (people)))*people)))ᐅᐊ(σ skill == 'C'  (skills))    
     '''
     
     #print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1ᐅᐊS1)",rels)
