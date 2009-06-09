@@ -29,6 +29,7 @@ BINARY=2
 b_operators=('*','-','ᑌ','ᑎ','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ')
 u_operators=('π','σ','ρ')
 
+op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'}
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
@@ -87,7 +88,23 @@ class node (object):
                 
                 return       
         pass
-    
+    def toPython(self):
+        '''This method converts the expression into python code'''
+        if self.name in b_operators:
+            return '%s.%s(%s)' % (self.left.toPython(),op_functions[self.name],self.right.toPython())
+        elif self.name in u_operators:
+            prop =self.prop
+            
+            #Converting parameters
+            if self.name=='π':#Projection
+                prop=prop.replace(' ','').replace(',','\",\"')
+            elif self.name=="ρ": #Rename
+                prop=prop.replace(',','\",\"').replace('➡','\":\"').replace(' ','')
+                        
+            return '%s.%s(\"%s\")' % (self.child.toPython(),op_functions[self.name],prop)
+        else:
+            return self.name
+        pass
     def result_format(self,rels):
         '''This function returns a list containing the fields that the resulting relation will have.
         Since it needs to know real instances of relations, it requires a dictionary where keys are
@@ -293,8 +310,11 @@ if __name__=="__main__":
     rels["D1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/dates.csv")
     rels["S1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/skillo.csv")
     print rels'''
-    #n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
+    n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
     #n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
+    print n
+    print n.toPython()
+    
     #print optimizations.selection_and_product(n,rels)
     
     #print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1ᐅᐊS1)",rels)
@@ -304,8 +324,8 @@ if __name__=="__main__":
     '''σ k (r) ᑌ r with r
     σ k (r) ᑎ r with σ k (r)'''
     
-    a=general_optimize('π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))')
+    #a=general_optimize('π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))')
     #a=general_optimize("σ i==2 (σ b>5 (d))")
-    print a
+    #print a
     #print node(a)
     #print tokenize("(a)")
