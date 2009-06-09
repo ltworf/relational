@@ -97,11 +97,13 @@ class node (object):
             
             #Converting parameters
             if self.name=='π':#Projection
-                prop=prop.replace(' ','').replace(',','\",\"')
+                prop='\"%s\"' %  prop.replace(' ','').replace(',','\",\"')
             elif self.name=="ρ": #Rename
-                prop=prop.replace(',','\",\"').replace('➡','\":\"').replace(' ','')
+                prop='{\"%s\"}' % prop.replace(',','\",\"').replace('➡','\":\"').replace(' ','')
+            else: #Selection
+                prop='\"%s\"' %  prop
                         
-            return '%s.%s(\"%s\")' % (self.child.toPython(),op_functions[self.name],prop)
+            return '%s.%s(%s)' % (self.child.toPython(),op_functions[self.name],prop)
         else:
             return self.name
         pass
@@ -316,6 +318,13 @@ if __name__=="__main__":
     print n.toPython()
     
     #print optimizations.selection_and_product(n,rels)
+    
+    '''
+    σ skill=='C' (π id,name,chief,age (σ chief==i and age>a (ρ id➡i,age➡a(π id,age(people))*people)) ᐅᐊ skills)
+    (π id,name,chief,age (σ chief == i  and age > a  ((ρ age➡a,id➡i (π id,age (people)))*people)))ᐅᐊ(σ skill == 'C'  (skills))
+    
+    
+    '''
     
     #print specific_optimize("σ name==skill and age>21 and id==indice and skill=='C'(P1ᐅᐊS1)",rels)
     

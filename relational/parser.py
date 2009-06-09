@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # coding=UTF-8
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
@@ -16,6 +17,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
+
+import optimizer
+
 def parse(expr):
     '''This function parses a relational algebra expression, converting it into python, 
     executable by eval function to get the result of the expression.
@@ -46,120 +50,8 @@ def parse(expr):
     ρid➡i,name➡n(π a,b(A))
     A ᐅᐊ B
     '''
-    symbols=("σ","π","ρ")
+    return optimizer.tree(expr).toPython()
     
-    starts=[]#List with starts and ends
-    parenthesis=0
-    lexpr=list(expr)
-    #Parses the string finding all 1st level parenthesis
-    for i in range(len(lexpr)):
-        if lexpr[i]=="(":
-            if parenthesis==0:
-                starts.append(i+1)
-            parenthesis+=1
-        elif lexpr[i]==")":
-            parenthesis-=1
-            if parenthesis==0:
-                starts.append(i)
-            
-    
-    if len(starts)==0: #No parenthesis: no operators with parameters
-        return parse_op(expr)
-    
-    while len(starts)>0:
-        #Converting the last complex operator into python
-        end=starts.pop()
-        start=starts.pop()
-        
-        internal=parse(expr[start:end])
-        
-        endp=start-1
-        symbol=""
-        for i in range(endp,-1,-1):
-            if expr[i:i+2] in symbols:
-                symbol=expr[i:i+2]
-                start=i+2
-                break
-            if expr[i:i+1] ==")":
-                break #No symbol before
-            
-        parameters=expr[start:endp]
-        
-        res="" #String for result
-        if symbol=="π":#Projection
-            params=""
-            count=0
-            for i in parameters.split(","):
-                if count!=0:
-                    params+=","
-                else:
-                    count=1
-                params+="\"%s\"" % (i.strip())
-
-            res="%s.projection(%s)" % (internal,params)
-            expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
-        elif symbol== "σ": #Selection
-            res="%s.selection(\"%s\")" % (internal,parameters)
-            expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
-        elif symbol=="ρ": #Rename
-            params=parameters.replace(",","\",\"").replace("➡","\":\"").replace(" ","")
-            res="%s.rename({\"%s\"})" % (internal,params)
-            expr= ("%s%s%s") % (expr[0:start-2],res,expr[end+1:])
-        else:
-            res="(%s)" % (internal)
-            expr= ("%s%s%s") % (expr[0:start-1],res,expr[end+1:])
-        #Last complex operator is replaced with it's python code
-        #Next cycle will do the same to the new last unparsed complex operator
-        #At the end, parse_op will convert operators without parameters
-    return parse_op(expr)
-
-def parse_op(expr):
-    '''This function parses a relational algebra expression including only operators 
-    without parameters, converting it into python.
-    Executable by eval function to get the result of the expression.'''
-    
-    result=""
-    symbols={}
-    
-    symbols["*"]=".product(%s)"
-    symbols["-"]=".difference(%s)"
-    symbols["ᑌ"]=".union(%s)"
-    symbols["ᑎ"]=".intersection(%s)"
-    symbols["ᐅLEFTᐊ"]=".outer_left(%s)"
-    symbols["ᐅRIGHTᐊ"]=".outer_right(%s)"
-    symbols["ᐅFULLᐊ"]=".outer(%s)"
-    symbols["ᐅᐊ"]=".join(%s)"
-    
-    
-    #We want to avoid to parse expressions within quotes.
-    #We split the string into an array, and we parse only the ones with even index
-    quotes=expr.split('"');
-    
-    
-    
-    for i in range (0,len(quotes),2):
-        for j in symbols:
-            quotes[i]=quotes[i].replace(j,"_____%s_____"% (j))
-    
-    #The parts outside the quotes was parsed, put the string together again 
-    if (len(quotes)>1):  
-        expr= '"'.join(quotes)
-    else:
-        expr= quotes[0]
-    
-    tokens=expr.split("_____")
-    
-    i=0;
-    tk_l=len(tokens)
-    while i<tk_l:
-        if tokens[i] not in symbols:
-            result+=tokens[i].strip()
-        else:
-            result+=symbols[tokens[i]] % (tokens[i+1].strip())
-            i+=1
-        i+=1
-    return result
-            
 if __name__=="__main__":
     while True:
         e=raw_input("Expression: ")

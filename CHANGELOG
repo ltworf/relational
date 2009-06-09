@@ -85,3 +85,4 @@
 - Added stub for converting SQL to relational algebra
 - Implemented futile_union_intersection_subtraction general optimization
 - Implemented swap_rename_projection general optimization
+- Replaced old relational algebra to python compiler with new one based on the new tokenizer/parser (Rev 188)
