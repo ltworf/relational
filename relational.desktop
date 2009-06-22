@@ -1,6 +1,9 @@
 [Desktop Entry]
 Name=Relational
-Comment=Relational Algebra
+GenericName=Relational Algebra
+GenericName[it]=Algebra Relazionale
+Comment=Learn and experiment relational algebra
+Comment[it]=Impara l'algebra relazionale
 Exec=relational
 Icon=kexi
 Terminal=0
