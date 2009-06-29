@@ -31,6 +31,8 @@ A function will have to return the number of changes performed on the tree.
 '''
 
 import optimizer
+import parser
+sel_op=('//=','**=','and','not','in','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or','+','-','*','/','&','|','^','~','<','>','%','=','(',')',',','[',']')
 
 def replace_node(replace,replacement):
     '''This function replaces "replace" node with the node "with",
@@ -287,44 +289,82 @@ def subsequent_renames(n):
 
     return changes+recoursive_scan(subsequent_renames,n)
 
+class level_string(str):
+    level=0
+
 def tokenize_select(expression):
     '''This function returns the list of tokens present in a
-    selection. The expression can't contain parenthesis.'''
-    op=('//=','**=','and','not','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or','+','-','*','/','&','|','^','~','<','>','%','=')
+    selection. The expression can contain parenthesis.
+    It will use a subclass of str with the attribute level, which
+    will specify the nesting level of the token into parenthesis.'''
+    
+    l=0
+    while l!=len(expression):
+        l=len(expression)
+        if expression.startswith('(') and parser.find_matching_parenthesis(expression)+1==len(expression):
+            expression= expression[1:-1]
+    
     tokens=[]
     temp=''
+    level=0
     
     while len(expression)!=0:
         expression=expression.strip()
-        if expression[0:3] in op:#3char op
-            tokens.append(temp)
+        
+        if expression[0:1]=='(': #Expression into parenthesis
+            level+=1
+        elif expression[0:1]==')':
+            level-=1
+        
+        if expression[0:3] in sel_op:#3char op
+            t=level_string(temp)
+            t.level=level
+            tokens.append(t)
             temp=''
-            tokens.append(expression[0:3])
+            t=level_string(expression[0:3])
+            t.level=level            
+            tokens.append(t)
             expression=expression[3:]
-        elif expression[0:2] in op:#2char op
-            tokens.append(temp)
+        elif expression[0:2] in sel_op:#2char op
+            t=level_string(temp)
+            t.level=level
+            tokens.append(t)
             temp=''
-            tokens.append(expression[0:2])
+            t=level_string(expression[0:2])
+            t.level=level
+            tokens.append(t)
             expression=expression[2:]
-        elif expression[0:1] in op:#1char op
-            tokens.append(temp)
+        elif expression[0:1] in sel_op:#1char op
+            t=level_string(temp)
+            t.level=level
+            tokens.append(t)
             temp=''
-            tokens.append(expression[0:1])
+            t=level_string(expression[0:1])
+            t.level=level
+            tokens.append(t)
             expression=expression[1:]
         elif expression[0:1]=="'":#String
             end=expression.index("'",1)
             while expression[end-1]=='\\':
                 end=expression.index("'",end+1)
-            
             #Add string to list
-            tokens.append(expression[0:end+1])
+            t=level_string(expression[0:end+1])
+            t.level=level
+            tokens.append(t)
             expression=expression[end+1:]
         else:
             temp+=expression[0:1]
             expression=expression[1:]
             pass
     if len(temp)!=0:
-        tokens.append(temp)
+        t=level_string(temp)
+        t.level=level
+        tokens.append(t)
+    while True:
+        try:
+            tokens.remove('')
+        except:
+            break
     return tokens
 
 def swap_rename_projection(n):
@@ -425,7 +465,7 @@ def selection_and_product(n,rels):
         temp=[]
         
         for i in tokens:
-            if i=='and':
+            if i=='and' and i.level==0:
                 groups.append(temp)
                 temp=[]
             else:
@@ -442,7 +482,7 @@ def selection_and_product(n,rels):
             l_fields=False #has fields in left?
             r_fields=False #has fields in left?
             
-            for j in i:
+            for j in set(i).difference(sel_op):
                 j=j.split('.')[0]
                 if j in l_attr:#Field in left
                     l_fields=True
@@ -473,6 +513,8 @@ def selection_and_product(n,rels):
                     l_node.prop+=i+ ' '
                 if len(left)>0:
                     l_node.prop+=' and '
+            if '(' in l_node.prop:
+                l_node.prop='(%s)' % l_node.prop
         
         #Preparing right selection
         if len(right)>0:
@@ -489,7 +531,8 @@ def selection_and_product(n,rels):
                     r_node.prop+=i+ ' '
                 if len(right)>0:
                     r_node.prop+=' and '
-                    
+            if '(' in r_node.prop:
+                r_node.prop='(%s)' % r_node.prop
         #Changing main selection
         n.prop=''
         if len(both)!=0:
@@ -498,7 +541,9 @@ def selection_and_product(n,rels):
                 for i in c:
                     n.prop+=i+ ' '
                 if len(both)>0:
-                    n.prop+=' and '                    
+                    n.prop+=' and '
+            if '(' in n.prop:
+                n.prop='(%s)' % n.prop
         else:#No need for general select
             replace_node(n,n.child)
             
@@ -506,3 +551,4 @@ def selection_and_product(n,rels):
         
 general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames,swap_rename_projection]
 specific_optimizations=[selection_and_product]
+        

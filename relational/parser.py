@@ -36,15 +36,16 @@ class node (object):
     If the node is a binary operator, it will have left and right properties.
     
     If the node is a unary operator, it will have a child, pointing to the child node and a prop containing
-    the string with the props of the operation.'''
+    the string with the props of the operation.
+    
+    This class is used to convert an expression into python code.'''
     kind=None
     
     def __init__(self,expression=None):
-        
+        '''Generates the tree from the tokenized expression
+        If no expression is specified then it will create an empty node'''
         if expression==None or len(expression)==0:
             return
-        
-        '''Generates the tree from the tokenized expression'''
         
         #If the list contains only a list, it will consider the lower level list.
         #This will allow things like ((((((a))))) to work
@@ -85,7 +86,8 @@ class node (object):
                 return       
         pass
     def toPython(self):
-        '''This method converts the expression into python code'''
+        '''This method converts the expression into python code, which will require the
+        relation module to be executed.'''
         if self.name in b_operators:
             return '%s.%s(%s)' % (self.left.toPython(),op_functions[self.name],self.right.toPython())
         elif self.name in u_operators:
@@ -136,10 +138,6 @@ class node (object):
             return _fields
         elif self.name in ('ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
             return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
-            
-            
-        pass
-    
     def __eq__(self,other):
         if not (isinstance(other,node) and self.name==other.name and self.kind==other.kind):
             return False
@@ -167,6 +165,19 @@ class node (object):
                 re="("+self.right.__str__()+")"
                 
             return (le+ self.name +re)
+
+def find_matching_parenthesis(expression,start=0):
+    '''This function returns the position of the matching
+    close parenthesis to the 1st open parenthesis found
+    starting from start (0 by default)'''
+    par_count=0 #Count of parenthesis
+    for i in range(start,len(expression)):
+        if expression[i]=='(':
+            par_count+=1
+        elif expression[i]==')':
+            par_count-=1
+            if par_count==0:
+                return i #Closing parenthesis of the parameter
 
 def tokenize(expression):
     '''This function converts an expression into a list where
@@ -198,17 +209,7 @@ def tokenize(expression):
     while len(expression)>0:
         if expression.startswith('('): #Parenthesis state
             state=2
-            par_count=0 #Count of parenthesis
-            end=0
-            
-            for i in range(len(expression)):
-                if expression[i]=='(':
-                    par_count+=1
-                elif expression[i]==')':
-                    par_count-=1
-                    if par_count==0:
-                        end=i
-                        break
+            end=find_matching_parenthesis(expression)
             #Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
             #Removes the entire parentesis and content from the expression
@@ -217,9 +218,13 @@ def tokenize(expression):
         elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary 2 bytes
             items.append(expression[0:2]) #Adding operator in the top of the list
             expression=expression[2:].strip() #Removing operator from the expression
-            par=expression.find('(')
-        
-            items.append(expression[:par]) #Inserting parameter of the operator
+            
+            if expression.startswith('('): #Expression with parenthesis, so adding what's between open and close without tokenization
+                par=expression.find('(',find_matching_parenthesis(expression)) 
+            else: #Expression without parenthesis, so adding what's between start and parenthesis as whole  
+                par=expression.find('(')
+            
+            items.append(expression[:par].strip()) #Inserting parameter of the operator
             expression=expression[par:].strip() #Removing parameter from the expression
         elif expression.startswith("*") or expression.startswith("-"): # Binary 1 byte
             items.append(expression[0])
@@ -291,4 +296,3 @@ if __name__=="__main__":
     while True:
         e=raw_input("Expression: ")
         print parse(e)
-        

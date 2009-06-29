@@ -87,3 +87,4 @@
 - Implemented swap_rename_projection general optimization
 - Replaced old relational algebra to python compiler with new one based on the new tokenizer/parser (Rev 188)
 - Code refactory to move the new parser into parser.py out of optimizer.py, that will still be compatible (Rev 190)
+- Selection can now accept expressions with parenthesis

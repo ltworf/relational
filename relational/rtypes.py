@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 # 
@@ -16,7 +17,9 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-'''Custom types for relational algebra'''
+'''Custom types for relational algebra.
+Purpose of this module is having the isFloat function and
+implementing dates to use in selection.'''
 
 import datetime
 
