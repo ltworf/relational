@@ -21,7 +21,7 @@ source: clean
 	rm -rf /tmp/relational/
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
-	rm -rf /tmp/relational/samples/.svn/ /tmp/relational/debscript/.svn/ /tmp/relational/mac/.svn/ /tmp/relational/relational/.svn/ /tmp/relational/relational_gui/.svn/ /tmp/relational/mac /tmp/relational/debscript/
+	rm -rf /tmp/relational/windows /tmp/relational/samples/.svn/ /tmp/relational/debscript/.svn/ /tmp/relational/mac/.svn/ /tmp/relational/relational/.svn/ /tmp/relational/relational_gui/.svn/ /tmp/relational/mac /tmp/relational/debscript/
 	echo "cd /tmp ; tar -jcvvf relational.tar.bz relational/" | bash
 	mv /tmp/relational.tar.bz ./relational_`./relational_gui.py -v`.tar.bz
 
