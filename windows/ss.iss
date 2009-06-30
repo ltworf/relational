@@ -5,18 +5,19 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{B3932B50-B372-4E36-9FC0-47BD532CD688}
+AppId={{6F127615-6AD4-4BD7-8135-2444A335B5CD}
 AppName=Relational
-AppVerName=Relationa 0.10
+AppVerName=Relational ver. 0.10
 AppPublisher=Salvo 'LtWorf' Tomaselli
 AppPublisherURL=http://galileo.dmi.unict.it/wiki/relational/
 AppSupportURL=http://galileo.dmi.unict.it/wiki/relational/
 AppUpdatesURL=http://galileo.dmi.unict.it/wiki/relational/
 DefaultDirName={pf}\Relational 0.10
 DefaultGroupName=Relational
-LicenseFile=C:\Documents and Settings\Administrator\Desktop\reltional_svn\COPYING
-OutputBaseFilename=setup
-SetupIconFile=C:\Documents and Settings\Administrator\Documenti\Downloads\favicon_090920\favicon.ico
+AllowNoIcons=yes
+LicenseFile=C:\Documents and Settings\Administrator\Desktop\relational_trunk\COPYING
+OutputBaseFilename=SetupRelational
+SetupIconFile=C:\Documents and Settings\Administrator\Desktop\relational_trunk\windows\favicon.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -25,19 +26,21 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "C:\Documents and Settings\Administrator\Desktop\eseguibile relational\dist\relational_gui.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Documents and Settings\Administrator\Desktop\eseguibile relational\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Documents and Settings\Administrator\Desktop\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
-Source: "C:\Documents and Settings\Administrator\Documenti\Downloads\favicon_090920\favicon.ico"; DestDir: "{app}"; Flags: ignoreversion
-
+Source: "C:\Documents and Settings\Administrator\Desktop\relational_trunk\samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\Relational"; Filename: "{app}\relational_gui.exe"
+Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "http://galileo.dmi.unict.it/wiki/relational/"
 Name: "{group}\{cm:UninstallProgram,Relational}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Relational"; Filename: "{app}\relational_gui.exe"; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Filename: "{app}\relational_gui.exe"; Tasks: quicklaunchicon
 
 [Run]
 Filename: "{app}\relational_gui.exe"; Description: "{cm:LaunchProgram,Relational}"; Flags: nowait postinstall skipifsilent
