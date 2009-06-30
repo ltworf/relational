@@ -1,0 +1,40 @@
+Installare:
+1)Python consigliabile 2.5;
+2)Qt 4 o superiore;
+3)PyQt per python 2.5;
+4)Py2exe;
+
+Scompattare font dejavu nella sottocartella \font dejavu (es :...\relational_trunk\windows\font dejavu\)
+e successivamente installarli;
+
+Crare un file exe per windows:
+
+1)Copiare il file relational_gui.py nella stessa cartella e rinominarlo come input.py;
+2)Aprire il file input.py con l'IDLE ed aggiungere:
+	
+	from distutils.core import setup
+	import py2exe
+	setup(windows=[{"script": "relational_gui.py","icon_resources": [(0, "windows/favicon.ico")]}])
+
+  e salvare;
+
+3)Ora aprite "Esegui..." trascinateci il file input.py dentro, poi a destra dell'indirizzo di input.py (fuori le virgolette),
+  digitate uno spazio e poi py2exe, date OK *;
+
+
+*appariranno molte stringhe, poi si aprirà Relational.
+
+Ecco comparse 2 cartelle, Build, che potete cancellarla,Dist,contenente il file .exe relational_gui.exe,
+potete cancellare il file input.py.
+
+Dopo aver seguito tutti i passi precedenti ecco come creare un setup con Inno Setup:
+
+1)Scaricare ed Installare Inno Setup;
+2)Spostare il file ss.iss nella cartella centrale (es: ...\relational_trunk\);
+3)Aprire il file ss.iss , Build e Compile;
+
+Verra' creata una cartella Output, contenente il RelationalSetup.exe .
+
+N.B.
+Per creare il setup, non spostare la cartella dist dalla directory d'origine, 
+e non eliminare la cartella font dejavu dalla directory d'origine.

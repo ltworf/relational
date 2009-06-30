@@ -15,9 +15,9 @@ AppUpdatesURL=http://galileo.dmi.unict.it/wiki/relational/
 DefaultDirName={pf}\Relational 0.10
 DefaultGroupName=Relational
 AllowNoIcons=yes
-LicenseFile=C:\Documents and Settings\Administrator\Desktop\relational_trunk\COPYING
+LicenseFile=COPYING
 OutputBaseFilename=SetupRelational
-SetupIconFile=C:\Documents and Settings\Administrator\Desktop\relational_trunk\windows\favicon.ico
+SetupIconFile=windows\favicon.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -29,10 +29,10 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Documents and Settings\Administrator\Desktop\eseguibile relational\dist\relational_gui.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\Administrator\Desktop\eseguibile relational\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Documents and Settings\Administrator\Desktop\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
-Source: "C:\Documents and Settings\Administrator\Desktop\relational_trunk\samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "dist\relational_gui.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "windows\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
+Source: "samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
