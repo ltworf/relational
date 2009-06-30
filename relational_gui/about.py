@@ -19,6 +19,7 @@
 
 
 from PyQt4 import QtCore, QtGui
+import os
 try: #If QtWebKit is available, uses it
     from PyQt4 import QtWebKit
     webk=True
@@ -120,7 +121,10 @@ class Ui_Dialog(object):
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+version, None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>", None, QtGui.QApplication.UnicodeUTF8))
+        if os.name=='nt':
+            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>\nEmilio Di Prima <emiliodiprima [at] msn [dot] com> (For the windows version)", None, QtGui.QApplication.UnicodeUTF8))
+        else:
+            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Links", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("Dialog", "http://galileo.dmi.unict.it/wiki/relational/", None, QtGui.QApplication.UnicodeUTF8))
