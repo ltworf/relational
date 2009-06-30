@@ -156,7 +156,7 @@ class Ui_Form(object):
         filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Old Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
         
         #Default relation's name
-        f=str(filename.toUtf8()).split(os.sep) #Split the full path
+        f=str(filename.toUtf8()).split('/') #Split the full path
         defname=f[len(f)-1].lower() #Takes only the lowercase filename
         if len(defname)==0:
             return
