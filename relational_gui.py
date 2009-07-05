@@ -20,12 +20,13 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 import sys
+import os
 import sip
 from PyQt4 import QtCore, QtGui
 from relational_gui import maingui, about
 from relational import relation, parser
 
-version="0.10"
+version="0.11"
 about.version=version
 
 if __name__ == "__main__":
@@ -42,7 +43,8 @@ if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     Form = QtGui.QWidget()
     
-    Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
+    if os.name=='nt':
+        Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
     
     ui = maingui.Ui_Form()
     ui.setupUi(Form)
