@@ -67,9 +67,9 @@ def recoursive_scan(function,node,rels=None):
     
 
 def duplicated_select(n):
-    changes=0
     '''This function locates and deletes things like
     σ a ( σ a(C)) and the ones like σ a ( σ b(C))'''
+    changes=0
     if n.name=='σ' and n.child.name=='σ':        
         if n.prop != n.child.prop: #Nested but different, joining them
             n.prop = n.prop + " and " + n.child.prop
@@ -84,7 +84,7 @@ def futile_union_intersection_subtraction(n):
     σ k (r) ᑌ r with r
     σ k (r) ᑎ r with σ k (r)
     '''
-    #TODO document into the wiki
+    
     changes=0
     
     if n.name in ('ᑌ','ᑎ') and n.left==n.right:
@@ -102,6 +102,7 @@ def futile_union_intersection_subtraction(n):
             replace_node(n,n.left)
         else:
             replace_node(n,n.right)
+    #TODO make work the following line...
     #elif (n.name == '-' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Intersection of two equal things, but one has a selection
     elif n.name=='-' and n.left==n.right:#Empty relation
         changes=1
@@ -175,7 +176,6 @@ def swap_union_renames(n):
     and replaces them with
     ρ a➡b(R ᑌ Q).
     Does the same with subtraction and intersection'''
-    #TODO document into the wiki
     changes=0
     
     if n.name in ('-','ᑌ','ᑎ') and n.left.name==n.right.name and n.left.name=='ρ':
@@ -374,7 +374,6 @@ def swap_rename_projection(n):
     and more important, will hopefully allow further optimizations.
     Will also eliminate fields in the rename that are cutted in the projection.
     '''
-    #TODO document into the wiki
     changes=0
     
     if n.name=='π' and n.child.name=='ρ':

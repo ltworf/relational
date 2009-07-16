@@ -30,7 +30,7 @@ class Ui_Form(object):
         self.About=None
         self.Survey=None
         self.relations={} #Dictionary for relations
-        self.undo=[] #UndoQueue for relations
+        self.undo=[] #UndoQueue for queries
         self.selectedRelation=None
     def load_query(self,*index):
         self.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
@@ -44,17 +44,20 @@ class Ui_Form(object):
             
         self.savedQ.addItem(res[0],QtCore.QVariant(self.txtQuery.text()))
     def toggle_advanced(self):
+        '''Hides or shows the advanced frame'''
         if self.advancedBox.isVisible():
             self.advancedBox.hide()
         else:
             self.advancedBox.show()
         
     def undo_optimize(self):
+        '''Undoes the optimization on the query, popping one item from the undo list'''
         try:
             self.txtQuery.setText(self.undo.pop())
         except:#Nothing to restore
             pass
     def optimize(self):
+        '''Performs all the possible optimizations on the query'''
         self.undo.insert(len(self.undo),self.txtQuery.text()) #Storing the query in undo list
         
         result=optimizer.optimize_all(str(self.txtQuery.text().toUtf8()),self.relations)
@@ -62,6 +65,7 @@ class Ui_Form(object):
         
         #self.txtQuery.setText(result)
     def execute(self):
+        '''Executes the query'''
         try:
             #Converting string to utf8 and then from qstring to normal string
             query=str(self.txtQuery.text().toUtf8())
@@ -83,6 +87,7 @@ class Ui_Form(object):
         except:
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Check your query!")  )
     def showRelation(self,rel):
+        '''Shows the selected relation into the table'''
         self.table.clear()
         
         if rel==None: #No relation to show
@@ -110,6 +115,7 @@ class Ui_Form(object):
             self.showRelation(self.selectedRelation)
             
     def showAttributes(self,*other):
+        '''Shows the attributes of the selected relation'''
         for i in other:
             rel=str(i.text().toUtf8())
             self.lstAttributes.clear()

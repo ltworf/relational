@@ -110,10 +110,7 @@ class Ui_Dialog(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.buttonBox,QtCore.SIGNAL("accepted()"),Dialog.accept)
         QtCore.QObject.connect(self.buttonBox,QtCore.SIGNAL("rejected()"),Dialog.reject)
-    #QtCore.QObject.connect(self.label_4,QtCore.SIGNAL("linkActivated()"),self.openSite)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-    def openSite(self):
-      print "ciao"
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Documentation", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
@@ -121,7 +118,7 @@ class Ui_Dialog(object):
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+version, None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
-        if os.name=='nt':
+        if os.name=='nt': #Differentiates acknowledgements depending on the system
             self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>\nEmilio Di Prima <emiliodiprima [at] msn [dot] com> (For the windows version)", None, QtGui.QApplication.UnicodeUTF8))
         else:
             self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>", None, QtGui.QApplication.UnicodeUTF8))
