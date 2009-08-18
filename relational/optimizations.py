@@ -81,8 +81,11 @@ def duplicated_select(n):
 
 def futile_union_intersection_subtraction(n):
     '''This function locates things like r ᑌ r, and replaces them with r.
-    σ k (r) ᑌ r with r
-    σ k (r) ᑎ r with σ k (r)
+    R ᑌ R  --> R 
+    R ᑎ R --> R 
+    R - R --> σ False (R) 
+    σ k (R) ᑌ R --> R 
+    σ k (R) ᑎ R --> σ k (R)
     '''
     
     changes=0
@@ -109,7 +112,7 @@ def futile_union_intersection_subtraction(n):
         n.kind=optimizer.UNARY
         n.name='σ'
         n.prop='False'
-        n.child=n.left
+        n.child=n.left.get_first_leaf()
         #n.left=n.right=None
 
     return changes+recoursive_scan(futile_union_intersection_subtraction,n)

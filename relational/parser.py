@@ -105,6 +105,16 @@ class node (object):
         else:
             return self.name
         pass
+    def get_first_leaf(self):
+        '''This function returns the most left random leaf in the tree. It is needed by some optimizations.'''
+        if self.kind==RELATION:
+            return self
+        elif self.kind==UNARY:
+            return self.child.get_first_leaf()
+        elif self.kind==BINARY:
+            return self.left.get_first_leaf()
+        
+        
     def result_format(self,rels):
         '''This function returns a list containing the fields that the resulting relation will have.
         Since it needs to know real instances of relations, it requires a dictionary where keys are
