@@ -48,6 +48,16 @@ if __name__ == "__main__":
     
     ui = maingui.Ui_Form()
     ui.setupUi(Form)
+    
+    for i in range(1,len(sys.argv)):        
+        f=sys.argv[i].split('/')
+        defname=f[len(f)-1].lower()
+        if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
+            defname=defname[:-4]
+        print 'Loading file "%s" with name "%s"' % (sys.argv[i],defname)
+        ui.loadRelation(sys.argv[i],defname)
+
+    
     Form.show()
     
     sys.exit(app.exec_())

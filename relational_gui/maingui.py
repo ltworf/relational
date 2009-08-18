@@ -157,13 +157,21 @@ class Ui_Form(object):
             ui.setupUi(self.About)
         self.About.show()
 
-    def loadRelation(self):
+    def loadRelation(self,filename=None,name=None):
+        '''Loads a relation. Without parameters it will ask the user which relation to load,
+        otherwise it will load filename, giving it name'''
         #Asking for file to load
-        filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Old Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
+        if filename==None:
+            filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Old Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
+                
+            #Default relation's name
+            f=str(filename.toUtf8()).split('/') #Split the full path
+            defname=f[len(f)-1].lower() #Takes only the lowercase filename
+            
+        else:
+            f=filename.split('/') #Split the full path
+            defname=f[len(f)-1].lower() #Takes only the lowercase filename
         
-        #Default relation's name
-        f=str(filename.toUtf8()).split('/') #Split the full path
-        defname=f[len(f)-1].lower() #Takes only the lowercase filename
         if len(defname)==0:
             return
         use_csv=True
@@ -172,16 +180,18 @@ class Ui_Form(object):
             defname=defname[:-4]
             use_csv=False #Old format, not using csv
             
-        
         if (defname.endswith(".csv")): #removes the extension
             defname=defname[:-4]
         
-        res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"),
-        QtGui.QLineEdit.Normal,defname)
-        if res[1]==False:
-            return
-        
-        self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
+        if name==None:
+            res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"),
+            QtGui.QLineEdit.Normal,defname)
+            if res[1]==False or len(res[0])==0:
+                return
+            self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
+        else:
+            self.relations[name]=relation.relation(filename,use_csv)
+                
         self.updateRelations()
     def insertTuple(self):
         '''Shows an input dialog and inserts the inserted tuple into the selected relation'''
