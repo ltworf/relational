@@ -105,14 +105,14 @@ class node (object):
         else:
             return self.name
         pass
-    def get_first_leaf(self):
+    def get_left_leaf(self):
         '''This function returns the most left random leaf in the tree. It is needed by some optimizations.'''
         if self.kind==RELATION:
             return self
         elif self.kind==UNARY:
-            return self.child.get_first_leaf()
+            return self.child.get_left_leaf()
         elif self.kind==BINARY:
-            return self.left.get_first_leaf()
+            return self.left.get_left_leaf()
         
         
     def result_format(self,rels):

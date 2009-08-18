@@ -83,7 +83,9 @@ def futile_union_intersection_subtraction(n):
     '''This function locates things like r ᑌ r, and replaces them with r.
     R ᑌ R  --> R 
     R ᑎ R --> R 
-    R - R --> σ False (R) 
+    R - R --> σ False (R)
+    σ k (R) - R --> σ False (R) 
+    R - σ k (R) --> σ not k (R) 
     σ k (R) ᑌ R --> R 
     σ k (R) ᑎ R --> σ k (R)
     '''
@@ -106,13 +108,18 @@ def futile_union_intersection_subtraction(n):
         else:
             replace_node(n,n.right)
     #TODO make work the following line...
-    #elif (n.name == '-' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Intersection of two equal things, but one has a selection
-    elif n.name=='-' and n.left==n.right:#Empty relation
+    elif (n.name == '-' and (n.right.name=='σ' and n.right.child==n.left)): #Subtraction of two equal things, but one has a selection
+        n.name=n.right.name
+        n.kind=n.right.kind
+        n.child=n.right.child
+        n.prop='(not (%s))' % n.right.prop
+        n.left=n.right=None
+    elif (n.name=='-' and ((n.left==n.right) or (n.left.name=='σ' and n.left.child==n.right)) ):#Empty relation
         changes=1
         n.kind=optimizer.UNARY
         n.name='σ'
         n.prop='False'
-        n.child=n.left.get_first_leaf()
+        n.child=n.left.get_left_leaf()
         #n.left=n.right=None
 
     return changes+recoursive_scan(futile_union_intersection_subtraction,n)
