@@ -22,5 +22,59 @@
 def stub():
     "NATURAL JOIN"
     "CROSS JOIN" ,
+
+def sql2relational(query):
+    query=query.replace('\n',' ').replace(',',' , ')
     
+    t=query.split(' ')
+    escape=False
+    for i in range(len(t)):
+        tok=t[i].lower().strip()
+        if tok=='from' and not escape:
+            break
+            
+        if tok in ('select','as',','):
+            escape=True
+        else:
+            escape=False
     
+    return extract_select(t[1:i])
+
+def extract_select(query,internal=''):
+    
+
+    #Handling select *
+    if len(query)==1 and query[0]=='*':
+        return ''
+    #Create dictionary for projection and rename        .
+    #Keys are fields to project. Value is none if no rename is needed
+    pr_dic={}
+    key=None
+    for i in query:
+        if i.lower() ==',':
+            key=None
+        elif key==None:
+            pr_dic[i]=None
+            key=i
+        else:
+            pr_dic[key]=i
+    
+    #Preparing string for projection and rename
+    ren=''
+    proj=''
+    for i in pr_dic.iterkeys():
+        proj+=',%s'%i
+        if pr_dic[i]!=None:
+            ren+=',%s➡%s'%(i,pr_dic[i])
+    #Removes starting commas
+    ren=ren[1:]
+    proj=proj[1:]
+    
+    result='π %s (%s)' % (proj,internal)
+    if len(ren)!=0:
+        result='ρ %s (%s)' % (ren,result)
+    return result
+def extract_from(query):
+    return query
+if __name__=="__main__":
+    print sql2relational('SELECT a,c AS q FROM from;')
