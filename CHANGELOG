@@ -94,3 +94,4 @@
 - Improved futile_union_intersection_subtraction in case of A-A, when A is a sub-query (Rev 208)
 - Improved futile_union_intersection_subtraction, handles when a branch of subtracion has a selection (Rev 209)
 - Can load relations specified in command line (Rev 210)
+- Using fakeroot instead of su in make debian (Rev 214)
