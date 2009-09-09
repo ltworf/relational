@@ -188,7 +188,11 @@ class Ui_Form(object):
             QtGui.QLineEdit.Normal,defname)
             if res[1]==False or len(res[0])==0:
                 return
-            self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
+            
+            #self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
+            #Patch provided by Angelo 'Havoc' Puglisi
+            self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()),use_csv)
+            
         else:
             self.relations[name]=relation.relation(filename,use_csv)
                 
