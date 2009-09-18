@@ -159,7 +159,8 @@ class Ui_Form(object):
 
     def loadRelation(self,filename=None,name=None):
         '''Loads a relation. Without parameters it will ask the user which relation to load,
-        otherwise it will load filename, giving it name'''
+        otherwise it will load filename, giving it name.
+        It shouldn't be called giving filename but not giving name.'''
         #Asking for file to load
         if filename==None:
             filename = QtGui.QFileDialog.getOpenFileName(None,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Old Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
@@ -183,17 +184,15 @@ class Ui_Form(object):
         if (defname.endswith(".csv")): #removes the extension
             defname=defname[:-4]
         
-        if name==None:
+        if name==None: #Prompt dialog to insert name for the relation
             res=QtGui.QInputDialog.getText(self.Form, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the name for the new relation"),
             QtGui.QLineEdit.Normal,defname)
             if res[1]==False or len(res[0])==0:
                 return
             
-            #self.relations[str(res[0].toUtf8())]=relation.relation(filename,use_csv)
             #Patch provided by Angelo 'Havoc' Puglisi
-            self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()),use_csv)
-            
-        else:
+            self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()),use_csv)            
+        else: #name was decided by caller
             self.relations[name]=relation.relation(filename,use_csv)
                 
         self.updateRelations()

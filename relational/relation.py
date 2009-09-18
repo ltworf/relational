@@ -106,16 +106,15 @@ class relation (object):
         newt.header=header(list(self.header.attributes))
         for i in self.content:
             for j in range(len(self.header.attributes)):
-                if i[j].isdigit():
+                if len(i[j])>0 and i[j].isdigit():
                     attributes[self.header.attributes[j]]=int(i[j])
-                elif rstring(i[j]).isFloat():
+                elif len(i[j])>0 and rstring(i[j]).isFloat():
                     attributes[self.header.attributes[j]]=float(i[j])
-                elif isDate(i[j]):
+                elif len(i[j])>0 and isDate(i[j]):
                     attributes[self.header.attributes[j]]=rdate(i[j])
                 else:
                     attributes[self.header.attributes[j]]=i[j]
                 
-            
             
             if eval(expr,attributes):
                 newt.content.append(i)
@@ -259,8 +258,6 @@ class relation (object):
         '''Does a left and a right outer join and returns their union.'''
         a=self.outer_right(other)
         b=self.outer_left(other)
-        print a
-        print b
         
         return a.union(b)
         
