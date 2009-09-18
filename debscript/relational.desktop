@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Relational
+Comment=Relational Algebra
+Exec=relational
+Icon=kexi
+Terminal=0
+Type=Application
+Encoding=UTF-8
+Categories=Education;
