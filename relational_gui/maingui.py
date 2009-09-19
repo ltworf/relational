@@ -149,6 +149,7 @@ class Ui_Form(object):
         ui = survey.Ui_Form()
         self.Survey.setUi(ui)
         ui.setupUi(self.Survey)
+        self.Survey.setDefaultValues()
       self.Survey.show()
     def showAbout(self):
         if self.About==None:

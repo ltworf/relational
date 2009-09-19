@@ -97,3 +97,4 @@
 - Using fakeroot instead of su in make debian (Rev 214)
 - Fixed problem with float numbers with selection of certain relations (Rev 215)
 - Added .desktop file on svn (Rev 216)
+- Automatically fills some fields in the survey (Rev 217)
