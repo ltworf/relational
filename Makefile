@@ -99,7 +99,7 @@ debian:
 	chmod a+x data/usr/bin/relational
 	#desktop file
 	mkdir -p data/usr/share/applications/
-	cp relational.desktop data/usr/share/applications/
+	cp debscript/relational.desktop data/usr/share/applications/
 	mkdir -p data/DEBIAN
 	#package description
 	debscript/gencontrol.sh > data/DEBIAN/control

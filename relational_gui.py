@@ -4,7 +4,7 @@
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 # 
-# Relation is free software: you can redistribute it and/or modify
+# Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -31,7 +31,14 @@ about.version=version
 
 if __name__ == "__main__":
     if len (sys.argv) > 1 and sys.argv[1] == "-v":
-        print version
+        
+        print "Relational"
+        print "This program comes with ABSOLUTELY NO WARRANTY."
+        print "This is free software, and you are welcome to redistribute it"
+        print "under certain conditions."
+        print "For details see the GPLv3 Licese."
+        print
+        print "Version: %s"%version
         sys.exit(0)
         
     try:

@@ -22,24 +22,6 @@
 def stub():
     "NATURAL JOIN"
     "CROSS JOIN" ,
-
-def sql2relational(query):
-    query=query.replace('\n',' ').replace(',',' , ')
-    
-    t=query.split(' ')
-    escape=False
-    for i in range(len(t)):
-        tok=t[i].lower().strip()
-        if tok=='from' and not escape:
-            break
-            
-        if tok in ('select','as',','):
-            escape=True
-        else:
-            escape=False
-    
-    return extract_select(t[1:i])
-
 def extract_select(query,internal=''):
     
 
@@ -76,5 +58,134 @@ def extract_select(query,internal=''):
     return result
 def extract_from(query):
     return query
+
+def sql2relational(query):
+    query=query.replace('\n',' ').replace(',',' , ')
+
+    tokens=[]
+    
+    t=query.split(' ')
+    escape=False
+    for i in range(len(t)):
+        tok=t[i].lower().strip()
+        if tok=='from' and not escape:
+            break
+            
+        if tok in ('select','as',','):
+            escape=True
+        else:
+            escape=False
+    
+    return extract_select(t[1:i])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class table(object):
+    def __init__(self):
+        self.attr=[]
+        self.realname=None
+        pass
+    
+
+
+
+
+sqlops=('SELECT','FROM','WHERE',',',';')
+
+import optimizations
+
+
 if __name__=="__main__":
-    print sql2relational('SELECT a,c AS q FROM from;')
+    
+    query="SELECT * FROM a AS b,a WHERE a.id!= b.id and a.age<12 or b.sucation==4 or d=3;"
+            
+    query=query.replace(',',' , ').replace(';',' ; ')
+    print query
+    parts=query.split(' ')
+    tokens=[]
+    
+    temp=''
+    lastop=None
+    for i in parts:
+        if i in sqlops:
+            # TODO must tokenize (blabla(bla)) as a single token
+            if lastop == 'WHERE': #Where is a special case, must tokenize all the stuff
+                for j in optimizations.tokenize_select(temp):
+                    tokens.append(j.strip())
+            else:
+                tokens.append(temp.strip())
+            tokens.append(i.strip())
+            temp=''
+            lastop=i
+        else:
+            temp+=i+' '
+    
+    tokens=tokens[1:]   #Removes futile 1st empty element
+    print tokens
+    
+    
+    
+    rels={}
+    
+    from_=[]
+    where_=[]
+    select_=[]
+    
+    
+    for i in tokens:
+        if i in ('SELECT','FROM','WHERE'):
+            last=i
+            continue
+        
+        
+        if last=='FROM':
+            if ' AS ' in i:
+                parts=i.split(' AS ')
+                rels[parts[1].strip()]=table()
+                rels[parts[1].strip()].realname=parts[0].strip()
+                from_.append(parts[1].strip())
+                pass
+            else:
+                if i!=',':
+                    rels[i.strip()]=table()
+                from_.append(i.strip())
+                pass
+                
+        elif last=='WHERE':
+            where_.append(i)
+            if i in optimizations.sel_op:
+                continue
+            if '.' in i:
+                parts=i.split('.',1)
+                if parts[1] not in rels[parts[0]].attr:
+                    rels[parts[0]].attr.append(parts[1])
+        elif last=='SELECT':
+            # TODO should do like the same of WHERE but supporting AS too
+            pass
+    
+    
+    
+    for i in rels.keys():
+        print "========" + i + "========"
+        print rels[i].attr
+        print rels[i].realname
+    
+    print from_
+    for i in from_:
+        if i in rels.keys():
+            print i
+    
+    #print sql2relational('SELECT a,c AS q FROM from;')
