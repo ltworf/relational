@@ -105,8 +105,22 @@ class node (object):
         else:
             return self.name
         pass
+    def printtree(self,level=0):
+        '''Prints a representation of the tree using indentation'''
+        r=''
+        for i in range(level):
+            r+='  '
+        r+=self.name
+        if self.name in b_operators:
+            r+=self.left.printtree(level+1)
+            r+=self.right.printtree(level+1)
+        elif self.name in u_operators:
+            r+='\t%s\n' % self.prop
+            r+=self.child.printtree(level+1)
+            
+        return '\n'+r
     def get_left_leaf(self):
-        '''This function returns the most left random leaf in the tree. It is needed by some optimizations.'''
+        '''This function returns the most left leaf in the tree. It is needed by some optimizations.'''
         if self.kind==RELATION:
             return self
         elif self.kind==UNARY:
