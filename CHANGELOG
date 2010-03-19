@@ -98,3 +98,5 @@
 - Fixed problem with float numbers with selection of certain relations (Rev 215)
 - Added .desktop file on svn (Rev 216)
 - Automatically fills some fields in the survey (Rev 217)
+- When a query fails, shows the message of the exception (Rev220)
+- Improved tokenizer for select in optimizations, now can accept operators in identifiers (Rev220)

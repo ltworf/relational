@@ -307,7 +307,7 @@ def tokenize_select(expression):
     selection. The expression can contain parenthesis.
     It will use a subclass of str with the attribute level, which
     will specify the nesting level of the token into parenthesis.'''
-    
+    sel_op=('//=','**=','and ','not ','in ','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or ','+','-','*','/','&','|','^','~','<','>','%','=','(',')',',','[',']')
     l=0
     while l!=len(expression):
         l=len(expression)
@@ -326,34 +326,17 @@ def tokenize_select(expression):
         elif expression[0:1]==')':
             level-=1
         
-        if expression[0:3] in sel_op:#3char op
-            t=level_string(temp)
-            t.level=level
-            tokens.append(t)
-            temp=''
-            t=level_string(expression[0:3])
-            t.level=level            
-            tokens.append(t)
-            expression=expression[3:]
-        elif expression[0:2] in sel_op:#2char op
-            t=level_string(temp)
-            t.level=level
-            tokens.append(t)
-            temp=''
-            t=level_string(expression[0:2])
-            t.level=level
-            tokens.append(t)
-            expression=expression[2:]
-        elif expression[0:1] in sel_op:#1char op
-            t=level_string(temp)
-            t.level=level
-            tokens.append(t)
-            temp=''
-            t=level_string(expression[0:1])
-            t.level=level
-            tokens.append(t)
-            expression=expression[1:]
-        elif expression[0:1]=="'":#String
+        for i in range(4,0,-1):#operators
+            if expression[0:i] in sel_op:
+                t=level_string(temp)
+                t.level=level
+                tokens.append(t)
+                temp=''
+                t=level_string(expression[0:i].strip())
+                t.level=level
+                tokens.append(t)
+                expression=expression[i:]
+        if expression[0:1]=="'":#String
             end=expression.index("'",1)
             while expression[end-1]=='\\':
                 end=expression.index("'",end+1)
@@ -560,4 +543,6 @@ def selection_and_product(n,rels):
         
 general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames,swap_rename_projection]
 specific_optimizations=[selection_and_product]
-        
+
+if __name__=="__main__":
+    print tokenize_select("skill == 'C' and  id % 2 == 0")

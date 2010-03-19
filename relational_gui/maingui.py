@@ -84,8 +84,8 @@ class Ui_Form(object):
             self.updateRelations() #update the list
             self.selectedRelation=result
             self.showRelation(self.selectedRelation) #Show the result in the table
-        except:
-            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Check your query!")  )
+        except Exception, e:
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.message)  )
     def showRelation(self,rel):
         '''Shows the selected relation into the table'''
         self.table.clear()
