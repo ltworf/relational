@@ -21,50 +21,84 @@
 
 import sys
 import os
-import sip
-from PyQt4 import QtCore, QtGui
-from relational_gui import maingui, about
+import getopt
 from relational import relation, parser
-
 version="0.11"
-about.version=version
+
+
+def printver():
+    print "Relational"
+    print "This program comes with ABSOLUTELY NO WARRANTY."
+    print "This is free software, and you are welcome to redistribute it"
+    print "under certain conditions."
+    print "For details see the GPLv3 Licese."
+    print
+    print "Version: %s"%version
+    sys.exit(0)
+
+def printhelp(code=0):
+    print "Relational"
+    print
+    print "Usage: %s [options] [files]" % sys.argv[0]
+    print 
+    print "  -v            Print version and exits"
+    print "  -h            Print this help and exits"
+    print "  -q            Uses QT user interface (default)"
+    print "  -c            Uses curses user interface"
+    sys.exit(code)
 
 if __name__ == "__main__":
-    if len (sys.argv) > 1 and sys.argv[1] == "-v":
-        
-        print "Relational"
-        print "This program comes with ABSOLUTELY NO WARRANTY."
-        print "This is free software, and you are welcome to redistribute it"
-        print "under certain conditions."
-        print "For details see the GPLv3 Licese."
-        print
-        print "Version: %s"%version
-        sys.exit(0)
-        
+    x11=True #Will try to use the x11 interface
+    
+    #Try to run the psyco optimizer
     try:
         import psyco
         psyco.full()
     except:
         pass
-    
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
-    
-    if os.name=='nt':
-        Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
-    
-    ui = maingui.Ui_Form()
-    ui.setupUi(Form)
-    
-    for i in range(1,len(sys.argv)):        
-        f=sys.argv[i].split('/')
-        defname=f[len(f)-1].lower()
-        if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
-            defname=defname[:-4]
-        print 'Loading file "%s" with name "%s"' % (sys.argv[i],defname)
-        ui.loadRelation(sys.argv[i],defname)
 
+        
+    #Getting command line
+    try:
+        switches,files=getopt.getopt(sys.argv[1:],"vhqc")
+    except:
+        printhelp(1)
+        
+    for i in switches:
+        if i[0]=='-v':
+            printver()
+        elif i[0]=='-h':
+            printhelp()
+        elif i[0]=='-q':
+            x11=True
+        elif i[0]=='-c':
+            x11=False
     
-    Form.show()
     
-    sys.exit(app.exec_())
+    if x11:
+        import sip
+        from PyQt4 import QtCore, QtGui
+        from relational_gui import maingui, about
+        about.version=version
+
+        app = QtGui.QApplication(sys.argv)
+        Form = QtGui.QWidget()
+    
+        if os.name=='nt':
+            Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
+    
+        ui = maingui.Ui_Form()
+        ui.setupUi(Form)
+    
+        for i in range(len(files)):
+            f=files[i].split('/')
+            defname=f[len(f)-1].lower()
+            if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
+                defname=defname[:-4]
+            print 'Loading file "%s" with name "%s"' % (files[i],defname)
+            ui.loadRelation(files[i],defname)
+
+        Form.show()
+        sys.exit(app.exec_())
+    else: #TODO load with curses interface
+        pass
