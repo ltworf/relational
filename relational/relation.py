@@ -115,9 +115,11 @@ class relation (object):
                 else:
                     attributes[self.header.attributes[j]]=i[j]
                 
-            
-            if eval(expr,attributes):
-                newt.content.append(i)
+            try:
+                if eval(expr,attributes):
+                    newt.content.append(i)
+            except Exception,e:
+                raise Exception("Failed to evaluate %s\n%s" % (expr,e.__str__()))
         return newt
     def product (self,other):
         '''Cartesian product, attributes must be different to avoid collisions

@@ -89,68 +89,79 @@ def main():
     curses.flash()
     curses.textpad.rectangle(win,0,0,5,10)'''
 
+    squery=''
+    
     while True:
         c = win.window().getch()
-        s=""
+        
         if c==27: #Escape
-            query.window().addstr(add_symbol(symselect))
-            query.window().refresh()
-        else:
-            #w.window().addstr(str(c))
-            query.window().addstr(str(chr(c)))
+            squery+=add_symbol(symselect)
             
-
-def init_symbol_list(termsize):
+            
+        #elif c==curses.KEY_BACKSPACE: #Delete
+        elif c==13:
+            squery=squery[:-1]
+        else:
+            squery+=chr(c);
+        
+        
+        query.window().box()
+        query.top()
+        query.window().addstr(1,1,spaces(termsize[1]-2))
+        query.window().addstr(1,1,squery)
+        
+        query.window().refresh()
+def init_symbol_list(termsize,create=True):
     
-    p=curses.panel.new_panel(curses.newwin(15,16,1,0))
+    if create:
+        p=curses.panel.new_panel(curses.newwin(15,16,2,termsize[1]/2-7))
+    else:
+        p=termsize
     p.window().box()
     #p.window().addstr(1,1,"\n8    \na   \nb   \n")
-    p.window().addstr(01,2,"0     *")
-    p.window().addstr(02,2,"1     -")
-    p.window().addstr(03,2,"2     ᑌ")
-    p.window().addstr(04,2,"3     ᑎ")
-    p.window().addstr(05,2,"4     ᐅᐊ")
+    p.window().addstr(01,2,"0   *")
+    p.window().addstr(02,2,"1   -")
+    p.window().addstr(03,2,"2   ᑌ")
+    p.window().addstr(04,2,"3   ᑎ")
+    p.window().addstr(05,2,"4   ᐅᐊ")
     p.window().addstr(06,2,"5   ᐅLEFTᐊ")
     p.window().addstr(07,2,"6   ᐅRIGHTᐊ")
     p.window().addstr( 8,2,"7   ᐅFULLᐊ")
-    p.window().addstr( 9,2,"8     σ")
-    p.window().addstr(10,2,"9     ρ")
-    p.window().addstr(11,2,"a     π")
-    p.window().addstr(12,2,"b     ➡")
+    p.window().addstr( 9,2,"8   σ")
+    p.window().addstr(10,2,"9   ρ")
+    p.window().addstr(11,2,"a   π")
+    p.window().addstr(12,2,"b   ➡")
     p.window().addstr(13,2,"")
     
-    
-    
-    
-    p.hide()
+    #p.hide()
     return p
-    pass
 def add_symbol(p):
-    d_={'0':'*',
-        '1':'-',
-        '2':'ᑌ',
-        '3':'ᑎ',
-        '4':'ᐅᐊ',
-        '5':'ᐅLEFTᐊ',
-        '6':'ᐅRIGHTᐊ',
-        '7':'ᐅFULLᐊ',
-        '8':'σ',
-        '9':'ρ',
-        'a':'π',
-        'b':'➡'}
+    '''Shows the panel to add a symbol
+    and then returns the choosen symbol itself'''
+    init_symbol_list(p,False)
+    
+    d_={'0':'*','1':'-','2':'ᑌ','3':'ᑎ','4':'ᐅᐊ','5':'ᐅLEFTᐊ','6':'ᐅRIGHTᐊ','7':'ᐅFULLᐊ','8':'σ','9':'ρ','a':'π','b':'➡'}
     
     
     p.show()
+    p.top()
     p.window().refresh()
-    #curses.napms(1000)
     c = p.window().getch()
     
     p.hide()
     p.window().refresh()
-    return d_[chr(c)]
-main()
+    try:
+        char=d_[chr(c)]
+    except:
+        char=''
+    return char
 
-
-
-
-terminate()
+def spaces(t):
+    '''Returns a number of spaces specified t'''
+    s=''
+    for i in range(t):
+        s+=' '
+    return s
+if __name__=='__main__':
+    main()
+    terminate()
