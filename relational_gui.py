@@ -27,15 +27,20 @@ from relational import relation, parser
 version="0.11"
 
 
-def printver():
-    print "Relational"
+def printver(exit=True):
+    print "Relational %s" % version
+    print "Copyright (C) 2008 Salvo 'LtWorf' Tomaselli."
+    print
     print "This program comes with ABSOLUTELY NO WARRANTY."
     print "This is free software, and you are welcome to redistribute it"
     print "under certain conditions."
     print "For details see the GPLv3 Licese."
     print
-    print "Version: %s"%version
-    sys.exit(0)
+    print "Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>"
+    print
+    print "http://galileo.dmi.unict.it/wiki/relational/doku.php"
+    if exit:
+        sys.exit(0)
 
 def printhelp(code=0):
     print "Relational"
@@ -105,6 +110,7 @@ if __name__ == "__main__":
         Form.show()
         sys.exit(app.exec_())
     else:
+        printver(False)
         import relational_readline.linegui
         relational_readline.linegui.main(files)
 

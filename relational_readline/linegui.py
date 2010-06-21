@@ -178,9 +178,25 @@ def exec_line(command):
         else:
             print "No such relation %s" % pars[1]
         pass
-    #elif command=='SAVE': //TODO
+    elif command.startswith('SAVE'):
+        pars=command.split(' ')
+        if len(pars)!=3:
+            print "Missing parameter"
+            return
+        
+        filename=pars[1]
+        defname=pars[2]
+        
+        if defname not in relations:
+            print "No such relation %s" % defname
+            return
+        
+        try:
+            relations[defname].save(filename)
+        except Exception,e:
+            print e
     else:
-        exec_query( command)
+        exec_query(command)
 
 def replacements(query):
     '''This funcion replaces ascii easy operators with the correct ones'''
@@ -247,6 +263,8 @@ def exec_query(command):
         print e
     
 def main(files=[]):
+    print "> ; Type HELP to get the HELP"
+    print "> ; Completion is activated using the tab"
     
     for i in files:
         load_relation(i)
@@ -261,7 +279,7 @@ def main(files=[]):
     while True:
         try:
             line = raw_input('> ')
-            if isinstance(line,str) and len(line)>0:
+            if isinstance(line,str) and len(line)>0 and not line.startswith(';'):
                 exec_line(line)
         except EOFError:
             print
