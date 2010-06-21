@@ -36,8 +36,9 @@ class SimpleCompleter(object):
     
     def add_completion(self,option):
         '''Adds one string to the list of the valid completion options'''
-        self.options.append(option)
-        self.options.sort()
+        if option not in self.options:
+            self.options.append(option)
+            self.options.sort()
     
     def remove_completion(self,option):
         '''Removes one completion from the list of the valid completion options'''
@@ -70,7 +71,6 @@ class SimpleCompleter(object):
 
 relations={}
 completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP','QUIT','SAVE '])
-
 
 
 def load_relation(filename,defname=None):
@@ -119,7 +119,45 @@ def exec_line(command):
         pass
     #elif command=='SAVE': //TODO
     else:
-        print "Invalid command %s" % command
+        exec_query( command)
+
+def exec_query(command):
+    
+    #Finds the name in where to save the query
+    
+    parts=command.split('=',1)
+    
+    if len(parts)>1:
+        assignment=True
+        for i in parser.op_functions:
+            if i in parts[0]:
+                #If we are here, there is no explicit assignment
+                assignment=False
+        if assignment:
+            relname=parts[0]
+            query=parts[1]
+        else:
+            relname='last_'
+            query=command
+    else:
+        relname='last_'
+        query=command
+    
+    
+    #Execute query
+    try:
+        pyquery=parser.parse(query)
+        result=eval(pyquery,relations)
+        print "-> query: %s" % pyquery
+        print result
+    
+        relations[relname]=result
+    
+        completer.add_completion(relname)
+    except Exception, e:
+        print e
+    
+    
 def main(files=[]):
     readline.set_completer(completer.complete)
 
