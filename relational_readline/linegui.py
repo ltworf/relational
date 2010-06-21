@@ -86,6 +86,9 @@ def load_relation(filename,defname=None):
 
     try:
         relations[defname]=relation.relation(filename)
+        
+        completer.add_completion(defname)
+        print "Loaded relation %s"% defname
         return defname
     except Exception, e:
         print e
@@ -109,11 +112,7 @@ def exec_line(command):
             defname=pars[2]
         else:
             defname=None
-        defname=load_relation(filename,defname)
-        if defname==None: return
-        
-        completer.add_completion(defname)
-        print "Loaded relation %s"% defname
+        load_relation(filename,defname)
          
     elif command=='UNLOAD ':
         #//TODO
@@ -186,6 +185,10 @@ def exec_query(command):
         print e
     
 def main(files=[]):
+    
+    for i in files:
+        load_relation(i)
+    
     readline.set_completer(completer.complete)
 
     readline.parse_and_bind('tab: complete')
@@ -201,5 +204,5 @@ def main(files=[]):
 
 
 
-
-main()
+if __name__ == "__main__":
+    main()

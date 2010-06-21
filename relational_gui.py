@@ -45,7 +45,8 @@ def printhelp(code=0):
     print "  -v            Print version and exits"
     print "  -h            Print this help and exits"
     print "  -q            Uses QT user interface (default)"
-    print "  -c            Uses curses user interface"
+    #print "  -c            Uses curses user interface"
+    print "  -r            Uses readline user interface"
     sys.exit(code)
 
 if __name__ == "__main__":
@@ -61,7 +62,7 @@ if __name__ == "__main__":
         
     #Getting command line
     try:
-        switches,files=getopt.getopt(sys.argv[1:],"vhqc")
+        switches,files=getopt.getopt(sys.argv[1:],"vhqr")
     except:
         printhelp(1)
         
@@ -72,7 +73,7 @@ if __name__ == "__main__":
             printhelp()
         elif i[0]=='-q':
             x11=True
-        elif i[0]=='-c':
+        elif i[0]=='-r':
             x11=False
     
     if x11:
@@ -103,5 +104,7 @@ if __name__ == "__main__":
 
         Form.show()
         sys.exit(app.exec_())
-    else: #TODO load with curses interface
+    else: #TODO load with readline interface
+        import relational_readline.linegui
+        relational_readline.linegui.main(files)
         pass
