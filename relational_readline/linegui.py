@@ -43,7 +43,8 @@ class SimpleCompleter(object):
     
     def remove_completion(self,option):
         '''Removes one completion from the list of the valid completion options'''
-        #//TODO
+        if option in self.options:
+            self.options.remove(option)
         pass
         
     def complete(self, text, state):
@@ -153,8 +154,12 @@ def exec_line(command):
         for i in relations:
             if not i.startswith('_'):
                 print i
-    elif command.startswith('LOAD '):      #Loads a relation
+    elif command.startswith('LOAD'):      #Loads a relation
         pars=command.split(' ')
+        if len(pars)==1:
+            print "Missing parameter"
+            return
+        
         filename=pars[1]
         if len(pars)>2:
             defname=pars[2]
@@ -162,8 +167,16 @@ def exec_line(command):
             defname=None
         load_relation(filename,defname)
          
-    elif command=='UNLOAD ':
-        #//TODO
+    elif command.startswith('UNLOAD'):
+        pars=command.split(' ')
+        if len(pars)<2:
+            print "Missing parameter"
+            return
+        if pars[1] in relations:
+            del relations[pars[1]]
+            completer.remove_completion(pars[1])
+        else:
+            print "No such relation %s" % pars[1]
         pass
     #elif command=='SAVE': //TODO
     else:
