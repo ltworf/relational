@@ -123,6 +123,7 @@ def exec_line(command):
         exec_query( command)
 
 def replacements(query):
+    '''This funcion replaces ascii easy operators with the correct ones'''
     query=query.replace(    '_PRODUCT'          ,   '*')
     query=query.replace(    '_UNION'            ,   'ᑌ')
     query=query.replace(    '_INTERSECTION'     ,   'ᑎ')
@@ -140,8 +141,10 @@ def replacements(query):
 def exec_query(command):
     '''This function executes a query and prints the result on the screen'''
     
-    #Finds the name in where to save the query
+    #Performs replacements for weird operators
+    command=replacements(command)
     
+    #Finds the name in where to save the query
     parts=command.split('=',1)
     
     if len(parts)>1:
@@ -160,9 +163,6 @@ def exec_query(command):
         relname='last_'
         query=command
     
-    #Performs replacements for weird operators
-    query=replacements(query)
-    
     #Execute query
     try:
         pyquery=parser.parse(query)
@@ -175,7 +175,6 @@ def exec_query(command):
         completer.add_completion(relname)
     except Exception, e:
         print e
-    
     
 def main(files=[]):
     readline.set_completer(completer.complete)
