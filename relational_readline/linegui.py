@@ -22,6 +22,7 @@
 import readline
 import logging
 import os.path
+import os
 import sys
 
 from relational import relation, parser, optimizer
@@ -46,6 +47,8 @@ class SimpleCompleter(object):
         pass
         
     def complete(self, text, state):
+        #print test, state
+        
         response = None
         if state == 0:
             # This is the first time for this text, so build a match list.
@@ -53,6 +56,19 @@ class SimpleCompleter(object):
                 self.matches = [s 
                                 for s in self.options
                                 if s and s.startswith(text)]
+                                
+                #Add the completion for files here
+                try:
+                    listf=os.listdir(os.path.dirname(text))
+                except:
+                    listf=os.listdir('.')
+                
+                for i in listf:
+                    if i.startswith(text):
+                        if os.path.isdir(i):
+                            i+="/"
+                        self.matches.append(i)
+                
                 logging.debug('%s matches: %s', repr(text), self.matches)
             else:
                 self.matches = self.options[:]
@@ -70,7 +86,7 @@ class SimpleCompleter(object):
 
 
 relations={}
-completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME '])
+completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME '])
 
 
 def load_relation(filename,defname=None):
@@ -93,14 +109,43 @@ def load_relation(filename,defname=None):
     except Exception, e:
         print e
         return None
+
+def help(command):
+    '''Prints help on the various functions'''
+    p=command.split(' ',1)
+    if len(p)==1:
+        print 'HELP command'
+        print 'To execute a query:\n[relation =] query\nIf the 1st part is omitted, the result will be stored in the relation last_.'
+        print 'To prevent from printing the relation, append a ; to the end of the query.'
+        print 'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.'
+        return
+    cmd=p[1]
     
+    if cmd=='QUIT':
+        print 'Quits the program'
+    elif cmd=='LIST':
+        print "Lists the relations loaded"
+    elif cmd=='LOAD':
+        print "LOAD filename [relationame]"
+        print "Loads a relation into memory"
+    elif cmd=='UNLOAD':
+        print "UNLOAD relationame"
+        print "Unloads a relation from memory"
+    elif cmd=='SAVE':
+        print "SAVE filename relationame"
+        print "Saves a relation in a file"
+    elif cmd=='HELP':
+        print "Prints the help on a command"
+    else:
+        print "Unknown command: %s" %cmd
+        
+
 def exec_line(command):
     command=command.strip()
     if command=='QUIT':
         sys.exit(0)
-    elif command=='HELP':
-        #//TODO
-        pass
+    elif command.startswith('HELP'):
+        help(command)
     elif command=='LIST':         #Lists all the loaded relations
         for i in relations:
             if not i.startswith('_'):
@@ -176,6 +221,7 @@ def exec_query(command):
         print "-> query: %s" % pyquery
         
         if printrel:
+            print
             print result
     
         relations[relname]=result
@@ -192,13 +238,14 @@ def main(files=[]):
     readline.set_completer(completer.complete)
 
     readline.parse_and_bind('tab: complete')
-    readline.parse_and_bind('set editing-mode vi')
+    readline.parse_and_bind('set editing-mode emacs')
 
     while True:
         try:
             line = raw_input('> ')
-            exec_line(line)
-        except:
+            if isinstance(line,str) and len(line)>0:
+                exec_line(line)
+        except EOFError:
             print
             sys.exit(0)
 

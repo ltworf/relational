@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
         Form.show()
         sys.exit(app.exec_())
-    else: #TODO load with readline interface
+    else:
         import relational_readline.linegui
         relational_readline.linegui.main(files)
-        pass
+

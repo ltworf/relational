@@ -102,3 +102,5 @@
 - Improved tokenizer for select in optimizations, now can accept operators in identifiers (Rev220)
 - Uses getopt to handle the command line in a more standard way
 - Organized code so the ui can be either qt or curses
+- Does not depend on QT anymore
+- Added readline user interface
