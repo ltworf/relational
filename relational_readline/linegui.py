@@ -47,26 +47,30 @@ class SimpleCompleter(object):
         pass
         
     def complete(self, text, state):
-        #print test, state
-        
         response = None
         if state == 0:
             # This is the first time for this text, so build a match list.
             if text:
-                self.matches = [s 
+                
+                self.matches =[s 
                                 for s in self.options
                                 if s and s.startswith(text)]
                                 
                 #Add the completion for files here
                 try:
-                    listf=os.listdir(os.path.dirname(text))
+                    d=os.path.dirname(text)
+                    listf=os.listdir(d)
+                    
+                    d+="/"
                 except:
+                    d=""
                     listf=os.listdir('.')
                 
                 for i in listf:
+                    i=(d+i).replace('//','/')
                     if i.startswith(text):
                         if os.path.isdir(i):
-                            i+="/"
+                            i=i+"/"
                         self.matches.append(i)
                 
                 logging.debug('%s matches: %s', repr(text), self.matches)
@@ -87,7 +91,6 @@ class SimpleCompleter(object):
 
 relations={}
 completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME '])
-
 
 def load_relation(filename,defname=None):
     if not os.path.isfile(filename):
@@ -239,6 +242,8 @@ def main(files=[]):
 
     readline.parse_and_bind('tab: complete')
     readline.parse_and_bind('set editing-mode emacs')
+    readline.set_completer_delims(" ")
+
 
     while True:
         try:
