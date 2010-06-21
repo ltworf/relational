@@ -70,7 +70,7 @@ class SimpleCompleter(object):
 
 
 relations={}
-completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP','QUIT','SAVE '])
+completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME '])
 
 
 def load_relation(filename,defname=None):
@@ -100,7 +100,8 @@ def exec_line(command):
         pass
     elif command=='LIST':         #Lists all the loaded relations
         for i in relations:
-            print i
+            if not i.startswith('_'):
+                print i
     elif command.startswith('LOAD '):      #Loads a relation
         pars=command.split(' ')
         filename=pars[1]
@@ -121,7 +122,23 @@ def exec_line(command):
     else:
         exec_query( command)
 
+def replacements(query):
+    query=query.replace(    '_PRODUCT'          ,   '*')
+    query=query.replace(    '_UNION'            ,   'ᑌ')
+    query=query.replace(    '_INTERSECTION'     ,   'ᑎ')
+    query=query.replace(    '_DIFFERENCE'       ,   '-')
+    query=query.replace(    '_JOIN'             ,   'ᐅᐊ')
+    query=query.replace(    '_LJOIN'            ,   'ᐅLEFTᐊ')
+    query=query.replace(    '_RJOIN'            ,   'ᐅRIGHTᐊ')
+    query=query.replace(    '_FJOIN'            ,   'ᐅFULLᐊ')
+    query=query.replace(    '_PROJECTION'       ,   'π')
+    query=query.replace(    '_RENAME_TO'        ,   '➡')
+    query=query.replace(    '_SELECTION'        ,   'σ')
+    query=query.replace(    '_RENAME'           ,   'ρ')
+    return query
+
 def exec_query(command):
+    '''This function executes a query and prints the result on the screen'''
     
     #Finds the name in where to save the query
     
@@ -143,6 +160,8 @@ def exec_query(command):
         relname='last_'
         query=command
     
+    #Performs replacements for weird operators
+    query=replacements(query)
     
     #Execute query
     try:
@@ -165,8 +184,12 @@ def main(files=[]):
     readline.parse_and_bind('set editing-mode vi')
 
     while True:
-        line = raw_input('> ')
-        exec_line(line)
+        try:
+            line = raw_input('> ')
+            exec_line(line)
+        except:
+            print
+            sys.exit(0)
 
 
 
