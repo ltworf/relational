@@ -141,6 +141,13 @@ def replacements(query):
 def exec_query(command):
     '''This function executes a query and prints the result on the screen'''
     
+    #If it terminates with ; doesn't print the result
+    if command.endswith(';'):
+        command=command[:-1]
+        printrel=False
+    else:
+        printrel=True
+    
     #Performs replacements for weird operators
     command=replacements(command)
     
@@ -168,7 +175,9 @@ def exec_query(command):
         pyquery=parser.parse(query)
         result=eval(pyquery,relations)
         print "-> query: %s" % pyquery
-        print result
+        
+        if printrel:
+            print result
     
         relations[relname]=result
     
