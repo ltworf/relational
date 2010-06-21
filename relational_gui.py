@@ -21,6 +21,7 @@
 
 import sys
 import os
+import os.path
 import getopt
 from relational import relation, parser
 version="0.11"
@@ -74,7 +75,6 @@ if __name__ == "__main__":
         elif i[0]=='-c':
             x11=False
     
-    
     if x11:
         import sip
         from PyQt4 import QtCore, QtGui
@@ -91,6 +91,9 @@ if __name__ == "__main__":
         ui.setupUi(Form)
     
         for i in range(len(files)):
+            if not os.path.isfile(files[i]):
+                print >> sys.stderr, "%s is not a file" % files[i]
+                printhelp(12)
             f=files[i].split('/')
             defname=f[len(f)-1].lower()
             if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
