@@ -86,7 +86,7 @@ class relation (object):
                 res+=" ".join(r)
             fp.write(res)
         fp.close() #Closing file
-    def rearrange(self,other):
+    def _rearrange_(self,other):
         '''If two relations share the same attributes in a different order, this method
         will use projection to make them have the same attributes' order.
         It is not exactely related to relational algebra. Just a method used 
@@ -201,7 +201,7 @@ class relation (object):
         Will return an empty one if there are no common items.
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
-        other=self.rearrange(other) #Rearranges attributes' order
+        other=self._rearrange_(other) #Rearranges attributes' order
         if (self.__class__!=other.__class__)or(self.header!=other.header):
             return None
         newt=relation()
@@ -219,7 +219,7 @@ class relation (object):
         Will return an empty one if the second is a superset of first.
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
-        other=self.rearrange(other) #Rearranges attributes' order
+        other=self._rearrange_(other) #Rearranges attributes' order
         if (self.__class__!=other.__class__)or(self.header!=other.header):
             return None
         newt=relation()
@@ -230,7 +230,20 @@ class relation (object):
             if e not in other.content:
                 newt.content.append(list(e))
         return newt
-    
+    def division(self,other):
+        '''Division operator
+        The division is a binary operation that is written as R ÷ S. The
+        result consists of the restrictions of tuples in R to the
+        attribute names unique to R, i.e., in the header of R but not in the
+        header of S, for which it holds that all their combinations with tuples
+        in S are present in R. 
+        '''
+        d_headers=list(set(self.header.attributes) - set(other.header.attributes))
+        t=self.projection(d_headers).product(other)
+        u = t.difference(self)
+        v = u.projection(d_headers)
+        return self.projection(d_headers).difference(v)
+        
     def union(self,other):
         '''Union operation. The result will contain items present in first
         and second operands.
@@ -238,7 +251,7 @@ class relation (object):
         Will not insert tuplicated items.
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
-        other=self.rearrange(other) #Rearranges attributes' order
+        other=self._rearrange_(other) #Rearranges attributes' order
         if (self.__class__!=other.__class__)or(self.header!=other.header):
             return None
         newt=relation()
@@ -372,7 +385,7 @@ class relation (object):
     def __eq__(self,other):
         '''Returns true if the relations are the same, ignoring order of items.
         This operation is rather heavy, since it requires sorting and comparing.'''
-        other=self.rearrange(other) #Rearranges attributes' order so can compare tuples directly
+        other=self._rearrange_(other) #Rearranges attributes' order so can compare tuples directly
         if (self.__class__!=other.__class__)or(self.header!=other.header):
             return False #Both parameters must be a relation
         
@@ -549,6 +562,3 @@ class header (object):
                     res.append(j)
         return res
         
-
-if __name__=="__main__":
-  pass

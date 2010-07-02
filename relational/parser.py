@@ -140,6 +140,8 @@ class node (object):
             return list(rels[self.name].header.attributes)
         elif self.kind==BINARY and self.name in ('-','ᑌ','ᑎ'):
             return self.left.result_format(rels)
+        elif self.kind==BINARY and self.name=='÷':
+            return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
         elif self.name=='π':
             l=[]
             for i in self.prop.split(','):
@@ -147,7 +149,7 @@ class node (object):
             return l
         elif self.name=='*':
             return self.left.result_format(rels)+self.right.result_format(rels)
-        elif self.name=='σ' :
+        elif self.name=='σ':
             return self.child.result_format(rels)
         elif self.name=='ρ':
             _vars={}

@@ -104,3 +104,4 @@
 - Organized code so the ui can be either qt or command line
 - Does not depend on QT anymore
 - Added readline user interface
+- Added division operator

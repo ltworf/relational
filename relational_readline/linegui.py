@@ -265,7 +265,7 @@ def exec_query(command):
     
 def main(files=[]):
     print "> ; Type HELP to get the HELP"
-    print "> ; Completion is activated using the tab"
+    print "> ; Completion is activated using the tab (if supported by the terminal)"
     
     for i in files:
         load_relation(i)
