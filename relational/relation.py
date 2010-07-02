@@ -238,11 +238,26 @@ class relation (object):
         header of S, for which it holds that all their combinations with tuples
         in S are present in R. 
         '''
+        
+        #d_headers are the headers from self that aren't also headers in other
         d_headers=list(set(self.header.attributes) - set(other.header.attributes))
+        
+        
+        '''
+        Wikipedia defines the division as follows:
+        
+        a1,....,an are the d_headers
+        
+        T := πa1,...,an(R) × S
+        U := T - R
+        V := πa1,...,an(U)
+        W := πa1,...,an(R) - V
+        
+        W is the result that we want
+        '''
+        
         t=self.projection(d_headers).product(other)
-        u = t.difference(self)
-        v = u.projection(d_headers)
-        return self.projection(d_headers).difference(v)
+        return self.projection(d_headers).difference(t.difference(self).projection(d_headers))
         
     def union(self,other):
         '''Union operation. The result will contain items present in first
