@@ -22,10 +22,10 @@
 RELATION=0
 UNARY=1
 BINARY=2
-b_operators=('*','-','ᑌ','ᑎ','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ')
+b_operators=('*','-','ᑌ','ᑎ','÷','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ')
 u_operators=('π','σ','ρ')
 
-op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'}
+op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','÷':'division','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'}
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
@@ -257,7 +257,10 @@ def tokenize(expression):
         elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short 3 bytes
             items.append(expression[0:3]) #Adding operator in the top of the list
             expression=expression[3:].strip() #Removing operator from the expression
-
+            state=4
+        elif expression.startswith("÷"): #Binary short 2 bytes
+            items.append(expression[0:2]) #Adding operator in the top of the list
+            expression=expression[2:].strip() #Removing operator from the expression
             state=4
         elif expression.startswith("ᐅ"): #Binary long
             i=expression.find("ᐊ")
