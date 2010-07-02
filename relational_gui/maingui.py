@@ -86,7 +86,7 @@ class Ui_Form(object):
             self.showRelation(self.selectedRelation) #Show the result in the table
         except Exception, e:
             print e
-            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.message)  )
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
     def showRelation(self,rel):
         '''Shows the selected relation into the table'''
         self.table.clear()
@@ -236,6 +236,9 @@ class Ui_Form(object):
     def addIntersection(self):
         self.txtQuery.insert(u"ᑎ")
         self.txtQuery.setFocus()
+    def addDivision(self):
+        self.txtQuery.insert(u"÷")
+        self.txtQuery.setFocus()
     def addOLeft(self):
         self.txtQuery.insert(u"ᐅLEFTᐊ")
         self.txtQuery.setFocus()
@@ -260,6 +263,7 @@ class Ui_Form(object):
     def addArrow(self):
         self.txtQuery.insert(u"➡")
         self.txtQuery.setFocus()
+    
         
     def setupUi(self, Form):
         self.Form=Form
@@ -305,6 +309,10 @@ class Ui_Form(object):
         self.cmdIntersection.setMaximumSize(QtCore.QSize(16777215,16777215))
         self.cmdIntersection.setObjectName("cmdIntersection")
         self.verticalLayout.addWidget(self.cmdIntersection)
+        self.cmdDivision = QtGui.QPushButton(self.groupBox)
+        self.cmdDivision.setMaximumSize(QtCore.QSize(16777215,16777215))
+        self.cmdDivision.setObjectName("cmdDivision")
+        self.verticalLayout.addWidget(self.cmdDivision)
         self.cmdJoin = QtGui.QPushButton(self.groupBox)
         self.cmdJoin.setMaximumSize(QtCore.QSize(16777215,16777215))
         self.cmdJoin.setObjectName("cmdJoin")
@@ -483,6 +491,7 @@ class Ui_Form(object):
         QtCore.QObject.connect(self.cmdDifference,QtCore.SIGNAL("clicked()"),self.addDifference)
         QtCore.QObject.connect(self.cmdUnion,QtCore.SIGNAL("clicked()"),self.addUnion)
         QtCore.QObject.connect(self.cmdIntersection,QtCore.SIGNAL("clicked()"),self.addIntersection)
+        QtCore.QObject.connect(self.cmdDivision,QtCore.SIGNAL("clicked()"),self.addDivision)
         QtCore.QObject.connect(self.cmdOuterLeft,QtCore.SIGNAL("clicked()"),self.addOLeft)
         QtCore.QObject.connect(self.cmdJoin,QtCore.SIGNAL("clicked()"),self.addJoin)
         QtCore.QObject.connect(self.cmdOuterRight,QtCore.SIGNAL("clicked()"),self.addORight)
@@ -542,6 +551,8 @@ class Ui_Form(object):
         self.cmdUnion.setText(QtGui.QApplication.translate("Form", "ᑌ", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdIntersection.setToolTip(QtGui.QApplication.translate("Form", "Intersection operator", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdIntersection.setText(QtGui.QApplication.translate("Form", "ᑎ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdDivision.setToolTip(QtGui.QApplication.translate("Form", "Division operator", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdDivision.setText(QtGui.QApplication.translate("Form", "÷", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdJoin.setToolTip(QtGui.QApplication.translate("Form", "Natural join operator", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdJoin.setText(QtGui.QApplication.translate("Form", "ᐅᐊ", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOuterLeft.setToolTip(QtGui.QApplication.translate("Form", "Outer join left operator", None, QtGui.QApplication.UnicodeUTF8))

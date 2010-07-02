@@ -91,7 +91,7 @@ class SimpleCompleter(object):
 
 
 relations={}
-completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME '])
+completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME ','_DIVISION '])
 
 def load_relation(filename,defname=None):
     if not os.path.isfile(filename):
@@ -212,6 +212,7 @@ def replacements(query):
     query=query.replace(    '_RENAME_TO'        ,   '➡')
     query=query.replace(    '_SELECTION'        ,   'σ')
     query=query.replace(    '_RENAME'           ,   'ρ')
+    query=query.replace(    '_DIVISION'         ,   '÷')
     return query
 
 def exec_query(command):
