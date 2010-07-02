@@ -44,7 +44,7 @@ mac: app
 	mv Relational.app relational_mac
 	mkdir relational_mac/samples || echo Exists
 	cp samples/*csv relational_mac/samples
-	tar -zcvvf relational_`./relational_gui.py -v`.tar.gz relational_mac/
+	tar -zcvvf relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.tar.gz relational_mac/
 	rm -rf relational_mac
 app:
 	mkdir -p Relational.app/Contents/Resources || echo Exists
