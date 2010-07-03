@@ -26,5 +26,5 @@ setup(windows=
           {"script": "relational_gui.py","icon_resources": [(0, "windows/favicon.ico")]}
           ]
       ,name="Relational",
-               version="0.11"
+               version="0.12"
       )

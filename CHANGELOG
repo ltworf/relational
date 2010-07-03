@@ -1,69 +1,21 @@
-0.1
-- Created header class to handle attributes
-- Created relation class
-- Added union
-- Added intersection
-- Added difference
-- Added product
-- Added projection
-- Added rename
-- Projection can use a list or several parameters
-- Added selection
-- Added left join
-- Added right join
-- Added capability of operation even if attributes aren't in the same order
-- Added full outher join
+0.12
 
-0.2
-- Created parser module
-- Created function to parse expression with operators without parameters
-- Created recoursive function to parse expressions
-
-0.3
-- Added support for parenthesis in relational queries
-
-0.4
-- Created GUI
-
-0.5
-- Added support for float numbers
-- Added support for dates
-
-0.6
-- Fixes to run on Mac OsX
-- Added Makefile
-- Able to create .app MacOsX files using "make app"
-- Able to create tar.gz file containing Mac OsX application and samples using "make mac"
-
-0.7
-- Added README
-- Expressions between quotes aren't parsed anymore
-- When adding a relation, the file must be chosen 1st, and then the default relation's name is the same as the filename
-- Changed internal rename method. Now uses a dictionary
-- Optimized saving of relations
-- Can save relations from gui
-- Outer join methods simplified
-- Form to send a survey
-- Makefile to create .deb package
-
-0.8
-- Added __eq__ to relation object, will compare ignoring order.
-- New default relation's format is csv, as defined in RFC4180
-- Converted sample's relations to csv
-- Deb postinstall generates optimized files, this will increase loading speed
-- Relation module has SQL-like delete
-- Relation module has SQL-like update
-- Relation module has SQL-like insert
-- GUI can be used to insert and delete tuples
-- Showing fields of selected relation will work with themes different than oxygen
-
-0.9
-- Splitted into independent packages (gui and library)
-- Simplified makefile, bringing outside files for debian package
-- Default source package now doesn't contain informations to generate debian/mac packages
-- "make source_all" generates the old style tarball containing all the files
-- Bug: relational script installed with debian package now passes arguments to the python executable
-- Insert and delete from GUI are now done on the displayed relation, not on the selected one
+0.11
+- Font is set only on windows (Rev 206)
+- Improved futile_union_intersection_subtraction in case of A-A, when A is a sub-query (Rev 208)
+- Improved futile_union_intersection_subtraction, handles when a branch of subtracion has a selection (Rev 209)
+- Can load relations specified in command line (Rev 210)
+- Using fakeroot instead of su in make debian (Rev 214)
+- Fixed problem with float numbers with selection of certain relations (Rev 215)
+- Added .desktop file on svn (Rev 216)
+- Automatically fills some fields in the survey (Rev 217)
+- When a query fails, shows the message of the exception (Rev220)
+- Improved tokenizer for select in optimizations, now can accept operators in identifiers (Rev220)
+- Uses getopt to handle the command line in a more standard way
+- Organized code so the ui can be either qt or command line
+- Does not depend on QT anymore
+- Added readline user interface
+- Added division operator
 
 0.10
 - In optimizer, added a function that tokenizes an expression
@@ -89,19 +41,70 @@
 - Code refactory to move the new parser into parser.py out of optimizer.py, that will still be compatible (Rev 190)
 - Selection can now accept expressions with parenthesis
 
-0.11
-- Font is set only on windows (Rev 206)
-- Improved futile_union_intersection_subtraction in case of A-A, when A is a sub-query (Rev 208)
-- Improved futile_union_intersection_subtraction, handles when a branch of subtracion has a selection (Rev 209)
-- Can load relations specified in command line (Rev 210)
-- Using fakeroot instead of su in make debian (Rev 214)
-- Fixed problem with float numbers with selection of certain relations (Rev 215)
-- Added .desktop file on svn (Rev 216)
-- Automatically fills some fields in the survey (Rev 217)
-- When a query fails, shows the message of the exception (Rev220)
-- Improved tokenizer for select in optimizations, now can accept operators in identifiers (Rev220)
-- Uses getopt to handle the command line in a more standard way
-- Organized code so the ui can be either qt or command line
-- Does not depend on QT anymore
-- Added readline user interface
-- Added division operator
+0.9
+- Splitted into independent packages (gui and library)
+- Simplified makefile, bringing outside files for debian package
+- Default source package now doesn't contain informations to generate debian/mac packages
+- "make source_all" generates the old style tarball containing all the files
+- Bug: relational script installed with debian package now passes arguments to the python executable
+- Insert and delete from GUI are now done on the displayed relation, not on the selected one
+
+0.8
+- Added __eq__ to relation object, will compare ignoring order.
+- New default relation's format is csv, as defined in RFC4180
+- Converted sample's relations to csv
+- Deb postinstall generates optimized files, this will increase loading speed
+- Relation module has SQL-like delete
+- Relation module has SQL-like update
+- Relation module has SQL-like insert
+- GUI can be used to insert and delete tuples
+- Showing fields of selected relation will work with themes different than oxygen
+
+0.7
+- Added README
+- Expressions between quotes aren't parsed anymore
+- When adding a relation, the file must be chosen 1st, and then the default relation's name is the same as the filename
+- Changed internal rename method. Now uses a dictionary
+- Optimized saving of relations
+- Can save relations from gui
+- Outer join methods simplified
+- Form to send a survey
+- Makefile to create .deb package
+
+0.6
+- Fixes to run on Mac OsX
+- Added Makefile
+- Able to create .app MacOsX files using "make app"
+- Able to create tar.gz file containing Mac OsX application and samples using "make mac"
+
+0.5
+- Added support for float numbers
+- Added support for dates
+
+0.4
+- Created GUI
+
+0.3
+- Added support for parenthesis in relational queries
+
+0.2
+- Created parser module
+- Created function to parse expression with operators without parameters
+- Created recoursive function to parse expressions
+
+0.1
+- Created header class to handle attributes
+- Created relation class
+- Added union
+- Added intersection
+- Added difference
+- Added product
+- Added projection
+- Added rename
+- Projection can use a list or several parameters
+- Added selection
+- Added left join
+- Added right join
+- Added capability of operation even if attributes aren't in the same order
+- Added full outher join
+
