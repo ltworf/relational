@@ -4,7 +4,7 @@
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 # 
-# Relation is free software: you can redistribute it and/or modify
+# Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -18,42 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
+
 from distutils.core import setup
 import py2exe
-#setup(console=['relational_gui.pyw'])
-#setup(windows=['relational_gui.py'])
-setup(windows=[{"script": "relational_gui.py","icon_resources": [(0, "favicon.ico")]}])
-
-import sys
-import sip
-from PyQt4 import QtCore, QtGui
-from relational_gui import maingui, about
-from relational import relation, parser
-
-
-version="0.10"
-about.version=version
-
-if __name__ == "__main__":
-    if len (sys.argv) > 1 and sys.argv[1] == "-v":
-        print version
-        sys.exit(0)
-        
-    try:
-        import psyco
-        psyco.full()
-    except:
-        pass
-            
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
-    
-
-    Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
-    
-
-    ui = maingui.Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    
-    sys.exit(app.exec_())
+setup(windows=
+      [
+          {"script": "relational_gui.py","icon_resources": [(0, "windows/favicon.ico")]}
+          ]
+      ,name="Relational",
+               version="0.11"
+      )
