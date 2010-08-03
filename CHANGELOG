@@ -1,4 +1,6 @@
 0.12
+- Removed encoding from .desktop file (was deprecated)
+- Added manpage for relational-cli
 
 0.11
 - Font is set only on windows (Rev 206)
