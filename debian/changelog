@@ -1,0 +1,58 @@
+relational (0.11-2) unstable; urgency=low
+
+  * New package relational-cli
+  * Creates menu entry for relational 
+  * Ships examples with the python-relational package
+  * Links examples from python-relational into /usr/share/doc/relational and
+    /usr/share/doc/relational-cli
+  * New maintainer (Closes: #590780)
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 04 Aug 2010 16:50:10 +0200
+
+relational (0.11-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump Standards-Version to 3.9.1.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 01 Aug 2010 23:50:50 -0400
+
+relational (0.10-2) unstable; urgency=low
+
+  * Set section to 'math', not Python.
+  * Remove architecture qualifier in Suggests; it applies to the current
+    package (which is Architecture: all), not the specified package. (Closes:
+    #583064)
+  * Switch to dpkg "3.0 (quilt)" source format.
+  * Add Build-Depends on python to appease lintian.
+  * Bump Standards-Version to 3.8.4.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 01 Jun 2010 11:35:05 +0100
+
+relational (0.10-1) unstable; urgency=low
+
+  * New upstream release (Closes: #536684)
+  * Install .desktop file. (Closes: #522045)
+  * Also override override_dh_auto_install so we don't run upstream's Makefile.
+  * Bump Standards-Version to 3.8.2.
+  * Add python-psyco to Suggests on i386.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 12 Jul 2009 21:21:22 +0100
+
+relational (0.9-2) unstable; urgency=low
+
+  * Use two setup.py files instead of installing relational_gui into
+    python-relational; although we don't ship the entry point in this package,
+    it is preferable that the code resides in package that has the required
+    Depends.
+  * Don't use find_packages() in setup.py files.
+  * Use distutils instead of setuptools.
+  * Only ship examples in 'relational' package.
+  * Bump Standards-Version to 3.8.1.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 22 Mar 2009 02:46:00 +0000
+
+relational (0.9-1) unstable; urgency=low
+
+  * Initial release. (Closes: #506770)
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 08 Mar 2009 15:29:09 +0000

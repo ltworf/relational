@@ -1,0 +1,39 @@
+Source: relational
+Section: math
+Priority: optional
+Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
+Build-Depends: debhelper (>= 7.0.50~), python, python-support
+Standards-Version: 3.9.1
+Homepage: http://galileo.dmi.unict.it/wiki/relational/doku.php
+
+Package: python-relational
+Architecture: all
+Section: python
+Depends: ${misc:Depends}, ${python:Depends}
+Suggests: python-psyco
+Description: Educational tool for relational algebra (standalone module)
+ Relational is primarily a tool to provide a workspace for experimenting with
+ relational algebra, an offshoot of first-order logic.
+ .
+ This package provides a standalone Python module that can be used for
+ executing relational queries.
+
+Package: relational
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-relational (>= ${binary:Version}), python-qt4
+Description: Educational tool for relational algebra (graphical user interface)
+ Relational is primarily a tool to provide a workspace for experimenting with
+ relational algebra, an offshoot of first-order logic.
+ .
+ This package provides a graphical user interface that can be used for 
+ executing relational queries.
+
+Package: relational-cli
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-relational (>= ${binary:Version})
+Description: Educational tool for relational algebra (command line interface)
+ Relational is primarily a tool to provide a workspace for experimenting with
+ relational algebra, an offshoot of first-order logic.
+ .
+ This package provides a command line interface that can be used for 
+ executing relational queries.

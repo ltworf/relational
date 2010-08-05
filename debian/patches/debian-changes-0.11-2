@@ -1,0 +1,150 @@
+Description: Upstream changes introduced in version 0.11-2
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ relational (0.11-2) unstable; urgency=low
+ .
+   * New package relational-cli
+   * Creates menu entry for relational
+   * Ships examples with the python-relational package
+   * Links examples from python-relational into /usr/share/doc/relational and
+     /usr/share/doc/relational-cli
+   * New maintainer (Closes: #590780)
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
+Bug-Debian: http://bugs.debian.org/590780
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ relational-0.11/relational_cli.py
+@@ -0,0 +1,116 @@
++#!/usr/bin/env python
++# -*- coding: utf-8 -*-
++# coding=UTF-8
++# Relational
++# Copyright (C) 2008  Salvo "LtWorf" Tomaselli
++# 
++# Relational is free software: you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation, either version 3 of the License, or
++# (at your option) any later version.
++# 
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++# 
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++# 
++# author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
++
++import sys
++import os
++import os.path
++import getopt
++from relational import relation, parser
++version="0.11"
++
++
++def printver(exit=True):
++    print "Relational %s" % version
++    print "Copyright (C) 2008 Salvo 'LtWorf' Tomaselli."
++    print
++    print "This program comes with ABSOLUTELY NO WARRANTY."
++    print "This is free software, and you are welcome to redistribute it"
++    print "under certain conditions."
++    print "For details see the GPLv3 Licese."
++    print
++    print "Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>"
++    print
++    print "http://galileo.dmi.unict.it/wiki/relational/doku.php"
++    if exit:
++        sys.exit(0)
++
++def printhelp(code=0):
++    print "Relational"
++    print
++    print "Usage: %s [options] [files]" % sys.argv[0]
++    print 
++    print "  -v            Print version and exits"
++    print "  -h            Print this help and exits"
++    print "  -q            Uses QT user interface"
++    #print "  -c            Uses curses user interface"
++    print "  -r            Uses readline user interface (default)"
++    sys.exit(code)
++
++if __name__ == "__main__":
++    x11=False #Will not try to use the x11 interface
++    
++    #Try to run the psyco optimizer
++    try:
++        import psyco
++        psyco.full()
++    except:
++        pass
++
++        
++    #Getting command line
++    try:
++        switches,files=getopt.getopt(sys.argv[1:],"vhqr")
++    except:
++        printhelp(1)
++        
++    for i in switches:
++        if i[0]=='-v':
++            printver()
++        elif i[0]=='-h':
++            printhelp()
++        elif i[0]=='-q':
++            x11=True
++        elif i[0]=='-r':
++            x11=False
++    
++    if x11:
++        import sip
++        from PyQt4 import QtCore, QtGui
++        from relational_gui import maingui, about
++        about.version=version
++
++        app = QtGui.QApplication(sys.argv)
++        Form = QtGui.QWidget()
++    
++        if os.name=='nt':
++            Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
++    
++        ui = maingui.Ui_Form()
++        ui.setupUi(Form)
++    
++        for i in range(len(files)):
++            if not os.path.isfile(files[i]):
++                print >> sys.stderr, "%s is not a file" % files[i]
++                printhelp(12)
++            f=files[i].split('/')
++            defname=f[len(f)-1].lower()
++            if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
++                defname=defname[:-4]
++            print 'Loading file "%s" with name "%s"' % (files[i],defname)
++            ui.loadRelation(files[i],defname)
++
++        Form.show()
++        sys.exit(app.exec_())
++    else:
++        printver(False)
++        import relational_readline.linegui
++        relational_readline.linegui.main(files)
++

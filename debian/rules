@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+SHELL=sh -e
+
+%:
+	dh $@
+
+clean:
+	rm -rf build *.egg-info
+	dh $@
+
+override_dh_auto_clean:
+override_dh_auto_build:
+override_dh_auto_install:
+	for pkg in relational-cli python-relational relational; do \
+	  python debian/$${pkg}.setup.py install --root=$(CURDIR)/debian/$${pkg}; \
+	  rm -rf build; \
+	done
+
+override_dh_install:
+	install -D relational_gui.py debian/relational/usr/bin/relational
+	install -D relational_cli.py debian/relational-cli/usr/bin/relational-cli
+	dh_install
