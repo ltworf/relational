@@ -1,2 +1,0 @@
-#!/bin/bash
-python /usr/share/python-support/relational/relational_gui.py $@
