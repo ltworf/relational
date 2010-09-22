@@ -2,6 +2,7 @@
 - Removed encoding from .desktop file (was deprecated)
 - Added manpage for relational-cli
 - Internally uses set instead of lists to describe relation's content
+- Tuples are internally mapped on tuples and no longer on lists
 - Discards the old and not so functional tlb format
 - Rename will mark the resulting relation as readonly and subsequent updates, insert or deletes will actually copy the content
 

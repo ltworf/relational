@@ -381,16 +381,13 @@ class relation (object):
     def __eq__(self,other):
         '''Returns true if the relations are the same, ignoring order of items.
         This operation is rather heavy, since it requires sorting and comparing.'''
-        other=self._rearrange_(other) #Rearranges attributes' order so can compare tuples directly
         if (self.__class__!=other.__class__)or(self.header!=other.header):
             return False #Both parameters must be a relation
+
+        if set(self.header.attributes)!=set(other.header.attributes):
+            return False
         
-        #Comparing header
-        if len(self.header.attributes) != len(other.header.attributes):
-            return False #Not the same number of attributes -> not equals
-        for i in self.header.attributes:
-            if i not in other.header.attributes:
-                return False #Non shared attribute
+        other=self._rearrange_(other) #Rearranges attributes' order so can compare tuples directly
         
         #comparing content
         return self.content==other.content
