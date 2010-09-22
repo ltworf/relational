@@ -195,7 +195,7 @@ class Ui_Form(object):
             #Patch provided by Angelo 'Havoc' Puglisi
             self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()),use_csv)            
         else: #name was decided by caller
-            self.relations[name]=relation.relation(filename,use_csv)
+            self.relations[name]=relation.relation(filename)
                 
         self.updateRelations()
     def insertTuple(self):

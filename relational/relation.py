@@ -25,67 +25,50 @@ class relation (object):
     A relation can be represented using a table
     Calling an operation and providing a non relation parameter when it is expected will
     result in a None value'''    
-    def __init__(self,filename="",comma_separated=True):
+    def __init__(self,filename=""):
         '''Creates a relation, accepts a filename and then it will load the relation from
         that file. If no parameter is supplied an empty relation is created. Empty
         relations are used in internal operations.
         By default the file will be handled like a comma separated as described in
         RFC4180, but it can also be handled like a space separated file (previous
         default format) setting to false the 2nd parameter.
-        The old format is deprecated since it doesn't permit fields
-        with spaces, you should avoid using it.'''
+        The old format is no longer supported.'''
         if len(filename)==0:#Empty relation
-            self.content=[]
+            self.content=set()
             self.header=header([])
             return
         #Opening file
         fp=file(filename)
-        if comma_separated:
-            reader=csv.reader(fp) #Creating a csv reader
-            self.header=header(reader.next()) # read 1st line
-            self.content=[]
-            for i in reader.__iter__(): #Iterating rows
-                self.content.append(i)
-        else: #Old format
-            self.header=header(fp.readline().replace("\n","").strip().split(" "))
+
+        reader=csv.reader(fp) #Creating a csv reader
+        self.header=header(reader.next()) # read 1st line
+        self.content=set()
         
-            self.content=[]
-            row=fp.readline()
-            while len(row)!=0:#Reads the content of the relation
-                self.content.append(row.replace("\n","").strip().split(" "))
-                row=fp.readline()
+        for i in reader.__iter__(): #Iterating rows
+            self.content.add(tuple(i))
         
         #Closing file
         fp.close()
         
     
-    def save(self,filename,comma_separated=True):
+    def save(self,filename):
         '''Saves the relation in a file. By default will save using the csv
         format as defined in RFC4180, but setting comma_separated to False,
         it will use the old format with space separated values.
-        The old format is deprecated since it doesn't permit fields
-        with spaces, you should avoid using it.'''
+        The old format is no longer supported.'''
         
         fp=file(filename,'w') #Opening file in write mode
-        if comma_separated: #writing csv
-            writer=csv.writer(fp) #Creating csv writer
+        
+        writer=csv.writer(fp) #Creating csv writer
             
-            #It wants an iterable containing iterables
-            head=[]
-            head.append(self.header.attributes)
-            writer.writerows(head)
+        #It wants an iterable containing iterables
+        head=(self.header.attributes,)
+        writer.writerows(head)
             
-            #Writing content, already in the correct format
-            writer.writerows(self.content)
-        else: #Writing in the old, deprecated, format
-            res=""
-            res+=" ".join(self.header.attributes)
-            
-            for r in self.content:
-                res+="\n"
-                res+=" ".join(r)
-            fp.write(res)
+        #Writing content, already in the correct format
+        writer.writerows(self.content)
         fp.close() #Closing file
+                
     def _rearrange_(self,other):
         '''If two relations share the same attributes in a different order, this method
         will use projection to make them have the same attributes' order.
@@ -105,6 +88,7 @@ class relation (object):
         newt=relation()
         newt.header=header(list(self.header.attributes))
         for i in self.content:
+	    #Fills the attributes dictionary with the values of the tuple
             for j in range(len(self.header.attributes)):
                 if len(i[j])>0 and i[j].isdigit():
                     attributes[self.header.attributes[j]]=int(i[j])
@@ -117,7 +101,7 @@ class relation (object):
                 
             try:
                 if eval(expr,attributes):
-                    newt.content.append(i)
+                    newt.content.add(i)
             except Exception,e:
                 raise Exception("Failed to evaluate %s\n%s" % (expr,e.__str__()))
         return newt
@@ -134,7 +118,7 @@ class relation (object):
         
         for i in self.content:
             for j in other.content:
-                newt.content.append(i+j)
+                newt.content.add(i+j)
         return newt
         
     
@@ -174,8 +158,7 @@ class relation (object):
             row=[]
             for j in ids:
                 row.append(i[j])
-            if attributes_same_count or row not in newt.content:
-                newt.content.append(row)
+            newt.content.add(tuple(row))
         return newt
     
     def rename(self,params):
@@ -192,7 +175,8 @@ class relation (object):
             if (newt.header.rename(old,new)) == False:
                 return None
         
-        newt.content=list(self.content)
+        #TODO only copy the link and mark the new relation as read only
+        newt.content=set(self.content)
         return newt
         
     def intersection(self,other):
@@ -207,10 +191,7 @@ class relation (object):
         newt=relation()
         newt.header=header(list(self.header.attributes))
         
-        #Adds only element not in other, duplicating them
-        for e in self.content:
-            if e in other.content:
-                newt.content.append(list(e))
+        newt.content=self.content.intersection(other.content)
         return newt
     
     def difference(self,other):
@@ -225,10 +206,7 @@ class relation (object):
         newt=relation()
         newt.header=header(list(self.header.attributes))
         
-        #Adds only element not in other, duplicating them
-        for e in self.content:
-            if e not in other.content:
-                newt.content.append(list(e))
+        newt.content=self.content.difference(other.content)
         return newt
     def division(self,other):
         '''Division operator
@@ -272,13 +250,7 @@ class relation (object):
         newt=relation()
         newt.header=header(list(self.header.attributes))
         
-        #Adds element from self, duplicating them all
-        for e in self.content:
-            newt.content.append(list(e))
-        
-        for e in other.content:
-            if e not in newt.content:
-                newt.content.append(list(e))
+        newt.content=self.content.union(other.content)
         return newt
     def thetajoin(self,other,expr):
         '''Defined as product and then selection with the given expression.'''
@@ -344,34 +316,32 @@ class relation (object):
                     for l in noid:
                         item.append(j[l])
                     
-                    newt.content.append(item)
+                    newt.content.add(tuple(item))
                     added=True
             #If it didn't partecipate, adds it
             if not added:
                 item=list(i)
                 for l in range(len(noid)):
                     item.append("---")
-                newt.content.append(item)
+                newt.content.add(tuple(item))
         
         return newt
     
     def join(self,other):
         '''Natural join, joins on shared attributes (one or more). If there are no
         shared attributes, it will behave as cartesian product.'''
-        shared=[]
-        for i in self.header.attributes:
-            if i in other.header.attributes:
-                shared.append(i)
+        
+        #List of attributes in common between the relations
+        shared=list(set(self.header.attributes).intersection(set(other.header.attributes)))
         
         newt=relation() #Creates the new relation
         
-        #Adds all the attributes of the 1st relation
+        #Adding to the headers all the fields, done like that because order is needed
         newt.header=header(list(self.header.attributes))
-        
-        #Adds all the attributes of the 2nd, when non shared
         for i in other.header.attributes:
             if i not in shared:
                 newt.header.attributes.append(i)
+                
         #Shared ids of self
         sid=self.header.getAttributesId(shared)
         #Shared ids of the other relation
@@ -394,7 +364,7 @@ class relation (object):
                     for l in noid:
                         item.append(j[l])
                     
-                    newt.content.append(item)
+                    newt.content.add(tuple(item))
         
         return newt
     def __eq__(self,other):
@@ -412,12 +382,7 @@ class relation (object):
                 return False #Non shared attribute
         
         #comparing content
-        if len(self.content) != len(other.content):
-            return False #Not the same 
-        for i in self.content:
-            if i not in other.content:
-                return False
-        return True
+        return self.content==other.content
         
     def __str__(self):
         '''Returns a string representation of the relation, can be printed with 
@@ -433,7 +398,6 @@ class relation (object):
                     m_len[col]=len(i)
                 col+=1
                 
-        
         res=""
         for f in range(len(self.header.attributes)):
             res+="%s"%(self.header.attributes[f].ljust(2+m_len[f]))
@@ -482,8 +446,9 @@ class relation (object):
                 self.content.remove(i) 
                 for k in range(len(keys)):
                     new_tuple[f_ids[k]]=str(dic[keys[k]])
-                self.content.append(new_tuple)
+                self.content.add(tuple(new_tuple))
         return affected
+        
     def insert(self,values):
         '''Inserts a tuple in the relation.
         This function will not insert duplicate tuples.
@@ -499,11 +464,9 @@ class relation (object):
         for i in values:
             t.append(str(i))
         
-        if t not in self.content:
-            self.content.append(t)
-            return 1
-        else:
-            return 0
+        prevlen=len(self.content)
+        self.content.add(tuple(t))
+        return len(self.content)-prevlen
     
     def delete(self,expr):
         '''Delete, expr must be a valid boolean expression, can contain field names,
@@ -513,7 +476,7 @@ class relation (object):
         Returns the number of affected rows.'''
         attributes={}
         affected=len(self.content)
-        new_content=[] #New content of the relation
+        new_content=set() #New content of the relation
         for i in self.content:
             for j in range(len(self.header.attributes)):
                 if i[j].isdigit():
@@ -526,7 +489,7 @@ class relation (object):
                     attributes[self.header.attributes[j]]=i[j]
             if not eval(expr,attributes):
                 affected-=1
-                new_content.append(i)
+                new_content.add(i)
         self.content=new_content
         return affected
     
