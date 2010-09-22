@@ -33,6 +33,9 @@ class relation (object):
         RFC4180, but it can also be handled like a space separated file (previous
         default format) setting to false the 2nd parameter.
         The old format is no longer supported.'''
+        
+        self._readonly=False
+        
         if len(filename)==0:#Empty relation
             self.content=set()
             self.header=header([])
@@ -50,7 +53,14 @@ class relation (object):
         #Closing file
         fp.close()
         
-    
+    def _make_writable(self):
+        '''If this relation is marked as readonly, this 
+        method will copy the content to make it writable too'''
+        
+        if self._readonly:
+            self.content=set(self.content)
+            self._readonly=False
+        
     def save(self,filename):
         '''Saves the relation in a file. By default will save using the csv
         format as defined in RFC4180, but setting comma_separated to False,
@@ -176,7 +186,8 @@ class relation (object):
                 return None
         
         #TODO only copy the link and mark the new relation as read only
-        newt.content=set(self.content)
+        newt.content=self.content
+        newt._readonly=True
         return newt
         
     def intersection(self,other):
@@ -420,6 +431,7 @@ class relation (object):
         Dic must be a dictionary that has the form field name:value. Every kind of value
         will be converted into a string.
         Returns the number of affected rows.'''
+        self._make_writable()
         affected=0
         attributes={}
         keys=dic.keys() #List of headers to modify
@@ -459,6 +471,8 @@ class relation (object):
         if len(self.header.attributes) != len(values):
             return 0
             
+        self._make_writable()
+            
         #Creating list containing only strings
         t=[]
         for i in values:
@@ -474,6 +488,7 @@ class relation (object):
         This operation will change the relation itself instead of generating a new one,
         deleting all the tuples that make expr true.
         Returns the number of affected rows.'''
+        self._make_writable()
         attributes={}
         affected=len(self.content)
         new_content=set() #New content of the relation

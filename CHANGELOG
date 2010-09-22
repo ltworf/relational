@@ -3,6 +3,7 @@
 - Added manpage for relational-cli
 - Internally uses set instead of lists to describe relation's content
 - Discards the old and not so functional tlb format
+- Rename will mark the resulting relation as readonly and subsequent updates, insert or deletes will actually copy the content
 
 0.11
 - Font is set only on windows (Rev 206)

@@ -101,7 +101,7 @@ def load_relation(filename,defname=None):
     f=filename.split('/')
     if defname==None:
         defname=f[len(f)-1].lower()
-        if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
+        if defname.endswith(".csv"): #removes the extension
             defname=defname[:-4]
 
     try:
@@ -285,7 +285,6 @@ def main(files=[]):
         except EOFError:
             print
             sys.exit(0)
-
 
 
 if __name__ == "__main__":
