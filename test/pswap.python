@@ -1,0 +1,1 @@
+people.projection("name","id","age","chief")==people
