@@ -1,0 +1,12 @@
+id,name,chief,age,skill
+2,john,1,30,C
+7,alia,1,28,C
+1,carl,0,20,C++
+2,john,1,30,PHP
+7,alia,1,28,Python
+3,dean,1,33,C++
+7,alia,1,28,PHP
+0,jack,0,22,Python
+1,carl,0,20,Python
+0,jack,0,22,C
+1,carl,0,20,System Admin

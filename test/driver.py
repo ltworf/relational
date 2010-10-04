@@ -96,22 +96,25 @@ def run_py_test(testname):
     '''Runs a python test, which executes code directly rather than queries'''
     print "Running python test: \033[35;1m%s\033[0m" % testname
     
-    expr=readfile('%s%s.python' % (tests_path,testname))
-    result=eval(expr,rels) #Evaluating the expression
+    try:
     
-    expr=readfile('%s%s.result' % (tests_path,testname))
-    exp_result=eval(expr,rels) #Evaluating the expression
+        expr=readfile('%s%s.python' % (tests_path,testname))
+        result=eval(expr,rels) #Evaluating the expression
     
-    if result==exp_result:
-        print "\033[32;1mTest passed\033[0m"
-        return True
-    else:
-        print "\033[31;1mERROR\033[0m"
-        print "\033[31;1m=====================================\033[0m"
-        print "Expected %s" % exp_result
-        print "Got %s" % result
-        print "\033[31;1m=====================================\033[0m"
-        return False
+        expr=readfile('%s%s.result' % (tests_path,testname))
+        exp_result=eval(expr,rels) #Evaluating the expression
+    
+        if result==exp_result:
+            print "\033[32;1mTest passed\033[0m"
+            return True
+    except:
+        pass
+    print "\033[31;1mERROR\033[0m"
+    print "\033[31;1m=====================================\033[0m"
+    print "Expected %s" % exp_result
+    print "Got %s" % result
+    print "\033[31;1m=====================================\033[0m"
+    return False
 
 def run_test(testname):
     '''Runs a specific test executing the file
@@ -121,36 +124,45 @@ def run_test(testname):
     The query will be executed both unoptimized and
     optimized'''
     print "Running test: \033[35;1m%s\033[0m" % testname
-    result_rel=relation.relation('%s%s.result' % (tests_path,testname))
     
-    query=readfile('%s%s.query' % (tests_path,testname)).strip()
-    o_query=optimizer.optimize_all(query,rels)
-    
-    expr=parser.parse(query)#Converting expression to python code
-    result=eval(expr,rels) #Evaluating the expression
-    
-    o_expr=parser.parse(o_query)#Converting expression to python code
-    o_result=eval(o_expr,rels) #Evaluating the expression
+    query=None;expr=None;o_query=None;o_expr=None
+    result_rel=None
+    result=None
+    o_result=None
     
     
-    if (o_result==result_rel) and (result==result_rel):
-        print "\033[32;1mTest passed\033[0m"
-        return True
-    else:
-        print "\033[31;1mERROR\033[0m"
-        print "Query: %s -> %s" % (query,expr)
-        print "Optimized query: %s -> %s" % (o_query,o_expr)
-        print "\033[31;1m=====================================\033[0m"
-        print "\033[33;1mExpected result\033[0m"
-        print result_rel
-        print "\033[33;1mResult\033[0m"
-        print result
-        print "\033[33;1mOptimized result\033[0m"
-        print o_result
-        print "\033[33;1mResult and optimized result match\033[0m", result==o_result
-        print "\033[31;1m=====================================\033[0m"
-        return False
+    try:
+        result_rel=relation.relation('%s%s.result' % (tests_path,testname))
         
+        query=readfile('%s%s.query' % (tests_path,testname)).strip()
+        o_query=optimizer.optimize_all(query,rels)
+    
+        expr=parser.parse(query)#Converting expression to python code
+        result=eval(expr,rels) #Evaluating the expression
+    
+        o_expr=parser.parse(o_query)#Converting expression to python code
+        o_result=eval(o_expr,rels) #Evaluating the expression
+    
+    
+        if (o_result==result_rel) and (result==result_rel):
+            print "\033[32;1mTest passed\033[0m"
+            return True
+    except:
+        pass
+    print "\033[31;1mERROR\033[0m"
+    print "Query: %s -> %s" % (query,expr)
+    print "Optimized query: %s -> %s" % (o_query,o_expr)
+    print "\033[31;1m=====================================\033[0m"
+    print "\033[33;1mExpected result\033[0m"
+    print result_rel
+    print "\033[33;1mResult\033[0m"
+    print result
+    print "\033[33;1mOptimized result\033[0m"
+    print o_result
+    print "\033[33;1moptimized result match\033[0m", result_rel==o_result
+    print "\033[33;1mresult match          \033[0m", result==result_rel
+    print "\033[31;1m=====================================\033[0m"
+    return False
 
     
 if __name__ == '__main__':
