@@ -53,7 +53,6 @@ def optimize_all(expression,rels):
         for i in optimizations.general_optimizations:
             total+=i(n) #Performs the optimization
     return n.__str__()
-            
 
 def specific_optimize(expression,rels):
     '''This function performs specific optimizations. Means that it will need to

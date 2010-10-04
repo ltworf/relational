@@ -32,6 +32,10 @@ A function will have to return the number of changes performed on the tree.
 
 import optimizer
 import parser
+
+from cStringIO import StringIO
+from tokenize import generate_tokens
+
 sel_op=('//=','**=','and','not','in','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or','+','-','*','/','&','|','^','~','<','>','%','=','(',')',',','[',']')
 
 def replace_node(replace,replacement):
@@ -307,58 +311,22 @@ def tokenize_select(expression):
     selection. The expression can contain parenthesis.
     It will use a subclass of str with the attribute level, which
     will specify the nesting level of the token into parenthesis.'''
-    sel_op=('//=','**=','and ','not ','in ','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or ','+','-','*','/','&','|','^','~','<','>','%','=','(',')',',','[',']')
-    l=0
-    while l!=len(expression):
-        l=len(expression)
-        if expression.startswith('(') and parser.find_matching_parenthesis(expression)+1==len(expression):
-            expression= expression[1:-1]
+    g=generate_tokens(StringIO(expression).readline)
+    l=list(token[1] for token in g)
     
-    tokens=[]
-    temp=''
-    level=0
+    l.remove('')
     
-    while len(expression)!=0:
-        expression=expression.strip()
-        
-        if expression[0:1]=='(': #Expression into parenthesis
-            level+=1
-        elif expression[0:1]==')':
-            level-=1
-        
-        for i in range(4,0,-1):#operators
-            if expression[0:i] in sel_op:
-                t=level_string(temp)
-                t.level=level
-                tokens.append(t)
-                temp=''
-                t=level_string(expression[0:i].strip())
-                t.level=level
-                tokens.append(t)
-                expression=expression[i:]
-        if expression[0:1]=="'":#String
-            end=expression.index("'",1)
-            while expression[end-1]=='\\':
-                end=expression.index("'",end+1)
-            #Add string to list
-            t=level_string(expression[0:end+1])
-            t.level=level
-            tokens.append(t)
-            expression=expression[end+1:]
-        else:
-            temp+=expression[0:1]
-            expression=expression[1:]
-            pass
-    if len(temp)!=0:
-        t=level_string(temp)
-        t.level=level
-        tokens.append(t)
-    while True:
-        try:
-            tokens.remove('')
-        except:
-            break
-    return tokens
+    #Changes the 'a','.','method' token group into a single 'a.method' token
+    try:
+        while True:
+            dot=l.index('.')
+            l[dot]='%s.%s' % (l[dot-1],l[dot+1])
+            l.pop(dot+1)
+            l.pop(dot-1)
+    except:
+        pass
+    
+    return l
 
 def swap_rename_projection(n):
     '''This function locates things like π k(ρ j(R))

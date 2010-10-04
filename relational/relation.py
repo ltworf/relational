@@ -381,13 +381,15 @@ class relation (object):
     def __eq__(self,other):
         '''Returns true if the relations are the same, ignoring order of items.
         This operation is rather heavy, since it requires sorting and comparing.'''
+        other=self._rearrange_(other) #Rearranges attributes' order so can compare tuples directly
+        
         if (self.__class__!=other.__class__)or(self.header!=other.header):
             return False #Both parameters must be a relation
 
         if set(self.header.attributes)!=set(other.header.attributes):
             return False
         
-        other=self._rearrange_(other) #Rearranges attributes' order so can compare tuples directly
+        
         
         #comparing content
         return self.content==other.content
@@ -519,20 +521,18 @@ class header (object):
     def rename(self,old,new):
         '''Renames a field. Doesn't check if it is a duplicate.
         Returns True if the field was renamed, False otherwise'''
-        for i in range(len(self.attributes)):
-            if self.attributes[i]==old:
-                self.attributes[i]=new
-                return True
-        return False #Requested field was not found    
+        print self.attributes,old, new
         
+        try:
+            id_=self.attributes.index(old)
+            self.attributes[id_]=new
+        except:
+            return False
+        return True
     
     def sharedAttributes(self,other):
         '''Returns how many attributes this header has in common with a given one'''
-        res=0
-        for i in self.attributes:
-            if i in other.attributes:
-                res+=1
-        return res
+        return len(set(self.attributes).intersection(set(other.attributes)))
     
     def __str__(self):
         '''Returns String representation of the field's list'''
