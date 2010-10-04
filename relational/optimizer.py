@@ -38,7 +38,12 @@ tree=parser.tree
 #End of the stuff
 
 def optimize_all(expression,rels):
-    '''This function performs all the available optimizations'''
+    '''This function performs all the available optimizations
+    
+    Expression is the UTF-8 encoded string containing the expression to optimize
+    rels is a dictionary like {'name':relation}
+    
+    Return value: this will return an optimized version of the expression'''
     n=tree(expression) #Gets the tree
     total=1
     while total!=0:
@@ -52,7 +57,12 @@ def optimize_all(expression,rels):
 
 def specific_optimize(expression,rels):
     '''This function performs specific optimizations. Means that it will need to
-    know the fields used by the relations'''
+    know the fields used by the relations
+    
+    Expression is the UTF-8 encoded string containing the expression to optimize
+    rels is a dictionary like {'name':relation}
+    
+    Return value: this will return an optimized version of the expression'''
     n=tree(expression) #Gets the tree
     total=1
     while total!=0:
@@ -63,7 +73,11 @@ def specific_optimize(expression,rels):
             
 def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
-    know the fields used by the relations'''
+    know the fields used by the relations
+    
+    Expression is the UTF-8 encoded string containing the expression to optimize
+    
+    Return value: this will return an optimized version of the expression'''
     n=tree(expression) #Gets the tree
     total=1
     while total!=0:
