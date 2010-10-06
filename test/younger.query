@@ -1,0 +1,1 @@
+people-π id,name,chief,age(σ age>a(π a(ρ id➡i,age➡a(people))*people))

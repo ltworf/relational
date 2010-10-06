@@ -1,0 +1,1 @@
+ρn➡chief_name,a➡chief_age(πname,age,n,a(σ i==chief and age>a (π i,c,n,a(ρage➡a,id➡i,chief➡c,name➡n(people))*people)))

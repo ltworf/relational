@@ -1,0 +1,1 @@
+σ date.year>2000 and date.day+10<30 (dates)
