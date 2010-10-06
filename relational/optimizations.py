@@ -326,6 +326,17 @@ def tokenize_select(expression):
     except:
         pass
     
+    
+    level=0
+    for i in range(len(l)):
+        l[i]=level_string(l[i])
+        l[i].level=level
+        
+        if l[i]=='(':
+            level+=1
+        elif l[i]==')':
+            level-=1
+    
     return l
 
 def swap_rename_projection(n):

@@ -22,6 +22,8 @@ from relational import relation, parser, optimizer
 
 import os
 
+print relation
+
 rels={}
 examples_path='samples/'
 tests_path='test/'
@@ -44,9 +46,10 @@ def load_relations():
             #Naming the relation
             relname=i[:-4]
             
-            print "Loading relation %s with name %s" % (i,relname)
+            print ("Loading relation %s with name %s..." % (i,relname)),
             
             rels[relname]=relation.relation('%s%s' % (examples_path,i))
+            print 'done'
             
 def execute_tests():
     
