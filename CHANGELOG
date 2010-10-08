@@ -4,7 +4,9 @@
 - Internally uses set instead of lists to describe relation's content
 - Tuples are internally mapped on tuples and no longer on lists
 - Discards the old and not so functional tlb format
-- Rename will mark the resulting relation as readonly and subsequent updates, insert or deletes will actually copy the content
+- Rename will mark the resulting relation as readonly and subsequent updates, insert, updates or deletes will actually copy the content
+- Added testsuite
+- Fixed python expression tokenization, now uses native tokenizer
 
 0.11
 - Font is set only on windows (Rev 206)

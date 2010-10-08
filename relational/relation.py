@@ -521,8 +521,6 @@ class header (object):
     def rename(self,old,new):
         '''Renames a field. Doesn't check if it is a duplicate.
         Returns True if the field was renamed, False otherwise'''
-        print self.attributes,old, new
-        
         try:
             id_=self.attributes.index(old)
             self.attributes[id_]=new
