@@ -1,0 +1,1 @@
+σ age<30 (σ (id%2==0) (people) ᑌ σ age>22(people))
