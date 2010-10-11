@@ -52,7 +52,17 @@ def replace_node(replace,replacement):
         replace.left=replacement.left
 
 def recoursive_scan(function,node,rels=None):
-    '''Does a recoursive optimization on the tree'''
+    '''Does a recoursive optimization on the tree.
+    
+    This function will recoursively execute the function given
+    as "function" parameter starting from node to all the tree.
+    if rels is provided it will be passed as argument to the function.
+    Otherwise the function will be called just on the node.
+    
+    Result value: function is supposed to return the amount of changes
+    it has performed on the tree.
+    The various result will be added up and this final value will be the
+    returned value.'''
     changes=0
     #recoursive scan
     if node.kind==optimizer.UNARY:
@@ -72,11 +82,20 @@ def recoursive_scan(function,node,rels=None):
 
 def duplicated_select(n):
     '''This function locates and deletes things like
-    σ a ( σ a(C)) and the ones like σ a ( σ b(C))'''
+    σ a ( σ a(C)) and the ones like σ a ( σ b(C))
+    replacing the 1st one with a single select and
+    the 2nd one with a single select with both conditions
+    in and
+    '''
     changes=0
     if n.name=='σ' and n.child.name=='σ':        
         if n.prop != n.child.prop: #Nested but different, joining them
             n.prop = n.prop + " and " + n.child.prop
+            
+            #This adds parenthesis if they are needed
+            if n.child.prop.startswith('(') or n.prop.startswith('('):
+                n.prop= '(%s)' % n.prop
+                
         n.child=n.child.child
         changes=1
         changes+=duplicated_select(n)
