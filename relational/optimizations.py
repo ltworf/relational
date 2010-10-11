@@ -115,28 +115,38 @@ def futile_union_intersection_subtraction(n):
     
     changes=0
     
+    #Union and intersection of the same thing
     if n.name in ('ᑌ','ᑎ') and n.left==n.right:
         changes=1
         replace_node(n,n.left)
-    elif (n.name == 'ᑌ' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Union of two equal things, but one has a selection
-        changes=1
-        if n.left=='σ':#Selection on left. replacing self with right.
+    
+    #selection and union of the same thing
+    elif (n.name == 'ᑌ'):
+        if n.left.name=='σ' and n.left.child==n.right:
+            changes=1
             replace_node(n,n.right)
-        else:#Selection on left. replacing self with right.
+        elif n.right.name=='σ' and n.right.child==n.left:
+            changes=1
             replace_node(n,n.left)
-    elif (n.name == 'ᑎ' and ((n.left.name=='σ' and n.left.child==n.right) or (n.right.name=='σ' and n.right.child==n.left))): #Intersection of two equal things, but one has a selection
-        changes=1
-        if n.left=='σ':#Swapping with the selection
+            
+    #selection and intersection of the same thing
+    elif n.name == 'ᑎ':
+        if n.left.name=='σ' and n.left.child==n.right:
+            changes=1
             replace_node(n,n.left)
-        else:
+        elif n.right.name=='σ' and n.right.child==n.left:
+            changes=1
             replace_node(n,n.right)
-    #TODO make work the following line...
+            
+    #Subtraction and selection of the same thing
     elif (n.name == '-' and (n.right.name=='σ' and n.right.child==n.left)): #Subtraction of two equal things, but one has a selection
         n.name=n.right.name
         n.kind=n.right.kind
         n.child=n.right.child
         n.prop='(not (%s))' % n.right.prop
         n.left=n.right=None
+    
+    #Subtraction of the same thing or with selection on the left child
     elif (n.name=='-' and ((n.left==n.right) or (n.left.name=='σ' and n.left.child==n.right)) ):#Empty relation
         changes=1
         n.kind=optimizer.UNARY
