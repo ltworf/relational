@@ -216,7 +216,10 @@ def replacements(query):
     return query
 
 def exec_query(command):
-    '''This function executes a query and prints the result on the screen'''
+    '''This function executes a query and prints the result on the screen
+    if the command terminates with ";" the result will not be printed
+    
+    '''
     
     #If it terminates with ; doesn't print the result
     if command.endswith(';'):

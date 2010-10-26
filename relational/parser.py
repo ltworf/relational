@@ -17,15 +17,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
+#
+#
+#
+# This module implements a parser for relational algebra, and can be used
+# to convert expressions into python expressions and to get the parse-tree
+# of the expression.
+#
+# The input must be provided in UTF-8
+# 
+# Language definition here:
+# https://galileo.dmi.unict.it/wiki/relational/doku.php?id=language
 
 
 RELATION=0
 UNARY=1
 BINARY=2
-b_operators=('*','-','ᑌ','ᑎ','÷','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ')
-u_operators=('π','σ','ρ')
+b_operators=('*','-','ᑌ','ᑎ','÷','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ') # List of binary operators
+u_operators=('π','σ','ρ') # List of unary operators
 
-op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','÷':'division','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'}
+op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','÷':'division','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'} # Associates operator with python method
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
