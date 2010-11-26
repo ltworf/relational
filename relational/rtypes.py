@@ -53,7 +53,9 @@ class rdate (object):
         self.month=self.intdate.month
         self.weekday=self.intdate.weekday()
         self.year=self.intdate.year
-        
+    
+    def __hash__(self):
+        return self.intdate.__hash__()
     def __str__(self):
         return self.intdate.__str__()
     def __add__(self,days):

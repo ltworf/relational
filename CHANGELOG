@@ -10,6 +10,7 @@
 - Fixed optimization involving selection and parenthesis in the expression (Rev 260)
 - Fixed futile_union_intersection_subtraction optimization that didn't work when selection operator was in the left subtree (Rev 261)
 - Module parallel does something, can execute queries in parallel
+- Set hash method for the classes
 
 0.11
 - Font is set only on windows (Rev 206)

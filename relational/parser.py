@@ -51,6 +51,7 @@ class node (object):
     
     This class is used to convert an expression into python code.'''
     kind=None
+    __hash__=None
     
     def __init__(self,expression=None):
         '''Generates the tree from the tokenized expression
@@ -186,6 +187,7 @@ class node (object):
         if self.kind==BINARY:
             return self.left==other.left and self.right==other.right
         return True
+        
     def __str__(self):
         if (self.kind==RELATION):
             return self.name

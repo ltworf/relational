@@ -25,6 +25,8 @@ class relation (object):
     A relation can be represented using a table
     Calling an operation and providing a non relation parameter when it is expected will
     result in a None value'''    
+    __hash__=None
+    
     def __init__(self,filename=""):
         '''Creates a relation, accepts a filename and then it will load the relation from
         that file. If no parameter is supplied an empty relation is created. Empty
@@ -185,7 +187,6 @@ class relation (object):
             if (newt.header.rename(old,new)) == False:
                 return None
         
-        #TODO only copy the link and mark the new relation as read only
         newt.content=self.content
         newt._readonly=True
         return newt
@@ -511,9 +512,13 @@ class header (object):
     '''This class defines the header of a relation.
     It is used within relations to know if requested operations are accepted'''
     
+    #Since relations are mutalbe we explicitly block hashing them
+    __hash__=None
+    
     def __init__(self,attributes):
         '''Accepts a list with attributes' names. Names MUST be unique'''
         self.attributes=attributes
+        
     def __repr__(self):
         return "header(%s)" % (self.attributes.__repr__())
         
