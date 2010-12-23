@@ -59,6 +59,9 @@ def execute_tests():
     q_bad=0
     q_good=0
     q_tot=0
+    ex_bad=0
+    ex_good=0
+    ex_tot=0
     
     
     for i in os.listdir(tests_path):
@@ -74,6 +77,12 @@ def execute_tests():
                 py_good+=1
             else:
                 py_bad+=1
+        elif i.endswith('.exec'):
+            ex_tot+=1
+            if run_exec_test(i[:-5]):
+                ex_good+=1
+            else:
+                ex_bad+=1
     print "\n\033[36;1mResume of the results\033[0m"
     
     print "\n\033[35;1mQuery tests\033[0m"
@@ -88,16 +97,61 @@ def execute_tests():
     if py_bad>0:
         print "\033[31;1mFailed tests count: %d\033[0m" % py_bad
     
-    print "\n\033[36;1mTotal results\033[0m"
-    if q_bad+py_bad==0:
-        print "\033[32;1mNo failed tests\033[0m"
-    else:
-        print "\033[31;1mThere are %d failed tests\033[0m" % (py_bad+q_bad)
+    print "\n\033[35;1mExecute Python tests\033[0m"
+    print "Total test count: %d" % ex_tot
+    print "Passed tests: %d" % ex_good
+    if ex_bad>0:
+        print "\033[31;1mFailed tests count: %d\033[0m" % ex_bad
         
     
-def run_py_test(testname):
+    print "\n\033[36;1mTotal results\033[0m"
+    if q_bad+py_bad+ex_bad==0:
+        print "\033[32;1mNo failed tests\033[0m"
+    else:
+        print "\033[31;1mThere are %d failed tests\033[0m" % (py_bad+q_bad+ex_bad)
+        
+    
+def run_exec_test(testname):
     '''Runs a python test, which executes code directly rather than queries'''
     print "Running python test: \033[35;1m%s\033[0m" % testname
+    
+    glob=rels.copy()
+    exp_result={}
+    
+    try:
+        
+        expr=readfile('%s%s.exec' % (tests_path,testname))
+        exec(expr,glob) #Evaluating the expression
+    
+        expr=readfile('%s%s.exec' % (tests_path,testname))
+        exec(expr,glob) #Evaluating the expression
+        
+    
+        expr=readfile('%s%s.result' % (tests_path,testname))
+        exp_result=eval(expr,rels) #Evaluating the expression
+        
+        
+        if isinstance(exp_result,dict):
+            fields_ok=True
+            
+            for i in exp_result:
+                fields_ok = fields_ok and glob[i]==exp_result[i]
+                
+            if fields_ok:
+                print "\033[32;1mTest passed\033[0m"
+                return True
+    except:
+        pass
+    print "\033[31;1mERROR\033[0m"
+    print "\033[31;1m=====================================\033[0m"
+    print "Expected %s" % exp_result
+    #print "Got %s" % result
+    print "\033[31;1m=====================================\033[0m"
+    return False
+
+def run_py_test(testname):
+    '''Runs a python test, which evaluates expressions directly rather than queries'''
+    print "Running expression python test: \033[35;1m%s\033[0m" % testname
     
     try:
     
