@@ -84,8 +84,9 @@ if __name__ == "__main__":
     if x11:
         import sip
         from PyQt4 import QtCore, QtGui
-        from relational_gui import maingui, about
+        from relational_gui import maingui, about, surveyForm
         about.version=version
+        surveyForm.version=version
 
         app = QtGui.QApplication(sys.argv)
         Form = QtGui.QWidget()

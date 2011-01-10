@@ -55,6 +55,7 @@ class surveyForm (QtGui.QWidget):
         '''Sends the data inserted in the form'''
         #Creates the string
         post="Relational algebra\n"
+        post+="version: " + version + "\n"
         post+="system:" + str(self.ui.txtSystem.text().toUtf8())+ "\n"
         post+="country:" + str(self.ui.txtCountry.text().toUtf8())+ "\n"
         post+="school:" + str(self.ui.txtSchool.text().toUtf8())+ "\n"
