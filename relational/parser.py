@@ -132,7 +132,7 @@ class node (object):
             
         return '\n'+r
     def get_left_leaf(self):
-        '''This function returns the most left leaf in the tree. It is needed by some optimizations.'''
+        '''This function returns the leftmost leaf in the tree. It is needed by some optimizations.'''
         if self.kind==RELATION:
             return self
         elif self.kind==UNARY:

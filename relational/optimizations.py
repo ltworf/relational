@@ -449,6 +449,27 @@ def swap_rename_select(n):
     
     return changes+recoursive_scan(swap_rename_select,n)
 
+def select_union_intersect_subtract(n):
+    '''This function locates things like σ i(a) ᑌ σ q(a)
+    and replaces them with σ (i OR q) (a)
+    Removing a O² operation like the union'''
+    changes=0
+    if n.name in ('ᑌ', 'ᑎ', '-') and n.left.name=='σ' and n.right.name=='σ' and n.left.child==n.right.child:
+        cahnges=1
+        
+        d={'ᑌ':'or', 'ᑎ':'and', '-':'and not'}
+        op=d[n.name]
+        
+        newnode=parser.node()
+        
+        newnode.prop='((%s) %s (%s))' % (n.left.prop,op,n.right.prop)
+        newnode.name='σ'
+        newnode.child=n.left.child
+        newnode.kind=parser.UNARY
+        replace_node(n,newnode)
+        
+    return changes+recoursive_scan(select_union_intersect_subtract,n)
+
 def selection_and_product(n,rels):
     '''This function locates things like σ k (R*Q) and converts them into
     σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
@@ -549,7 +570,7 @@ def selection_and_product(n,rels):
             
     return changes+recoursive_scan(selection_and_product,n,rels)
         
-general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames,swap_rename_projection]
+general_optimizations=[duplicated_select,down_to_unions_subtractions_intersections,duplicated_projection,selection_inside_projection,subsequent_renames,swap_rename_select,futile_union_intersection_subtraction,swap_union_renames,swap_rename_projection,select_union_intersect_subtract]
 specific_optimizations=[selection_and_product]
 
 if __name__=="__main__":
