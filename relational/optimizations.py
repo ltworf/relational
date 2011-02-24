@@ -452,7 +452,7 @@ def swap_rename_select(n):
 def select_union_intersect_subtract(n):
     '''This function locates things like σ i(a) ᑌ σ q(a)
     and replaces them with σ (i OR q) (a)
-    Removing a O² operation like the union'''
+    Removing a O(n²) operation like the union'''
     changes=0
     if n.name in ('ᑌ', 'ᑎ', '-') and n.left.name=='σ' and n.right.name=='σ' and n.left.child==n.right.child:
         cahnges=1

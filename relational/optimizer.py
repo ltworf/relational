@@ -18,8 +18,12 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-'''This module optimizes relational expressions into ones that require less time to be executed
-For now it is highly experimental, and it shouldn't be used in 3rd party applications.'''
+'''This module optimizes relational expressions into ones that require less time to be executed.
+
+expression: In all the functions expression can be either an UTF-8 encoded string, containing a valid
+relational query, or it can be a parse tree for a relational expression (ie: class parser.node).
+The functions will always return a string with the optimized query, but if a parse tree was provided,
+the parse tree itself will be modified accordingly.'''
 
 import optimizations
 import parser
@@ -37,53 +41,64 @@ tokenize=parser.tokenize
 tree=parser.tree
 #End of the stuff
 
-def optimize_all(expression,rels):
-    '''This function performs all the available optimizations
+def optimize_all(expression,rels,specific=True,general=True,debug=None):
+    '''This function performs all the available optimizations.
     
-    Expression is the UTF-8 encoded string containing the expression to optimize
-    rels is a dictionary like {'name':relation}
+    expression : see documentation of this module
+    rels: dic with relation name as key, and relation istance as value
+    specific: True if it has to perform specific optimizations
+    general: True if it has to perform general optimizations
+    debug: if a list is provided here, after the end of the function, it
+        will contain the query repeated many times to show the performed
+        steps. Of course don't call optimize_all(... ,debug=[]) because it
+        would make no sense
     
     Return value: this will return an optimized version of the expression'''
-    n=tree(expression) #Gets the tree
+    if isinstance(expression,str):
+        n=tree(expression) #Gets the tree
+    elif isinstance(expression,node):
+        n=expression
+    else:
+        raise (TypeError("expression must be a string or a node"))
+    
+    if isinstance(debug,list):
+        dbg=True
+    else:
+        dbg=False
+    
     total=1
     while total!=0:
         total=0
-        for i in optimizations.specific_optimizations:
-            total+=i(n,rels) #Performs the optimization
-        for i in optimizations.general_optimizations:
-            total+=i(n) #Performs the optimization
+        if specific:
+            for i in optimizations.specific_optimizations:
+                res=i(n,rels) #Performs the optimization
+                if res!=0 and dbg: debug.append(n.__str__())
+                total+=res
+        if general:
+            for i in optimizations.general_optimizations:
+                res=i(n) #Performs the optimization
+                if res!=0 and dbg: debug.append(n.__str__())
+                total+=res
     return n.__str__()
 
 def specific_optimize(expression,rels):
     '''This function performs specific optimizations. Means that it will need to
-    know the fields used by the relations
+    know the fields used by the relations.
     
-    Expression is the UTF-8 encoded string containing the expression to optimize
-    rels is a dictionary like {'name':relation}
+    expression : see documentation of this module
+    rels: dic with relation name as key, and relation istance as value
     
     Return value: this will return an optimized version of the expression'''
-    n=tree(expression) #Gets the tree
-    total=1
-    while total!=0:
-        total=0
-        for i in optimizations.specific_optimizations:
-            total+=i(n,rels) #Performs the optimization
-    return n.__str__()
+    return optimize_all(expression,rels,specific=True,general=False)
             
 def general_optimize(expression):
     '''This function performs general optimizations. Means that it will not need to
     know the fields used by the relations
     
-    Expression is the UTF-8 encoded string containing the expression to optimize
+    expression : see documentation of this module
     
     Return value: this will return an optimized version of the expression'''
-    n=tree(expression) #Gets the tree
-    total=1
-    while total!=0:
-        total=0
-        for i in optimizations.general_optimizations:
-            total+=i(n) #Performs the optimization
-    return n.__str__()
+    return optimize_all(expression,None,specific=False,general=True)
 
 if __name__=="__main__":
     #n=node(u"((a ᑌ b) - c ᑌ d) - b")
