@@ -92,7 +92,20 @@ class relation (object):
         if self.header.sharedAttributes(other.header) == len(self.header.attributes) == len(other.header.attributes):
             return other.projection(list(self.header.attributes))
         return None
-        
+    
+    def _autocast(self,string):
+        '''Depending on the regexp matched by the string,
+        it will perform automatic casting'''
+        tmpstring=rstring(string)
+        if len(tmpstring)>0 and tmpstring.isdigit():
+            return int(tmpstring)
+        elif len(tmpstring)>0 and tmpstring.isFloat():
+            return float(tmpstring)
+        elif len(tmpstring)>0 and tmpstring.isDate():
+            return rdate(tmpstring)
+        else:
+            return tmpstring
+    
     def selection(self,expr):
         '''Selection, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.'''
@@ -102,16 +115,7 @@ class relation (object):
         for i in self.content:
 	    #Fills the attributes dictionary with the values of the tuple
             for j in range(len(self.header.attributes)):
-                tmpstring=rstring(i[j])
-                
-                if len(tmpstring)>0 and tmpstring.isdigit():
-                    attributes[self.header.attributes[j]]=int(tmpstring)
-                elif len(tmpstring)>0 and tmpstring.isFloat():
-                    attributes[self.header.attributes[j]]=float(tmpstring)
-                elif len(tmpstring)>0 and tmpstring.isDate():
-                    attributes[self.header.attributes[j]]=rdate(tmpstring)
-                else:
-                    attributes[self.header.attributes[j]]=tmpstring
+                attributes[self.header.attributes[j]]=self._autocast(i[j])
                 
             try:
                 if eval(expr,attributes):
@@ -442,15 +446,8 @@ class relation (object):
         #new_content=[] #New content of the relation
         for i in self.content:
             for j in range(len(self.header.attributes)):
-                #Giving to the field it's right format (hopefully)
-                if i[j].isdigit():
-                    attributes[self.header.attributes[j]]=int(i[j])
-                elif rstring(i[j]).isFloat():
-                    attributes[self.header.attributes[j]]=float(i[j])
-                elif isDate(i[j]):
-                    attributes[self.header.attributes[j]]=rdate(i[j])
-                else:
-                    attributes[self.header.attributes[j]]=i[j]
+                attributes[self.header.attributes[j]]=self._autocast(i[j])
+                
             if eval(expr,attributes): #If expr is true, changing the tuple
                 affected+=1
                 new_tuple=list(i)
@@ -496,14 +493,9 @@ class relation (object):
         new_content=set() #New content of the relation
         for i in self.content:
             for j in range(len(self.header.attributes)):
-                if i[j].isdigit():
-                    attributes[self.header.attributes[j]]=int(i[j])
-                elif rstring(i[j]).isFloat():
-                    attributes[self.header.attributes[j]]=float(i[j])
-                elif isDate(i[j]):
-                    attributes[self.header.attributes[j]]=rdate(i[j])
-                else:
-                    attributes[self.header.attributes[j]]=i[j]
+                attributes[self.header.attributes[j]]=self._autocast(i[j])
+                
+                
             if not eval(expr,attributes):
                 affected-=1
                 new_content.add(i)
