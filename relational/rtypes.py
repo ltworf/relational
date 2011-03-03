@@ -22,33 +22,66 @@ Purpose of this module is having the isFloat function and
 implementing dates to use in selection.'''
 
 import datetime
+import re
 
 class rstring (str):
     '''String subclass with some custom methods'''
     def isFloat(self):
-        '''True if the string is a float number, false otherwise'''
-        lst=('0','1','2','3','4','5','6','7','8','9','.')
-        for i in self:
-            if i not in lst:
-                return False;
-        return True;
+        '''Returns true if the string represents a float number
+        it only considers as float numbers, the strings matching
+        the following regexp:
+            r'^[0-9]+(\.([0-9])+)?$'
+        '''
+        if re.match(r'^[0-9]+(\.([0-9])+)?$',self)==None:
+            return False
+        else:
+            return True
+    
+    def isDate(self):
+        '''Returns true if the string represents a date,
+        in the format YYYY-MM-DD. as separators '-' , '\', '/' are allowed.
+        As side-effect, the date object will be stored for future usage, so
+        no more parsings are needed
+        '''
+        try:
+            return self._isdate
+        except:
+            pass
+        
+        r= re.match(r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$',self)
+        if r==None:
+            self._isdate=False
+            self._date=None
+            return False
+    
+        try: #Any of the following operations can generate an exception, if it happens, we aren't dealing with a date
+            year=int(r.group(1))
+            month=int(r.group(3))
+            day=int(r.group(5))
+            d=datetime.date(year,month,day)
+            self._isdate=True
+            self._date=d
+            return True
+        except:
+            self._isdate=False
+            self._date=None
+            return False
 
+    def getDate(self):
+        '''Returns the datetime.date object or None'''
+        try:
+            return self._date
+        except:
+            self.isDate()
+            return self._date
 class rdate (object):
     '''Represents a date'''
     def __init__(self,date):
-        sep=('-','/','\\')
-        splitter=None
-        for i in sep:
-            if i in date:
-                splitter=i
-                break;
-        elems=date.split(splitter)
+        '''date: A string representing a date'''
+        if not isinstance(date,rstring):
+            date=rstring(date)
         
-        year=int(elems[0])
-        month=int(elems[1])
-        day=int(elems[2])
-        
-        self.intdate=datetime.date(year,month,day)
+        self.intdate=date.getDate()
         self.day= self.intdate.day
         self.month=self.intdate.month
         self.weekday=self.intdate.weekday()
@@ -75,29 +108,5 @@ class rdate (object):
         return self.intdate!=other.intdate
     def __sub__ (self,other):
         return (self.intdate-other.intdate).days
-def isDate(date):
-    sep=('-','/','\\')
-    splitter=None
-    for i in sep:
-        if i in date:
-            splitter=i
-            break;
-    elems=date.split(splitter)
-    if len(elems)!=3:
-        return False #Wrong number of elements
-    year=elems[0]
-    month=elems[1]
-    day=elems[2]
-    if not (year.isdigit() and month.isdigit() and day.isdigit()):
-        return False
-    year=int(year)
-    month=int(month)
-    day=int(day)
-    
-    if year<datetime.MINYEAR or year>datetime.MAXYEAR:
-        return False
-    if month<1 or month>12:
-        return False
-    if day<1 or day >31:
-        return False
-    return True
+
+        

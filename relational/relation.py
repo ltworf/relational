@@ -102,14 +102,16 @@ class relation (object):
         for i in self.content:
 	    #Fills the attributes dictionary with the values of the tuple
             for j in range(len(self.header.attributes)):
-                if len(i[j])>0 and i[j].isdigit():
-                    attributes[self.header.attributes[j]]=int(i[j])
-                elif len(i[j])>0 and rstring(i[j]).isFloat():
-                    attributes[self.header.attributes[j]]=float(i[j])
-                elif len(i[j])>0 and isDate(i[j]):
-                    attributes[self.header.attributes[j]]=rdate(i[j])
+                tmpstring=rstring(i[j])
+                
+                if len(tmpstring)>0 and tmpstring.isdigit():
+                    attributes[self.header.attributes[j]]=int(tmpstring)
+                elif len(tmpstring)>0 and tmpstring.isFloat():
+                    attributes[self.header.attributes[j]]=float(tmpstring)
+                elif len(tmpstring)>0 and tmpstring.isDate():
+                    attributes[self.header.attributes[j]]=rdate(tmpstring)
                 else:
-                    attributes[self.header.attributes[j]]=i[j]
+                    attributes[self.header.attributes[j]]=tmpstring
                 
             try:
                 if eval(expr,attributes):

@@ -12,6 +12,9 @@
 - Module parallel does something, can execute queries in parallel
 - Set hash method for the classes
 - Implemented select_union_intersect_subtract general optimization
+- Float type recognition is more robust, now handled using a regexp
+- Date type recognition is more robust, now using a combination of regexp plus date object
+- Parsing of strings representing dates is now cached, eliminating the need for double parse
 
 0.11
 - Font is set only on windows (Rev 206)

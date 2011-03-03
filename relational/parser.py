@@ -118,7 +118,7 @@ class node (object):
             return self.name
         pass
     def printtree(self,level=0):
-        '''Prints a representation of the tree using indentation'''
+        '''returns a representation of the tree using indentation'''
         r=''
         for i in range(level):
             r+='  '
