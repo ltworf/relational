@@ -21,7 +21,18 @@ source: clean
 	rm -rf /tmp/relational/
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
-	rm -rf /tmp/relational/windows /tmp/relational/samples/.svn/ /tmp/relational/debscript/.svn/ /tmp/relational/mac/.svn/ /tmp/relational/relational/.svn/ /tmp/relational/relational_gui/.svn/ /tmp/relational/mac /tmp/relational/debscript/ /tmp/relational/relational_curses/.svn/ /tmp/relational/relational_readline/.svn/
+	rm -rf /tmp/relational/windows
+	rm -rf /tmp/relational/samples/.svn/
+	rm -rf /tmp/relational/debscript/.svn/
+	rm -rf /tmp/relational/mac/.svn/
+	rm -rf /tmp/relational/relational/.svn/ 
+	rm -rf /tmp/relational/relational_gui/.svn/
+	rm -rf /tmp/relational/mac
+	rm -rf /tmp/relational/debian/
+	rm -rf /tmp/relational/relational_curses/.svn/
+	rm -rf /tmp/relational/relational_readline/.svn/
+	rm -rf /tmp/relational/test/.svn
+	
 	echo "cd /tmp ; tar -zcvvf relational.tar.gz relational/" | bash
 	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.tar.gz
 
@@ -35,10 +46,18 @@ clean:
 	rm -rf *tar.bz || echo ok
 	rm -rf *.deb || echo ok
 	rm -rf relational/*~ || echo ok
-	rm -rf relational/*.pyc *.pyo || echo ok
+	rm -rf relational/*.pyc relational/*.pyo || echo ok
 	rm -rf relational_gui/*~ || echo ok
-	rm -rf relational_gui/*.pyc *.pyo || echo ok
+	rm -rf relational_gui/*.pyc || echo ok
+	rm -rf relational_gui/*.pyo || echo ok
+	rm -rf relational_curses/*~ || echo ok
+	rm -rf relational_curses/*.pyc || echo ok
+	rm -rf relational_curses/*.pyo || echo ok
+	rm -rf relational_readline/*~ || echo ok
+	rm -rf relational_readline/*.pyc || echo ok
+	rm -rf relational_readline/*.pyo || echo ok
 	rm -rf relational_mac
+	rm -rf test/*~
 mac: app
 	mkdir relational_mac || echo Exists
 	mv Relational.app relational_mac

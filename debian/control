@@ -10,7 +10,6 @@ Package: python-relational
 Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python:Depends}
-Suggests: python-psyco
 Description: Educational tool for relational algebra (standalone module)
  Relational is primarily a tool to provide a workspace for experimenting with
  relational algebra, an offshoot of first-order logic.
