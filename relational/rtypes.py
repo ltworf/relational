@@ -109,4 +109,3 @@ class rdate (object):
     def __sub__ (self,other):
         return (self.intdate-other.intdate).days
 
-        

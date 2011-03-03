@@ -57,14 +57,6 @@ def printhelp(code=0):
 if __name__ == "__main__":
     x11=True #Will try to use the x11 interface
     
-    #Try to run the psyco optimizer
-    try:
-        import psyco
-        psyco.full()
-    except:
-        pass
-
-        
     #Getting command line
     try:
         switches,files=getopt.getopt(sys.argv[1:],"vhqr")
