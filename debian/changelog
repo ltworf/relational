@@ -1,8 +1,10 @@
-relational (0.12-1) unstable; urgency=low
+relational (1.0-1) unstable; urgency=low
 
   * New upstream release
+  * Merged relational-cli upstream, dropped debian patch
+  * Using relational_gui.py for both relational and relational-cli packages
 
- -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Fri, 04 Mar 2011 13:15:06 +0100
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Fri, 04 Mar 2011 13:28:51 +0100
 
 relational (0.11-2) unstable; urgency=low
 

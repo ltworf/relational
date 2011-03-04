@@ -1,4 +1,4 @@
-0.12
+1.0
 - Removed encoding from .desktop file (was deprecated)
 - Added manpage for relational-cli
 - Internally uses set instead of lists to describe relation's content
