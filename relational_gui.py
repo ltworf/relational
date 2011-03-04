@@ -38,7 +38,7 @@ def printver(exit=True):
     print
     print "Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>"
     print
-    print "http://galileo.dmi.unict.it/wiki/relational/doku.php"
+    print "http://galileo.dmi.unict.it/wiki/relational/"
     if exit:
         sys.exit(0)
 
@@ -49,13 +49,20 @@ def printhelp(code=0):
     print 
     print "  -v            Print version and exits"
     print "  -h            Print this help and exits"
-    print "  -q            Uses QT user interface (default)"
-    #print "  -c            Uses curses user interface"
-    print "  -r            Uses readline user interface"
+    
+    if sys.argv[0].endswith('relational-cli'):
+        print "  -q            Uses QT user interface"
+        print "  -r            Uses readline user interface (default)"
+    else:
+        print "  -q            Uses QT user interface (default)"
+        print "  -r            Uses readline user interface"
     sys.exit(code)
 
 if __name__ == "__main__":
-    x11=True #Will try to use the x11 interface
+    if sys.argv[0].endswith('relational-cli'):
+        x11=False
+    else:
+        x11=True #Will try to use the x11 interface
     
     #Getting command line
     try:
@@ -95,7 +102,7 @@ if __name__ == "__main__":
                 printhelp(12)
             f=files[i].split('/')
             defname=f[len(f)-1].lower()
-            if (defname.endswith(".csv") or defname.endswith(".tlb")): #removes the extension
+            if defname.endswith(".csv"): #removes the extension
                 defname=defname[:-4]
             print 'Loading file "%s" with name "%s"' % (files[i],defname)
             ui.loadRelation(files[i],defname)

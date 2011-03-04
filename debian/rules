@@ -18,5 +18,5 @@ override_dh_auto_install:
 
 override_dh_install:
 	install -D relational_gui.py debian/relational/usr/bin/relational
-	install -D relational_cli.py debian/relational-cli/usr/bin/relational-cli
+	install -D relational_gui.py debian/relational-cli/usr/bin/relational-cli
 	dh_install

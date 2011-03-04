@@ -19,6 +19,7 @@ install:
 
 source: clean
 	rm -rf /tmp/relational/
+	rm -rf /tmp/relational-*
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
 	rm -rf /tmp/relational/windows
@@ -33,7 +34,9 @@ source: clean
 	rm -rf /tmp/relational/relational_readline/.svn/
 	rm -rf /tmp/relational/test/.svn
 	
-	echo "cd /tmp ; tar -zcvvf relational.tar.gz relational/" | bash
+	#mv /tmp/relational /tmp/relational-`./relational_gui.py -v | grep Relational | cut -d" " -f2`
+	#(cd /tmp; tar -zcf relational.tar.gz relational-*/)
+	(cd /tmp; tar -zcf relational.tar.gz relational/)
 	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.tar.gz
 
 clean:
