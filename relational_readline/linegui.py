@@ -122,6 +122,7 @@ def help(command):
         print 'To execute a query:\n[relation =] query\nIf the 1st part is omitted, the result will be stored in the relation last_.'
         print 'To prevent from printing the relation, append a ; to the end of the query.'
         print 'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.'
+        print 'Rember: the tab key is enabled and can be very helpful if you can\'t remember something.'
         return
     cmd=p[1]
     
@@ -218,7 +219,6 @@ def replacements(query):
 def exec_query(command):
     '''This function executes a query and prints the result on the screen
     if the command terminates with ";" the result will not be printed
-    
     '''
     
     #If it terminates with ; doesn't print the result

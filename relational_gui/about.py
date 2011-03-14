@@ -91,13 +91,24 @@ class Ui_Dialog(object):
             self.webView.setObjectName("webView")
             self.verticalLayout_7.addWidget(self.webView)
         else:
-            self.webError = QtGui.QLabel(self.groupBox)
-            self.webError.setFont(font)
-            self.webError.setObjectName("lblError")
-            self.verticalLayout_7.addWidget(self.webError)
-            self.webError.setText(QtGui.QApplication.translate("Dialog", "Error! Unable to import QtWebKit module.", None, 
+            self.webLink = QtGui.QLabel(self.groupBox)
+            self.webLink.setFont(font)
+            self.webLink.setObjectName("lblLink")
+            self.webLink.setText(QtGui.QApplication.translate("Dialog", "<a href=\"http://galileo.dmi.unict.it/wiki/relational/\">Relational's website</a>", None,))
+            self.webLink.setOpenExternalLinks(True)
+            self.webLink.setTextFormat(QtCore.Qt.AutoText)
+            self.webLink.setTextInteractionFlags(
+                QtCore.Qt.LinksAccessibleByKeyboard | 
+                QtCore.Qt.LinksAccessibleByMouse | 
+                QtCore.Qt.TextBrowserInteraction | 
+                QtCore.Qt.TextSelectableByKeyboard | 
+                QtCore.Qt.TextSelectableByMouse
+            )
+            
+            self.verticalLayout_7.addWidget(self.webLink)
+            
         
-        QtGui.QApplication.UnicodeUTF8))
+        
         self.tabWidget.addTab(self.tab_2,"")
         self.verticalLayout_2.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(Dialog)
@@ -119,12 +130,14 @@ class Ui_Dialog(object):
         self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
         if os.name=='nt': #Differentiates acknowledgements depending on the system
-            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>\nEmilio Di Prima <emiliodiprima [at] msn [dot] com> (For the windows version)", None, QtGui.QApplication.UnicodeUTF8))
+            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;<br>Emilio Di Prima &lt;emiliodiprima [at] msn [dot] com&gt; (For the windows version)", None, QtGui.QApplication.UnicodeUTF8))
         else:
-            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli <tiposchi@tiscali.it>", None, QtGui.QApplication.UnicodeUTF8))
+            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setOpenExternalLinks (True)
         self.label_2.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Links", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("Dialog", "http://galileo.dmi.unict.it/wiki/relational/", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_4.setText(QtGui.QApplication.translate("Dialog", "<a href=\"http://galileo.dmi.unict.it/wiki/relational/\">http://galileo.dmi.unict.it/wiki/relational/</a>", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_4.setOpenExternalLinks (True)
         self.label_4.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("Dialog", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.textEdit.setHtml(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
