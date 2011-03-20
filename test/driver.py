@@ -205,7 +205,8 @@ def run_test(testname):
         if (o_result==result_rel) and (result==result_rel):
             print "\033[32;1mTest passed\033[0m"
             return True
-    except:
+    except Exception as inst:
+        print inst
         pass
     print "\033[31;1mERROR\033[0m"
     print "Query: %s -> %s" % (query,expr)
