@@ -85,7 +85,10 @@ class relForm(QtGui.QMainWindow):
         history_item.append(self.ui.txtResult.text())
         history_item.append(u' = ')
         history_item.append(self.ui.txtQuery.text())
-        self.ui.lstHistory.addItem (history_item)
+        hitem=QtGui.QListWidgetItem(None,0)
+        hitem.setText(history_item)
+        self.ui.lstHistory.addItem (hitem)
+        self.ui.lstHistory.setCurrentItem(hitem)
         
         self.qcounter+=1
         self.ui.txtResult.setText(QtCore.QString(u"_last%d"% self.qcounter)) #Sets the result relation name to none
@@ -113,18 +116,16 @@ class relForm(QtGui.QMainWindow):
             self.ui.table.resizeColumnToContents(i) #Must be done in order to avoid  too small columns
         
         
-    def printRelation(self,*rel):
-        for i in rel:
-            self.selectedRelation=self.relations[str(i.text().toUtf8())]
-            self.showRelation(self.selectedRelation)
+    def printRelation(self,item):
+        self.selectedRelation=self.relations[str(item.text().toUtf8())]
+        self.showRelation(self.selectedRelation)
             
-    def showAttributes(self,*other):
+    def showAttributes(self,item):
         '''Shows the attributes of the selected relation'''
-        for i in other:
-            rel=str(i.text().toUtf8())
-            self.ui.lstAttributes.clear()
-            for j in self.relations[rel].header.attributes:
-                self.ui.lstAttributes.addItem (j)
+        rel=str(item.text().toUtf8())
+        self.ui.lstAttributes.clear()
+        for j in self.relations[rel].header.attributes:
+            self.ui.lstAttributes.addItem (j)
             
     def updateRelations(self):
         self.ui.lstRelations.clear()
@@ -132,17 +133,16 @@ class relForm(QtGui.QMainWindow):
             if i != "__builtins__":
                 self.ui.lstRelations.addItem(i)
     def saveRelation(self):
-      filename = QtGui.QFileDialog.getSaveFileName(self,QtGui.QApplication.translate("Form", "Save Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv)"))
+        filename = QtGui.QFileDialog.getSaveFileName(self,QtGui.QApplication.translate("Form", "Save Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv)"))
       
-      filename=str(filename.toUtf8()) #Converts QString to string
-      if (len(filename)==0):#Returns if no file was selected
+        filename=str(filename.toUtf8()) #Converts QString to string
+        if (len(filename)==0):#Returns if no file was selected
+            return
+        #if (not filename.endswith(".csv")):#Adds extension if needed
+        #    filename+=".csv"
+        self.selectedRelation.save(filename)
+        #self.relations[str(self.ui.lstRelations.selectedItems()[0].text().toUtf8())].save(filename)
         return
-      if (not filename.endswith(".csv")):#Adds extension if needed
-        filename+=".csv"
-      
-      for i in self.ui.lstRelations.selectedItems():
-            self.ui.relations[str(i.text().toUtf8())].save(filename)
-      return
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
             del self.relations[str(i.text().toUtf8())]
@@ -180,12 +180,7 @@ class relForm(QtGui.QMainWindow):
         
         if len(defname)==0:
             return
-        use_csv=True
-        
-        if defname.endswith(".tlb"):
-            defname=defname[:-4]
-            use_csv=False #Old format, not using csv
-            
+
         if (defname.endswith(".csv")): #removes the extension
             defname=defname[:-4]
         
@@ -196,7 +191,7 @@ class relForm(QtGui.QMainWindow):
                 return
             
             #Patch provided by Angelo 'Havoc' Puglisi
-            self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()),use_csv)            
+            self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()))            
         else: #name was decided by caller
             self.relations[name]=relation.relation(filename)
                 

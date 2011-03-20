@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'relational_gui/maingui.ui'
+# Form implementation generated from reading ui file 'maingui.ui'
 #
-# Created: Sun Mar 20 21:59:01 2011
+# Created: Sun Mar 20 22:33:26 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -96,6 +96,7 @@ class Ui_MainWindow(object):
         self.table = QtGui.QTreeWidget(self.splitter_2)
         self.table.setMinimumSize(QtCore.QSize(450, 400))
         self.table.setSizeIncrement(QtCore.QSize(0, 0))
+        self.table.setRootIsDecorated(False)
         self.table.setObjectName(_fromUtf8("table"))
         self.table.headerItem().setText(0, _fromUtf8("Empty relation"))
         self.layoutWidget1 = QtGui.QWidget(self.splitter_2)
@@ -122,6 +123,9 @@ class Ui_MainWindow(object):
         self.lstHistory.setSizePolicy(sizePolicy)
         self.lstHistory.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.lstHistory.setBaseSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setStrikeOut(False)
+        self.lstHistory.setFont(font)
         self.lstHistory.setObjectName(_fromUtf8("lstHistory"))
         self.verticalLayout_6.addWidget(self.lstHistory)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
@@ -301,6 +305,7 @@ class Ui_MainWindow(object):
         self.cmdUndoOptimize.setText(QtGui.QApplication.translate("MainWindow", "Undo optimize", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdClearHistory.setText(QtGui.QApplication.translate("MainWindow", "Clear history", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Relations", None, QtGui.QApplication.UnicodeUTF8))
+        self.lstRelations.setSortingEnabled(True)
         self.cmdLoad.setText(QtGui.QApplication.translate("MainWindow", "Load relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSave.setText(QtGui.QApplication.translate("MainWindow", "Save relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUnload.setText(QtGui.QApplication.translate("MainWindow", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))

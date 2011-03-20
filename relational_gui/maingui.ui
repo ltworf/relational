@@ -182,6 +182,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="rootIsDecorated">
+          <bool>false</bool>
+         </property>
          <column>
           <property name="text">
            <string notr="true">Empty relation</string>
@@ -233,6 +236,11 @@
               <width>0</width>
               <height>0</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <strikeout>false</strikeout>
+             </font>
             </property>
            </widget>
           </item>
@@ -298,6 +306,9 @@
               <width>16777215</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -892,7 +903,7 @@
    <sender>lstRelations</sender>
    <signal>itemDoubleClicked(QListWidgetItem*)</signal>
    <receiver>MainWindow</receiver>
-   <slot>printRelation()</slot>
+   <slot>printRelation(QListWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>708</x>
@@ -908,7 +919,7 @@
    <sender>lstRelations</sender>
    <signal>itemClicked(QListWidgetItem*)</signal>
    <receiver>MainWindow</receiver>
-   <slot>showAttributes()</slot>
+   <slot>showAttributes(QListWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>615</x>
@@ -977,8 +988,8 @@
   <slot>saveRelation()</slot>
   <slot>insertTuple()</slot>
   <slot>deleteTuple()</slot>
-  <slot>printRelation()</slot>
-  <slot>showAttributes()</slot>
+  <slot>printRelation(QListWidgetItem*)</slot>
+  <slot>showAttributes(QListWidgetItem*)</slot>
   <slot>loadQuery()</slot>
   <slot>resumeHistory(QListWidgetItem*)</slot>
  </slots>
