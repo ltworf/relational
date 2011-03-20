@@ -83,17 +83,19 @@ if __name__ == "__main__":
     if x11:
         import sip
         from PyQt4 import QtCore, QtGui
-        from relational_gui import maingui, about, surveyForm
+        from relational_gui import maingui,guihandler, about, surveyForm
         about.version=version
         surveyForm.version=version
 
         app = QtGui.QApplication(sys.argv)
-        Form = QtGui.QWidget()
+        
+        ui = maingui.Ui_MainWindow()
+        Form = guihandler.relForm(ui)
     
-        if os.name=='nt':
-            Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
+        #if os.name=='nt':
+        Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
     
-        ui = maingui.Ui_Form()
+        
         ui.setupUi(Form)
     
         for i in range(len(files)):
@@ -105,7 +107,7 @@ if __name__ == "__main__":
             if defname.endswith(".csv"): #removes the extension
                 defname=defname[:-4]
             print 'Loading file "%s" with name "%s"' % (files[i],defname)
-            ui.loadRelation(files[i],defname)
+            Form.loadRelation(files[i],defname)
 
         Form.show()
         sys.exit(app.exec_())
