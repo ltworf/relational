@@ -21,7 +21,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout_11">
         <item>
          <widget class="QGroupBox" name="groupBox_3">
@@ -215,7 +215,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget">
+           <widget class="QListWidget" name="lstHistory">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -440,7 +440,7 @@
   <tabstop>table</tabstop>
   <tabstop>cmdInsert</tabstop>
   <tabstop>cmdDelete</tabstop>
-  <tabstop>listWidget</tabstop>
+  <tabstop>lstHistory</tabstop>
   <tabstop>cmdOptimize</tabstop>
   <tabstop>cmdUndoOptimize</tabstop>
   <tabstop>cmdClearHistory</tabstop>
@@ -475,7 +475,7 @@
   <connection>
    <sender>cmdClearHistory</sender>
    <signal>clicked()</signal>
-   <receiver>listWidget</receiver>
+   <receiver>lstHistory</receiver>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -936,6 +936,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>lstHistory</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>resumeHistory(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
@@ -964,5 +980,6 @@
   <slot>printRelation()</slot>
   <slot>showAttributes()</slot>
   <slot>loadQuery()</slot>
+  <slot>resumeHistory(QListWidgetItem*)</slot>
  </slots>
 </ui>

@@ -36,6 +36,7 @@ class relForm(QtGui.QMainWindow):
         self.undo=None #UndoQueue for queries
         self.selectedRelation=None
         self.ui=ui
+        self.qcounter=1
         
     def load_query(self,*index):
         self.ui.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
@@ -53,23 +54,23 @@ class relForm(QtGui.QMainWindow):
         self.ui.txtQuery.setText(QtCore.QString.fromUtf8(result))
         
         #self.txtQuery.setText(result)
+    def resumeHistory(self,item):
+        print item
+        
     def execute(self):
         '''Executes the query'''
+        
+        query=str(self.ui.txtQuery.text().toUtf8())
+        res_rel=str(self.ui.txtResult.text())#result relation's name
+        if len(res_rel)==0: #If no name is set use the default last_
+            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Missing destination relation."))
+            return
+
         try:
-            
-            #self.ui.lstAttributes.addItem (j)
             #Converting string to utf8 and then from qstring to normal string
-            query=str(self.ui.txtQuery.text().toUtf8())
             expr=parser.parse(query)#Converting expression to python code
             print query,"-->" , expr #Printing debug
             result=eval(expr,self.relations) #Evaluating the expression
-            
-            #self.undo.insert(len(self.undo),self.txtQuery.text()) #Storing the query in undo list
-            
-            res_rel=str(self.ui.txtResult.text())#result relation's name
-            self.ui.txtResult.setText("") #Sets the result relation name to none
-            if len(res_rel)==0: #If no name is set use the default last_
-                res_rel="last_"
             
             self.relations[res_rel]=result #Add the relation to the dictionary
             self.updateRelations() #update the list
@@ -78,6 +79,17 @@ class relForm(QtGui.QMainWindow):
         except Exception, e:
             print e
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
+            return
+        #Query was executed normally
+        history_item=QtCore.QString()
+        history_item.append(self.ui.txtResult.text())
+        history_item.append(u' = ')
+        history_item.append(self.ui.txtQuery.text())
+        self.ui.lstHistory.addItem (history_item)
+        
+        self.qcounter+=1
+        self.ui.txtResult.setText(QtCore.QString(u"_last%d"% self.qcounter)) #Sets the result relation name to none
+        
     def showRelation(self,rel):
         '''Shows the selected relation into the table'''
         self.ui.table.clear()
