@@ -55,7 +55,10 @@ class relForm(QtGui.QMainWindow):
         
         #self.txtQuery.setText(result)
     def resumeHistory(self,item):
-        print item
+        itm=str(item.text().toUtf8()).split(' = ',1)
+        self.ui.txtResult.setText(QtCore.QString.fromUtf8(itm[0]))
+        self.ui.txtQuery.setText(QtCore.QString.fromUtf8(itm[1]))
+        
         
     def execute(self):
         '''Executes the query'''
@@ -138,10 +141,7 @@ class relForm(QtGui.QMainWindow):
         filename=str(filename.toUtf8()) #Converts QString to string
         if (len(filename)==0):#Returns if no file was selected
             return
-        #if (not filename.endswith(".csv")):#Adds extension if needed
-        #    filename+=".csv"
         self.selectedRelation.save(filename)
-        #self.relations[str(self.ui.lstRelations.selectedItems()[0].text().toUtf8())].save(filename)
         return
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():

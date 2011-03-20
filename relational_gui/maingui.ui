@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Relational</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -429,8 +429,60 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_Load_relation"/>
+    <addaction name="action_Save_relation"/>
+    <addaction name="separator"/>
+    <addaction name="action_Quit"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <action name=""/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuAbout"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="action_Load_relation">
+   <property name="text">
+    <string>&amp;Load relation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_Save_relation">
+   <property name="text">
+    <string>&amp;Save relation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_Quit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>cmdAbout</tabstop>
@@ -475,11 +527,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>686</x>
-     <y>572</y>
+     <y>591</y>
     </hint>
     <hint type="destinationlabel">
      <x>206</x>
-     <y>572</y>
+     <y>591</y>
     </hint>
    </hints>
   </connection>
@@ -491,7 +543,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>490</x>
-     <y>545</y>
+     <y>563</y>
     </hint>
     <hint type="destinationlabel">
      <x>397</x>
@@ -507,7 +559,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>450</x>
-     <y>580</y>
+     <y>599</y>
     </hint>
     <hint type="destinationlabel">
      <x>438</x>
@@ -523,7 +575,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>732</x>
-     <y>573</y>
+     <y>592</y>
     </hint>
     <hint type="destinationlabel">
      <x>592</x>
@@ -731,7 +783,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>336</x>
-     <y>542</y>
+     <y>560</y>
     </hint>
     <hint type="destinationlabel">
      <x>652</x>
@@ -747,11 +799,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>87</x>
-     <y>571</y>
+     <y>590</y>
     </hint>
     <hint type="destinationlabel">
      <x>182</x>
-     <y>571</y>
+     <y>590</y>
     </hint>
    </hints>
   </connection>
@@ -939,11 +991,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>693</x>
-     <y>580</y>
+     <y>599</y>
     </hint>
     <hint type="destinationlabel">
      <x>588</x>
-     <y>578</y>
+     <y>597</y>
     </hint>
    </hints>
   </connection>
@@ -956,6 +1008,70 @@
     <hint type="sourcelabel">
      <x>349</x>
      <y>492</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Load_relation</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>loadRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Save_relation</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Quit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>

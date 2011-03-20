@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'maingui.ui'
 #
-# Created: Sun Mar 20 22:33:26 2011
+# Created: Mon Mar 21 00:21:36 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -210,10 +210,30 @@ class Ui_MainWindow(object):
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
+        self.menuFile = QtGui.QMenu(self.menubar)
+        self.menuFile.setObjectName(_fromUtf8("menuFile"))
+        self.menuAbout = QtGui.QMenu(self.menubar)
+        self.menuAbout.setObjectName(_fromUtf8("menuAbout"))
+        self.action = QtGui.QAction(MainWindow)
+        self.action.setObjectName(_fromUtf8("action"))
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtGui.QStatusBar(MainWindow)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        MainWindow.setStatusBar(self.statusbar)
+        self.actionAbout = QtGui.QAction(MainWindow)
+        self.actionAbout.setMenuRole(QtGui.QAction.AboutRole)
+        self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
+        self.action_Load_relation = QtGui.QAction(MainWindow)
+        self.action_Load_relation.setObjectName(_fromUtf8("action_Load_relation"))
+        self.action_Save_relation = QtGui.QAction(MainWindow)
+        self.action_Save_relation.setObjectName(_fromUtf8("action_Save_relation"))
+        self.action_Quit = QtGui.QAction(MainWindow)
+        self.action_Quit.setMenuRole(QtGui.QAction.QuitRole)
+        self.action_Quit.setObjectName(_fromUtf8("action_Quit"))
+        self.menuFile.addAction(self.action_Load_relation)
+        self.menuFile.addAction(self.action_Save_relation)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.action_Quit)
+        self.menuAbout.addAction(self.actionAbout)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuAbout.menuAction())
         self.label.setBuddy(self.txtQuery)
 
         self.retranslateUi(MainWindow)
@@ -248,6 +268,10 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.lstRelations, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), MainWindow.showAttributes)
         QtCore.QObject.connect(self.cmdClearQuery, QtCore.SIGNAL(_fromUtf8("clicked()")), self.txtQuery.setFocus)
         QtCore.QObject.connect(self.lstHistory, QtCore.SIGNAL(_fromUtf8("itemDoubleClicked(QListWidgetItem*)")), MainWindow.resumeHistory)
+        QtCore.QObject.connect(self.actionAbout, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.showAbout)
+        QtCore.QObject.connect(self.action_Load_relation, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.loadRelation)
+        QtCore.QObject.connect(self.action_Save_relation, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.saveRelation)
+        QtCore.QObject.connect(self.action_Quit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cmdAbout, self.cmdSurvey)
         MainWindow.setTabOrder(self.cmdSurvey, self.cmdProduct)
@@ -281,7 +305,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.cmdClearQuery, self.cmdExecute)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Relational", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_3.setTitle(QtGui.QApplication.translate("MainWindow", "Menu", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSurvey.setText(QtGui.QApplication.translate("MainWindow", "Survey", None, QtGui.QApplication.UnicodeUTF8))
@@ -314,4 +338,13 @@ class Ui_MainWindow(object):
         self.label.setText(QtGui.QApplication.translate("MainWindow", "=", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdClearQuery.setText(QtGui.QApplication.translate("MainWindow", "⌫", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdExecute.setText(QtGui.QApplication.translate("MainWindow", "Execute", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "&About", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_Load_relation.setText(QtGui.QApplication.translate("MainWindow", "&Load relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_Load_relation.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+O", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_Save_relation.setText(QtGui.QApplication.translate("MainWindow", "&Save relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_Save_relation.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_Quit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_Quit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
 
