@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Salvo 'LtWorf' Tomaselli</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
@@ -7,205 +8,406 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>612</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>10</y>
-      <width>274</width>
-      <height>317</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>GroupBox</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <item>
-      <widget class="QListWidget" name="lstRelation"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_16">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_17">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_18">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_4">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>330</y>
-      <width>274</width>
-      <height>233</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>GroupBox</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_5">
-     <item>
-      <widget class="QListWidget" name="listWidget"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>125</width>
-      <height>500</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>GroupBox</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
+     <widget class="QSplitter" name="splitter_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout_11">
         <item>
-         <widget class="QPushButton" name="cmdAbout">
-          <property name="text">
-           <string>About</string>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Menu</string>
           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QPushButton" name="cmdAbout">
+             <property name="text">
+              <string>About</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdSurvey">
+             <property name="text">
+              <string>Survey</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="cmdSurvey">
-          <property name="text">
-           <string>Survey</string>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Operators</string>
           </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>GroupBox</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QPushButton" name="cmdProduct">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdDifference">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdUnion">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdIntersection">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdDivision">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdJoin">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdOuterLeft">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdOuterRight">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdOuter">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdProjection">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdSelection">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdRename">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cmdArrow">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <widget class="QPushButton" name="cmdProduct">
+             <property name="text">
+              <string>*</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdDifference">
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdUnion">
+             <property name="text">
+              <string>ᑌ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdIntersection">
+             <property name="text">
+              <string>ᑎ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdDivision">
+             <property name="text">
+              <string>÷</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdJoin">
+             <property name="text">
+              <string>ᐅᐊ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdOuterLeft">
+             <property name="text">
+              <string>ᐅLEFTᐊ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdOuterRight">
+             <property name="text">
+              <string>ᐅRIGHTᐊ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdOuter">
+             <property name="text">
+              <string>ᐅFULLᐊ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdProjection">
+             <property name="text">
+              <string>π</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdSelection">
+             <property name="text">
+              <string>σ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdRename">
+             <property name="text">
+              <string>ρ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdArrow">
+             <property name="text">
+              <string>➡</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>25</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
       </widget>
-     </item>
-    </layout>
-   </widget>
+      <widget class="QSplitter" name="splitter_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QSplitter" name="splitter_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QTreeWidget" name="table">
+         <property name="minimumSize">
+          <size>
+           <width>450</width>
+           <height>400</height>
+          </size>
+         </property>
+         <property name="sizeIncrement">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <column>
+          <property name="text">
+           <string notr="true">Empty relation</string>
+          </property>
+         </column>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+            <item>
+             <widget class="QPushButton" name="cmdInsert">
+              <property name="text">
+               <string>Insert</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdDelete">
+              <property name="text">
+               <string>Delete</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QListWidget" name="listWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="cmdOptimize">
+              <property name="text">
+               <string>Optimize</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdUndoOptimize">
+              <property name="text">
+               <string>Undo optimize</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdClearHistory">
+              <property name="text">
+               <string>Clear history</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QSplitter" name="splitter">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Relations</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QListWidget" name="lstRelations">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdLoad">
+            <property name="text">
+             <string>Load relation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdSave">
+            <property name="text">
+             <string>Save relation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdUnload">
+            <property name="text">
+             <string>Unload relation</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Attributes</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QListWidget" name="lstAttributes">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLineEdit" name="txtResult">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>_last1</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>=</string>
+        </property>
+        <property name="buddy">
+         <cstring>txtQuery</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="txtQuery"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cmdClearQuery">
+        <property name="text">
+         <string>⌫</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cmdExecute">
+        <property name="text">
+         <string>Execute</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -219,6 +421,548 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>cmdAbout</tabstop>
+  <tabstop>cmdSurvey</tabstop>
+  <tabstop>cmdProduct</tabstop>
+  <tabstop>cmdDifference</tabstop>
+  <tabstop>cmdUnion</tabstop>
+  <tabstop>cmdIntersection</tabstop>
+  <tabstop>cmdDivision</tabstop>
+  <tabstop>cmdJoin</tabstop>
+  <tabstop>cmdOuterLeft</tabstop>
+  <tabstop>cmdOuterRight</tabstop>
+  <tabstop>cmdOuter</tabstop>
+  <tabstop>cmdProjection</tabstop>
+  <tabstop>cmdSelection</tabstop>
+  <tabstop>cmdRename</tabstop>
+  <tabstop>cmdArrow</tabstop>
+  <tabstop>table</tabstop>
+  <tabstop>cmdInsert</tabstop>
+  <tabstop>cmdDelete</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>cmdOptimize</tabstop>
+  <tabstop>cmdUndoOptimize</tabstop>
+  <tabstop>cmdClearHistory</tabstop>
+  <tabstop>lstRelations</tabstop>
+  <tabstop>cmdLoad</tabstop>
+  <tabstop>cmdSave</tabstop>
+  <tabstop>cmdUnload</tabstop>
+  <tabstop>lstAttributes</tabstop>
+  <tabstop>txtResult</tabstop>
+  <tabstop>txtQuery</tabstop>
+  <tabstop>cmdClearQuery</tabstop>
+  <tabstop>cmdExecute</tabstop>
+ </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cmdClearQuery</sender>
+   <signal>clicked()</signal>
+   <receiver>txtQuery</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>686</x>
+     <y>572</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>206</x>
+     <y>572</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClearHistory</sender>
+   <signal>clicked()</signal>
+   <receiver>listWidget</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>490</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>525</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtQuery</sender>
+   <signal>returnPressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>execute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>450</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>438</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdExecute</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>execute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>732</x>
+     <y>573</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>592</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdAbout</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>82</x>
+     <y>75</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>79</x>
+     <y>597</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdSurvey</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showSurvey()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>63</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>605</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdProduct</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addProduct()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDifference</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addDifference()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>82</x>
+     <y>194</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>46</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdArrow</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addArrow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>505</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>58</x>
+     <y>608</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdRename</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addRename()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>42</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>111</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdSelection</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>446</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>16</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdProjection</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addProjection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>414</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>91</x>
+     <y>597</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdUnload</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>unloadRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>646</x>
+     <y>312</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>773</x>
+     <y>599</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdSave</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>717</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>760</x>
+     <y>610</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdLoad</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>loadRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>753</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>753</x>
+     <y>594</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOptimize</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>optimize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>245</x>
+     <y>554</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>684</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdUndoOptimize</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>undoOptimize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>336</x>
+     <y>542</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>652</x>
+     <y>604</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtResult</sender>
+   <signal>returnPressed()</signal>
+   <receiver>txtQuery</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>571</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>571</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDelete</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>deleteTuple()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>549</x>
+     <y>442</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>594</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdInsert</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>insertTuple()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>435</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>533</x>
+     <y>586</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOuterRight</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addORight()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>90</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>58</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOuter</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addOuter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>34</x>
+     <y>390</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>86</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOuterLeft</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addOLeft()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>32</x>
+     <y>332</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>66</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdJoin</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addJoin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>101</x>
+     <y>302</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>147</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDivision</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addDivision()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>71</x>
+     <y>272</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdIntersection</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addIntersection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdUnion</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addUnion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>222</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lstRelations</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>printRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>708</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>643</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lstRelations</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showAttributes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>615</x>
+     <y>182</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>510</x>
+     <y>611</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClearQuery</sender>
+   <signal>clicked()</signal>
+   <receiver>txtQuery</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>693</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>578</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>execute()</slot>
+  <slot>showAbout()</slot>
+  <slot>showSurvey()</slot>
+  <slot>addProduct()</slot>
+  <slot>addDifference()</slot>
+  <slot>addUnion()</slot>
+  <slot>addIntersection()</slot>
+  <slot>addDivision()</slot>
+  <slot>addOLeft()</slot>
+  <slot>addORight()</slot>
+  <slot>addOuter()</slot>
+  <slot>addJoin()</slot>
+  <slot>addProjection()</slot>
+  <slot>addSelection()</slot>
+  <slot>addRename()</slot>
+  <slot>addArrow()</slot>
+  <slot>optimize()</slot>
+  <slot>undoOptimize()</slot>
+  <slot>loadRelation()</slot>
+  <slot>unloadRelation()</slot>
+  <slot>saveRelation()</slot>
+  <slot>insertTuple()</slot>
+  <slot>deleteTuple()</slot>
+  <slot>printRelation()</slot>
+  <slot>showAttributes()</slot>
+  <slot>loadQuery()</slot>
+ </slots>
 </ui>
