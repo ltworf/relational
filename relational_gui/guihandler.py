@@ -63,7 +63,7 @@ class relForm(QtGui.QMainWindow):
         '''Executes the query'''
         
         query=str(self.ui.txtQuery.text().toUtf8())
-        res_rel=str(self.ui.txtResult.text())#result relation's name
+        res_rel=str(self.ui.txtResult.text().toUtf8())#result relation's name
         
         if not rtypes.is_valid_relation_name(res_rel):
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
@@ -169,12 +169,10 @@ class relForm(QtGui.QMainWindow):
         #Asking for file to load
         if filename==None:
             filename = QtGui.QFileDialog.getOpenFileName(self,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Old Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
-                
-            #Default relation's name
-            f=str(filename.toUtf8()).split('/') #Split the full path
-        else:
-            f=filename.split('/') #Split the full path
+            filename=str(filename.toUtf8())
 
+        #Default relation's name
+        f=filename.split('/') #Split the full path
         defname=f[len(f)-1].lower() #Takes only the lowercase filename
         
         if len(defname)==0:
@@ -191,13 +189,13 @@ class relForm(QtGui.QMainWindow):
             
             #Patch provided by Angelo 'Havoc' Puglisi
             name=str(res[0].toUtf8())
-            filename=str(filename.toUtf8())
         
         if rtypes.is_valid_relation_name(name):
             self.relations[name]=relation.relation(filename)
             self.updateRelations()
         else:
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation: %s." % name))
+
     def insertTuple(self):
         '''Shows an input dialog and inserts the inserted tuple into the selected relation'''
         res=QtGui.QInputDialog.getText(self, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the values, comma separated"),
