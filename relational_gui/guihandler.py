@@ -17,7 +17,7 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 from PyQt4 import QtCore, QtGui
-from relational import relation, parser, optimizer
+from relational import relation, parser, optimizer,rtypes
 
 import sys
 import about
@@ -53,7 +53,6 @@ class relForm(QtGui.QMainWindow):
         result=optimizer.optimize_all(str(self.ui.txtQuery.text().toUtf8()),self.relations)
         self.ui.txtQuery.setText(QtCore.QString.fromUtf8(result))
         
-        #self.txtQuery.setText(result)
     def resumeHistory(self,item):
         itm=str(item.text().toUtf8()).split(' = ',1)
         self.ui.txtResult.setText(QtCore.QString.fromUtf8(itm[0]))
@@ -65,10 +64,11 @@ class relForm(QtGui.QMainWindow):
         
         query=str(self.ui.txtQuery.text().toUtf8())
         res_rel=str(self.ui.txtResult.text())#result relation's name
-        if len(res_rel)==0: #If no name is set use the default last_
-            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Missing destination relation."))
+        
+        if not rtypes.is_valid_relation_name(res_rel):
+            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
             return
-
+            
         try:
             #Converting string to utf8 and then from qstring to normal string
             expr=parser.parse(query)#Converting expression to python code
@@ -172,11 +172,10 @@ class relForm(QtGui.QMainWindow):
                 
             #Default relation's name
             f=str(filename.toUtf8()).split('/') #Split the full path
-            defname=f[len(f)-1].lower() #Takes only the lowercase filename
-            
         else:
             f=filename.split('/') #Split the full path
-            defname=f[len(f)-1].lower() #Takes only the lowercase filename
+
+        defname=f[len(f)-1].lower() #Takes only the lowercase filename
         
         if len(defname)==0:
             return
@@ -191,11 +190,14 @@ class relForm(QtGui.QMainWindow):
                 return
             
             #Patch provided by Angelo 'Havoc' Puglisi
-            self.relations[str(res[0].toUtf8())]=relation.relation(str(filename.toUtf8()))            
-        else: #name was decided by caller
+            name=str(res[0].toUtf8())
+            filename=str(filename.toUtf8())
+        
+        if rtypes.is_valid_relation_name(name):
             self.relations[name]=relation.relation(filename)
-                
-        self.updateRelations()
+            self.updateRelations()
+        else:
+            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation: %s." % name))
     def insertTuple(self):
         '''Shows an input dialog and inserts the inserted tuple into the selected relation'''
         res=QtGui.QInputDialog.getText(self, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the values, comma separated"),
@@ -254,15 +256,3 @@ class relForm(QtGui.QMainWindow):
         self.ui.txtQuery.insert(symbol)
         self.ui.txtQuery.setFocus()
         
-def q_main():
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    Form = RelForm()
-    ui = maingui.Ui_MainWindow()
-    ui.setupUi(Form)
-    Form.setupUi(ui)
-    Form.show()
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    q_main()

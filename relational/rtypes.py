@@ -109,3 +109,11 @@ class rdate (object):
     def __sub__ (self,other):
         return (self.intdate-other.intdate).days
 
+
+def is_valid_relation_name(name):
+    '''Checks if a name is valid for a relation.
+    Returns boolean'''
+    if re.match(r'^[_a-zA-Z]+[_a-zA-Z0-9]*$',name)==None:
+        return False
+    else:
+        return True

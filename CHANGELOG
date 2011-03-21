@@ -17,6 +17,7 @@
 - Parsing of strings representing dates is now cached, eliminating the need for double parse
 - Restyle of the GUI
 - Adds history in the GUI
+- Checks if given name to relations are valid
 
 0.11
 - Font is set only on windows (Rev 206)

@@ -25,7 +25,7 @@ import os.path
 import os
 import sys
 
-from relational import relation, parser, optimizer
+from relational import relation, parser, rtypes
 
 class SimpleCompleter(object):
     '''Handles completion'''
@@ -103,7 +103,10 @@ def load_relation(filename,defname=None):
         defname=f[len(f)-1].lower()
         if defname.endswith(".csv"): #removes the extension
             defname=defname[:-4]
-
+            
+    if not rtypes.is_valid_relation_name(defname):
+        print >> sys.stderr, "%s is not a valid relation name" % defname
+        return
     try:
         relations[defname]=relation.relation(filename)
         
@@ -234,18 +237,9 @@ def exec_query(command):
     #Finds the name in where to save the query
     parts=command.split('=',1)
     
-    if len(parts)>1:
-        assignment=True
-        for i in parser.op_functions:
-            if i in parts[0]:
-                #If we are here, there is no explicit assignment
-                assignment=False
-        if assignment:
-            relname=parts[0]
-            query=parts[1]
-        else:
-            relname='last_'
-            query=command
+    if len(parts)>1 and rtypes.is_valid_relation_name(parts[0]):
+        relname=parts[0]
+        query=parts[1]
     else:
         relname='last_'
         query=command

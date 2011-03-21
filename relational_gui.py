@@ -83,7 +83,13 @@ if __name__ == "__main__":
     if x11:
         import sip
         from PyQt4 import QtCore, QtGui
-        from relational_gui import maingui,guihandler, about, surveyForm
+        
+        try:
+            from relational_gui import maingui,guihandler, about, surveyForm
+        except:
+            print >> sys.stderr, "Module relational_gui is missing.\nPlease install relational package."
+            sys.exit(3)
+            
         about.version=version
         surveyForm.version=version
 
@@ -113,6 +119,10 @@ if __name__ == "__main__":
         sys.exit(app.exec_())
     else:
         printver(False)
-        import relational_readline.linegui
+        try:
+            import relational_readline.linegui
+        except:
+            print >> sys.stderr, "Module relational_readline is missing.\nPlease install relational-cli package."
+            sys.exit(3)
         relational_readline.linegui.main(files)
 
