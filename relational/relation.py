@@ -97,7 +97,7 @@ class relation (object):
         '''Depending on the regexp matched by the string,
         it will perform automatic casting'''
         tmpstring=rstring(string)
-        if len(tmpstring)>0 and tmpstring.isdigit():
+        if len(tmpstring)>0 and tmpstring.isInt():
             return int(tmpstring)
         elif len(tmpstring)>0 and tmpstring.isFloat():
             return float(tmpstring)

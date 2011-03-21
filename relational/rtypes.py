@@ -26,13 +26,23 @@ import re
 
 class rstring (str):
     '''String subclass with some custom methods'''
+    def isInt(self):
+        '''Returns true if the string represents an int number
+        it only considers as int numbers the strings matching
+        the following regexp:
+        r'^[\+\-]{0,1}[0-9]+$'
+        '''
+        if re.match(r'^[\+\-]{0,1}[0-9]+$',self)==None:
+            return False
+        else:
+            return True
     def isFloat(self):
         '''Returns true if the string represents a float number
         it only considers as float numbers, the strings matching
         the following regexp:
-            r'^[0-9]+(\.([0-9])+)?$'
+            r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$'
         '''
-        if re.match(r'^[0-9]+(\.([0-9])+)?$',self)==None:
+        if re.match(r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$',self)==None:
             return False
         else:
             return True
