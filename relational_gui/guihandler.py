@@ -36,7 +36,7 @@ class relForm(QtGui.QMainWindow):
         self.undo=None #UndoQueue for queries
         self.selectedRelation=None
         self.ui=ui
-        self.qcounter=1
+        self.qcounter=1 #Query counter
         
     def load_query(self,*index):
         self.ui.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
@@ -168,7 +168,7 @@ class relForm(QtGui.QMainWindow):
         It shouldn't be called giving filename but not giving name.'''
         #Asking for file to load
         if filename==None:
-            filename = QtGui.QFileDialog.getOpenFileName(self,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Old Relations (*.tlb);;Text Files (*.txt);;All Files (*)"))
+            filename = QtGui.QFileDialog.getOpenFileName(self,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Text Files (*.txt);;All Files (*)"))
             filename=str(filename.toUtf8())
 
         #Default relation's name

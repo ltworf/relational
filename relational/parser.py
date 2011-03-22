@@ -143,8 +143,8 @@ class node (object):
         
     def result_format(self,rels):
         '''This function returns a list containing the fields that the resulting relation will have.
-        Since it needs to know real instances of relations, it requires a dictionary where keys are
-        the names of the relations and the values are the relation objects.'''
+        It requires a dictionary where keys are the names of the relations and the values are
+        the relation objects.'''
         if rels==None:            
             return
         
@@ -205,15 +205,15 @@ class node (object):
                 
             return (le+ self.name +re)
 
-def find_matching_parenthesis(expression,start=0):
+def _find_matching_parenthesis(expression,start=0,openpar=u'(',closepar=u')'):
     '''This function returns the position of the matching
     close parenthesis to the 1st open parenthesis found
     starting from start (0 by default)'''
     par_count=0 #Count of parenthesis
     for i in range(start,len(expression)):
-        if expression[i]=='(':
+        if expression[i]==openpar:
             par_count+=1
-        elif expression[i]==')':
+        elif expression[i]==closepar:
             par_count-=1
             if par_count==0:
                 return i #Closing parenthesis of the parameter
@@ -248,7 +248,7 @@ def tokenize(expression):
     while len(expression)>0:
         if expression.startswith('('): #Parenthesis state
             state=2
-            end=find_matching_parenthesis(expression)
+            end=_find_matching_parenthesis(expression)
             #Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
             #Removes the entire parentesis and content from the expression
@@ -259,7 +259,7 @@ def tokenize(expression):
             expression=expression[2:].strip() #Removing operator from the expression
             
             if expression.startswith('('): #Expression with parenthesis, so adding what's between open and close without tokenization
-                par=expression.find('(',find_matching_parenthesis(expression)) 
+                par=expression.find('(',_find_matching_parenthesis(expression)) 
             else: #Expression without parenthesis, so adding what's between start and parenthesis as whole  
                 par=expression.find('(')
             
@@ -322,7 +322,7 @@ def parse(expr):
     
     You can use parenthesis to change priority: a ᐅᐊ (q ᑌ d).
     
-    IMPORTANT: The encoding used by this module is UTF-8
+    IMPORTANT: The encoding used by this module is UTF-8 (all strings must be UTF-8)
     
     EXAMPLES
     σage > 25 and rank == weight(A)
