@@ -21,7 +21,7 @@ from distutils.core import setup
 
 def c_setup(name):
     setup(
-        version='1.0',
+        version='1.1',
         name=name,
         packages=(name,),
         author="Salvo 'LtWorf' Tomaselli",
