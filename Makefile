@@ -60,6 +60,7 @@ clean:
 	rm -rf relational_readline/*~ || echo ok
 	rm -rf relational_readline/*.pyc || echo ok
 	rm -rf relational_readline/*.pyo || echo ok
+	rm -rf setup/*~ || echo ok
 	rm -rf setup/*.pyc || echo ok
 	rm -rf setup/*.pyo || echo ok
 	rm -rf relational_mac

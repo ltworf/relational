@@ -19,5 +19,15 @@
 
 from distutils.core import setup
 
-def c_setup(name)
-    setup(name=name, packages=(name,))
+def c_setup(name):
+    setup(
+        version='1.0',
+        name=name,
+        packages=(name,),
+        author="Salvo 'LtWorf' Tomaselli",
+        author_email='tiposchi@tiscali.it',
+        maintainer="Salvo 'LtWorf' Tomaselli",
+        maintainer_email='tiposchi@tiscali.it',
+        url='http://galileo.dmi.unict.it/wiki/relational/',
+        license='GPL3',
+    )
