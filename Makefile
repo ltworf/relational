@@ -17,13 +17,14 @@ install:
 	cp relational.desktop /usr/share/applications/
 	chmod a+r /usr/share/applications/relational.desktop
 
-source: clean
+dist: clean
 	rm -rf /tmp/relational/
 	rm -rf /tmp/relational-*
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
 	rm -rf /tmp/relational/windows
 	rm -rf /tmp/relational/samples/.svn/
+	rm -rf /tmp/relational/setup/.svn/
 	rm -rf /tmp/relational/debscript/.svn/
 	rm -rf /tmp/relational/mac/.svn/
 	rm -rf /tmp/relational/relational/.svn/ 
@@ -59,6 +60,8 @@ clean:
 	rm -rf relational_readline/*~ || echo ok
 	rm -rf relational_readline/*.pyc || echo ok
 	rm -rf relational_readline/*.pyo || echo ok
+	rm -rf setup/*.pyc || echo ok
+	rm -rf setup/*.pyo || echo ok
 	rm -rf relational_mac
 	rm -rf test/*~
 mac: app
