@@ -17,13 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-
-'''This module optimizes relational expressions into ones that require less time to be executed.
-
-expression: In all the functions expression can be either an UTF-8 encoded string, containing a valid
-relational query, or it can be a parse tree for a relational expression (ie: class parser.node).
-The functions will always return a string with the optimized query, but if a parse tree was provided,
-the parse tree itself will be modified accordingly.'''
+#
+# This module optimizes relational expressions into ones that require less time to be executed.
+#
+# expression: In all the functions expression can be either an UTF-8 encoded string, containing a valid
+# relational query, or it can be a parse tree for a relational expression (ie: class parser.node).
+# The functions will always return a string with the optimized query, but if a parse tree was provided,
+# the parse tree itself will be modified accordingly.
 
 import optimizations
 import parser

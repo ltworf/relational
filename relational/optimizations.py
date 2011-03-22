@@ -16,19 +16,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-
-'''This module contains functions to perform various optimizations on the expression trees.
-The list general_optimizations contains pointers to general functions, so they can be called
-within a cycle.
-
-It is possible to add new general optimizations by adding the function in the list
-general_optimizations present in this module. And the optimization will be executed with the
-other ones when optimizing.
-
-A function will have one parameter, which is the root node of the tree describing the expression.
-The class used is defined in optimizer module.
-A function will have to return the number of changes performed on the tree.
-'''
+#
+# This module contains functions to perform various optimizations on the expression trees.
+# The list general_optimizations contains pointers to general functions, so they can be called
+# within a cycle.
+#
+# It is possible to add new general optimizations by adding the function in the list
+# general_optimizations present in this module. And the optimization will be executed with the
+# other ones when optimizing.
+#
+# A function will have one parameter, which is the root node of the tree describing the expression.
+# The class used is defined in optimizer module.
+# A function will have to return the number of changes performed on the tree.
 
 import optimizer
 import parser

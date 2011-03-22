@@ -16,10 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-
-'''Custom types for relational algebra.
-Purpose of this module is having the isFloat function and
-implementing dates to use in selection.'''
+#
+# Custom types for relational algebra.
+# Purpose of this module is having the isFloat function and
+# implementing dates to use in selection.
 
 import datetime
 import re

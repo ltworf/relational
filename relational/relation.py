@@ -16,6 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
+#
+# This module provides a classes to represent relations and to perform
+# relational operations on them.
 
 from rtypes import *
 import csv

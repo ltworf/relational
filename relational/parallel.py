@@ -16,8 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-
-'''This module offers capability of executing relational queries in parallel.'''
+# 
+# This module offers capability of executing relational queries in parallel.
 
 import optimizer
 import multiprocessing
