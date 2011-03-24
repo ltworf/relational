@@ -21,10 +21,21 @@
 
 from distutils.core import setup
 import py2exe
-setup(windows=
+
+#It was complaining about the already installed MSVCP90.dll
+#So it is removed from the checks and signals to the user the
+#probable need to manually install it. Since to redistribute it
+#some dammit certificates are needed.
+
+setup(options = {
+        "py2exe": {
+            "dll_excludes": ["MSVCP90.dll"]
+        }
+    },
+      windows=
       [
           {"script": "relational_gui.py","icon_resources": [(0, "windows/favicon.ico")]}
           ]
       ,name="Relational",
-               version="0.12"
+               version="1.1"
       )
