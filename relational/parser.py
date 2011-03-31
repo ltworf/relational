@@ -26,6 +26,18 @@
 #
 # The input must be provided in UTF-8
 # 
+#
+# Language definition:
+# Query := Ident
+# Query := Query BinaryOp Query
+# Query := (Query) 
+# Query := σ PYExprWithoutParenthesis (Query) | σ (PYExpr) (Query) 
+# Query := π FieldList (Query) 
+# Query := ρ RenameList (Query) 
+# FieldList := Ident | Ident , FieldList
+# RenameList := Ident ➡ Ident | Ident ➡ Ident , RenameList
+# BinaryOp := * | - | ᑌ | ᑎ | ÷ | ᐅᐊ | ᐅLEFTᐊ | ᐅRIGHTᐊ | ᐅFULLᐊ
+#
 # Language definition here:
 # https://galileo.dmi.unict.it/wiki/relational/doku.php?id=language
 
