@@ -20,7 +20,7 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 from relational import relation, parser, optimizer
-
+from relational_readline.termcolor import colored
 import os
 
 print relation
@@ -139,7 +139,7 @@ def run_exec_test(testname):
                 fields_ok = fields_ok and glob[i]==exp_result[i]
                 
             if fields_ok:
-                print "\033[32;1mTest passed\033[0m"
+                print colored('Test passed','green')
                 return True
     except:
         pass

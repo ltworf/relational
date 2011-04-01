@@ -24,9 +24,10 @@ import logging
 import os.path
 import os
 import sys
-import curses
 
 from relational import relation, parser, rtypes
+from termcolor import colored
+
 
 class SimpleCompleter(object):
     '''Handles completion'''
@@ -96,7 +97,7 @@ completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRO
 
 def load_relation(filename,defname=None):
     if not os.path.isfile(filename):
-        print >> sys.stderr, "%s is not a file" % filename
+        print >> sys.stderr, colored("%s is not a file" % filename,'red')
         return None
 
     f=filename.split('/')
@@ -106,16 +107,16 @@ def load_relation(filename,defname=None):
             defname=defname[:-4]
             
     if not rtypes.is_valid_relation_name(defname):
-        print >> sys.stderr, "%s is not a valid relation name" % defname
+        print >> sys.stderr, colored("%s is not a valid relation name" % defname,'red')
         return
     try:
         relations[defname]=relation.relation(filename)
         
         completer.add_completion(defname)
-        print "Loaded relation %s"% defname
+        print colored("Loaded relation %s"% defname,'green',attrs=['bold'])
         return defname
     except Exception, e:
-        print e
+        print >>sys.stderr,colored(e,'red')
         return None
 
 def help(command):
@@ -151,7 +152,10 @@ def help(command):
 
 def exec_line(command):
     command=command.strip()
-    if command=='QUIT':
+    
+    if command.startswith(';'):
+        return
+    elif command=='QUIT':
         sys.exit(0)
     elif command.startswith('HELP'):
         help(command)
@@ -159,10 +163,10 @@ def exec_line(command):
         for i in relations:
             if not i.startswith('_'):
                 print i
-    elif command.startswith('LOAD'):      #Loads a relation
+    elif command.startswith('LOAD '):      #Loads a relation
         pars=command.split(' ')
         if len(pars)==1:
-            print "Missing parameter"
+            print colored("Missing parameter",'red')
             return
         
         filename=pars[1]
@@ -172,34 +176,34 @@ def exec_line(command):
             defname=None
         load_relation(filename,defname)
          
-    elif command.startswith('UNLOAD'):
+    elif command.startswith('UNLOAD '):
         pars=command.split(' ')
         if len(pars)<2:
-            print "Missing parameter"
+            print colored("Missing parameter",'red')
             return
         if pars[1] in relations:
             del relations[pars[1]]
             completer.remove_completion(pars[1])
         else:
-            print "No such relation %s" % pars[1]
+            print colored("No such relation %s" % pars[1],'red')
         pass
-    elif command.startswith('SAVE'):
+    elif command.startswith('SAVE '):
         pars=command.split(' ')
         if len(pars)!=3:
-            print "Missing parameter"
+            print colored("Missing parameter",'red')
             return
         
         filename=pars[1]
         defname=pars[2]
         
         if defname not in relations:
-            print "No such relation %s" % defname
+            print colored("No such relation %s" % defname,'red')
             return
         
         try:
             relations[defname].save(filename)
         except Exception,e:
-            print e
+            print colored(e,'red')
     else:
         exec_query(command)
 
@@ -249,7 +253,7 @@ def exec_query(command):
     try:
         pyquery=parser.parse(query)
         result=eval(pyquery,relations)
-        print "-> query: %s" % pyquery
+        print colored("-> query: %s" % pyquery,'green') 
         
         if printrel:
             print
@@ -259,22 +263,11 @@ def exec_query(command):
     
         completer.add_completion(relname)
     except Exception, e:
-        print e
+        print colored(e,'red')
     
 def main(files=[]):
-    
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
-    code = locale.getpreferredencoding()
-
-    print curses.can_change_color()
-    
-    curses.color_pair(curses.A_BOLD)
-    
-    
-    
-    print "> ; Type HELP to get the HELP"
-    print "> ; Completion is activated using the tab (if supported by the terminal)"
+    print colored('> ','blue') + "; Type HELP to get the HELP"
+    print colored('> ','blue') + "; Completion is activated using the tab (if supported by the terminal)"
     
     for i in files:
         load_relation(i)
@@ -288,8 +281,8 @@ def main(files=[]):
 
     while True:
         try:
-            line = raw_input('> ')
-            if isinstance(line,str) and len(line)>0 and not line.startswith(';'):
+            line = raw_input(colored('> ','blue'))
+            if isinstance(line,str) and len(line)>0:
                 exec_line(line)
         except EOFError:
             print
@@ -297,5 +290,5 @@ def main(files=[]):
 
 
 if __name__ == "__main__":
-    
     main()
+    
