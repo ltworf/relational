@@ -133,7 +133,7 @@ class relation (object):
         It is possible to use rename on attributes and then use the product'''
         
         if (self.__class__!=other.__class__)or(self.header.sharedAttributes(other.header)!=0):
-            return None
+            raise Exception('Unable to perform product on relations with colliding attributes')
         newt=relation()
         newt.header=header(self.header.attributes+other.header.attributes)
         
@@ -159,14 +159,10 @@ class relation (object):
                 attributes1.append(i)
         attributes=attributes1
         
-        #If source and dest has the same number of attributes, we are just rearranging
-        #so we won't need to check for duplicated entries
-        attributes_same_count=len(attributes)==len(self.header.attributes)
-        
         ids=self.header.getAttributesId(attributes)
         
-        if len(ids)==0:
-            return None
+        if len(ids)==0 or len(ids)!=len(attributes):
+            raise Exception('Invalid attributes for projection')
         newt=relation()
         #Create the header
         h=[]
@@ -186,7 +182,7 @@ class relation (object):
         '''Operation rename. Takes a dictionary
         Will replace the itmem with its content.
         For example if you want to rename a to b, provide {"a":"b"}
-        If an "old" field doesn't exist, None will be returned'''
+        '''
         result=[]
         
         newt=relation()
@@ -194,7 +190,7 @@ class relation (object):
         
         for old,new in params.iteritems():
             if (newt.header.rename(old,new)) == False:
-                return None
+                raise Exception('Unable to find attribute: %s' % old)
         
         newt.content=self.content
         newt._readonly=True
@@ -208,7 +204,7 @@ class relation (object):
         It is possible to use projection and rename to make headers match.'''
         other=self._rearrange_(other) #Rearranges attributes' order
         if (self.__class__!=other.__class__)or(self.header!=other.header):
-            return None
+            raise Exception('Unable to perform intersection on relations with different attributes')
         newt=relation()
         newt.header=header(list(self.header.attributes))
         
@@ -223,7 +219,7 @@ class relation (object):
         It is possible to use projection and rename to make headers match.'''
         other=self._rearrange_(other) #Rearranges attributes' order
         if (self.__class__!=other.__class__)or(self.header!=other.header):
-            return None
+            raise Exception('Unable to perform difference on relations with different attributes')
         newt=relation()
         newt.header=header(list(self.header.attributes))
         
@@ -267,7 +263,7 @@ class relation (object):
         It is possible to use projection and rename to make headers match.'''
         other=self._rearrange_(other) #Rearranges attributes' order
         if (self.__class__!=other.__class__)or(self.header!=other.header):
-            return None
+            raise Exception('Unable to perform union on relations with different attributes')
         newt=relation()
         newt.header=header(list(self.header.attributes))
         

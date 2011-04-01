@@ -1,4 +1,5 @@
 1.1
+- Incorrect relational operations now raise an exception instead of returning None
 
 1.0
 - Adds history in the GUI
