@@ -24,6 +24,7 @@ import logging
 import os.path
 import os
 import sys
+import curses
 
 from relational import relation, parser, rtypes
 
@@ -261,6 +262,17 @@ def exec_query(command):
         print e
     
 def main(files=[]):
+    
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+    code = locale.getpreferredencoding()
+
+    print curses.can_change_color()
+    
+    curses.color_pair(curses.A_BOLD)
+    
+    
+    
     print "> ; Type HELP to get the HELP"
     print "> ; Completion is activated using the tab (if supported by the terminal)"
     
@@ -285,4 +297,5 @@ def main(files=[]):
 
 
 if __name__ == "__main__":
+    
     main()

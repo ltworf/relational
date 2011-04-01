@@ -190,11 +190,19 @@ class relForm(QtGui.QMainWindow):
             #Patch provided by Angelo 'Havoc' Puglisi
             name=str(res[0].toUtf8())
         
-        if rtypes.is_valid_relation_name(name):
-            self.relations[name]=relation.relation(filename)
-            self.updateRelations()
-        else:
+        if not rtypes.is_valid_relation_name(name):
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation: %s." % name))
+            return
+        
+        try:
+            self.relations[name]=relation.relation(filename)
+        except Exception, e:
+            print e
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
+            return
+            
+        
+        self.updateRelations()
 
     def insertTuple(self):
         '''Shows an input dialog and inserts the inserted tuple into the selected relation'''

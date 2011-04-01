@@ -512,6 +512,10 @@ class header (object):
         '''Accepts a list with attributes' names. Names MUST be unique'''
         self.attributes=attributes
         
+        for i in attributes:
+            if not is_valid_relation_name(i):
+                raise Exception('"%s" is not a valid attribute name'% i)
+        
     def __repr__(self):
         return "header(%s)" % (self.attributes.__repr__())
         
@@ -519,6 +523,10 @@ class header (object):
     def rename(self,old,new):
         '''Renames a field. Doesn't check if it is a duplicate.
         Returns True if the field was renamed, False otherwise'''
+        
+        if not is_valid_relation_name(new):
+            raise Exception('%s is not a valid attribute name'% new)
+        
         try:
             id_=self.attributes.index(old)
             self.attributes[id_]=new
