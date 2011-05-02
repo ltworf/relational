@@ -143,16 +143,16 @@ def run_exec_test(testname):
                 return True
     except:
         pass
-    print "\033[31;1mERROR\033[0m"
-    print "\033[31;1m=====================================\033[0m"
+    print colored('ERROR','red')
+    print colored('=====================================','red')
     print "Expected %s" % exp_result
     #print "Got %s" % result
-    print "\033[31;1m=====================================\033[0m"
+    print colored('=====================================','red')
     return False
 
 def run_py_test(testname):
     '''Runs a python test, which evaluates expressions directly rather than queries'''
-    print "Running expression python test: \033[35;1m%s\033[0m" % testname
+    print "Running expression python test: " + colored (testname,'magenta')
     
     try:
     
@@ -163,15 +163,16 @@ def run_py_test(testname):
         exp_result=eval(expr,rels) #Evaluating the expression
     
         if result==exp_result:
-            print "\033[32;1mTest passed\033[0m"
+            print colored('Test passed','green')
             return True
     except:
         pass
-    print "\033[31;1mERROR\033[0m"
-    print "\033[31;1m=====================================\033[0m"
+   
+    print colored('ERROR','red')
+    print colored('=====================================','red')
     print "Expected %s" % exp_result
     print "Got %s" % result
-    print "\033[31;1m=====================================\033[0m"
+    print colored('=====================================','red')
     return False
 
 def run_test(testname):
@@ -181,7 +182,7 @@ def run_test(testname):
     testname.result
     The query will be executed both unoptimized and
     optimized'''
-    print "Running test: \033[35;1m%s\033[0m" % testname
+    print "Running test: "+ colored(testname,'magenta')
     
     query=None;expr=None;o_query=None;o_expr=None
     result_rel=None
@@ -203,15 +204,15 @@ def run_test(testname):
     
     
         if (o_result==result_rel) and (result==result_rel):
-            print "\033[32;1mTest passed\033[0m"
+            print colored('Test passed','green')
             return True
     except Exception as inst:
         print inst
         pass
-    print "\033[31;1mERROR\033[0m"
+    print colored('ERROR','red')
     print "Query: %s -> %s" % (query,expr)
     print "Optimized query: %s -> %s" % (o_query,o_expr)
-    print "\033[31;1m=====================================\033[0m"
+    print colored('=====================================','red')
     print "\033[33;1mExpected result\033[0m"
     print result_rel
     print "\033[33;1mResult\033[0m"
@@ -220,7 +221,7 @@ def run_test(testname):
     print o_result
     print "\033[33;1moptimized result match\033[0m", result_rel==o_result
     print "\033[33;1mresult match          \033[0m", result==result_rel
-    print "\033[31;1m=====================================\033[0m"
+    print colored('=====================================','red')
     return False
 
     
