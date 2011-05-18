@@ -81,14 +81,13 @@ if __name__ == "__main__":
             x11=False
     
     if x11:
-        import sip
-        from PyQt4 import QtCore, QtGui
-        
         try:
             from relational_gui import maingui,guihandler, about, surveyForm
         except:
             print >> sys.stderr, "Module relational_gui is missing.\nPlease install relational package."
             sys.exit(3)
+        
+        from PyQt4 import QtGui
             
         about.version=version
         surveyForm.version=version
@@ -100,7 +99,6 @@ if __name__ == "__main__":
     
         #if os.name=='nt':
         Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
-    
         
         ui.setupUi(Form)
     
