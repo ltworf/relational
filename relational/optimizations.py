@@ -29,7 +29,6 @@
 # The class used is defined in optimizer module.
 # A function will have to return the number of changes performed on the tree.
 
-import optimizer
 import parser
 
 from cStringIO import StringIO
@@ -43,10 +42,10 @@ def replace_node(replace,replacement):
     replace.name=replacement.name
     replace.kind=replacement.kind
 
-    if replace.kind==optimizer.UNARY:
+    if replace.kind==parser.UNARY:
         replace.child=replacement.child
         replace.prop=replacement.prop
-    elif replace.kind==optimizer.BINARY:
+    elif replace.kind==parser.BINARY:
         replace.right=replacement.right
         replace.left=replacement.left
 
@@ -64,12 +63,12 @@ def recoursive_scan(function,node,rels=None):
     returned value.'''
     changes=0
     #recoursive scan
-    if node.kind==optimizer.UNARY:
+    if node.kind==parser.UNARY:
         if rels!=None:
             changes+=function(node.child,rels)
         else:
             changes+=function(node.child)
-    elif node.kind==optimizer.BINARY:
+    elif node.kind==parser.BINARY:
         if rels!=None:
             changes+=function(node.right,rels)
             changes+=function(node.left,rels)
@@ -148,7 +147,7 @@ def futile_union_intersection_subtraction(n):
     #Subtraction of the same thing or with selection on the left child
     elif (n.name=='-' and ((n.left==n.right) or (n.left.name=='σ' and n.left.child==n.right)) ):#Empty relation
         changes=1
-        n.kind=optimizer.UNARY
+        n.kind=parser.UNARY
         n.name='σ'
         n.prop='False'
         n.child=n.left.get_left_leaf()
@@ -165,23 +164,23 @@ def down_to_unions_subtractions_intersections(n):
     _o=('ᑌ','-','ᑎ')
     if n.name=='σ' and n.child.name in _o:
         
-        left=optimizer.node()
+        left=parser.node()
         left.prop=n.prop
         left.name=n.name
         left.child=n.child.left
-        left.kind=optimizer.UNARY
-        right=optimizer.node()
+        left.kind=parser.UNARY
+        right=parser.node()
         right.prop=n.prop
         right.name=n.name
         right.child=n.child.right
-        right.kind=optimizer.UNARY
+        right.kind=parser.UNARY
         
         n.name=n.child.name
         n.left=left
         n.right=right
         n.child=None
         n.prop=None
-        n.kind=optimizer.BINARY
+        n.kind=parser.BINARY
         changes+=1
     
     return changes+recoursive_scan(down_to_unions_subtractions_intersections,n)
@@ -235,14 +234,14 @@ def swap_union_renames(n):
             changes=1
             
             #Copying self, but child will be child of renames
-            q=optimizer.node()
+            q=parser.node()
             q.name=n.name
-            q.kind=optimizer.BINARY
+            q.kind=parser.BINARY
             q.left=n.left.child
             q.right=n.right.child
             
             n.name='ρ'
-            n.kind=optimizer.UNARY
+            n.kind=parser.UNARY
             n.child=q
             n.prop=n.left.prop
             n.left=n.right=None
@@ -521,9 +520,9 @@ def selection_and_product(n,rels):
         #Preparing left selection
         if len(left)>0:
             changes=1
-            l_node=optimizer.node()
+            l_node=parser.node()
             l_node.name='σ'
-            l_node.kind=optimizer.UNARY
+            l_node.kind=parser.UNARY
             l_node.child=n.child.left
             l_node.prop=''
             n.child.left=l_node
@@ -539,10 +538,10 @@ def selection_and_product(n,rels):
         #Preparing right selection
         if len(right)>0:
             changes=1
-            r_node=optimizer.node()
+            r_node=parser.node()
             r_node.name='σ'
             r_node.prop=''
-            r_node.kind=optimizer.UNARY
+            r_node.kind=parser.UNARY
             r_node.child=n.child.right
             n.child.right=r_node
             while len(right)>0:

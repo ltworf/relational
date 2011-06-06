@@ -107,8 +107,6 @@ class Ui_Dialog(object):
             
             self.verticalLayout_7.addWidget(self.webLink)
             
-        
-        
         self.tabWidget.addTab(self.tab_2,"")
         self.verticalLayout_2.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(Dialog)
