@@ -61,6 +61,7 @@ class surveyForm (QtGui.QWidget):
         post+="school:" + str(self.ui.txtSchool.text().toUtf8())+ "\n"
         post+="age:" + str(self.ui.txtAge.text().toUtf8())+ "\n"
         post+="find:" + str(self.ui.txtFind.text().toUtf8())+ "\n"
+        post+="email:" + str(self.ui.txtEmail.text().toUtf8())+"\n"
         post+="comments:" + str(self.ui.txtComments.toPlainText().toUtf8())
     
         #Clears the form
@@ -69,6 +70,7 @@ class surveyForm (QtGui.QWidget):
         self.ui.txtSchool.clear()
         self.ui.txtAge.clear()
         self.ui.txtFind.clear()
+        self.ui.txtEmail.clear()
         self.ui.txtComments.clear()
     
         #sends the string

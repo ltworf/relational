@@ -2,6 +2,7 @@
 - Incorrect relational operations now raise an exception instead of returning None
 - Forces relations to have correct names for attributes
 - Colored output in readline mode
+- Can send email in survery
 
 1.0
 - Adds history in the GUI
