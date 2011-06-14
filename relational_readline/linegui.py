@@ -93,7 +93,7 @@ class SimpleCompleter(object):
 
 
 relations={}
-completer=SimpleCompleter(['LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME ','_DIVISION '])
+completer=SimpleCompleter(['SURVEY','LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAVE ','_PRODUCT ','_UNION ','_INTERSECTION ','_DIFFERENCE ','_JOIN ','_LJOIN ','_RJOIN ','_FJOIN ','_PROJECTION ','_RENAME_TO ','_SELECTION ','_RENAME ','_DIVISION '])
 
 def load_relation(filename,defname=None):
     if not os.path.isfile(filename):
@@ -118,6 +118,18 @@ def load_relation(filename,defname=None):
     except Exception, e:
         print >>sys.stderr,colored(e,'red')
         return None
+
+def survey():
+    '''performs a survey'''
+    from relational import maintenance
+    
+    post= {'software':'Relational algebra (cli)','version':version}
+
+    fields=('System','Country','School','Age','How did you find','email (only if you want a reply)','Comments')
+    for i in fields:
+        a=raw_input('%s: '%i)
+        post[i]=a
+    maintenance.send_survey(post)
 
 def help(command):
     '''Prints help on the various functions'''
@@ -146,6 +158,8 @@ def help(command):
         print "Saves a relation in a file"
     elif cmd=='HELP':
         print "Prints the help on a command"
+    elif cmd=='SURVEY':
+        print "Fill and send a survey"
     else:
         print "Unknown command: %s" %cmd
         
@@ -163,6 +177,8 @@ def exec_line(command):
         for i in relations:
             if not i.startswith('_'):
                 print i
+    elif command=='SURVEY':
+        survey()
     elif command.startswith('LOAD '):      #Loads a relation
         pars=command.split(' ')
         if len(pars)==1:

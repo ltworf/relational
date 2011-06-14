@@ -18,8 +18,7 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 from PyQt4 import QtCore, QtGui
 
-import httplib
-import urllib
+from relational import maintenance
 import platform
 import locale
 
@@ -53,16 +52,17 @@ class surveyForm (QtGui.QWidget):
             pass
     def send(self):
         '''Sends the data inserted in the form'''
-        #Creates the string
-        post="Relational algebra\n"
-        post+="version: " + version + "\n"
-        post+="system:" + str(self.ui.txtSystem.text().toUtf8())+ "\n"
-        post+="country:" + str(self.ui.txtCountry.text().toUtf8())+ "\n"
-        post+="school:" + str(self.ui.txtSchool.text().toUtf8())+ "\n"
-        post+="age:" + str(self.ui.txtAge.text().toUtf8())+ "\n"
-        post+="find:" + str(self.ui.txtFind.text().toUtf8())+ "\n"
-        post+="email:" + str(self.ui.txtEmail.text().toUtf8())+"\n"
-        post+="comments:" + str(self.ui.txtComments.toPlainText().toUtf8())
+        
+        post={}
+        post['software']="Relational algebra"
+        post["version"]= version
+        post["system"]= str(self.ui.txtSystem.text().toUtf8())
+        post["country"]= str(self.ui.txtCountry.text().toUtf8())
+        post["school"]= str(self.ui.txtSchool.text().toUtf8())
+        post["age"] = str(self.ui.txtAge.text().toUtf8())
+        post["find"] = str(self.ui.txtFind.text().toUtf8())
+        post["email"] =str(self.ui.txtEmail.text().toUtf8())
+        post["comments"] = str(self.ui.txtComments.toPlainText().toUtf8())
     
         #Clears the form
         self.ui.txtSystem.clear()
@@ -72,13 +72,9 @@ class surveyForm (QtGui.QWidget):
         self.ui.txtFind.clear()
         self.ui.txtEmail.clear()
         self.ui.txtComments.clear()
+        
+        response=maintenance.send_survey(post)
     
-        #sends the string
-        params = urllib.urlencode({'survey':post})
-        headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-        connection = httplib.HTTPConnection('galileo.dmi.unict.it')
-        connection.request("POST","/~ltworf/survey.php",params,headers)
-        response=connection.getresponse()
         if response.status!=200:
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Unable to send the data!")  )
         else:

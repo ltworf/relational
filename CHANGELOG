@@ -3,6 +3,7 @@
 - Forces relations to have correct names for attributes
 - Colored output in readline mode
 - Can send email in survery
+- Can check for new version online
 
 1.0
 - Adds history in the GUI

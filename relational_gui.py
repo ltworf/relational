@@ -91,6 +91,7 @@ if __name__ == "__main__":
             
         about.version=version
         surveyForm.version=version
+        guihandler.version=version
 
         app = QtGui.QApplication(sys.argv)
         
@@ -122,5 +123,6 @@ if __name__ == "__main__":
         except:
             print >> sys.stderr, "Module relational_readline is missing.\nPlease install relational-cli package."
             sys.exit(3)
+        relational_readline.linegui.version=version
         relational_readline.linegui.main(files)
 

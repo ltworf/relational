@@ -37,6 +37,19 @@ class relForm(QtGui.QMainWindow):
         self.selectedRelation=None
         self.ui=ui
         self.qcounter=1 #Query counter
+    def checkVersion(self):
+        from relational import maintenance
+        online=maintenance.check_latest_version()
+        
+        if online>version:
+            r=QtGui.QApplication.translate("Form", "New version available online: %s." % online)
+        elif online==version:
+            r=QtGui.QApplication.translate("Form", "Latest version installed.")
+        else:
+            r=QtGui.QApplication.translate("Form", "You are using an unstable version.")
+        
+        QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Version"),r)
+        
         
     def load_query(self,*index):
         self.ui.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
