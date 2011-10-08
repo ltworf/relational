@@ -1,6 +1,13 @@
 default:
 	echo "sorry, no default action"
 
+gui:
+	pyside-uic relational_pyside/survey.ui > relational_pyside/survey.py 
+	pyside-uic relational_pyside/maingui.ui > relational_pyside/maingui.py
+	pyuic4 relational_gui/survey.ui > relational_gui/survey.py 
+	pyuic4 relational_gui/maingui.ui > relational_gui/maingui.py
+	
+
 uninstall:
 	rm -rf /opt/relational
 	rm -f /usr/local/bin/relational
