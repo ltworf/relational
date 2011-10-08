@@ -4,6 +4,7 @@
 - Colored output in readline mode
 - Can send email in survey
 - Can check for new version online
+- Can use both PySide and PyQt
 
 1.0
 - Adds history in the GUI

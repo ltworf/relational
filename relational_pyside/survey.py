@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_pyside/survey.ui'
 #
-# Created: Sat Oct  8 19:27:40 2011
+# Created: Sat Oct  8 20:14:44 2011
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!

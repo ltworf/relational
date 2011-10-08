@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_pyside/maingui.ui'
 #
-# Created: Sat Oct  8 19:27:40 2011
+# Created: Sat Oct  8 20:14:44 2011
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -222,11 +222,14 @@ class Ui_MainWindow(object):
         self.action_Quit = QtGui.QAction(MainWindow)
         self.action_Quit.setMenuRole(QtGui.QAction.QuitRole)
         self.action_Quit.setObjectName("action_Quit")
+        self.actionCheck_for_new_versions = QtGui.QAction(MainWindow)
+        self.actionCheck_for_new_versions.setObjectName("actionCheck_for_new_versions")
         self.menuFile.addAction(self.action_Load_relation)
         self.menuFile.addAction(self.action_Save_relation)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.action_Quit)
         self.menuAbout.addAction(self.actionAbout)
+        self.menuAbout.addAction(self.actionCheck_for_new_versions)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
         self.label.setBuddy(self.txtQuery)
@@ -267,6 +270,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.action_Load_relation, QtCore.SIGNAL("triggered()"), MainWindow.loadRelation)
         QtCore.QObject.connect(self.action_Save_relation, QtCore.SIGNAL("triggered()"), MainWindow.saveRelation)
         QtCore.QObject.connect(self.action_Quit, QtCore.SIGNAL("triggered()"), MainWindow.close)
+        QtCore.QObject.connect(self.actionCheck_for_new_versions, QtCore.SIGNAL("triggered()"), MainWindow.checkVersion)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cmdAbout, self.cmdSurvey)
         MainWindow.setTabOrder(self.cmdSurvey, self.cmdProduct)
@@ -342,4 +346,5 @@ class Ui_MainWindow(object):
         self.action_Save_relation.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
         self.action_Quit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.action_Quit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionCheck_for_new_versions.setText(QtGui.QApplication.translate("MainWindow", "Check for new versions", None, QtGui.QApplication.UnicodeUTF8))
 

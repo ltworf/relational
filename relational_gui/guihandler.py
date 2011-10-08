@@ -16,7 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-from PyQt4 import QtCore, QtGui
+try:
+    from PyQt4 import QtCore, QtGui
+except:
+    from PySide import QtCore, QtGui
+    
 from relational import relation, parser, optimizer,rtypes
 
 import sys
@@ -25,6 +29,7 @@ import survey
 import os
 import surveyForm
 import maingui
+import compatibility
 
 class relForm(QtGui.QMainWindow):
     
@@ -63,20 +68,22 @@ class relForm(QtGui.QMainWindow):
         '''Performs all the possible optimizations on the query'''
         self.undo=self.ui.txtQuery.text() #Storing the query in undo list
         
-        result=optimizer.optimize_all(str(self.ui.txtQuery.text().toUtf8()),self.relations)
-        self.ui.txtQuery.setText(QtCore.QString.fromUtf8(result))
+        
+        query=compatibility.get_py_str(self.ui.txtQuery.text()).encode("utf-8")
+        result=optimizer.optimize_all(query,self.relations)
+        compatibility.set_utf8_text(self.ui.TxtQuery,result)
         
     def resumeHistory(self,item):
-        itm=str(item.text().toUtf8()).split(' = ',1)
-        self.ui.txtResult.setText(QtCore.QString.fromUtf8(itm[0]))
-        self.ui.txtQuery.setText(QtCore.QString.fromUtf8(itm[1]))
+        itm=compatibility.get_py_str(item.text()).split(' = ',1)
+        compatibility.set_utf8_text(self.ui.txtResult,itm[0])
+        compatibility.set_utf8_text(self.ui.txtQuery,itm[1])
         
         
     def execute(self):
         '''Executes the query'''
         
-        query=str(self.ui.txtQuery.text().toUtf8())
-        res_rel=str(self.ui.txtResult.text().toUtf8())#result relation's name
+        query=compatibility.get_py_str(self.ui.txtQuery.text())
+        res_rel=compatibility.get_py_str(self.ui.txtResult.text())#result relation's name
         
         if not rtypes.is_valid_relation_name(res_rel):
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
@@ -97,17 +104,18 @@ class relForm(QtGui.QMainWindow):
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
             return
         #Query was executed normally
-        history_item=QtCore.QString()
-        history_item.append(self.ui.txtResult.text())
-        history_item.append(u' = ')
-        history_item.append(self.ui.txtQuery.text())
-        hitem=QtGui.QListWidgetItem(None,0)
-        hitem.setText(history_item)
-        self.ui.lstHistory.addItem (hitem)
-        self.ui.lstHistory.setCurrentItem(hitem)
+        #TODO fix THAT
+        #history_item=QtCore.QString()
+        #history_item.append(self.ui.txtResult.text())
+        #history_item.append(u' = ')
+        #history_item.append(self.ui.txtQuery.text())
+        #hitem=QtGui.QListWidgetItem(None,0)
+        #hitem.setText(history_item)
+        #self.ui.lstHistory.addItem (hitem)
+        #self.ui.lstHistory.setCurrentItem(hitem)
         
         self.qcounter+=1
-        self.ui.txtResult.setText(QtCore.QString(u"_last%d"% self.qcounter)) #Sets the result relation name to none
+        compatibility.set_utf8_text(self.ui.txtResult,u"_last%d"% self.qcounter) #Sets the result relation name to none
         
     def showRelation(self,rel):
         '''Shows the selected relation into the table'''
@@ -133,12 +141,12 @@ class relForm(QtGui.QMainWindow):
         
         
     def printRelation(self,item):
-        self.selectedRelation=self.relations[str(item.text().toUtf8())]
+        self.selectedRelation=self.relations[compatibility.get_py_str(item.text())]
         self.showRelation(self.selectedRelation)
             
     def showAttributes(self,item):
         '''Shows the attributes of the selected relation'''
-        rel=str(item.text().toUtf8())
+        rel=compatibility.get_py_str(item.text())
         self.ui.lstAttributes.clear()
         for j in self.relations[rel].header.attributes:
             self.ui.lstAttributes.addItem (j)
@@ -150,15 +158,15 @@ class relForm(QtGui.QMainWindow):
                 self.ui.lstRelations.addItem(i)
     def saveRelation(self):
         filename = QtGui.QFileDialog.getSaveFileName(self,QtGui.QApplication.translate("Form", "Save Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv)"))
-      
-        filename=str(filename.toUtf8()) #Converts QString to string
+        
+        filename=compatibility.get_filename(filename)        
         if (len(filename)==0):#Returns if no file was selected
             return
         self.selectedRelation.save(filename)
         return
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
-            del self.relations[str(i.text().toUtf8())]
+            del self.relations[compatibility.get_py_str(i.text())]
         self.updateRelations()
     def showSurvey(self):
       if self.Survey==None:
@@ -182,7 +190,7 @@ class relForm(QtGui.QMainWindow):
         #Asking for file to load
         if filename==None:
             filename = QtGui.QFileDialog.getOpenFileName(self,QtGui.QApplication.translate("Form", "Load Relation"),"",QtGui.QApplication.translate("Form", "Relations (*.csv);;Text Files (*.txt);;All Files (*)"))
-            filename=str(filename.toUtf8())
+            filename=compatibility.get_filename(filename)
 
         #Default relation's name
         f=filename.split('/') #Split the full path
@@ -201,10 +209,11 @@ class relForm(QtGui.QMainWindow):
                 return
             
             #Patch provided by Angelo 'Havoc' Puglisi
-            name=str(res[0].toUtf8())
+            name=compatibility.get_py_str(res[0])
         
         if not rtypes.is_valid_relation_name(name):
-            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation: %s." % name))
+            r=QtGui.QApplication.translate("Form", str("Wrong name for destination relation: %s." % name))
+            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),r)
             return
         
         try:

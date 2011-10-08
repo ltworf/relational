@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'maingui.ui'
+# Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Tue Jun 14 18:13:03 2011
+# Created: Sat Oct  8 20:14:44 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!

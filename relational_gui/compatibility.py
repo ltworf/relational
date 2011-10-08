@@ -33,3 +33,13 @@ def get_py_str(a):
     if pyqt:
         return str(a.toUtf8())
     return a #Already a python string in PySide
+
+def set_utf8_text(component,text):
+    if pyqt:
+        component.setText(text.decode("utf-8"))
+    else:
+        component.setText(QtCore.QString.fromUtf8(text))
+def get_filename(filename):
+    if pyqt:
+        return str(filename.toUtf8())
+    return filename[0]
