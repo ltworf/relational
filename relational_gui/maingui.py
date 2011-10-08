@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Sat Oct  8 20:14:44 2011
+# Created: Sun Oct  9 00:27:00 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -105,16 +105,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.verticalLayout_6.setMargin(0)
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetFixedSize)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.cmdInsert = QtGui.QPushButton(self.layoutWidget1)
-        self.cmdInsert.setObjectName(_fromUtf8("cmdInsert"))
-        self.horizontalLayout.addWidget(self.cmdInsert)
-        self.cmdDelete = QtGui.QPushButton(self.layoutWidget1)
-        self.cmdDelete.setObjectName(_fromUtf8("cmdDelete"))
-        self.horizontalLayout.addWidget(self.cmdDelete)
-        self.verticalLayout_6.addLayout(self.horizontalLayout)
         self.lstHistory = QtGui.QListWidget(self.layoutWidget1)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -208,7 +198,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addLayout(self.horizontalLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 20))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -258,8 +248,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.cmdOptimize, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.optimize)
         QtCore.QObject.connect(self.cmdUndoOptimize, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.undoOptimize)
         QtCore.QObject.connect(self.txtResult, QtCore.SIGNAL(_fromUtf8("returnPressed()")), self.txtQuery.setFocus)
-        QtCore.QObject.connect(self.cmdDelete, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.deleteTuple)
-        QtCore.QObject.connect(self.cmdInsert, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.insertTuple)
         QtCore.QObject.connect(self.cmdOuterRight, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.addORight)
         QtCore.QObject.connect(self.cmdOuter, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.addOuter)
         QtCore.QObject.connect(self.cmdOuterLeft, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.addOLeft)
@@ -292,9 +280,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.cmdSelection, self.cmdRename)
         MainWindow.setTabOrder(self.cmdRename, self.cmdArrow)
         MainWindow.setTabOrder(self.cmdArrow, self.table)
-        MainWindow.setTabOrder(self.table, self.cmdInsert)
-        MainWindow.setTabOrder(self.cmdInsert, self.cmdDelete)
-        MainWindow.setTabOrder(self.cmdDelete, self.lstHistory)
+        MainWindow.setTabOrder(self.table, self.lstHistory)
         MainWindow.setTabOrder(self.lstHistory, self.cmdOptimize)
         MainWindow.setTabOrder(self.cmdOptimize, self.cmdUndoOptimize)
         MainWindow.setTabOrder(self.cmdUndoOptimize, self.cmdClearHistory)
@@ -327,8 +313,6 @@ class Ui_MainWindow(object):
         self.cmdSelection.setText(QtGui.QApplication.translate("MainWindow", "σ", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRename.setText(QtGui.QApplication.translate("MainWindow", "ρ", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdArrow.setText(QtGui.QApplication.translate("MainWindow", "➡", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdInsert.setText(QtGui.QApplication.translate("MainWindow", "Insert", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdDelete.setText(QtGui.QApplication.translate("MainWindow", "Delete", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOptimize.setText(QtGui.QApplication.translate("MainWindow", "Optimize", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUndoOptimize.setText(QtGui.QApplication.translate("MainWindow", "Undo optimize", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdClearHistory.setText(QtGui.QApplication.translate("MainWindow", "Clear history", None, QtGui.QApplication.UnicodeUTF8))

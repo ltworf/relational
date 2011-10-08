@@ -197,27 +197,6 @@
            <enum>QLayout::SetMinimumSize</enum>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetFixedSize</enum>
-            </property>
-            <item>
-             <widget class="QPushButton" name="cmdInsert">
-              <property name="text">
-               <string>Insert</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdDelete">
-              <property name="text">
-               <string>Delete</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
            <widget class="QListWidget" name="lstHistory">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -426,7 +405,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -507,8 +486,6 @@
   <tabstop>cmdRename</tabstop>
   <tabstop>cmdArrow</tabstop>
   <tabstop>table</tabstop>
-  <tabstop>cmdInsert</tabstop>
-  <tabstop>cmdDelete</tabstop>
   <tabstop>lstHistory</tabstop>
   <tabstop>cmdOptimize</tabstop>
   <tabstop>cmdUndoOptimize</tabstop>
@@ -810,38 +787,6 @@
     <hint type="destinationlabel">
      <x>182</x>
      <y>590</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdDelete</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>deleteTuple()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>549</x>
-     <y>442</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>594</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdInsert</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>insertTuple()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>326</x>
-     <y>435</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>533</x>
-     <y>586</y>
     </hint>
    </hints>
   </connection>
