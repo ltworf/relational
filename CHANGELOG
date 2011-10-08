@@ -2,7 +2,7 @@
 - Incorrect relational operations now raise an exception instead of returning None
 - Forces relations to have correct names for attributes
 - Colored output in readline mode
-- Can send email in survery
+- Can send email in survey
 - Can check for new version online
 
 1.0

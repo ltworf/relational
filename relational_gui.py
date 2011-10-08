@@ -81,13 +81,30 @@ if __name__ == "__main__":
             x11=False
     
     if x11:
-        try:
-            from relational_gui import maingui,guihandler, about, surveyForm
-        except:
-            print >> sys.stderr, "Module relational_gui is missing.\nPlease install relational package."
-            sys.exit(3)
         
-        from PyQt4 import QtGui
+        pyqt=True
+        
+        try:
+            from PyQt4 import QtGui
+        except:
+            print >> sys.stderr, "PyQt seems to be missing, trying to use Pyside"
+            from PySide import QtCore, QtGui
+            pyqt=False
+        
+        
+        if pyqt:
+            try:
+                from relational_gui import maingui,guihandler, about, surveyForm
+            except:
+                print >> sys.stderr, "Module relational_gui is missing.\nPlease install relational package."
+                sys.exit(3)
+        else:
+            try:
+                from relational_pyside import maingui,guihandler, about, surveyForm
+            except:
+                print >> sys.stderr, "Module relational_pyside is missing.\nPlease install relational package."
+                sys.exit(3)
+        
             
         about.version=version
         surveyForm.version=version
