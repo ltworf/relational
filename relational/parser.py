@@ -85,7 +85,7 @@ class node (object):
         '''Expression from right to left, searching for binary operators
         this means that binary operators have lesser priority than
         unary operators.
-        It find the operator with lesser priority, uses it as root of this
+        It finds the operator with lesser priority, uses it as root of this
         (sub)tree using everything on its left as left parameter (so building
         a left subtree with the part of the list located on left) and doing 
         the same on right.

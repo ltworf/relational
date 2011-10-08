@@ -50,8 +50,7 @@ def optimize_all(expression,rels,specific=True,general=True,debug=None):
     general: True if it has to perform general optimizations
     debug: if a list is provided here, after the end of the function, it
         will contain the query repeated many times to show the performed
-        steps. Of course don't call optimize_all(... ,debug=[]) because it
-        would make no sense
+        steps.
     
     Return value: this will return an optimized version of the expression'''
     if isinstance(expression,str):

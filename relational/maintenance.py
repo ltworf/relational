@@ -29,7 +29,7 @@ def send_survey(data):
     post=''
     for i in data.keys():
         post+='%s: %s\n' %(i,data[i])
-    
+
     #sends the string
     params = urllib.urlencode({'survey':post})
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
@@ -48,6 +48,8 @@ def check_latest_version():
     
     #html
     s=r.read()
+    if len(s)==0:
+        return None
     
     l= s[s.find('<ul>')+4:s.find('</ul>')].split('\n')
     l.sort()

@@ -129,7 +129,7 @@ class relation (object):
     def product (self,other):
         '''Cartesian product, attributes must be different to avoid collisions
         Doing this operation on relations with colliding attributes will 
-        cause the return of a None value.
+        cause an exception.
         It is possible to use rename on attributes and then use the product'''
         
         if (self.__class__!=other.__class__)or(self.header.sharedAttributes(other.header)!=0):
