@@ -68,27 +68,26 @@ class relForm(QtGui.QMainWindow):
         '''Performs all the possible optimizations on the query'''
         self.undo=self.ui.txtQuery.text() #Storing the query in undo list
         
-        
-        query=compatibility.get_py_str(self.ui.txtQuery.text()).encode("utf-8")
+        query=compatibility.get_py_str(self.ui.txtQuery.text())
         result=optimizer.optimize_all(query,self.relations)
-        compatibility.set_utf8_text(self.ui.TxtQuery,result)
+        compatibility.set_utf8_text(self.ui.txtQuery,result)
         
     def resumeHistory(self,item):
         itm=compatibility.get_py_str(item.text()).split(' = ',1)
         compatibility.set_utf8_text(self.ui.txtResult,itm[0])
-        compatibility.set_utf8_text(self.ui.txtQuery,itm[1])
-        
+        compatibility.set_utf8_text(self.ui.txtQuery,itm[1])        
         
     def execute(self):
         '''Executes the query'''
         
         query=compatibility.get_py_str(self.ui.txtQuery.text())
+        
         res_rel=compatibility.get_py_str(self.ui.txtResult.text())#result relation's name
         
         if not rtypes.is_valid_relation_name(res_rel):
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
             return
-            
+        
         try:
             #Converting string to utf8 and then from qstring to normal string
             expr=parser.parse(query)#Converting expression to python code
@@ -103,16 +102,11 @@ class relForm(QtGui.QMainWindow):
             print e
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
             return
-        #Query was executed normally
-        #TODO fix THAT
-        #history_item=QtCore.QString()
-        #history_item.append(self.ui.txtResult.text())
-        #history_item.append(u' = ')
-        #history_item.append(self.ui.txtQuery.text())
-        #hitem=QtGui.QListWidgetItem(None,0)
-        #hitem.setText(history_item)
-        #self.ui.lstHistory.addItem (hitem)
-        #self.ui.lstHistory.setCurrentItem(hitem)
+
+        #Adds to history
+        item='%s = %s' % (compatibility.get_py_str(self.ui.txtResult.text()),compatibility.get_py_str(self.ui.txtQuery.text()))
+        item=unicode(item.decode('utf-8'))
+        compatibility.add_list_item(self.ui.lstHistory,item)
         
         self.qcounter+=1
         compatibility.set_utf8_text(self.ui.txtResult,u"_last%d"% self.qcounter) #Sets the result relation name to none
@@ -225,33 +219,6 @@ class relForm(QtGui.QMainWindow):
             
         
         self.updateRelations()
-
-    def insertTuple(self):
-        '''Shows an input dialog and inserts the inserted tuple into the selected relation'''
-        res=QtGui.QInputDialog.getText(self, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Insert the values, comma separated"),
-        QtGui.QLineEdit.Normal,"")
-        if res[1]==False:
-            return
-        
-        t=[]
-        for i in str(res[0].toUtf8()).split(","):
-            t.append(i.strip())
-        
-        if self.selectedRelation!=None and self.selectedRelation.insert(t) > 0:
-            self.showRelation(self.selectedRelation)
-            
-        return
-    def deleteTuple(self):
-        '''Shows an input dialog and removes the tuples corresponding to the condition.'''
-        res=QtGui.QInputDialog.getText(self, QtGui.QApplication.translate("Form", "New relation"),QtGui.QApplication.translate("Form", "Remove tuples: insert where condition"),
-        QtGui.QLineEdit.Normal,"")
-        if res[1]==False:
-            return
-        
-        if self.selectedRelation!=None and self.selectedRelation.delete(str(res[0].toUtf8())) > 0:
-            self.showRelation(self.selectedRelation)
-            
-        return
 
     def addProduct(self):
         self.addSymbolInQuery(u"*")

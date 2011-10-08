@@ -5,6 +5,7 @@
 - Can send email in survey
 - Can check for new version online
 - Can use both PySide and PyQt
+- Removed buttons for adding and deleting tuples
 
 1.0
 - Adds history in the GUI
