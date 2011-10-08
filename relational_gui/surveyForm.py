@@ -16,8 +16,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-from PyQt4 import QtCore, QtGui
+try:
+    from PyQt4 import QtCore, QtGui
+except:
+    from PySide import QtCore, QtGui
 
+import compatibility
 from relational import maintenance
 import platform
 import locale
@@ -56,13 +60,13 @@ class surveyForm (QtGui.QWidget):
         post={}
         post['software']="Relational algebra"
         post["version"]= version
-        post["system"]= str(self.ui.txtSystem.text().toUtf8())
-        post["country"]= str(self.ui.txtCountry.text().toUtf8())
-        post["school"]= str(self.ui.txtSchool.text().toUtf8())
-        post["age"] = str(self.ui.txtAge.text().toUtf8())
-        post["find"] = str(self.ui.txtFind.text().toUtf8())
-        post["email"] =str(self.ui.txtEmail.text().toUtf8())
-        post["comments"] = str(self.ui.txtComments.toPlainText().toUtf8())
+        post["system"]= compatibility.get_py_str(self.ui.txtSystem.text())
+        post["country"]= compatibility.get_py_str(self.ui.txtCountry.text())
+        post["school"]= compatibility.get_py_str(self.ui.txtSchool.text())
+        post["age"] = compatibility.get_py_str(self.ui.txtAge.text())
+        post["find"] = compatibility.get_py_str(self.ui.txtFind.text())
+        post["email"] = compatibility.get_py_str(self.ui.txtEmail.text())
+        post["comments"] = compatibility.get_py_str(self.ui.txtComments.toPlainText())
     
         #Clears the form
         self.ui.txtSystem.clear()
