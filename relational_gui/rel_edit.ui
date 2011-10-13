@@ -32,12 +32,65 @@
   <widget class="QTableWidget" name="table">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>230</x>
      <y>50</y>
      <width>256</width>
      <height>192</height>
     </rect>
    </property>
+   <row>
+    <property name="text">
+     <string>a</string>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>A</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>137</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Edit</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="cmdAddColumn">
+      <property name="text">
+       <string>Add column</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="cmdRemoveColumn">
+      <property name="text">
+       <string>Remove column</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="cmdAddTuple">
+      <property name="text">
+       <string>Add tuple</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="cmdRemoveTuple">
+      <property name="text">
+       <string>Remove tuple</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
@@ -49,8 +102,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>328</x>
+     <y>354</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -65,8 +118,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>396</x>
+     <y>360</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
