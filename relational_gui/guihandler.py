@@ -165,14 +165,43 @@ class relForm(QtGui.QMainWindow):
     def editRelation(self):
         import creator
         for i in self.ui.lstRelations.selectedItems():
-            self.relations[compatibility.get_py_str(i.text())]=creator.editRelation(self.relations[compatibility.get_py_str(i.text())])
+            result=creator.editRelation(self.relations[compatibility.get_py_str(i.text())])
+            if result!=None:
+                self.relations[compatibility.get_py_str(i.text())]=result
         self.updateRelations()
     def newRelation(self):
         import creator
-        creator.editRelation()
-        self.updateRelations()
-        #TODO chose name for the relation
+        result=creator.editRelation()
         
+        if result==None:
+            return
+        res=QtGui.QInputDialog.getText(
+                self, 
+                QtGui.QApplication.translate("Form", "New relation"),
+                QtGui.QApplication.translate("Form", "Insert the name for the new relation"),
+                QtGui.QLineEdit.Normal,'')
+        if res[1]==False or len(res[0])==0:
+            return
+            
+        #Patch provided by Angelo 'Havoc' Puglisi
+        name=compatibility.get_py_str(res[0])
+        
+        if not rtypes.is_valid_relation_name(name):
+            r=QtGui.QApplication.translate("Form", str("Wrong name for destination relation: %s." % name))
+            QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),r)
+            return
+        
+        try:
+            self.relations[name]=result
+        except Exception, e:
+            print e
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
+            return
+            
+        
+        self.updateRelations()
+
+            
     def showSurvey(self):
       if self.Survey==None:
         self.Survey=surveyForm.surveyForm()

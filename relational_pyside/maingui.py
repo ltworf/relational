@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_pyside/maingui.ui'
 #
-# Created: Thu Oct 13 19:00:44 2011
+# Created: Thu Oct 13 20:42:44 2011
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -143,21 +143,21 @@ class Ui_MainWindow(object):
         self.lstRelations.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.lstRelations.setObjectName("lstRelations")
         self.verticalLayout.addWidget(self.lstRelations)
+        self.cmdNew = QtGui.QPushButton(self.groupBox)
+        self.cmdNew.setObjectName("cmdNew")
+        self.verticalLayout.addWidget(self.cmdNew)
         self.cmdLoad = QtGui.QPushButton(self.groupBox)
         self.cmdLoad.setObjectName("cmdLoad")
         self.verticalLayout.addWidget(self.cmdLoad)
         self.cmdSave = QtGui.QPushButton(self.groupBox)
         self.cmdSave.setObjectName("cmdSave")
         self.verticalLayout.addWidget(self.cmdSave)
-        self.cmdUnload = QtGui.QPushButton(self.groupBox)
-        self.cmdUnload.setObjectName("cmdUnload")
-        self.verticalLayout.addWidget(self.cmdUnload)
-        self.cmdNew = QtGui.QPushButton(self.groupBox)
-        self.cmdNew.setObjectName("cmdNew")
-        self.verticalLayout.addWidget(self.cmdNew)
         self.cmdEdit = QtGui.QPushButton(self.groupBox)
         self.cmdEdit.setObjectName("cmdEdit")
         self.verticalLayout.addWidget(self.cmdEdit)
+        self.cmdUnload = QtGui.QPushButton(self.groupBox)
+        self.cmdUnload.setObjectName("cmdUnload")
+        self.verticalLayout.addWidget(self.cmdUnload)
         self.groupBox_2 = QtGui.QGroupBox(self.splitter)
         self.groupBox_2.setMinimumSize(QtCore.QSize(0, 0))
         self.groupBox_2.setMaximumSize(QtCore.QSize(300, 16777215))
@@ -329,11 +329,11 @@ class Ui_MainWindow(object):
         self.cmdClearHistory.setText(QtGui.QApplication.translate("MainWindow", "Clear history", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Relations", None, QtGui.QApplication.UnicodeUTF8))
         self.lstRelations.setSortingEnabled(True)
+        self.cmdNew.setText(QtGui.QApplication.translate("MainWindow", "New relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdLoad.setText(QtGui.QApplication.translate("MainWindow", "Load relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSave.setText(QtGui.QApplication.translate("MainWindow", "Save relation", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdUnload.setText(QtGui.QApplication.translate("MainWindow", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdNew.setText(QtGui.QApplication.translate("MainWindow", "New relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdEdit.setText(QtGui.QApplication.translate("MainWindow", "Edit relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdUnload.setText(QtGui.QApplication.translate("MainWindow", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.txtResult.setText(QtGui.QApplication.translate("MainWindow", "_last1", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "=", None, QtGui.QApplication.UnicodeUTF8))

@@ -292,6 +292,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="cmdNew">
+            <property name="text">
+             <string>New relation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="cmdLoad">
             <property name="text">
              <string>Load relation</string>
@@ -306,23 +313,16 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="cmdUnload">
-            <property name="text">
-             <string>Unload relation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdNew">
-            <property name="text">
-             <string>New relation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="cmdEdit">
             <property name="text">
              <string>Edit relation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdUnload">
+            <property name="text">
+             <string>Unload relation</string>
             </property>
            </widget>
           </item>

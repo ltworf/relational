@@ -6,6 +6,7 @@
 - Can check for new version online
 - Can use both PySide and PyQt
 - Removed buttons for adding and deleting tuples
+- Can edit relations within the GUI
 
 1.0
 - Adds history in the GUI

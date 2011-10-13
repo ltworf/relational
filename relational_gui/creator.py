@@ -21,7 +21,8 @@ try:
     from PyQt4 import QtCore, QtGui
 except:
     from PySide import QtCore, QtGui
-    
+
+import compatibility
 from relational import relation
 import rel_edit
 
@@ -78,11 +79,30 @@ class creatorForm(QtGui.QDialog):
         self.table.setItem (0,1,i01)
         self.table.setItem (1,0,i10)
         self.table.setItem (1,1,i11)
-
-    
-    
+    def create_relation(self):
+        hlist=[]
+        
+        for i in range(self.table.columnCount()):
+            hlist.append(compatibility.get_py_str(self.table.item(0,i).text()))
+        try:
+            header=relation.header(hlist)
+        except Exception, e:
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Header error!"),e.__str__())  )
+        
+        r=relation.relation()
+        r.header=header
+        
+        for i in range(1,self.table.rowCount()):
+            hlist=[]
+            for j in range(self.table.columnCount()):
+                hlist.append(compatibility.get_py_str(self.table.item(i,j).text()))
+            r.content.add(tuple(hlist))
+        return r
     
     def accept(self):
+        
+        self.result_relation=self.create_relation()
+        
         QtGui.QDialog.accept(self)
         pass
     def reject(self):
