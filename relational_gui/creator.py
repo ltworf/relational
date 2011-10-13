@@ -40,8 +40,24 @@ class creatorForm(QtGui.QDialog):
         if self.rel==None:
             self.setup_empty()
         else:
-            self.setup_replation(rel)
-    def setup_relation(rel):
+            self.setup_relation(self.rel)
+    def setup_relation(self,rel):
+        
+        self.table.insertRow(0)
+        
+        for i in rel.header.attributes:
+            item=QtGui.QTableWidgetItem()
+            item.setText(i)
+            self.table.insertColumn(self.table.columnCount())
+            self.table.setItem(0,self.table.columnCount()-1,item)
+            
+        for i in rel.content:
+            self.table.insertRow(self.table.rowCount())
+            for j in range(len(i)):
+                item=QtGui.QTableWidgetItem()
+                item.setText(i[j])
+                self.table.setItem(self.table.rowCount()-1,j,item)
+            
         pass
     def setup_empty(self):
         self.table.insertColumn(0)
@@ -104,4 +120,5 @@ def editRelation(rel=None):
 if __name__ == '__main__':
     import sys
     app = QtGui.QApplication(sys.argv)
-    print editRelation()
+    r=relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
+    print editRelation(r)
