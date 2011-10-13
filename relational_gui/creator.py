@@ -88,7 +88,7 @@ class creatorForm(QtGui.QDialog):
             header=relation.header(hlist)
         except Exception, e:
             QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Header error!"),e.__str__())  )
-        
+            return None
         r=relation.relation()
         r.header=header
         
@@ -103,7 +103,9 @@ class creatorForm(QtGui.QDialog):
         
         self.result_relation=self.create_relation()
         
-        QtGui.QDialog.accept(self)
+        #Doesn't close the window in case of errors
+        if self.result_relation!=None:
+            QtGui.QDialog.accept(self)
         pass
     def reject(self):
         self.result_relation=None
