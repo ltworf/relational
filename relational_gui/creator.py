@@ -125,8 +125,11 @@ class creatorForm(QtGui.QDialog):
         pass
 
 
-
-def editRelation(rel=None):
+def edit_relation(rel=None):
+    '''Opens the editor for the given relation and returns a _new_ relation
+    containing the new relation.
+    If the user cancels, it returns None'''
+    
     ui = rel_edit.Ui_Dialog()
     Form = creatorForm(rel)
 
@@ -141,4 +144,4 @@ if __name__ == '__main__':
     import sys
     app = QtGui.QApplication(sys.argv)
     r=relation.relation("/home/salvo/dev/relational/trunk/samples/people.csv")
-    print editRelation(r)
+    print edit_relation(r)

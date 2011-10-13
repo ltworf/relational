@@ -38,6 +38,7 @@ dist: clean
 	rm -rf /tmp/relational/mac/.svn/
 	rm -rf /tmp/relational/relational/.svn/ 
 	rm -rf /tmp/relational/relational_gui/.svn/
+	rm -rf /tmp/relational/relational_pyside/.svn/
 	rm -rf /tmp/relational/mac
 	rm -rf /tmp/relational/debian/
 	rm -rf /tmp/relational/relational_curses/.svn/
@@ -47,7 +48,7 @@ dist: clean
 	#mv /tmp/relational /tmp/relational-`./relational_gui.py -v | grep Relational | cut -d" " -f2`
 	#(cd /tmp; tar -zcf relational.tar.gz relational-*/)
 	(cd /tmp; tar -zcf relational.tar.gz relational/)
-	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.tar.gz
+	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
 
 clean:
 	rm -rf *~ || echo ok

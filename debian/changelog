@@ -1,3 +1,10 @@
+relational (1.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Can use either PyQt or PySide 
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Thu, 13 Oct 2011 21:41:57 +0200
+
 relational (1.0-1) unstable; urgency=low
 
   * New upstream release

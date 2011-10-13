@@ -165,13 +165,13 @@ class relForm(QtGui.QMainWindow):
     def editRelation(self):
         import creator
         for i in self.ui.lstRelations.selectedItems():
-            result=creator.editRelation(self.relations[compatibility.get_py_str(i.text())])
+            result=creator.edit_relation(self.relations[compatibility.get_py_str(i.text())])
             if result!=None:
                 self.relations[compatibility.get_py_str(i.text())]=result
         self.updateRelations()
     def newRelation(self):
         import creator
-        result=creator.editRelation()
+        result=creator.edit_relation()
         
         if result==None:
             return
