@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_pyside/maingui.ui'
 #
-# Created: Sun Oct  9 00:27:00 2011
+# Created: Thu Oct 13 19:00:44 2011
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -152,6 +152,12 @@ class Ui_MainWindow(object):
         self.cmdUnload = QtGui.QPushButton(self.groupBox)
         self.cmdUnload.setObjectName("cmdUnload")
         self.verticalLayout.addWidget(self.cmdUnload)
+        self.cmdNew = QtGui.QPushButton(self.groupBox)
+        self.cmdNew.setObjectName("cmdNew")
+        self.verticalLayout.addWidget(self.cmdNew)
+        self.cmdEdit = QtGui.QPushButton(self.groupBox)
+        self.cmdEdit.setObjectName("cmdEdit")
+        self.verticalLayout.addWidget(self.cmdEdit)
         self.groupBox_2 = QtGui.QGroupBox(self.splitter)
         self.groupBox_2.setMinimumSize(QtCore.QSize(0, 0))
         self.groupBox_2.setMaximumSize(QtCore.QSize(300, 16777215))
@@ -214,8 +220,14 @@ class Ui_MainWindow(object):
         self.action_Quit.setObjectName("action_Quit")
         self.actionCheck_for_new_versions = QtGui.QAction(MainWindow)
         self.actionCheck_for_new_versions.setObjectName("actionCheck_for_new_versions")
+        self.actionNew_relation = QtGui.QAction(MainWindow)
+        self.actionNew_relation.setObjectName("actionNew_relation")
+        self.actionEdit_relation = QtGui.QAction(MainWindow)
+        self.actionEdit_relation.setObjectName("actionEdit_relation")
+        self.menuFile.addAction(self.actionNew_relation)
         self.menuFile.addAction(self.action_Load_relation)
         self.menuFile.addAction(self.action_Save_relation)
+        self.menuFile.addAction(self.actionEdit_relation)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.action_Quit)
         self.menuAbout.addAction(self.actionAbout)
@@ -259,6 +271,10 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.action_Save_relation, QtCore.SIGNAL("triggered()"), MainWindow.saveRelation)
         QtCore.QObject.connect(self.action_Quit, QtCore.SIGNAL("triggered()"), MainWindow.close)
         QtCore.QObject.connect(self.actionCheck_for_new_versions, QtCore.SIGNAL("triggered()"), MainWindow.checkVersion)
+        QtCore.QObject.connect(self.cmdEdit, QtCore.SIGNAL("clicked()"), MainWindow.editRelation)
+        QtCore.QObject.connect(self.actionEdit_relation, QtCore.SIGNAL("triggered()"), MainWindow.editRelation)
+        QtCore.QObject.connect(self.cmdNew, QtCore.SIGNAL("clicked()"), MainWindow.newRelation)
+        QtCore.QObject.connect(self.actionNew_relation, QtCore.SIGNAL("triggered()"), MainWindow.newRelation)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cmdAbout, self.cmdSurvey)
         MainWindow.setTabOrder(self.cmdSurvey, self.cmdProduct)
@@ -316,6 +332,8 @@ class Ui_MainWindow(object):
         self.cmdLoad.setText(QtGui.QApplication.translate("MainWindow", "Load relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSave.setText(QtGui.QApplication.translate("MainWindow", "Save relation", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUnload.setText(QtGui.QApplication.translate("MainWindow", "Unload relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdNew.setText(QtGui.QApplication.translate("MainWindow", "New relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdEdit.setText(QtGui.QApplication.translate("MainWindow", "Edit relation", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Attributes", None, QtGui.QApplication.UnicodeUTF8))
         self.txtResult.setText(QtGui.QApplication.translate("MainWindow", "_last1", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "=", None, QtGui.QApplication.UnicodeUTF8))
@@ -331,4 +349,8 @@ class Ui_MainWindow(object):
         self.action_Quit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.action_Quit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
         self.actionCheck_for_new_versions.setText(QtGui.QApplication.translate("MainWindow", "Check for new versions", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNew_relation.setText(QtGui.QApplication.translate("MainWindow", "New relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNew_relation.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdit_relation.setText(QtGui.QApplication.translate("MainWindow", "Edit relation", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEdit_relation.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+E", None, QtGui.QApplication.UnicodeUTF8))
 

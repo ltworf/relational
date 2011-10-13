@@ -162,6 +162,17 @@ class relForm(QtGui.QMainWindow):
         for i in self.ui.lstRelations.selectedItems():
             del self.relations[compatibility.get_py_str(i.text())]
         self.updateRelations()
+    def editRelation(self):
+        import creator
+        for i in self.ui.lstRelations.selectedItems():
+            self.relations[compatibility.get_py_str(i.text())]=creator.editRelation(self.relations[compatibility.get_py_str(i.text())])
+        self.updateRelations()
+    def newRelation(self):
+        import creator
+        creator.editRelation()
+        self.updateRelations()
+        #TODO chose name for the relation
+        
     def showSurvey(self):
       if self.Survey==None:
         self.Survey=surveyForm.surveyForm()

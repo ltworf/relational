@@ -4,8 +4,10 @@ default:
 gui:
 	pyside-uic relational_pyside/survey.ui > relational_pyside/survey.py 
 	pyside-uic relational_pyside/maingui.ui > relational_pyside/maingui.py
+	pyside-uic relational_pyside/rel_edit.ui > relational_pyside/rel_edit.py
 	pyuic4 relational_gui/survey.ui > relational_gui/survey.py 
 	pyuic4 relational_gui/maingui.ui > relational_gui/maingui.py
+	pyuic4 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
 	
 
 uninstall:

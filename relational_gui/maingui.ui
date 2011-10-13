@@ -312,6 +312,20 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="cmdNew">
+            <property name="text">
+             <string>New relation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdEdit">
+            <property name="text">
+             <string>Edit relation</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
         <widget class="QGroupBox" name="groupBox_2">
@@ -412,8 +426,10 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionNew_relation"/>
     <addaction name="action_Load_relation"/>
     <addaction name="action_Save_relation"/>
+    <addaction name="actionEdit_relation"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
@@ -466,6 +482,22 @@
   <action name="actionCheck_for_new_versions">
    <property name="text">
     <string>Check for new versions</string>
+   </property>
+  </action>
+  <action name="actionNew_relation">
+   <property name="text">
+    <string>New relation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionEdit_relation">
+   <property name="text">
+    <string>Edit relation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>
@@ -605,8 +637,8 @@
    <slot>addProduct()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>41</x>
-     <y>171</y>
+     <x>53</x>
+     <y>166</y>
     </hint>
     <hint type="destinationlabel">
      <x>180</x>
@@ -621,8 +653,8 @@
    <slot>addDifference()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>82</x>
-     <y>194</y>
+     <x>94</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel">
      <x>46</x>
@@ -637,8 +669,8 @@
    <slot>addArrow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>505</y>
+     <x>107</x>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
      <x>58</x>
@@ -653,8 +685,8 @@
    <slot>addRename()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>42</x>
-     <y>474</y>
+     <x>54</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel">
      <x>111</x>
@@ -669,8 +701,8 @@
    <slot>addSelection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>72</x>
-     <y>446</y>
+     <x>84</x>
+     <y>436</y>
     </hint>
     <hint type="destinationlabel">
      <x>16</x>
@@ -685,8 +717,8 @@
    <slot>addProjection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>414</y>
+     <x>107</x>
+     <y>409</y>
     </hint>
     <hint type="destinationlabel">
      <x>91</x>
@@ -701,8 +733,8 @@
    <slot>unloadRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>312</y>
+     <x>788</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -717,8 +749,8 @@
    <slot>saveRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>717</x>
-     <y>287</y>
+     <x>788</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
      <x>760</x>
@@ -733,8 +765,8 @@
    <slot>loadRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>753</x>
-     <y>255</y>
+     <x>788</x>
+     <y>226</y>
     </hint>
     <hint type="destinationlabel">
      <x>753</x>
@@ -797,8 +829,8 @@
    <slot>addORight()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>90</x>
-     <y>359</y>
+     <x>102</x>
+     <y>355</y>
     </hint>
     <hint type="destinationlabel">
      <x>58</x>
@@ -813,8 +845,8 @@
    <slot>addOuter()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>34</x>
-     <y>390</y>
+     <x>46</x>
+     <y>382</y>
     </hint>
     <hint type="destinationlabel">
      <x>86</x>
@@ -829,8 +861,8 @@
    <slot>addOLeft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>32</x>
-     <y>332</y>
+     <x>44</x>
+     <y>328</y>
     </hint>
     <hint type="destinationlabel">
      <x>66</x>
@@ -845,8 +877,8 @@
    <slot>addJoin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>302</y>
+     <x>107</x>
+     <y>301</y>
     </hint>
     <hint type="destinationlabel">
      <x>147</x>
@@ -893,8 +925,8 @@
    <slot>addUnion()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>222</y>
+     <x>32</x>
+     <y>220</y>
     </hint>
     <hint type="destinationlabel">
      <x>279</x>
@@ -1046,6 +1078,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmdEdit</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>683</x>
+     <y>323</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEdit_relation</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>editRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdNew</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>newRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>683</x>
+     <y>296</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNew_relation</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>newRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
@@ -1076,5 +1172,7 @@
   <slot>showAttributes(QListWidgetItem*)</slot>
   <slot>loadQuery()</slot>
   <slot>resumeHistory(QListWidgetItem*)</slot>
+  <slot>editRelation()</slot>
+  <slot>newRelation()</slot>
  </slots>
 </ui>
