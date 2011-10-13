@@ -95,7 +95,11 @@ class creatorForm(QtGui.QDialog):
         for i in range(1,self.table.rowCount()):
             hlist=[]
             for j in range(self.table.columnCount()):
-                hlist.append(compatibility.get_py_str(self.table.item(i,j).text()))
+                try:
+                    hlist.append(compatibility.get_py_str(self.table.item(i,j).text()))
+                except:
+                    QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Unset value in %d,%d!"% (i+1,j+1))  )
+                    return None
             r.content.add(tuple(hlist))
         return r
     

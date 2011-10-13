@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Thu Oct 13 21:38:18 2011
+# Created: Thu Oct 13 22:31:56 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
