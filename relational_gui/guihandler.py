@@ -69,8 +69,13 @@ class relForm(QtGui.QMainWindow):
         self.undo=self.ui.txtQuery.text() #Storing the query in undo list
         
         query=compatibility.get_py_str(self.ui.txtQuery.text())
-        result=optimizer.optimize_all(query,self.relations)
-        compatibility.set_utf8_text(self.ui.txtQuery,result)
+        try:
+            result=optimizer.optimize_all(query,self.relations)
+            compatibility.set_utf8_text(self.ui.txtQuery,result)
+        except Exception, e:
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
+            
+        
         
     def resumeHistory(self,item):
         itm=compatibility.get_py_str(item.text()).split(' = ',1)
@@ -87,7 +92,6 @@ class relForm(QtGui.QMainWindow):
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
             return
         
-        expr=parser.parse(query)#Converting expression to python code
         try:
             #Converting string to utf8 and then from qstring to normal string
             expr=parser.parse(query)#Converting expression to python code
@@ -104,7 +108,7 @@ class relForm(QtGui.QMainWindow):
             return
 
         #Adds to history
-        item='%s = %s' % (compatibility.get_py_str(self.ui.txtResult.text()),compatibility.get_py_str(self.ui.txtQuery.text()))
+        item=u'%s = %s' % (compatibility.get_py_str(self.ui.txtResult.text()),compatibility.get_py_str(self.ui.txtQuery.text()))
         #item=item.decode('utf-8'))
         compatibility.add_list_item(self.ui.lstHistory,item)
         
