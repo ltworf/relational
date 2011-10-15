@@ -289,7 +289,7 @@ def futile_renames(n):
         
         #Generates new prop var
         for i in _vars.items():
-            n.prop+="%s➡%s," % (i[0],i[1])
+            n.prop+=u"%s%s%s," % (i[0],ARROW,i[1])
         n.prop=n.prop[:-1] #Removing ending comma
         
         if len(n.prop)==0: #Nothing to rename, removing the rename op
@@ -337,7 +337,7 @@ def subsequent_renames(n):
         
         #Generates new prop var
         for i in _vars.items():
-            n.prop+="%s➡%s," % (i[0],i[1])
+            n.prop+=u"%s%s%s," % (i[0],ARROW,i[1])
         n.prop=n.prop[:-1] #Removing ending comma
         
         if len(n.prop)==0: #Nothing to rename, removing the rename op
@@ -413,7 +413,7 @@ def swap_rename_projection(n):
         n.name=n.child.name
         n.prop=''
         for i in _vars.keys():
-            n.prop+='%s➡%s,' % (_vars[i],i)
+            n.prop+=u'%s%s%s,' % (_vars[i],ARROW,i)
         n.prop=n.prop[:-1]
         
         n.child.name=PROJECTION
