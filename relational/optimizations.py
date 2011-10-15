@@ -36,6 +36,21 @@ from tokenize import generate_tokens
 
 sel_op=('//=','**=','and','not','in','//','**','<<','>>','==','!=','>=','<=','+=','-=','*=','/=','%=','or','+','-','*','/','&','|','^','~','<','>','%','=','(',')',',','[',']')
 
+PRODUCT=parser.PRODUCT
+DIFFERENCE=parser.DIFFERENCE
+UNION=parser.UNION
+INTERSECTION=parser.INTERSECTION
+DIVISION=parser.DIVISION
+JOIN=parser.JOIN
+JOIN_LEFT=parser.JOIN_LEFT
+JOIN_RIGHT=parser.JOIN_RIGHT
+JOIN_FULL=parser.JOIN_FULL
+PROJECTION=parser.PROJECTION
+SELECTION=parser.SELECTION
+RENAME=parser.RENAME
+ARROW=parser.ARROW
+
+
 def replace_node(replace,replacement):
     '''This function replaces "replace" node with the node "with",
     the father of the node will now point to the with node'''
@@ -86,7 +101,7 @@ def duplicated_select(n):
     in and
     '''
     changes=0
-    if n.name=='σ' and n.child.name=='σ':        
+    if n.name==SELECTION and n.child.name==SELECTION:
         if n.prop != n.child.prop: #Nested but different, joining them
             n.prop = n.prop + " and " + n.child.prop
             
@@ -114,30 +129,30 @@ def futile_union_intersection_subtraction(n):
     changes=0
     
     #Union and intersection of the same thing
-    if n.name in ('ᑌ','ᑎ') and n.left==n.right:
+    if n.name in (UNION,INTERSECTION) and n.left==n.right:
         changes=1
         replace_node(n,n.left)
     
     #selection and union of the same thing
-    elif (n.name == 'ᑌ'):
-        if n.left.name=='σ' and n.left.child==n.right:
+    elif (n.name == UNION):
+        if n.left.name==SELECTION and n.left.child==n.right:
             changes=1
             replace_node(n,n.right)
-        elif n.right.name=='σ' and n.right.child==n.left:
+        elif n.right.name==SELECTION and n.right.child==n.left:
             changes=1
             replace_node(n,n.left)
             
     #selection and intersection of the same thing
-    elif n.name == 'ᑎ':
-        if n.left.name=='σ' and n.left.child==n.right:
+    elif n.name == INTERSECTION:
+        if n.left.name==SELECTION and n.left.child==n.right:
             changes=1
             replace_node(n,n.left)
-        elif n.right.name=='σ' and n.right.child==n.left:
+        elif n.right.name==SELECTION and n.right.child==n.left:
             changes=1
             replace_node(n,n.right)
             
     #Subtraction and selection of the same thing
-    elif (n.name == '-' and (n.right.name=='σ' and n.right.child==n.left)): #Subtraction of two equal things, but one has a selection
+    elif (n.name == DIFFERENCE and (n.right.name==SELECTION and n.right.child==n.left)): #Subtraction of two equal things, but one has a selection
         n.name=n.right.name
         n.kind=n.right.kind
         n.child=n.right.child
@@ -145,10 +160,10 @@ def futile_union_intersection_subtraction(n):
         n.left=n.right=None
     
     #Subtraction of the same thing or with selection on the left child
-    elif (n.name=='-' and ((n.left==n.right) or (n.left.name=='σ' and n.left.child==n.right)) ):#Empty relation
+    elif (n.name==DIFFERENCE and ((n.left==n.right) or (n.left.name==SELECTION and n.left.child==n.right)) ):#Empty relation
         changes=1
         n.kind=parser.UNARY
-        n.name='σ'
+        n.name=SELECTION
         n.prop='False'
         n.child=n.left.get_left_leaf()
         #n.left=n.right=None
@@ -161,8 +176,8 @@ def down_to_unions_subtractions_intersections(n):
     σ i==2 (c) ᑌ σ i==2(d).   
     '''
     changes=0
-    _o=('ᑌ','-','ᑎ')
-    if n.name=='σ' and n.child.name in _o:
+    _o=(UNION,DIFFERENCE,INTERSECTION)
+    if n.name==SELECTION and n.child.name in _o:
         
         left=parser.node()
         left.prop=n.prop
@@ -190,7 +205,7 @@ def duplicated_projection(n):
     them with π i (R)'''
     changes=0
         
-    if n.name=='π' and n.child.name=='π':
+    if n.name==PROJECTION and n.child.name==PROJECTION:
         n.child=n.child.child
         changes+=1
     
@@ -201,13 +216,13 @@ def selection_inside_projection(n):
     converts them into π k(σ j (R))'''    
     changes=0
     
-    if n.name=='σ' and n.child.name=='π':
+    if n.name==SELECTION and n.child.name==PROJECTION:
         changes=1
         temp=n.prop
         n.prop=n.child.prop
         n.child.prop=temp
-        n.name='π'
-        n.child.name='σ'
+        n.name=PROJECTION
+        n.child.name=SELECTION
     
     return changes+recoursive_scan(selection_inside_projection,n)
 
@@ -219,15 +234,15 @@ def swap_union_renames(n):
     Does the same with subtraction and intersection'''
     changes=0
     
-    if n.name in ('-','ᑌ','ᑎ') and n.left.name==n.right.name and n.left.name=='ρ':
+    if n.name in (DIFFERENCE,UNION,INTERSECTION) and n.left.name==n.right.name and n.left.name==RENAME:
         l_vars={}
         for i in n.left.prop.split(','):
-            q=i.split('➡')
+            q=i.split(ARROW)
             l_vars[q[0].strip()]=q[1].strip()
             
         r_vars={}
         for i in n.right.prop.split(','):
-            q=i.split('➡')
+            q=i.split(ARROW)
             r_vars[q[0].strip()]=q[1].strip()
             
         if r_vars==l_vars:
@@ -240,7 +255,7 @@ def swap_union_renames(n):
             q.left=n.left.child
             q.right=n.right.child
             
-            n.name='ρ'
+            n.name=RENAME
             n.kind=parser.UNARY
             n.child=q
             n.prop=n.left.prop
@@ -252,14 +267,14 @@ def futile_renames(n):
     '''This function purges renames like id->id'''
     changes=0
     
-    if n.name=='ρ':
+    if n.name==RENAME:
         #Located two nested renames.
         changes=1
 
         #Creating a dictionary with the attributes
         _vars={}
         for i in n.prop.split(','):
-            q=i.split('➡')
+            q=i.split(ARROW)
             _vars[q[0].strip()]=q[1].strip()
         #Scans dictionary to locate things like "a->b,b->c" and replace them with "a->c"
         for key in list(_vars.keys()):
@@ -290,7 +305,7 @@ def subsequent_renames(n):
     futile_renames(n) 
     changes=0
     
-    if n.name=='ρ' and n.child.name==n.name:
+    if n.name==RENAME and n.child.name==n.name:
         #Located two nested renames.
         changes=1
         #Joining the attribute into one
@@ -300,7 +315,7 @@ def subsequent_renames(n):
         #Creating a dictionary with the attributes
         _vars={}
         for i in n.prop.split(','):
-            q=i.split('➡')
+            q=i.split(ARROW)
             _vars[q[0].strip()]=q[1].strip()
         #Scans dictionary to locate things like "a->b,b->c" and replace them with "a->c"
         for key in list(_vars.keys()):
@@ -338,7 +353,7 @@ def tokenize_select(expression):
     selection. The expression can contain parenthesis.
     It will use a subclass of str with the attribute level, which
     will specify the nesting level of the token into parenthesis.'''
-    g=generate_tokens(StringIO(expression).readline)
+    g=generate_tokens(StringIO(str(expression)).readline)
     l=list(token[1] for token in g)
     
     l.remove('')
@@ -375,13 +390,13 @@ def swap_rename_projection(n):
     '''
     changes=0
     
-    if n.name=='π' and n.child.name=='ρ':
+    if n.name==PROJECTION and n.child.name==RENAME:
         changes=1
         
         #π index,name(ρ id➡index(R))
         _vars={}
         for i in n.child.prop.split(','):
-            q=i.split('➡')
+            q=i.split(ARROW)
             _vars[q[1].strip()]=q[0].strip()
         
         _pr=n.prop.split(',')
@@ -401,7 +416,7 @@ def swap_rename_projection(n):
             n.prop+='%s➡%s,' % (_vars[i],i)
         n.prop=n.prop[:-1]
         
-        n.child.name='π'
+        n.child.name=PROJECTION
         n.child.prop=''
         for i in _pr:
             n.child.prop+=i+','
@@ -416,12 +431,12 @@ def swap_rename_select(n):
     selection, so the operation is still valid.'''
     changes=0
     
-    if n.name=='σ' and n.child.name=='ρ':
+    if n.name==SELECTION and n.child.name==RENAME:
         changes=1
         #Dictionary containing attributes of rename
         _vars={}
         for i in n.child.prop.split(','):
-            q=i.split('➡')
+            q=i.split(ARROW)
             _vars[q[1].strip()]=q[0].strip()
         
         #tokenizes expression in select
@@ -437,8 +452,8 @@ def swap_rename_select(n):
                     _tokens[i]=_vars[_tokens[i].split('.')[0]]+'.'+splitted[1]
         
         #Swapping operators
-        n.name='ρ'
-        n.child.name='σ'
+        n.name=RENAME
+        n.child.name=SELECTION
         
         n.prop=n.child.prop
         n.child.prop=''
@@ -452,16 +467,16 @@ def select_union_intersect_subtract(n):
     and replaces them with σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
     changes=0
-    if n.name in ('ᑌ', 'ᑎ', '-') and n.left.name=='σ' and n.right.name=='σ' and n.left.child==n.right.child:
+    if n.name in (UNION, INTERSECTION, DIFFERENCE) and n.left.name==SELECTION and n.right.name==SELECTION and n.left.child==n.right.child:
         cahnges=1
         
-        d={'ᑌ':'or', 'ᑎ':'and', '-':'and not'}
+        d={UNION:'or', INTERSECTION:'and', DIFFERENCE:'and not'}
         op=d[n.name]
         
         newnode=parser.node()
         
         newnode.prop='((%s) %s (%s))' % (n.left.prop,op,n.right.prop)
-        newnode.name='σ'
+        newnode.name=SELECTION
         newnode.child=n.left.child
         newnode.kind=parser.UNARY
         replace_node(n,newnode)
@@ -474,12 +489,11 @@ def selection_and_product(n,rels):
     i contains attributes belonging to Q and l contains attributes belonging to both'''
     changes=0
     
-    if n.name=='σ' and n.child.name in ('*','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
+    if n.name==SELECTION and n.child.name in (PRODUCT,JOIN,JOIN_LEFT,JOIN_RIGHT,JOIN_FULL):
         l_attr=n.child.left.result_format(rels)
         r_attr=n.child.right.result_format(rels)
         
         tokens=tokenize_select(n.prop)
-        
         groups=[]
         temp=[]
         
@@ -521,7 +535,7 @@ def selection_and_product(n,rels):
         if len(left)>0:
             changes=1
             l_node=parser.node()
-            l_node.name='σ'
+            l_node.name=SELECTION
             l_node.kind=parser.UNARY
             l_node.child=n.child.left
             l_node.prop=''
@@ -539,7 +553,7 @@ def selection_and_product(n,rels):
         if len(right)>0:
             changes=1
             r_node=parser.node()
-            r_node.name='σ'
+            r_node.name=SELECTION
             r_node.prop=''
             r_node.kind=parser.UNARY
             r_node.child=n.child.right

@@ -81,13 +81,14 @@ class relForm(QtGui.QMainWindow):
         '''Executes the query'''
         
         query=compatibility.get_py_str(self.ui.txtQuery.text())
-        
+        print query.__class__
         res_rel=compatibility.get_py_str(self.ui.txtResult.text())#result relation's name
         
         if not rtypes.is_valid_relation_name(res_rel):
             QtGui.QMessageBox.information(self,QtGui.QApplication.translate("Form", "Error"),QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
             return
         
+        expr=parser.parse(query)#Converting expression to python code
         try:
             #Converting string to utf8 and then from qstring to normal string
             expr=parser.parse(query)#Converting expression to python code
@@ -105,7 +106,7 @@ class relForm(QtGui.QMainWindow):
 
         #Adds to history
         item='%s = %s' % (compatibility.get_py_str(self.ui.txtResult.text()),compatibility.get_py_str(self.ui.txtQuery.text()))
-        item=unicode(item.decode('utf-8'))
+        #item=item.decode('utf-8'))
         compatibility.add_list_item(self.ui.lstHistory,item)
         
         self.qcounter+=1

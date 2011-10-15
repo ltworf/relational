@@ -33,6 +33,8 @@ import parser
 RELATION=parser.RELATION
 UNARY=parser.UNARY
 BINARY=parser.BINARY
+
+
 b_operators=parser.b_operators
 u_operators=parser.u_operators
 op_functions=parser.op_functions
@@ -53,12 +55,12 @@ def optimize_all(expression,rels,specific=True,general=True,debug=None):
         steps.
     
     Return value: this will return an optimized version of the expression'''
-    if isinstance(expression,str):
+    if isinstance(expression,unicode):
         n=tree(expression) #Gets the tree
     elif isinstance(expression,node):
         n=expression
     else:
-        raise (TypeError("expression must be a string or a node"))
+        raise (TypeError("expression must be a unicode string or a node"))
     
     if isinstance(debug,list):
         dbg=True
@@ -118,7 +120,7 @@ if __name__=="__main__":
     rels["D1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/dates.csv")
     rels["S1"]= relation.relation("/home/salvo/dev/relational/trunk/samples/skillo.csv")
     print rels'''
-    n=tree("π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
+    n=tree(u"π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
     #n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
     print n
     print n.toPython()

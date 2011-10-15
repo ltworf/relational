@@ -45,10 +45,25 @@
 RELATION=0
 UNARY=1
 BINARY=2
-b_operators=('*','-','ᑌ','ᑎ','÷','ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ') # List of binary operators
-u_operators=('π','σ','ρ') # List of unary operators
 
-op_functions={'*':'product','-':'difference','ᑌ':'union','ᑎ':'intersection','÷':'division','ᐅᐊ':'join','ᐅLEFTᐊ':'outer_left','ᐅRIGHTᐊ':'outer_right','ᐅFULLᐊ':'outer','π':'projection','σ':'selection','ρ':'rename'} # Associates operator with python method
+PRODUCT=u'*'
+DIFFERENCE=u'-'
+UNION=u'ᑌ'
+INTERSECTION=u'ᑎ'
+DIVISION=u'÷'
+JOIN=u'ᐅᐊ'
+JOIN_LEFT=u'ᐅLEFTᐊ'
+JOIN_RIGHT=u'ᐅRIGHTᐊ'
+JOIN_FULL=u'ᐅFULLᐊ'
+PROJECTION=u'π'
+SELECTION=u'σ'
+RENAME=u'ρ'
+ARROW=u'➡'
+
+b_operators=(u'*',u'-',u'ᑌ',u'ᑎ',u'÷',u'ᐅᐊ',u'ᐅLEFTᐊ',u'ᐅRIGHTᐊ',u'ᐅFULLᐊ') # List of binary operators
+u_operators=(u'π',u'σ',u'ρ') # List of unary operators
+
+op_functions={u'*':'product',u'-':'difference',u'ᑌ':'union',u'ᑎ':'intersection',u'÷':'division',u'ᐅᐊ':'join',u'ᐅLEFTᐊ':'outer_left',u'ᐅRIGHTᐊ':'outer_right',u'ᐅFULLᐊ':'outer',u'π':'projection',u'σ':'selection',u'ρ':'rename'} # Associates operator with python method
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
@@ -77,11 +92,11 @@ class node (object):
                 expression=expression[0]
         
         #The list contains only 1 string. Means it is the name of a relation
-        if len(expression)==1 and isinstance(expression[0],str): 
+        if len(expression)==1 and isinstance(expression[0],unicode): 
             self.kind=RELATION
             self.name=expression[0]
             return
-            
+        
         '''Expression from right to left, searching for binary operators
         this means that binary operators have lesser priority than
         unary operators.
@@ -93,7 +108,7 @@ class node (object):
         within sub-lists, they won't be found here, ensuring that they will
         have highest priority.'''
         for i in range(len(expression)-1,-1,-1): 
-            if expression[i] in b_operators: #Binary operator              
+            if expression[i] in b_operators: #Binary operator   
                 self.kind=BINARY
                 self.name=expression[i]
                 self.left=node(expression[:i]) 
@@ -118,9 +133,9 @@ class node (object):
             prop =self.prop
             
             #Converting parameters
-            if self.name=='π':#Projection
+            if self.name==u'π':#Projection
                 prop='\"%s\"' %  prop.replace(' ','').replace(',','\",\"')
-            elif self.name=="ρ": #Rename
+            elif self.name==u"ρ": #Rename
                 prop='{\"%s\"}' % prop.replace(',','\",\"').replace('➡','\":\"').replace(' ','')
             else: #Selection
                 prop='\"%s\"' %  prop
@@ -234,6 +249,9 @@ def tokenize(expression):
     '''This function converts an expression into a list where
     every token of the expression is an item of a list. Expressions into
     parenthesis will be converted into sublists.'''
+    if not isinstance(expression,unicode):
+        raise Exception('expected unicode')
+    
     items=[] #List for the tokens
     
     '''This is a state machine. Initial status is determined by the starting of the
@@ -266,9 +284,9 @@ def tokenize(expression):
             #Removes the entire parentesis and content from the expression
             expression=expression[end+1:].strip()
         
-        elif expression.startswith("σ") or expression.startswith("π") or expression.startswith("ρ"): #Unary 2 bytes
-            items.append(expression[0:2]) #Adding operator in the top of the list
-            expression=expression[2:].strip() #Removing operator from the expression
+        elif expression.startswith(u"σ") or expression.startswith(u"π") or expression.startswith(u"ρ"): #Unary 2 bytes
+            items.append(expression[0:1]) #Adding operator in the top of the list
+            expression=expression[1:].strip() #Removing operator from the expression
             
             if expression.startswith('('): #Expression with parenthesis, so adding what's between open and close without tokenization
                 par=expression.find('(',_find_matching_parenthesis(expression)) 
@@ -281,18 +299,18 @@ def tokenize(expression):
             items.append(expression[0])
             expression=expression[1:].strip() #1 char from the expression
             state=4
-        elif expression.startswith("ᑎ") or expression.startswith("ᑌ"): #Binary short 3 bytes
-            items.append(expression[0:3]) #Adding operator in the top of the list
-            expression=expression[3:].strip() #Removing operator from the expression
+        elif expression.startswith(u"ᑎ") or expression.startswith(u"ᑌ"): #Binary short 3 bytes
+            items.append(expression[0:1]) #Adding operator in the top of the list
+            expression=expression[1:].strip() #Removing operator from the expression
             state=4
-        elif expression.startswith("÷"): #Binary short 2 bytes
-            items.append(expression[0:2]) #Adding operator in the top of the list
-            expression=expression[2:].strip() #Removing operator from the expression
+        elif expression.startswith(u"÷"): #Binary short 2 bytes
+            items.append(expression[0:1]) #Adding operator in the top of the list
+            expression=expression[1:].strip() #Removing operator from the expression
             state=4
-        elif expression.startswith("ᐅ"): #Binary long
-            i=expression.find("ᐊ")
-            items.append(expression[:i+3])
-            expression=expression[i+3:].strip()
+        elif expression.startswith(u"ᐅ"): #Binary long
+            i=expression.find(u"ᐊ")
+            items.append(expression[:i+1])
+            expression=expression[i+1:].strip()
             
             state=4
         else: #Relation (hopefully)
@@ -347,6 +365,10 @@ def parse(expr):
     return tree(expr).toPython()
     
 if __name__=="__main__":
-    while True:
-        e=raw_input("Expression: ")
-        print parse(e)
+    #while True:
+    #    e=raw_input("Expression: ")
+    #    print parse(e)
+    b=u"σ age>1 and skill=='C' (peopleᐅᐊskills)"
+    print b[0]
+    parse(b)
+    

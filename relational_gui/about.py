@@ -136,10 +136,7 @@ class Ui_Dialog(object):
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Version "+version, None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_3.setTitle(QtGui.QApplication.translate("Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
-        if os.name=='nt': #Differentiates acknowledgements depending on the system
-            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;<br>Emilio Di Prima &lt;emiliodiprima [at] msn [dot] com&gt; (For the windows version)", None, QtGui.QApplication.UnicodeUTF8))
-        else:
-            self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;<br>Emilio Di Prima &lt;emiliodiprima[at]msn[dot]com&gt; (For the windows version)", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setOpenExternalLinks (True)
         self.label_2.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Links", None, QtGui.QApplication.UnicodeUTF8))

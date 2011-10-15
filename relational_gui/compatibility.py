@@ -31,8 +31,8 @@ except:
 def get_py_str(a):
     '''Returns a python string out of a QString'''
     if pyqt:
-        return str(a.toUtf8())
-    return str(a.encode("utf-8")) #Already a python string in PySide
+        return unicode(a.toUtf8(),'utf-8')
+    return unicode(a.encode("utf-8")) #Already a python string in PySide
 
 def set_utf8_text(component,text):
     if not pyqt:
