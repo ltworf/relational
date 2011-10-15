@@ -81,7 +81,6 @@ class relForm(QtGui.QMainWindow):
         '''Executes the query'''
         
         query=compatibility.get_py_str(self.ui.txtQuery.text())
-        print query.__class__
         res_rel=compatibility.get_py_str(self.ui.txtResult.text())#result relation's name
         
         if not rtypes.is_valid_relation_name(res_rel):

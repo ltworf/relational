@@ -60,10 +60,10 @@ SELECTION=u'σ'
 RENAME=u'ρ'
 ARROW=u'➡'
 
-b_operators=(u'*',u'-',u'ᑌ',u'ᑎ',u'÷',u'ᐅᐊ',u'ᐅLEFTᐊ',u'ᐅRIGHTᐊ',u'ᐅFULLᐊ') # List of binary operators
-u_operators=(u'π',u'σ',u'ρ') # List of unary operators
+b_operators=(PRODUCT,DIFFERENCE,UNION,INTERSECTION,DIVISION,JOIN,JOIN_LEFT,JOIN_RIGHT,JOIN_FULL) # List of binary operators
+u_operators=(PROJECTION,SELECTION,RENAME) # List of unary operators
 
-op_functions={u'*':'product',u'-':'difference',u'ᑌ':'union',u'ᑎ':'intersection',u'÷':'division',u'ᐅᐊ':'join',u'ᐅLEFTᐊ':'outer_left',u'ᐅRIGHTᐊ':'outer_right',u'ᐅFULLᐊ':'outer',u'π':'projection',u'σ':'selection',u'ρ':'rename'} # Associates operator with python method
+op_functions={PRODUCT:'product',DIFFERENCE:'difference',UNION:'union',INTERSECTION:'intersection',DIVISION:'division',JOIN:'join',JOIN_LEFT:'outer_left',JOIN_RIGHT:'outer_right',JOIN_FULL:'outer',PROJECTION:'projection',SELECTION:'selection',RENAME:'rename'} # Associates operator with python method
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
@@ -133,10 +133,10 @@ class node (object):
             prop =self.prop
             
             #Converting parameters
-            if self.name==u'π':#Projection
+            if self.name==PROJECTION:#Projection
                 prop='\"%s\"' %  prop.replace(' ','').replace(',','\",\"')
             elif self.name==u"ρ": #Rename
-                prop='{\"%s\"}' % prop.replace(',','\",\"').replace('➡','\":\"').replace(' ','')
+                prop='{\"%s\"}' % prop.replace(',','\",\"').replace(ARROW,'\":\"').replace(' ','')
             else: #Selection
                 prop='\"%s\"' %  prop
                         
@@ -177,23 +177,23 @@ class node (object):
         
         if self.kind==RELATION:
             return list(rels[self.name].header.attributes)
-        elif self.kind==BINARY and self.name in ('-','ᑌ','ᑎ'):
+        elif self.kind==BINARY and self.name in (DIFFERENCE,UNION,INTERSECTION):
             return self.left.result_format(rels)
-        elif self.kind==BINARY and self.name=='÷':
+        elif self.kind==BINARY and self.name==DIVISION:
             return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
-        elif self.name=='π':
+        elif self.name==PROJECTION:
             l=[]
             for i in self.prop.split(','):
                 l.append(i.strip())
             return l
-        elif self.name=='*':
+        elif self.name==PRODUCT:
             return self.left.result_format(rels)+self.right.result_format(rels)
-        elif self.name=='σ':
+        elif self.name==SELECTION:
             return self.child.result_format(rels)
-        elif self.name=='ρ':
+        elif self.name==RENAME:
             _vars={}
             for i in self.prop.split(','):
-                q=i.split('➡')
+                q=i.split(ARROW)
                 _vars[q[0].strip()]=q[1].strip()
             
             _fields=self.child.result_format(rels)
@@ -201,7 +201,7 @@ class node (object):
                 if _fields[i] in _vars:
                     _fields[i]=_vars[_fields[i]]
             return _fields
-        elif self.name in ('ᐅᐊ','ᐅLEFTᐊ','ᐅRIGHTᐊ','ᐅFULLᐊ'):
+        elif self.name in (JOIN,JOIN_LEFT,JOIN_RIGHT,JOIN_FULL):
             return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
     def __eq__(self,other):
         if not (isinstance(other,node) and self.name==other.name and self.kind==other.kind):
