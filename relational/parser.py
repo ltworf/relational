@@ -133,9 +133,9 @@ class node (object):
             prop =self.prop
             
             #Converting parameters
-            if self.name==PROJECTION:#Projection
+            if self.name==PROJECTION:
                 prop='\"%s\"' %  prop.replace(' ','').replace(',','\",\"')
-            elif self.name==u"ρ": #Rename
+            elif self.name==RENAME:
                 prop='{\"%s\"}' % prop.replace(',','\",\"').replace(ARROW,'\":\"').replace(' ','')
             else: #Selection
                 prop='\"%s\"' %  prop

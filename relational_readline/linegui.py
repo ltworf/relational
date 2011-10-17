@@ -265,6 +265,7 @@ def exec_query(command):
         relname='last_'
         query=command
     
+    query=unicode(query,'utf-8')
     #Execute query
     try:
         pyquery=parser.parse(query)
