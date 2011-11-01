@@ -85,7 +85,7 @@ if __name__ == "__main__":
         pyqt=True
         
         try:
-            import sip
+            import sip #needed on windows
             from PyQt4 import QtGui
         except:
             print >> sys.stderr, "PyQt seems to be missing, trying to use Pyside"

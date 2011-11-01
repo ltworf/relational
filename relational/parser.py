@@ -40,7 +40,7 @@
 #
 # Language definition here:
 # https://galileo.dmi.unict.it/wiki/relational/doku.php?id=language
-
+import re
 
 RELATION=0
 UNARY=1
@@ -64,6 +64,9 @@ b_operators=(PRODUCT,DIFFERENCE,UNION,INTERSECTION,DIVISION,JOIN,JOIN_LEFT,JOIN_
 u_operators=(PROJECTION,SELECTION,RENAME) # List of unary operators
 
 op_functions={PRODUCT:'product',DIFFERENCE:'difference',UNION:'union',INTERSECTION:'intersection',DIVISION:'division',JOIN:'join',JOIN_LEFT:'outer_left',JOIN_RIGHT:'outer_right',JOIN_FULL:'outer',PROJECTION:'projection',SELECTION:'selection',RENAME:'rename'} # Associates operator with python method
+
+class ParseException (Exception):
+    pass
 
 class node (object):
     '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
@@ -276,15 +279,18 @@ def tokenize(expression):
     '''
 
     while len(expression)>0:
+        
         if expression.startswith('('): #Parenthesis state
             state=2
             end=_find_matching_parenthesis(expression)
+            if end==None:
+                raise ParseException("Missing matching ')' in '%s'" %expression)
             #Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
             #Removes the entire parentesis and content from the expression
             expression=expression[end+1:].strip()
         
-        elif expression.startswith(u"σ") or expression.startswith(u"π") or expression.startswith(u"ρ"): #Unary 2 bytes
+        elif expression.startswith((u"σ",u"π",u"ρ")): #Unary 2 bytes
             items.append(expression[0:1]) #Adding operator in the top of the list
             expression=expression[1:].strip() #Removing operator from the expression
             
@@ -295,24 +301,19 @@ def tokenize(expression):
             
             items.append(expression[:par].strip()) #Inserting parameter of the operator
             expression=expression[par:].strip() #Removing parameter from the expression
-        elif expression.startswith("*") or expression.startswith("-"): # Binary 1 byte
+        elif expression.startswith((u"÷",u"ᑎ",u"ᑌ",u"*",u"-")):
             items.append(expression[0])
             expression=expression[1:].strip() #1 char from the expression
             state=4
-        elif expression.startswith(u"ᑎ") or expression.startswith(u"ᑌ"): #Binary short 3 bytes
-            items.append(expression[0:1]) #Adding operator in the top of the list
-            expression=expression[1:].strip() #Removing operator from the expression
-            state=4
-        elif expression.startswith(u"÷"): #Binary short 2 bytes
-            items.append(expression[0:1]) #Adding operator in the top of the list
-            expression=expression[1:].strip() #Removing operator from the expression
-            state=4
         elif expression.startswith(u"ᐅ"): #Binary long
             i=expression.find(u"ᐊ")
+            if i==-1:
+                raise ParseException(u"Expected ᐊ in %s" % (expression,))
             items.append(expression[:i+1])
             expression=expression[i+1:].strip()
-            
             state=4
+        elif re.match(r'[_0-9A-Za-z]',expression[0])==None: #At this point we only have relation names, so we raise errors for anything else
+            raise ParseException("Unexpected '%c' in '%s'" % (expression[0],expression))
         else: #Relation (hopefully)
             if state==1: #Previous was a relation, appending to the last token
                 i=items.pop()
@@ -352,7 +353,7 @@ def parse(expr):
     
     You can use parenthesis to change priority: a ᐅᐊ (q ᑌ d).
     
-    IMPORTANT: The encoding used by this module is UTF-8 (all strings must be UTF-8)
+    IMPORTANT: all strings must be unicode
     
     EXAMPLES
     σage > 25 and rank == weight(A)
@@ -365,10 +366,11 @@ def parse(expr):
     return tree(expr).toPython()
     
 if __name__=="__main__":
-    #while True:
-    #    e=raw_input("Expression: ")
-    #    print parse(e)
-    b=u"σ age>1 and skill=='C' (peopleᐅᐊskills)"
-    print b[0]
-    parse(b)
+    while True:
+        e=unicode(raw_input("Expression: "),'utf-8')
+        print parse(e)
     
+    #b=u"σ age>1 and skill=='C' (peopleᐅᐊskills)"
+    #print b[0]
+    #parse(b)
+    pass

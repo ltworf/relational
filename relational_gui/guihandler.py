@@ -103,8 +103,8 @@ class relForm(QtGui.QMainWindow):
             self.selectedRelation=result
             self.showRelation(self.selectedRelation) #Show the result in the table
         except Exception, e:
-            print e
-            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__str__())  )
+            print e.__unicode__()
+            QtGui.QMessageBox.information(None,QtGui.QApplication.translate("Form", "Error"),u"%s\n%s" % (QtGui.QApplication.translate("Form", "Check your query!"),e.__unicode__())  )
             return
 
         #Adds to history

@@ -8,6 +8,7 @@ It might be necessary to have the: Microsoft Visual C++ 2008 Redistributable Pac
 
 
 	Create an exe file
+- Remove the directory relational_pyside (uses symlinks that won't work on windows)
 - Move the file windows/input.py to ../
 - Chech that the version number is correct
 - Execute "python input.py py2exe"
@@ -23,3 +24,4 @@ A directory named "Output" will be created, which will contain the installer.
 Notes:
 - To create the setup, don't move the "dist" directory or its content.
 - Do not delete or move the directory windows/font dejavu
+- If the shell is open, it will not work. The windows shell does not support unicode and will generate exceptions when trying to print expressions on it
