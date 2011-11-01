@@ -41,6 +41,7 @@
 # Language definition here:
 # https://galileo.dmi.unict.it/wiki/relational/doku.php?id=language
 import re
+import rtypes
 
 RELATION=0
 UNARY=1
@@ -65,7 +66,9 @@ u_operators=(PROJECTION,SELECTION,RENAME) # List of unary operators
 
 op_functions={PRODUCT:'product',DIFFERENCE:'difference',UNION:'union',INTERSECTION:'intersection',DIVISION:'division',JOIN:'join',JOIN_LEFT:'outer_left',JOIN_RIGHT:'outer_right',JOIN_FULL:'outer',PROJECTION:'projection',SELECTION:'selection',RENAME:'rename'} # Associates operator with python method
 
-class ParseException (Exception):
+class TokenizerException (Exception):
+    pass
+class ParserException (Exception):
     pass
 
 class node (object):
@@ -98,6 +101,8 @@ class node (object):
         if len(expression)==1 and isinstance(expression[0],unicode): 
             self.kind=RELATION
             self.name=expression[0]
+            if not rtypes.is_valid_relation_name(self.name):
+                raise ParserException(u"'%s' is not a valid relation name" % self.name)
             return
         
         '''Expression from right to left, searching for binary operators
@@ -110,22 +115,34 @@ class node (object):
         Since it searches for strings, and expressions into parenthesis are
         within sub-lists, they won't be found here, ensuring that they will
         have highest priority.'''
-        for i in range(len(expression)-1,-1,-1): 
+        for i in xrange(len(expression)-1,-1,-1): 
             if expression[i] in b_operators: #Binary operator   
                 self.kind=BINARY
                 self.name=expression[i]
+                
+                if len(expression[:i])==0:
+                    raise ParserException(u"Expected left operand for '%s'" % self.name)
+                
+                if len(expression[i+1:])==0:
+                    raise ParserException(u"Expected right operand for '%s'" % self.name)
+                
                 self.left=node(expression[:i]) 
                 self.right=node(expression[i+1:])
                 return
         '''Searches for unary operators, parsing from right to left'''
-        for i in range(len(expression)-1,-1,-1):
+        for i in xrange(len(expression)-1,-1,-1):
             if expression[i] in u_operators: #Unary operator
                 self.kind=UNARY
                 self.name=expression[i]
+                
+                if len(expression)<=i+2:
+                    raise ParserException(u"Expected more tokens in '%s'"%self.name)
+                
                 self.prop=expression[1+i].strip()
                 self.child=node(expression[2+i])
                 
-                return       
+                return
+        raise ParserException(u"Unable to parse tokens")
         pass
     def toPython(self):
         '''This method converts the expression into python code, which will require the
@@ -284,7 +301,7 @@ def tokenize(expression):
             state=2
             end=_find_matching_parenthesis(expression)
             if end==None:
-                raise ParseException("Missing matching ')' in '%s'" %expression)
+                raise TokenizerException("Missing matching ')' in '%s'" %expression)
             #Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
             #Removes the entire parentesis and content from the expression
@@ -308,12 +325,12 @@ def tokenize(expression):
         elif expression.startswith(u"ᐅ"): #Binary long
             i=expression.find(u"ᐊ")
             if i==-1:
-                raise ParseException(u"Expected ᐊ in %s" % (expression,))
+                raise TokenizerException(u"Expected ᐊ in %s" % (expression,))
             items.append(expression[:i+1])
             expression=expression[i+1:].strip()
             state=4
         elif re.match(r'[_0-9A-Za-z]',expression[0])==None: #At this point we only have relation names, so we raise errors for anything else
-            raise ParseException("Unexpected '%c' in '%s'" % (expression[0],expression))
+            raise TokenizerException("Unexpected '%c' in '%s'" % (expression[0],expression))
         else: #Relation (hopefully)
             if state==1: #Previous was a relation, appending to the last token
                 i=items.pop()
