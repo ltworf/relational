@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{6F127615-6AD4-4BD7-8135-2444A335B5CD}
 AppName=Relational
-AppVerName=Relational ver. 1.1
+AppVerName=Relational ver. 1.2
 AppPublisher=Salvo 'LtWorf' Tomaselli
 AppPublisherURL=http://galileo.dmi.unict.it/wiki/relational/
 AppSupportURL=http://galileo.dmi.unict.it/wiki/relational/
