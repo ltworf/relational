@@ -475,7 +475,22 @@ def select_union_intersect_subtract(n):
         
         newnode=parser.node()
         
-        newnode.prop='((%s) %s (%s))' % (n.left.prop,op,n.right.prop)
+        if n.left.prop.startswith('(') or n.right.prop.startswith('('):
+            t_str='('
+            if n.left.prop.startswith('('):
+                t_str+='(%s)'
+            else:
+                t_str+='%s'
+            t_str+=' %s '
+            if n.right.prop.startswith('('):
+                t_str+='(%s)'
+            else:
+                t_str+='%s'
+            t_str+=')'
+            
+            newnode.prop= t_str % (n.left.prop,op,n.right.prop)
+        else:
+            newnode.prop='%s %s %s' % (n.left.prop,op,n.right.prop)
         newnode.name=SELECTION
         newnode.child=n.left.child
         newnode.kind=parser.UNARY

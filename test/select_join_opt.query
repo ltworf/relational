@@ -1,0 +1,1 @@
+σ skill=='C' and chief==0 ((σ age<30 (people) ᑌ σ age>40(people)) ᐅᐊ skills)
