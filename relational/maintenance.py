@@ -21,6 +21,7 @@
 
 import httplib
 import urllib
+import relation
 
 def send_survey(data):
     '''Sends the survey. Data must be a dictionary.
@@ -57,3 +58,39 @@ def check_latest_version():
     
     s=a.find('"')+1
     return a[s:a.find('"',s)-1]
+
+class interface (Object):
+    '''It is used to provide services to the user interfaces, in order to
+    reduce the amount of duplicated code present in different user interfaces.
+    '''
+    
+    def __init__(self):
+        self.rels= {}
+    
+    def load(self,filename,name):
+        '''Loads a relation from file, and gives it a name to
+        be used in subsequent queries.'''
+        pass
+    
+    def unload(self,name):
+        '''Unloads an existing relation.'''
+        pass
+    
+    def store(self,filename,name):
+        '''Stores a relation to file.'''
+        pass
+    
+    def get_relation(self,name):
+        '''Returns the relation corresponding to name.'''
+        pass
+    
+    def set_relation(self,name,rel):
+        '''Sets the relation corresponding to name.'''
+        pass
+    
+    def execute(self,query,relname='last_'):
+        '''Executes a query, returns the result and if
+        relname is not None, adds the result to the
+        dictionary, with the name given in relname.'''
+        pass
+    
