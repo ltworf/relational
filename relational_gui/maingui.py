@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Sat Oct 22 15:25:32 2011
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Mon Feb 13 13:21:56 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -316,17 +316,29 @@ class Ui_MainWindow(object):
         self.cmdAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSurvey.setText(QtGui.QApplication.translate("MainWindow", "Survey", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_4.setTitle(QtGui.QApplication.translate("MainWindow", "Operators", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdProduct.setToolTip(QtGui.QApplication.translate("MainWindow", "Product", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdProduct.setText(QtGui.QApplication.translate("MainWindow", "*", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdDifference.setToolTip(QtGui.QApplication.translate("MainWindow", "Difference", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdDifference.setText(QtGui.QApplication.translate("MainWindow", "-", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdUnion.setToolTip(QtGui.QApplication.translate("MainWindow", "Union", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdUnion.setText(QtGui.QApplication.translate("MainWindow", "ᑌ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdIntersection.setToolTip(QtGui.QApplication.translate("MainWindow", "Intersection", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdIntersection.setText(QtGui.QApplication.translate("MainWindow", "ᑎ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdDivision.setToolTip(QtGui.QApplication.translate("MainWindow", "Division", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdDivision.setText(QtGui.QApplication.translate("MainWindow", "÷", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdJoin.setToolTip(QtGui.QApplication.translate("MainWindow", "Natural join", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdJoin.setText(QtGui.QApplication.translate("MainWindow", "ᐅᐊ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdOuterLeft.setToolTip(QtGui.QApplication.translate("MainWindow", "Left outer join", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOuterLeft.setText(QtGui.QApplication.translate("MainWindow", "ᐅLEFTᐊ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdOuterRight.setToolTip(QtGui.QApplication.translate("MainWindow", "Right outer join", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOuterRight.setText(QtGui.QApplication.translate("MainWindow", "ᐅRIGHTᐊ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdOuter.setToolTip(QtGui.QApplication.translate("MainWindow", "Full outer join", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOuter.setText(QtGui.QApplication.translate("MainWindow", "ᐅFULLᐊ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdProjection.setToolTip(QtGui.QApplication.translate("MainWindow", "Projection", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdProjection.setText(QtGui.QApplication.translate("MainWindow", "π", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdSelection.setToolTip(QtGui.QApplication.translate("MainWindow", "Selection", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSelection.setText(QtGui.QApplication.translate("MainWindow", "σ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdRename.setToolTip(QtGui.QApplication.translate("MainWindow", "Rename", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRename.setText(QtGui.QApplication.translate("MainWindow", "ρ", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdArrow.setText(QtGui.QApplication.translate("MainWindow", "➡", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdOptimize.setText(QtGui.QApplication.translate("MainWindow", "Optimize", None, QtGui.QApplication.UnicodeUTF8))

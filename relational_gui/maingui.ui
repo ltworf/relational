@@ -54,6 +54,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
             <widget class="QPushButton" name="cmdProduct">
+             <property name="toolTip">
+              <string>Product</string>
+             </property>
              <property name="text">
               <string>*</string>
              </property>
@@ -61,6 +64,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdDifference">
+             <property name="toolTip">
+              <string>Difference</string>
+             </property>
              <property name="text">
               <string>-</string>
              </property>
@@ -68,6 +74,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdUnion">
+             <property name="toolTip">
+              <string>Union</string>
+             </property>
              <property name="text">
               <string>ᑌ</string>
              </property>
@@ -75,6 +84,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdIntersection">
+             <property name="toolTip">
+              <string>Intersection</string>
+             </property>
              <property name="text">
               <string>ᑎ</string>
              </property>
@@ -82,6 +94,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdDivision">
+             <property name="toolTip">
+              <string>Division</string>
+             </property>
              <property name="text">
               <string>÷</string>
              </property>
@@ -89,6 +104,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdJoin">
+             <property name="toolTip">
+              <string>Natural join</string>
+             </property>
              <property name="text">
               <string>ᐅᐊ</string>
              </property>
@@ -96,6 +114,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdOuterLeft">
+             <property name="toolTip">
+              <string>Left outer join</string>
+             </property>
              <property name="text">
               <string>ᐅLEFTᐊ</string>
              </property>
@@ -103,6 +124,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdOuterRight">
+             <property name="toolTip">
+              <string>Right outer join</string>
+             </property>
              <property name="text">
               <string>ᐅRIGHTᐊ</string>
              </property>
@@ -110,6 +134,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdOuter">
+             <property name="toolTip">
+              <string>Full outer join</string>
+             </property>
              <property name="text">
               <string>ᐅFULLᐊ</string>
              </property>
@@ -117,6 +144,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdProjection">
+             <property name="toolTip">
+              <string>Projection</string>
+             </property>
              <property name="text">
               <string>π</string>
              </property>
@@ -124,6 +154,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdSelection">
+             <property name="toolTip">
+              <string>Selection</string>
+             </property>
              <property name="text">
               <string>σ</string>
              </property>
@@ -131,6 +164,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdRename">
+             <property name="toolTip">
+              <string>Rename</string>
+             </property>
              <property name="text">
               <string>ρ</string>
              </property>
