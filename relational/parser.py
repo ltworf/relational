@@ -64,7 +64,8 @@ ARROW=u'➡'
 b_operators=(PRODUCT,DIFFERENCE,UNION,INTERSECTION,DIVISION,JOIN,JOIN_LEFT,JOIN_RIGHT,JOIN_FULL) # List of binary operators
 u_operators=(PROJECTION,SELECTION,RENAME) # List of unary operators
 
-op_functions={PRODUCT:'product',DIFFERENCE:'difference',UNION:'union',INTERSECTION:'intersection',DIVISION:'division',JOIN:'join',JOIN_LEFT:'outer_left',JOIN_RIGHT:'outer_right',JOIN_FULL:'outer',PROJECTION:'projection',SELECTION:'selection',RENAME:'rename'} # Associates operator with python method
+# Associates operator with python method
+op_functions={PRODUCT:'product',DIFFERENCE:'difference',UNION:'union',INTERSECTION:'intersection',DIVISION:'division',JOIN:'join',JOIN_LEFT:'outer_left',JOIN_RIGHT:'outer_right',JOIN_FULL:'outer',PROJECTION:'projection',SELECTION:'selection',RENAME:'rename'} 
 
 class TokenizerException (Exception):
     pass
@@ -275,7 +276,7 @@ def tokenize(expression):
     every token of the expression is an item of a list. Expressions into
     parenthesis will be converted into sublists.'''
     if not isinstance(expression,unicode):
-        raise Exception('expected unicode')
+        raise TokenizerException('expected unicode')
     
     items=[] #List for the tokens
     
