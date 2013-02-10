@@ -144,9 +144,14 @@ class node (object):
                 return
         raise ParserException(u"Unable to parse tokens")
         pass
+    def toCode(self):
+        '''This method converts the tree into a python code object'''
+        code = self.toPython()
+        return compile(code,'<relational_expression>','eval')
+        
     def toPython(self):
-        '''This method converts the expression into python code, which will require the
-        relation module to be executed.'''
+        '''This method converts the expression into a python code string, which 
+        will require the relation module to be executed.'''
         if self.name in b_operators:
             return '%s.%s(%s)' % (self.left.toPython(),op_functions[self.name],self.right.toPython())
         elif self.name in u_operators:

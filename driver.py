@@ -193,17 +193,19 @@ def run_test(testname):
     try:
         result_rel=relation.relation('%s%s.result' % (tests_path,testname))
         
-        query=readfile('%s%s.query' % (tests_path,testname)).strip()
+        query=unicode(readfile('%s%s.query' % (tests_path,testname)).strip(),'utf8')
         o_query=optimizer.optimize_all(query,rels)
     
-        expr=parser.parse(query)#Converting expression to python code
+        expr=parser.parse(query)#Converting expression to python string
         result=eval(expr,rels) #Evaluating the expression
     
-        o_expr=parser.parse(o_query)#Converting expression to python code
+        o_expr=parser.parse(o_query)#Converting expression to python string
         o_result=eval(o_expr,rels) #Evaluating the expression
+        
+        c_expr=parser.tree(query).toCode() #Converting to python code
+        c_result=eval(c_expr,rels)
     
-    
-        if (o_result==result_rel) and (result==result_rel):
+        if (o_result==result_rel) and (result==result_rel) and (c_result==result_rel):
             print colored('Test passed','green')
             return True
     except Exception as inst:
