@@ -19,9 +19,17 @@
 # 
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-from relational import relation, parser, optimizer
-from relational_readline.termcolor import colored
 import os
+from sys import exit
+
+from relational import relation, parser, optimizer
+from xtermcolor import colorize
+
+
+COLOR_RED = 0xff0000
+COLOR_GREEN = 0x00ff00
+COLOR_MAGENTA = 0xff00ff
+COLOR_CYAN = 0x00ffff
 
 print relation
 
@@ -84,37 +92,39 @@ def execute_tests():
                 ex_good+=1
             else:
                 ex_bad+=1
-    print "\n\033[36;1mResume of the results\033[0m"
+    print colorize("Resume of the results",COLOR_CYAN)
     
-    print "\n\033[35;1mQuery tests\033[0m"
+    print colorize("Query tests",COLOR_MAGENTA)
     print "Total test count: %d" % q_tot
     print "Passed tests: %d" % q_good
     if q_bad>0:
-        print "\033[31;1mFailed tests count: %d\033[0m" % q_bad
+        print colorize("Failed tests count: %d" % q_bad,COLOR_RED)
         
-    print "\n\033[35;1mPython tests\033[0m"
+    print colorize("Python tests",COLOR_MAGENTA)
     print "Total test count: %d" % py_tot
     print "Passed tests: %d" % py_good
     if py_bad>0:
-        print "\033[31;1mFailed tests count: %d\033[0m" % py_bad
+        print colorize("Failed tests count: %d" % py_bad,COLOR_RED)
     
-    print "\n\033[35;1mExecute Python tests\033[0m"
+    print colorize("Execute Python tests",COLOR_MAGENTA)
     print "Total test count: %d" % ex_tot
     print "Passed tests: %d" % ex_good
     if ex_bad>0:
-        print "\033[31;1mFailed tests count: %d\033[0m" % ex_bad
+        print colorize("Failed tests count: %d" % ex_bad,COLOR_RED)
         
     
-    print "\n\033[36;1mTotal results\033[0m"
+    print colorize("Total results",COLOR_CYAN)
     if q_bad+py_bad+ex_bad==0:
-        print "\033[32;1mNo failed tests\033[0m"
+        print colorize("No failed tests",COLOR_GREEN)
+        return 0
     else:
-        print "\033[31;1mThere are %d failed tests\033[0m" % (py_bad+q_bad+ex_bad)
+        print colorize("There are %d failed tests" % (py_bad+q_bad+ex_bad), COLOR_RED)
+        return 1
         
     
 def run_exec_test(testname):
     '''Runs a python test, which executes code directly rather than queries'''
-    print "Running python test: \033[35;1m%s\033[0m" % testname
+    print "Running python test: " + colorize(testname,COLOR_MAGENTA)
     
     glob=rels.copy()
     exp_result={}
@@ -139,20 +149,20 @@ def run_exec_test(testname):
                 fields_ok = fields_ok and glob[i]==exp_result[i]
                 
             if fields_ok:
-                print colored('Test passed','green')
+                print colorize('Test passed',COLOR_GREEN)
                 return True
     except:
         pass
-    print colored('ERROR','red')
-    print colored('=====================================','red')
+    print colorize('ERROR',COLOR_RED)
+    print colorize('=====================================',COLOR_RED)
     print "Expected %s" % exp_result
     #print "Got %s" % result
-    print colored('=====================================','red')
+    print colorize('=====================================',COLOR_RED)
     return False
 
 def run_py_test(testname):
     '''Runs a python test, which evaluates expressions directly rather than queries'''
-    print "Running expression python test: " + colored (testname,'magenta')
+    print "Running expression python test: " + colorize (testname,COLOR_MAGENTA)
     
     try:
     
@@ -163,16 +173,16 @@ def run_py_test(testname):
         exp_result=eval(expr,rels) #Evaluating the expression
     
         if result==exp_result:
-            print colored('Test passed','green')
+            print colorize('Test passed',COLOR_GREEN)
             return True
     except:
         pass
    
-    print colored('ERROR','red')
-    print colored('=====================================','red')
+    print colorize('ERROR',COLOR_RED)
+    print colorize('=====================================',COLOR_RED)
     print "Expected %s" % exp_result
     print "Got %s" % result
-    print colored('=====================================','red')
+    print colorize('=====================================',COLOR_RED)
     return False
 
 def run_test(testname):
@@ -182,7 +192,7 @@ def run_test(testname):
     testname.result
     The query will be executed both unoptimized and
     optimized'''
-    print "Running test: "+ colored(testname,'magenta')
+    print "Running test: "+ colorize(testname,COLOR_MAGENTA)
     
     query=None;expr=None;o_query=None;o_expr=None
     result_rel=None
@@ -206,24 +216,24 @@ def run_test(testname):
         c_result=eval(c_expr,rels)
     
         if (o_result==result_rel) and (result==result_rel) and (c_result==result_rel):
-            print colored('Test passed','green')
+            print colorize('Test passed',COLOR_GREEN)
             return True
     except Exception as inst:
         print inst
         pass
-    print colored('ERROR','red')
+    print colorize('ERROR',COLOR_RED)
     print "Query: %s -> %s" % (query,expr)
     print "Optimized query: %s -> %s" % (o_query,o_expr)
-    print colored('=====================================','red')
-    print "\033[33;1mExpected result\033[0m"
+    print colorize('=====================================',COLOR_RED)
+    print colorize("Expected result",COLOR_GREEN)
     print result_rel
-    print "\033[33;1mResult\033[0m"
+    print colorize("Result",COLOR_RED)
     print result
-    print "\033[33;1mOptimized result\033[0m"
+    print colorize("Optimized result",COLOR_RED)
     print o_result
-    print "\033[33;1moptimized result match\033[0m", result_rel==o_result
-    print "\033[33;1mresult match          \033[0m", result==result_rel
-    print colored('=====================================','red')
+    print colorize("optimized result match %s" % str(result_rel==o_result),COLOR_MAGENTA)
+    print colorize("result match %s" % str(result==result_rel), COLOR_MAGENTA)
+    print colorize('=====================================',COLOR_RED)
     return False
 
     
@@ -231,4 +241,4 @@ if __name__ == '__main__':
     print "-> Starting testsuite for relational"
     load_relations()
     print "-> Starting tests"
-    execute_tests()
+    exit(execute_tests())
