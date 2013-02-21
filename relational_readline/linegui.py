@@ -26,8 +26,10 @@ import os
 import sys
 
 from relational import relation, parser, rtypes
-from termcolor import colored
+from xtermcolor import colorize
 
+PROMPT_COLOR = 0xffff00
+ERROR_COLOR = 0xff0000
 
 class SimpleCompleter(object):
     '''Handles completion'''
@@ -97,7 +99,7 @@ completer=SimpleCompleter(['SURVEY','LIST','LOAD ','UNLOAD ','HELP ','QUIT','SAV
 
 def load_relation(filename,defname=None):
     if not os.path.isfile(filename):
-        print >> sys.stderr, colored("%s is not a file" % filename,'red')
+        print >> sys.stderr, colorize("%s is not a file" % filename,ERROR_COLOR)
         return None
 
     f=filename.split('/')
@@ -107,16 +109,16 @@ def load_relation(filename,defname=None):
             defname=defname[:-4]
             
     if not rtypes.is_valid_relation_name(defname):
-        print >> sys.stderr, colored("%s is not a valid relation name" % defname,'red')
+        print >> sys.stderr, colorize("%s is not a valid relation name" % defname,ERROR_COLOR)
         return
     try:
         relations[defname]=relation.relation(filename)
         
         completer.add_completion(defname)
-        print colored("Loaded relation %s"% defname,'green',attrs=['bold'])
+        print colorize("Loaded relation %s"% defname,0x00ff00)
         return defname
     except Exception, e:
-        print >>sys.stderr,colored(e,'red')
+        print >>sys.stderr,colorize(e,ERROR_COLOR)
         return None
 
 def survey():
@@ -182,7 +184,7 @@ def exec_line(command):
     elif command.startswith('LOAD '):      #Loads a relation
         pars=command.split(' ')
         if len(pars)==1:
-            print colored("Missing parameter",'red')
+            print colorize("Missing parameter",ERROR_COLOR)
             return
         
         filename=pars[1]
@@ -195,55 +197,56 @@ def exec_line(command):
     elif command.startswith('UNLOAD '):
         pars=command.split(' ')
         if len(pars)<2:
-            print colored("Missing parameter",'red')
+            print colorize("Missing parameter",ERROR_COLOR)
             return
         if pars[1] in relations:
             del relations[pars[1]]
             completer.remove_completion(pars[1])
         else:
-            print colored("No such relation %s" % pars[1],'red')
+            print colorize("No such relation %s" % pars[1],ERROR_COLOR)
         pass
     elif command.startswith('SAVE '):
         pars=command.split(' ')
         if len(pars)!=3:
-            print colored("Missing parameter",'red')
+            print colorize("Missing parameter",ERROR_COLOR)
             return
         
         filename=pars[1]
         defname=pars[2]
         
         if defname not in relations:
-            print colored("No such relation %s" % defname,'red')
+            print colorize("No such relation %s" % defname,ERROR_COLOR)
             return
         
         try:
             relations[defname].save(filename)
         except Exception,e:
-            print colored(e,'red')
+            print colorize(e,ERROR_COLOR)
     else:
         exec_query(command)
 
 def replacements(query):
     '''This funcion replaces ascii easy operators with the correct ones'''
-    query=query.replace(    '_PRODUCT'          ,   '*')
-    query=query.replace(    '_UNION'            ,   'ᑌ')
-    query=query.replace(    '_INTERSECTION'     ,   'ᑎ')
-    query=query.replace(    '_DIFFERENCE'       ,   '-')
-    query=query.replace(    '_JOIN'             ,   'ᐅᐊ')
-    query=query.replace(    '_LJOIN'            ,   'ᐅLEFTᐊ')
-    query=query.replace(    '_RJOIN'            ,   'ᐅRIGHTᐊ')
-    query=query.replace(    '_FJOIN'            ,   'ᐅFULLᐊ')
-    query=query.replace(    '_PROJECTION'       ,   'π')
-    query=query.replace(    '_RENAME_TO'        ,   '➡')
-    query=query.replace(    '_SELECTION'        ,   'σ')
-    query=query.replace(    '_RENAME'           ,   'ρ')
-    query=query.replace(    '_DIVISION'         ,   '÷')
+    query=query.replace(u'_PRODUCT'      ,   u'*')
+    query=query.replace(u'_UNION'        ,   u'ᑌ')
+    query=query.replace(u'_INTERSECTION' ,   u'ᑎ')
+    query=query.replace(u'_DIFFERENCE'   ,   u'-')
+    query=query.replace(u'_JOIN'         ,   u'ᐅᐊ')
+    query=query.replace(u'_LJOIN'        ,   u'ᐅLEFTᐊ')
+    query=query.replace(u'_RJOIN'        ,   u'ᐅRIGHTᐊ')
+    query=query.replace(u'_FJOIN'        ,   u'ᐅFULLᐊ')
+    query=query.replace(u'_PROJECTION'   ,   u'π')
+    query=query.replace(u'_RENAME_TO'    ,   u'➡')
+    query=query.replace(u'_SELECTION'    ,   u'σ')
+    query=query.replace(u'_RENAME'       ,   u'ρ')
+    query=query.replace(u'_DIVISION'     ,   u'÷')
     return query
 
 def exec_query(command):
     '''This function executes a query and prints the result on the screen
     if the command terminates with ";" the result will not be printed
     '''
+    command=unicode(command,'utf-8')
     
     #If it terminates with ; doesn't print the result
     if command.endswith(';'):
@@ -251,6 +254,8 @@ def exec_query(command):
         printrel=False
     else:
         printrel=True
+    
+    
     
     #Performs replacements for weird operators
     command=replacements(command)
@@ -265,12 +270,13 @@ def exec_query(command):
         relname='last_'
         query=command
     
-    query=unicode(query,'utf-8')
+    
     #Execute query
     try:
         pyquery=parser.parse(query)
         result=eval(pyquery,relations)
-        print colored("-> query: %s" % pyquery,'green') 
+        
+        print colorize("-> query: %s" % pyquery.encode('utf-8'),0x00ff00) 
         
         if printrel:
             print
@@ -280,11 +286,11 @@ def exec_query(command):
     
         completer.add_completion(relname)
     except Exception, e:
-        print colored(e,'red')
+        print colorize(e,ERROR_COLOR)
     
 def main(files=[]):
-    print colored('> ','blue') + "; Type HELP to get the HELP"
-    print colored('> ','blue') + "; Completion is activated using the tab (if supported by the terminal)"
+    print colorize('> ',PROMPT_COLOR) + "; Type HELP to get the HELP"
+    print colorize('> ',PROMPT_COLOR) + "; Completion is activated using the tab (if supported by the terminal)"
     
     for i in files:
         load_relation(i)
@@ -298,9 +304,12 @@ def main(files=[]):
 
     while True:
         try:
-            line = raw_input(colored('> ','blue'))
+            line = raw_input(colorize('> ',PROMPT_COLOR))
             if isinstance(line,str) and len(line)>0:
                 exec_line(line)
+        except KeyboardInterrupt:
+            print
+            continue
         except EOFError:
             print
             sys.exit(0)
