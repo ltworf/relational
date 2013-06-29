@@ -35,9 +35,7 @@ class relation (object):
         that file. If no parameter is supplied an empty relation is created. Empty
         relations are used in internal operations.
         By default the file will be handled like a comma separated as described in
-        RFC4180, but it can also be handled like a space separated file (previous
-        default format) setting to false the 2nd parameter.
-        The old format is no longer supported.'''
+        RFC4180.'''
         
         self._readonly=False
         
@@ -70,7 +68,7 @@ class relation (object):
         '''Saves the relation in a file. By default will save using the csv
         format as defined in RFC4180, but setting comma_separated to False,
         it will use the old format with space separated values.
-        The old format is no longer supported.'''
+        '''
         
         fp=file(filename,'w') #Opening file in write mode
         
