@@ -59,7 +59,7 @@ def check_latest_version():
     s=a.find('"')+1
     return a[s:a.find('"',s)-1]
 
-class interface (Object):
+class interface (object):
     '''It is used to provide services to the user interfaces, in order to
     reduce the amount of duplicated code present in different user interfaces.
     '''
