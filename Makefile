@@ -1,10 +1,13 @@
 default:
 	echo "sorry, no default action"
+	
+gui: pyqt pyside
 
-gui:
+pyside:
 	pyside-uic relational_pyside/survey.ui > relational_pyside/survey.py 
 	pyside-uic relational_pyside/maingui.ui > relational_pyside/maingui.py
 	pyside-uic relational_pyside/rel_edit.ui > relational_pyside/rel_edit.py
+pyqt:
 	pyuic4 relational_gui/survey.ui > relational_gui/survey.py 
 	pyuic4 relational_gui/maingui.ui > relational_gui/maingui.py
 	pyuic4 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
@@ -75,24 +78,6 @@ clean:
 	rm -rf setup/*.pyo || echo ok
 	rm -rf relational_mac
 	rm -rf test/*~
-mac: app
-	mkdir relational_mac || echo Exists
-	mv Relational.app relational_mac
-	mkdir relational_mac/samples || echo Exists
-	cp samples/*csv relational_mac/samples
-	tar -zcvvf relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.tar.gz relational_mac/
-	rm -rf relational_mac
-app:
-	mkdir -p Relational.app/Contents/Resources || echo Exists
-	cp *py Relational.app/Contents/Resources
-	mkdir -p Relational.app/Contents/Resources/relational || echo Exists
-	cp  relational/*py Relational.app/Contents/Resources/relational
-	mkdir -p Relational.app/Contents/Resources/relational_gui || echo Exists
-	cp relational_gui/*py Relational.app/Contents/Resources/relational_gui
-	cp mac/Info.plist mac/PkgInfo Relational.app/Contents
-	mkdir -p Relational.app/Contents/MacOS || echo Exists
-	cp mac/relational_gui mac/Python Relational.app/Contents/MacOS
-	cp mac/PythonApplet.icns mac/__argvemulator_relational_gui.py Relational.app/Contents/Resources/
 
 debian:    
 	dpkg-buildpackage
