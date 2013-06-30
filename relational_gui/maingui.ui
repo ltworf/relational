@@ -462,10 +462,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionNew_relation"/>
-    <addaction name="action_Load_relation"/>
-    <addaction name="action_Save_relation"/>
-    <addaction name="actionEdit_relation"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
@@ -477,7 +473,27 @@
     <addaction name="actionAbout"/>
     <addaction name="actionCheck_for_new_versions"/>
    </widget>
+   <widget class="QMenu" name="menuSession">
+    <property name="title">
+     <string>Session</string>
+    </property>
+    <addaction name="actionNew_session"/>
+    <addaction name="actionSave_session_as"/>
+    <addaction name="actionManage_sessions"/>
+   </widget>
+   <widget class="QMenu" name="menuRelations">
+    <property name="title">
+     <string>Relations</string>
+    </property>
+    <addaction name="actionNew_relation"/>
+    <addaction name="action_Load_relation"/>
+    <addaction name="action_Save_relation"/>
+    <addaction name="actionEdit_relation"/>
+    <addaction name="actionUnload_relation"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuRelations"/>
+   <addaction name="menuSession"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionAbout">
@@ -534,6 +550,29 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionNew_session">
+   <property name="text">
+    <string>New session</string>
+   </property>
+  </action>
+  <action name="actionSave_session_as">
+   <property name="text">
+    <string>Save session as</string>
+   </property>
+   <property name="toolTip">
+    <string>Save session as</string>
+   </property>
+  </action>
+  <action name="actionManage_sessions">
+   <property name="text">
+    <string>Manage sessions</string>
+   </property>
+  </action>
+  <action name="actionUnload_relation">
+   <property name="text">
+    <string>Unload relation</string>
    </property>
   </action>
  </widget>
@@ -1178,6 +1217,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionManage_sessions</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>manageSessions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNew_session</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>newSession()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave_session_as</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveSessionAs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUnload_relation</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>unloadRelation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
@@ -1210,5 +1313,8 @@
   <slot>resumeHistory(QListWidgetItem*)</slot>
   <slot>editRelation()</slot>
   <slot>newRelation()</slot>
+  <slot>newSession()</slot>
+  <slot>saveSessionAs()</slot>
+  <slot>manageSessions()</slot>
  </slots>
 </ui>
