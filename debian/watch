@@ -1,2 +1,2 @@
 version=3
-opts=filenamemangle=s/.*:// http://galileo.dmi.unict.it/wiki/relational/doku.php?id=download /wiki/[^:]*:relational_([^(_mac)]*).tar.gz
+opts=filenamemangle=s/.+\/v?(\d\S*)\.tar\.gz/relational-$1\.tar\.gz/ https://github.com/ltworf/relational/tags .*/v?(\d\S*)\.tar\.gz

@@ -39,7 +39,7 @@
 # BinaryOp := * | - | ᑌ | ᑎ | ÷ | ᐅᐊ | ᐅLEFTᐊ | ᐅRIGHTᐊ | ᐅFULLᐊ
 #
 # Language definition here:
-# https://galileo.dmi.unict.it/wiki/relational/doku.php?id=language
+# https://github.com/ltworf/relational/wiki/Grammar-and-language
 import re
 import rtypes
 

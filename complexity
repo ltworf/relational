@@ -2,25 +2,25 @@
               Complexity
 
 Abstract
-   Purpose of this document is to describe in a detailed way the 
+   Purpose of this document is to describe in a detailed way the
    complexity of relational algebra operations. The evaluation will be
    done on the specific implementation of this program, not on theorical
    lower limits.
 
    Latest implementation can be found at:
-   http://galileo.dmi.unict.it/svn/trunk
+   https://github.com/ltworf/relational
 
 Notation
    Big O notation will be used. Constant values will be ignored.
 
    Single letters will be used to indicate relations and letters between
    | will indicate the cardinality (number of tuples) of the relation.
-   
+
    Number of tuples can't be enough. For example a relation with one
    touple and thousands of fields, will not take O(1) in general to be
    evaluated. So we assume that relations will have a reasonable and
    comparable number of fields.
-   
+
    Then after evaluating the big O notation, an attempt to find more
    precise results will be done, since it will be important to know
    with a certain precision the weight of the operation.
@@ -47,7 +47,7 @@ Notation
    Then, the tuple is inserted in a new relation if it satisfies the
    condition. Since no check on duplicated tuples is performed, this
    operation is constant too.
-   
+
    In the end we have O(|n|) as complexity for a selection on the
    relation n.
 
@@ -57,9 +57,9 @@ Notation
    containing the name of the fields.
    The big issue is to copy the content of the relation into a new
    relation object, so the new one can be modified.
-   
+
    So the operation depends on the size of the relation: O(|n|).
-   
+
 1.3  Projection
 
    The projection operation creates a copy of the original relation
@@ -69,7 +69,7 @@ Notation
    allowed. So after extracting the wanted elements, it has to check if
    the new tuple was already added to the new relation. And this brings
    the complexity to O(|n|²).
-   
+
    But the projection can also be used to "rearrange" fields, which
    makes no sense in pure relational algebra, but can be usefull to make
    two relations match (in fact it is used internally to make relations
@@ -84,7 +84,7 @@ Notation
    in this section. Since we will deal with two relations per operation
    here, we will call them m and n, and f and g will be the number of
    their fields.
-   
+
 2.1  Product
 
    Product is a very complex operations. It is O(|n|*|m|).
@@ -120,7 +120,7 @@ Notation
     join. Makes it O(|n|*|m|) too.
 
 2.7  Outher_left
-   
+
    O(|n|*|m|), very depending on the number of the fields, because they
    are compared.
 
@@ -128,8 +128,8 @@ Notation
 
    Mirror operation of outer_lef
 
-2.9  Join 
+2.9  Join
 
    Same as above.
-  
+
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

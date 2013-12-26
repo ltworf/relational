@@ -9,9 +9,9 @@ AppId={{6F127615-6AD4-4BD7-8135-2444A335B5CD}
 AppName=Relational
 AppVerName=Relational ver. 1.2
 AppPublisher=Salvo 'LtWorf' Tomaselli
-AppPublisherURL=http://galileo.dmi.unict.it/wiki/relational/
-AppSupportURL=http://galileo.dmi.unict.it/wiki/relational/
-AppUpdatesURL=http://galileo.dmi.unict.it/wiki/relational/
+AppPublisherURL=https://github.com/ltworf/relational
+AppSupportURL=https://github.com/ltworf/relational
+AppUpdatesURL=https://github.com/ltworf/relational
 DefaultDirName={pf}\Relational
 DefaultGroupName=Relational
 AllowNoIcons=yes
@@ -37,7 +37,7 @@ Source: "samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs creat
 
 [Icons]
 Name: "{group}\Relational"; Filename: "{app}\relational_gui.exe"
-Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "http://galileo.dmi.unict.it/wiki/relational/"
+Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "https://github.com/ltworf/relational"
 Name: "{group}\{cm:UninstallProgram,Relational}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Relational"; Filename: "{app}\relational_gui.exe"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Filename: "{app}\relational_gui.exe"; Tasks: quicklaunchicon

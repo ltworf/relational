@@ -30,7 +30,7 @@ import locale
 class surveyForm (QtGui.QWidget):
 
     '''This class is the form used for the survey, needed to intercept the events.
-    It also sends the data with http POST to a page hosted on galileo'''
+    It also sends the data with http POST to a page'''
 
     def setUi(self, ui):
         self.ui = ui
