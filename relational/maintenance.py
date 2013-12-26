@@ -34,8 +34,13 @@ def send_survey(data):
     #sends the string
     params = urllib.urlencode({'survey':post})
     headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    connection = httplib.HTTPConnection('galileo.dmi.unict.it')
-    connection.request("POST","/~ltworf/survey.php",params,headers)
+    #connection = httplib.HTTPConnection('galileo.dmi.unict.it')
+    #connection.request("POST","/~ltworf/survey.php",params,headers)
+    
+    connection = httplib.HTTPConnection('feedback-ltworf.appspot.com')
+    connection.request("POST","/feedback/relational",params,headers)
+    
+    
     return connection.getresponse()
 
 
