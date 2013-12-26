@@ -9,16 +9,22 @@ application = micro_webapp2.WSGIApplication()
 def m(request, *args, **kwargs):
     return ""
 
+@application.route("/version/<id>")
+def show_version(request, *args, **kwargs):
+    if kwargs["id"] == "relational":
+        return "1.2"
+    return "No version"
+
 @application.route('/feedback/<id>')
 def mail_sender(request, *args, **kwargs):
-    
+
     if request.method != "POST":
         return ""
-    
+
     message = ""
     for k,v in request.POST.iteritems():
         message += "%s: %s\n" % (k,v)
-    
+
     if kwargs["id"] == "relational":
         from google.appengine.api import mail
 

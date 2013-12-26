@@ -112,6 +112,8 @@ if __name__ == "__main__":
         guihandler.version=version
 
         app = QtGui.QApplication(sys.argv)
+        app.setOrganizationName('None');
+        app.setApplicationName('relational');
         
         ui = maingui.Ui_MainWindow()
         Form = guihandler.relForm(ui)
@@ -120,6 +122,7 @@ if __name__ == "__main__":
         Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
         
         ui.setupUi(Form)
+        Form.restore_settings()
     
         for i in range(len(files)):
             if not os.path.isfile(files[i]):
