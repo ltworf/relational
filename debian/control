@@ -19,7 +19,7 @@ Description: Educational tool for relational algebra (standalone module)
 
 Package: relational
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-relational (>= ${binary:Version}), python-qt4 | python-pyside.qtgui, python-qt4 | python-pyside.qtcore, python-qt4 | python-pyside.qtwebkit
+Depends: ${misc:Depends}, ${python:Depends}, python-relational (>= ${binary:Version}), python-qt4
 Description: Educational tool for relational algebra (graphical user interface)
  Relational is primarily a tool to provide a workspace for experimenting with
  relational algebra, an offshoot of first-order logic.

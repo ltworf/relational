@@ -4,6 +4,7 @@
 - Improved select_union_intersect_subtract optimization to avoid parenthesis whenever possible
 - Moved feedback service, and added the code for it
 - Different way of checking the latest version
+- Removed support for pyside
 
 1.1
 - Incorrect relational operations now raise an exception instead of returning None

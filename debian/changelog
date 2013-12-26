@@ -2,6 +2,7 @@ relational (1.2-1) unstable; urgency=medium
 
   * New upstream release
   * Point to new upstream location
+  * Can only use PyQt
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Fri, 27 Dec 2013 00:35:44 +0100
 
