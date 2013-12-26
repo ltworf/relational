@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Sun Jun 30 11:47:05 2013
-#      by: PyQt4 UI code generator 4.10.2
+# Created: Fri Dec 27 00:05:54 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -213,7 +213,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addLayout(self.horizontalLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 19))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -221,8 +221,6 @@ class Ui_MainWindow(object):
         self.menuAbout.setObjectName(_fromUtf8("menuAbout"))
         self.action = QtGui.QAction(MainWindow)
         self.action.setObjectName(_fromUtf8("action"))
-        self.menuSession = QtGui.QMenu(self.menubar)
-        self.menuSession.setObjectName(_fromUtf8("menuSession"))
         self.menuRelations = QtGui.QMenu(self.menubar)
         self.menuRelations.setObjectName(_fromUtf8("menuRelations"))
         MainWindow.setMenuBar(self.menubar)
@@ -254,9 +252,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.action_Quit)
         self.menuAbout.addAction(self.actionAbout)
         self.menuAbout.addAction(self.actionCheck_for_new_versions)
-        self.menuSession.addAction(self.actionNew_session)
-        self.menuSession.addAction(self.actionSave_session_as)
-        self.menuSession.addAction(self.actionManage_sessions)
         self.menuRelations.addAction(self.actionNew_relation)
         self.menuRelations.addAction(self.action_Load_relation)
         self.menuRelations.addAction(self.action_Save_relation)
@@ -264,7 +259,6 @@ class Ui_MainWindow(object):
         self.menuRelations.addAction(self.actionUnload_relation)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuRelations.menuAction())
-        self.menubar.addAction(self.menuSession.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
         self.label.setBuddy(self.txtQuery)
 
@@ -307,9 +301,6 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionEdit_relation, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.editRelation)
         QtCore.QObject.connect(self.cmdNew, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.newRelation)
         QtCore.QObject.connect(self.actionNew_relation, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.newRelation)
-        QtCore.QObject.connect(self.actionManage_sessions, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.manageSessions)
-        QtCore.QObject.connect(self.actionNew_session, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.newSession)
-        QtCore.QObject.connect(self.actionSave_session_as, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.saveSessionAs)
         QtCore.QObject.connect(self.actionUnload_relation, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.unloadRelation)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cmdAbout, self.cmdSurvey)
@@ -389,7 +380,6 @@ class Ui_MainWindow(object):
         self.cmdExecute.setText(_translate("MainWindow", "Execute", None))
         self.menuFile.setTitle(_translate("MainWindow", "&File", None))
         self.menuAbout.setTitle(_translate("MainWindow", "&Help", None))
-        self.menuSession.setTitle(_translate("MainWindow", "Session", None))
         self.menuRelations.setTitle(_translate("MainWindow", "Relations", None))
         self.actionAbout.setText(_translate("MainWindow", "&About", None))
         self.action_Load_relation.setText(_translate("MainWindow", "&Load relation", None))

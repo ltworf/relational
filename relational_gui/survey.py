@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'relational_gui/survey.ui'
 #
-# Created: Sat Oct 22 15:25:32 2011
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Fri Dec 27 00:05:54 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -123,15 +132,15 @@ class Ui_Form(object):
         Form.setTabOrder(self.cmdClear, self.cmdCancel)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QtGui.QApplication.translate("Form", "Survey", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Form", "Country", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("Form", "School", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("Form", "Age", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("Form", "How did you find relational", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_5.setText(QtGui.QApplication.translate("Form", "System", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_6.setText(QtGui.QApplication.translate("Form", "Comments", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_7.setText(QtGui.QApplication.translate("Form", "Email (only if you want a reply)", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdCancel.setText(QtGui.QApplication.translate("Form", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdClear.setText(QtGui.QApplication.translate("Form", "Clear", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmdSend.setText(QtGui.QApplication.translate("Form", "Send", None, QtGui.QApplication.UnicodeUTF8))
+        Form.setWindowTitle(_translate("Form", "Survey", None))
+        self.label.setText(_translate("Form", "Country", None))
+        self.label_2.setText(_translate("Form", "School", None))
+        self.label_3.setText(_translate("Form", "Age", None))
+        self.label_4.setText(_translate("Form", "How did you find relational", None))
+        self.label_5.setText(_translate("Form", "System", None))
+        self.label_6.setText(_translate("Form", "Comments", None))
+        self.label_7.setText(_translate("Form", "Email (only if you want a reply)", None))
+        self.cmdCancel.setText(_translate("Form", "Cancel", None))
+        self.cmdClear.setText(_translate("Form", "Clear", None))
+        self.cmdSend.setText(_translate("Form", "Send", None))
 

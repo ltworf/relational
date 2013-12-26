@@ -455,7 +455,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -473,14 +473,6 @@
     <addaction name="actionAbout"/>
     <addaction name="actionCheck_for_new_versions"/>
    </widget>
-   <widget class="QMenu" name="menuSession">
-    <property name="title">
-     <string>Session</string>
-    </property>
-    <addaction name="actionNew_session"/>
-    <addaction name="actionSave_session_as"/>
-    <addaction name="actionManage_sessions"/>
-   </widget>
    <widget class="QMenu" name="menuRelations">
     <property name="title">
      <string>Relations</string>
@@ -493,7 +485,6 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRelations"/>
-   <addaction name="menuSession"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionAbout">
@@ -1206,54 +1197,6 @@
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>newRelation()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionManage_sessions</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>manageSessions()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionNew_session</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>newSession()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionSave_session_as</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>saveSessionAs()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
