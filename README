@@ -1,7 +1,10 @@
-To launch the application, run 
+To launch the application, run
 
 ./relational_gui.py
 
-If it needs some dependencies, check this page:
-http://galileo.dmi.unict.it/wiki/relational/doku.php?id=download#install
+Language definition is here:
+https://github.com/ltworf/relational/wiki/Grammar-and-language
+
+If it needs some dependencies:
+Qt4, Python 2.7, either PyQT4 or Pyside.
 

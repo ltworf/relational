@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_pyside/maingui.ui'
 #
-# Created: Fri Dec 27 00:05:55 2013
+# Created: Fri Dec 27 00:23:51 2013
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!

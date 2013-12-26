@@ -3,20 +3,20 @@
 # coding=UTF-8
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
-# 
+#
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 import sys
@@ -24,7 +24,7 @@ import os
 import os.path
 import getopt
 from relational import relation, parser
-version="1.2"
+version = "1.2"
 
 
 def printver(exit=True):
@@ -42,14 +42,15 @@ def printver(exit=True):
     if exit:
         sys.exit(0)
 
+
 def printhelp(code=0):
     print "Relational"
     print
     print "Usage: %s [options] [files]" % sys.argv[0]
-    print 
+    print
     print "  -v            Print version and exits"
     print "  -h            Print this help and exits"
-    
+
     if sys.argv[0].endswith('relational-cli'):
         print "  -q            Uses QT user interface"
         print "  -r            Uses readline user interface (default)"
@@ -60,80 +61,78 @@ def printhelp(code=0):
 
 if __name__ == "__main__":
     if sys.argv[0].endswith('relational-cli'):
-        x11=False
+        x11 = False
     else:
-        x11=True #Will try to use the x11 interface
-    
-    #Getting command line
+        x11 = True  # Will try to use the x11 interface
+
+    # Getting command line
     try:
-        switches,files=getopt.getopt(sys.argv[1:],"vhqr")
+        switches, files = getopt.getopt(sys.argv[1:], "vhqr")
     except:
         printhelp(1)
-        
+
     for i in switches:
-        if i[0]=='-v':
+        if i[0] == '-v':
             printver()
-        elif i[0]=='-h':
+        elif i[0] == '-h':
             printhelp()
-        elif i[0]=='-q':
-            x11=True
-        elif i[0]=='-r':
-            x11=False
-    
+        elif i[0] == '-q':
+            x11 = True
+        elif i[0] == '-r':
+            x11 = False
+
     if x11:
-        
-        pyqt=True
-        
+
+        pyqt = True
+
         try:
-            import sip #needed on windows
+            import sip  # needed on windows
             from PyQt4 import QtGui
         except:
             print >> sys.stderr, "PyQt seems to be missing, trying to use Pyside"
             from PySide import QtCore, QtGui
-            pyqt=False
-        
-        
+            pyqt = False
+
         if pyqt:
             try:
-                from relational_gui import maingui,guihandler, about, surveyForm
+                from relational_gui import maingui, guihandler, about, surveyForm
             except:
                 print >> sys.stderr, "Module relational_gui is missing.\nPlease install relational package."
                 sys.exit(3)
         else:
             try:
-                from relational_pyside import maingui,guihandler, about, surveyForm
+                from relational_pyside import maingui, guihandler, about, surveyForm
             except:
                 print >> sys.stderr, "Module relational_pyside is missing.\nPlease install relational package."
                 sys.exit(3)
-        
-            
-        about.version=version
-        surveyForm.version=version
-        guihandler.version=version
+
+        about.version = version
+        surveyForm.version = version
+        guihandler.version = version
 
         app = QtGui.QApplication(sys.argv)
-        app.setOrganizationName('None');
-        app.setApplicationName('relational');
-        
+        app.setOrganizationName('None')
+        app.setApplicationName('relational')
+
         ui = maingui.Ui_MainWindow()
         Form = guihandler.relForm(ui)
-    
-        #if os.name=='nt':
+
+        # if os.name=='nt':
         Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
-        
+
         ui.setupUi(Form)
         Form.restore_settings()
-    
+
         for i in range(len(files)):
             if not os.path.isfile(files[i]):
                 print >> sys.stderr, "%s is not a file" % files[i]
                 printhelp(12)
-            f=files[i].split('/')
-            defname=f[len(f)-1].lower()
-            if defname.endswith(".csv"): #removes the extension
-                defname=defname[:-4]
-            print 'Loading file "%s" with name "%s"' % (files[i],defname)
-            Form.loadRelation(files[i],defname)
+            f = files[i].split('/')
+            defname = f[len(f) - 1].lower()
+            if defname.endswith(".csv"):  # removes the extension
+                defname = defname[:-4]
+            print 'Loading file "%s" with name "%s"' % (files[i], defname)
+            Form.loadRelation(files[i], defname)
 
         Form.show()
         sys.exit(app.exec_())
@@ -144,6 +143,5 @@ if __name__ == "__main__":
         except:
             print >> sys.stderr, "Module relational_readline is missing.\nPlease install relational-cli package."
             sys.exit(3)
-        relational_readline.linegui.version=version
+        relational_readline.linegui.version = version
         relational_readline.linegui.main(files)
-

@@ -23,23 +23,21 @@ import httplib
 import urllib
 import relation
 
+
 def send_survey(data):
     '''Sends the survey. Data must be a dictionary.
     returns the http response'''
 
-    post=''
+    post = ''
     for i in data.keys():
-        post+='%s: %s\n' %(i,data[i])
+        post += '%s: %s\n' % (i, data[i])
 
-    #sends the string
-    params = urllib.urlencode({'survey':post})
-    headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    #connection = httplib.HTTPConnection('galileo.dmi.unict.it')
-    #connection.request("POST","/~ltworf/survey.php",params,headers)
-
+    # sends the string
+    params = urllib.urlencode({'survey': post})
+    headers = {"Content-type":
+               "application/x-www-form-urlencoded", "Accept": "text/plain"}
     connection = httplib.HTTPConnection('feedback-ltworf.appspot.com')
-    connection.request("POST","/feedback/relational",params,headers)
-
+    connection.request("POST", "/feedback/relational", params, headers)
 
     return connection.getresponse()
 
@@ -49,46 +47,47 @@ def check_latest_version():
     Heavely dependent on server and server configurations
     not granted to work forever.'''
     connection = httplib.HTTPConnection('feedback-ltworf.appspot.com')
-    connection.request("GET","/version/relational")
-    r=connection.getresponse()
+    connection.request("GET", "/version/relational")
+    r = connection.getresponse()
 
-    #html
-    s=r.read()
-    if len(s)==0:
+    # html
+    s = r.read()
+    if len(s) == 0:
         return None
     return s.strip()
 
 
 class interface (object):
+
     '''It is used to provide services to the user interfaces, in order to
     reduce the amount of duplicated code present in different user interfaces.
     '''
 
     def __init__(self):
-        self.rels= {}
+        self.rels = {}
 
-    def load(self,filename,name):
+    def load(self, filename, name):
         '''Loads a relation from file, and gives it a name to
         be used in subsequent queries.'''
         pass
 
-    def unload(self,name):
+    def unload(self, name):
         '''Unloads an existing relation.'''
         pass
 
-    def store(self,filename,name):
+    def store(self, filename, name):
         '''Stores a relation to file.'''
         pass
 
-    def get_relation(self,name):
+    def get_relation(self, name):
         '''Returns the relation corresponding to name.'''
         pass
 
-    def set_relation(self,name,rel):
+    def set_relation(self, name, rel):
         '''Sets the relation corresponding to name.'''
         pass
 
-    def execute(self,query,relname='last_'):
+    def execute(self, query, relname='last_'):
         '''Executes a query, returns the result and if
         relname is not None, adds the result to the
         dictionary, with the name given in relname.'''
