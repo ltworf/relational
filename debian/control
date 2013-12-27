@@ -3,7 +3,7 @@ Section: math
 Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
 Build-Depends: debhelper (>= 7.0.50~), python, python-support
-Standards-Version: 3.9.2
+Standards-Version: 3.9.5
 Homepage: https://github.com/ltworf/relational/
 
 Package: python-relational
