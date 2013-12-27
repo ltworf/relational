@@ -28,7 +28,7 @@ def mail_sender(request, *args, **kwargs):
     if kwargs["id"] == "relational":
         from google.appengine.api import mail
 
-        mail.send_mail(sender="Feedback service <tiposchi@tiscali.it>",
+        mail.send_mail(sender="Feedback service <noreply@feedback-ltworf.appspotmail.com>",
             to="tiposchi@tiscali.it",
               subject="Feedback from %s" % kwargs["id"],
               body=message)
