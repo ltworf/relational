@@ -84,7 +84,7 @@ if __name__ == "__main__":
     if x11:
 
         import sip  # needed on windows
-        from PyQt4 import QtGuiq
+        from PyQt4 import QtGui
         try:
             from relational_gui import maingui, guihandler, about, surveyForm
         except:

@@ -2,6 +2,7 @@
 SHELL=sh -e
 
 %:
+	./driver.py
 	dh $@
 
 clean:
