@@ -54,30 +54,16 @@ dist: clean
 	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
 
 clean:
-	rm -rf *~ || echo ok
-	rm -rf *.pyc *.pyo || echo ok
+	rm -rf `find -name "*~"` || echo ok
+	rm -rf `find -name "*pyc"` || echo ok
+	rm -rf `find -name "*pyo"` || echo ok
 	rm -rf Relational.app || echo ok
 	rm relational*.tar.gz || echo ok
 	rm -rf relational_mac
 	rm -rf data || echo ok
 	rm -rf *tar.bz || echo ok
 	rm -rf *.deb || echo ok
-	rm -rf relational/*~ || echo ok
-	rm -rf relational/*.pyc relational/*.pyo || echo ok
-	rm -rf relational_gui/*~ || echo ok
-	rm -rf relational_gui/*.pyc || echo ok
-	rm -rf relational_gui/*.pyo || echo ok
-	rm -rf relational_curses/*~ || echo ok
-	rm -rf relational_curses/*.pyc || echo ok
-	rm -rf relational_curses/*.pyo || echo ok
-	rm -rf relational_readline/*~ || echo ok
-	rm -rf relational_readline/*.pyc || echo ok
-	rm -rf relational_readline/*.pyo || echo ok
-	rm -rf setup/*~ || echo ok
-	rm -rf setup/*.pyc || echo ok
-	rm -rf setup/*.pyo || echo ok
 	rm -rf relational_mac
-	rm -rf test/*~
 
 debian:    
 	dpkg-buildpackage
