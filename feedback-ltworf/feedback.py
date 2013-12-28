@@ -24,6 +24,7 @@ def mail_sender(request, *args, **kwargs):
     message = ""
     for k,v in request.POST.iteritems():
         message += "%s: %s\n" % (k,v)
+    message += "ip address: %s\n" % str(request.remote_addr)
 
     if kwargs["id"] == "relational":
         from google.appengine.api import mail
