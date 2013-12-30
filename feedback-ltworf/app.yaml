@@ -7,3 +7,5 @@ threadsafe: true
 handlers:
 - url: /.*
   script: feedback.application
+- url: /downloads
+  static_dir: downloads
