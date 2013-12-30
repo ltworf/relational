@@ -5,7 +5,7 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /.*
-  script: feedback.application
 - url: /downloads
   static_dir: downloads
+- url: /.*
+  script: feedback.application
