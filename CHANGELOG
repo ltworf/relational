@@ -1,4 +1,5 @@
 1.3
+- Fix bug in relational-cli that made it crash when an exception was raised
 
 1.2
 - Better tokenizer, gives more indicative errors

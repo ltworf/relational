@@ -296,7 +296,7 @@ def exec_query(command):
 
         completer.add_completion(relname)
     except Exception, e:
-        print colorize(e, ERROR_COLOR)
+        print colorize(str(e), ERROR_COLOR)
 
 
 def main(files=[]):
