@@ -1,0 +1,43 @@
+        <p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>, an offshoot of first-order logic.</p>
+
+<p>It provides GUI that can be used for executing relational queries, and also provides a command line interface.</p>
+
+<p>Provides a standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them.</p>
+
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
+
+<p>Windows installer can be found here: <a href="https://code.google.com/p/relational/downloads/list">https://code.google.com/p/relational/downloads/list</a></p>
+
+<p>For Linux, check your distribution's packages, relational is available on Debian and Ubuntu.</p>
+
+<h1>
+<a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Syntax</h1>
+
+<p>These are some valid queries</p>
+
+<pre><code>σage &gt; 25 and rank == weight(A)
+σ (name.upper().startswith('J') and age&gt;21 )(people)
+Q ᐅᐊ π a,b(A) ᐅᐊ B
+ρid➡i,name➡n(A) - π a,b(π a,b(A)) ᑎ σage &gt; 25 or rank = weight(A)
+π a,b(π a,b(A))
+ρid➡i,name➡n(π a,b(A))
+A ᐅᐊ B
+</code></pre>
+
+<p>Explaination of all the operators and their syntax can be <a href="allowed_expressions.html">found here</a>.</p>
+
+<p>Formal language definition <a href="grammar.html">can be read here</a>.</p>
+
+<h1>
+<a id="run-from-sources" class="anchor" href="#run-from-sources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run from sources</h1>
+
+<p>To launch the application, run</p>
+
+<pre><code>./relational_gui.py
+</code></pre>
+
+<p>If it needs some dependencies:
+Qt4, Python 2.7, either PyQT4 or Pyside.</p>
+
+<p>It can run on osx but this is not supported.</p>
