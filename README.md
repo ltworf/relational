@@ -27,7 +27,7 @@ Q ᐅᐊ π a,b(A) ᐅᐊ B
 A ᐅᐊ B
 ```
 
-Formal language definition at this link https://github.com/ltworf/relational/wiki/Grammar-and-language
+More documentation can be found here http://ltworf.github.io/relational/
 
 
 

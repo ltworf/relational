@@ -38,7 +38,7 @@ def printver(exit=True):
     print
     print "Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>"
     print
-    print "https://github.com/ltworf/relational/"
+    print "http://ltworf.github.io/relational/"
     if exit:
         sys.exit(0)
 

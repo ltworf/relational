@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Author: Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-Source: https://github.com/ltworf/relational
+Source: http://ltworf.github.io/relational/
 
 Files: *
 Copyright: © 2008 Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>

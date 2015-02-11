@@ -28,6 +28,6 @@ def c_setup(name):
         author_email='tiposchi@tiscali.it',
         maintainer="Salvo 'LtWorf' Tomaselli",
         maintainer_email='tiposchi@tiscali.it',
-        url='https://github.com/ltworf/relational',
+        url='http://ltworf.github.io/relational/',
         license='GPL3',
     )

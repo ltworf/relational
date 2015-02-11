@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
 Build-Depends: debhelper (>= 7.0.50~), python, python-support, python-xtermcolor
 Standards-Version: 3.9.5
-Homepage: https://github.com/ltworf/relational/
+Homepage: http://ltworf.github.io/relational/
 
 Package: python-relational
 Architecture: all

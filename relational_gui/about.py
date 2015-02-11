@@ -99,7 +99,7 @@ class Ui_Dialog(object):
         if (webk):
             self.webView = QtWebKit.QWebView(self.tab_2)
             self.webView.setUrl(
-                QtCore.QUrl("https://github.com/ltworf/relational/wiki/Grammar-and-language"))
+                QtCore.QUrl("http://ltworf.github.io/relational/allowed_expressions.html"))
             self.webView.setObjectName("webView")
             self.verticalLayout_7.addWidget(self.webView)
         else:
@@ -107,7 +107,7 @@ class Ui_Dialog(object):
             self.webLink.setFont(font)
             self.webLink.setObjectName("lblLink")
             self.webLink.setText(QtGui.QApplication.translate(
-                "Dialog", "<a href=\"https://github.com/ltworf/relational\">Relational's website</a>", None,))
+                "Dialog", "<a href=\"http://ltworf.github.io/relational/\">Relational's website</a>", None,))
             self.webLink.setOpenExternalLinks(True)
             self.webLink.setTextFormat(QtCore.Qt.AutoText)
             self.webLink.setTextInteractionFlags(
@@ -157,7 +157,7 @@ class Ui_Dialog(object):
         self.groupBox_2.setTitle(QtGui.QApplication.translate(
             "Dialog", "Links", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate(
-            "Dialog", "<a href=\"https://github.com/ltworf/relational/\">https://github.com/ltworf/relational/</a>", None, QtGui.QApplication.UnicodeUTF8))
+            "Dialog", "<a href=\"http://ltworf.github.io/relational/\">http://ltworf.github.io/relational/</a>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setOpenExternalLinks(True)
         self.label_4.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse)
