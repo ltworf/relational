@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Relational : Educational tool for relational algebra">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Relational</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ltworf/relational">View on GitHub</a>
+
+          <h1 id="project_title">Relational</h1>
+          <h2 id="project_tagline">Educational tool for relational algebra</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ltworf/relational/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ltworf/relational/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>, an offshoot of first-order logic.</p>
+
+<p>It provides GUI that can be used for executing relational queries, and also provides a command line interface.</p>
+
+<p>Provides a standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them.</p>
+
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
+
+<p>Windows installer can be found here: <a href="https://code.google.com/p/relational/downloads/list">https://code.google.com/p/relational/downloads/list</a></p>
+
+<p>For Linux, check your distribution's packages, relational is available on Debian and Ubuntu.</p>
+
+<h1>
+<a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Syntax</h1>
+
+<p>These are some valid queries</p>
+
+<pre><code>σage &gt; 25 and rank == weight(A)
+σ (name.upper().startswith('J') and age&gt;21 )(people)
+Q ᐅᐊ π a,b(A) ᐅᐊ B
+ρid➡i,name➡n(A) - π a,b(π a,b(A)) ᑎ σage &gt; 25 or rank = weight(A)
+π a,b(π a,b(A))
+ρid➡i,name➡n(π a,b(A))
+A ᐅᐊ B
+</code></pre>
+
+<p>Formal language definition at this link <a href="https://github.com/ltworf/relational/wiki/Grammar-and-language">https://github.com/ltworf/relational/wiki/Grammar-and-language</a></p>
+
+<h1>
+<a id="run-from-sources" class="anchor" href="#run-from-sources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run from sources</h1>
+
+<p>To launch the application, run</p>
+
+<pre><code>./relational_gui.py
+</code></pre>
+
+<p>If it needs some dependencies:
+Qt4, Python 2.7, either PyQT4 or Pyside.</p>
+
+<p>It can run on osx but this is not supported.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Relational maintained by <a href="https://github.com/ltworf">ltworf</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
