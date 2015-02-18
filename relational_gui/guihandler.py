@@ -18,13 +18,8 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 import sys
 import os
-import pickle
 
-try:
-    from PyQt4 import QtCore, QtGui
-except:
-    from PySide import QtCore, QtGui
-
+from PyQt4 import QtCore, QtGui
 
 from relational import relation, parser, optimizer, rtypes
 

@@ -18,22 +18,13 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 import os
+from PyQt4 import QtCore, QtGui
 
-try:
-    from PyQt4 import QtCore, QtGui
-    try:  # If QtWebKit is available, uses it
-        from PyQt4 import QtWebKit
-        webk = True
-    except:
-        webk = False
-
+try:  # If QtWebKit is available, uses it
+    from PyQt4 import QtWebKit
+    webk = True
 except:
-    from PySide import QtCore, QtGui
-    try:  # If QtWebKit is available, uses it
-        from PySide import QtWebKit
-        webk = True
-    except:
-        webk = False
+    webk = False
 
 version = 0
 

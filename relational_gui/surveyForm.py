@@ -16,10 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-try:
-    from PyQt4 import QtCore, QtGui
-except:
-    from PySide import QtCore, QtGui
+
+from PyQt4 import QtCore, QtGui
 
 import compatibility
 from relational import maintenance
