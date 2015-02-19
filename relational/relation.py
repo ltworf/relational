@@ -20,8 +20,9 @@
 # This module provides a classes to represent relations and to perform
 # relational operations on them.
 
-from rtypes import *
 import csv
+
+from relational.rtypes import *
 
 
 class relation (object):
@@ -46,13 +47,13 @@ class relation (object):
             self.header = header([])
             return
         # Opening file
-        fp = file(filename)
+        fp = open(filename)
 
         reader = csv.reader(fp)  # Creating a csv reader
-        self.header = header(reader.next())  # read 1st line
+        self.header = header(next(reader))  # read 1st line
         self.content = set()
 
-        for i in reader.__iter__():  # Iterating rows
+        for i in reader:  # Iterating rows
             self.content.add(tuple(i))
 
         # Closing file
@@ -123,7 +124,7 @@ class relation (object):
             try:
                 if eval(expr, attributes):
                     newt.content.add(i)
-            except Exception, e:
+            except Exception as e:
                 raise Exception(
                     "Failed to evaluate %s\n%s" % (expr, e.__str__()))
         return newt
@@ -190,7 +191,7 @@ class relation (object):
         newt = relation()
         newt.header = header(list(self.header.attributes))
 
-        for old, new in params.iteritems():
+        for old, new in params.items():
             if (newt.header.rename(old, new)) == False:
                 raise Exception('Unable to find attribute: %s' % old)
 

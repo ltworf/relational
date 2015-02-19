@@ -25,8 +25,8 @@
 # The functions will always return a string with the optimized query, but if a parse tree was provided,
 # the parse tree itself will be modified accordingly.
 
-import optimizations
-import parser
+from relational import optimizations
+from relational import parser
 
 
 # Stuff that was here before, keeping it for compatibility
@@ -56,12 +56,12 @@ def optimize_all(expression, rels, specific=True, general=True, debug=None):
         steps.
 
     Return value: this will return an optimized version of the expression'''
-    if isinstance(expression, unicode):
+    if isinstance(expression, str):
         n = tree(expression)  # Gets the tree
     elif isinstance(expression, node):
         n = expression
     else:
-        raise (TypeError("expression must be a unicode string or a node"))
+        raise (TypeError("expression must be a string or a node"))
 
     if isinstance(debug, list):
         dbg = True
@@ -128,8 +128,8 @@ if __name__ == "__main__":
     print rels'''
     n = tree(u"π indice,qq,name (ρ age➡qq,id➡indice (P1-P2))")
     # n=tree("σ id==3 and indice==2 and name==5 or name<2(P1 * S1)")
-    print n
-    print n.toPython()
+    print (n)
+    print (n.toPython())
 
     # print optimizations.selection_and_product(n,rels)
 

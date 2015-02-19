@@ -41,7 +41,8 @@
 # Language definition here:
 # https://github.com/ltworf/relational/wiki/Grammar-and-language
 import re
-import rtypes
+
+from relational import rtypes
 
 RELATION = 0
 UNARY = 1
@@ -104,10 +105,10 @@ class node (object):
         # If the list contains only a list, it will consider the lower level list.
         # This will allow things like ((((((a))))) to work
         while len(expression) == 1 and isinstance(expression[0], list):
-                expression = expression[0]
+            expression = expression[0]
 
         # The list contains only 1 string. Means it is the name of a relation
-        if len(expression) == 1 and isinstance(expression[0], unicode):
+        if len(expression) == 1:
             self.kind = RELATION
             self.name = expression[0]
             if not rtypes.is_valid_relation_name(self.name):
@@ -125,7 +126,7 @@ class node (object):
         Since it searches for strings, and expressions into parenthesis are
         within sub-lists, they won't be found here, ensuring that they will
         have highest priority.'''
-        for i in xrange(len(expression) - 1, -1, -1):
+        for i in range(len(expression) - 1, -1, -1):
             if expression[i] in b_operators:  # Binary operator
                 self.kind = BINARY
                 self.name = expression[i]
@@ -142,7 +143,7 @@ class node (object):
                 self.right = node(expression[i + 1:])
                 return
         '''Searches for unary operators, parsing from right to left'''
-        for i in xrange(len(expression) - 1, -1, -1):
+        for i in range(len(expression) - 1, -1, -1):
             if expression[i] in u_operators:  # Unary operator
                 self.kind = UNARY
                 self.name = expression[i]
@@ -293,9 +294,6 @@ def tokenize(expression):
     '''This function converts an expression into a list where
     every token of the expression is an item of a list. Expressions into
     parenthesis will be converted into sublists.'''
-    if not isinstance(expression, unicode):
-        raise TokenizerException('expected unicode')
-
     items = []  # List for the tokens
 
     '''This is a state machine. Initial status is determined by the starting of the
@@ -334,7 +332,7 @@ def tokenize(expression):
 
         elif expression.startswith((u"σ", u"π", u"ρ")):  # Unary 2 bytes
             items.append(expression[0:1])
-                         #Adding operator in the top of the list
+                         # Adding operator in the top of the list
             expression = expression[
                 1:].strip()  # Removing operator from the expression
 
@@ -345,7 +343,7 @@ def tokenize(expression):
                 par = expression.find('(')
 
             items.append(expression[:par].strip())
-                         #Inserting parameter of the operator
+                         # Inserting parameter of the operator
             expression = expression[
                 par:].strip()  # Removing parameter from the expression
         elif expression.startswith((u"÷", u"ᑎ", u"ᑌ", u"*", u"-")):
@@ -417,8 +415,8 @@ def parse(expr):
 
 if __name__ == "__main__":
     while True:
-        e = unicode(raw_input("Expression: "), 'utf-8')
-        print parse(e)
+        e = str(raw_input("Expression: "))
+        print (parse(e))
 
     # b=u"σ age>1 and skill=='C' (peopleᐅᐊskills)"
     # print b[0]

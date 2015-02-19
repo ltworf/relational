@@ -29,10 +29,11 @@
 # The class used is defined in optimizer module.
 # A function will have to return the number of changes performed on the tree.
 
-import parser
-
-from cStringIO import StringIO
+from io import StringIO
 from tokenize import generate_tokens
+
+
+from relational import parser
 
 sel_op = (
     '//=', '**=', 'and', 'not', 'in', '//', '**', '<<', '>>', '==', '!=', '>=', '<=', '+=', '-=',
@@ -620,4 +621,4 @@ general_optimizations = [
 specific_optimizations = [selection_and_product]
 
 if __name__ == "__main__":
-    print tokenize_select("skill == 'C' and  id % 2 == 0")
+    print (tokenize_select("skill == 'C' and  id % 2 == 0"))

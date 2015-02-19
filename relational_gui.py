@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # coding=UTF-8
 # Relational
@@ -28,35 +28,35 @@ version = "1.3"
 
 
 def printver(exit=True):
-    print "Relational %s" % version
-    print "Copyright (C) 2008 Salvo 'LtWorf' Tomaselli."
-    print
-    print "This program comes with ABSOLUTELY NO WARRANTY."
-    print "This is free software, and you are welcome to redistribute it"
-    print "under certain conditions."
-    print "For details see the GPLv3 Licese."
-    print
-    print "Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>"
-    print
-    print "http://ltworf.github.io/relational/"
+    print ("Relational %s" % version)
+    print ("Copyright (C) 2008 Salvo 'LtWorf' Tomaselli.")
+    print ()
+    print ("This program comes with ABSOLUTELY NO WARRANTY.")
+    print ("This is free software, and you are welcome to redistribute it")
+    print ("under certain conditions.")
+    print ("For details see the GPLv3 Licese.")
+    print ()
+    print ("Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>")
+    print ()
+    print ("http://ltworf.github.io/relational/")
     if exit:
         sys.exit(0)
 
 
 def printhelp(code=0):
-    print "Relational"
-    print
-    print "Usage: %s [options] [files]" % sys.argv[0]
-    print
-    print "  -v            Print version and exits"
-    print "  -h            Print this help and exits"
+    print ("Relational")
+    print ()
+    print ("Usage: %s [options] [files]" % sys.argv[0])
+    print ()
+    print ("  -v            Print version and exits")
+    print ("  -h            Print this help and exits")
 
     if sys.argv[0].endswith('relational-cli'):
-        print "  -q            Uses QT user interface"
-        print "  -r            Uses readline user interface (default)"
+        print ("  -q            Uses QT user interface")
+        print ("  -r            Uses readline user interface (default)")
     else:
-        print "  -q            Uses QT user interface (default)"
-        print "  -r            Uses readline user interface"
+        print ("  -q            Uses QT user interface (default)")
+        print ("  -r            Uses readline user interface")
     sys.exit(code)
 
 if __name__ == "__main__":
@@ -116,7 +116,7 @@ if __name__ == "__main__":
             defname = f[len(f) - 1].lower()
             if defname.endswith(".csv"):  # removes the extension
                 defname = defname[:-4]
-            print 'Loading file "%s" with name "%s"' % (files[i], defname)
+            print ('Loading file "%s" with name "%s"' % (files[i], defname))
             Form.loadRelation(files[i], defname)
 
         Form.show()

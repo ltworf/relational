@@ -19,7 +19,7 @@
 #
 # This module provides a classes to represent queries
 
-import parser
+from relational import
 
 
 class TypeException(Exception):
@@ -29,10 +29,6 @@ class TypeException(Exception):
 class Query(object):
 
     def __init__(self, query):
-
-        if not isinstance(query, unicode):
-            raise TypeException('Expected unicode')
-
         self.query = query
         self.tree = parser.tree(query)
         # TODO self.query_code = parser
