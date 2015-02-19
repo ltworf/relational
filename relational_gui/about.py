@@ -18,10 +18,10 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 import os
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 try:  # If QtWebKit is available, uses it
-    from PyQt4 import QtWebKit
+    from PyQt5 import QtWebKit
     webk = True
 except:
     webk = False
@@ -34,58 +34,58 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(510, 453)
-        self.verticalLayout_2 = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.tabWidget = QtGui.QTabWidget(Dialog)
+        self.tabWidget = QtWidgets.QTabWidget(Dialog)
         self.tabWidget.setObjectName("tabWidget")
-        self.tab = QtGui.QWidget()
+        self.tab = QtWidgets.QWidget()
         self.tab.setGeometry(QtCore.QRect(0, 0, 494, 377))
         self.tab.setObjectName("tab")
-        self.verticalLayout_3 = QtGui.QVBoxLayout(self.tab)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tab)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.groupBox = QtGui.QGroupBox(self.tab)
+        self.groupBox = QtWidgets.QGroupBox(self.tab)
         self.groupBox.setObjectName("groupBox")
-        self.verticalLayout_5 = QtGui.QVBoxLayout(self.groupBox)
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.label = QtGui.QLabel(self.groupBox)
+        self.label = QtWidgets.QLabel(self.groupBox)
         font = QtGui.QFont()
         font.setPointSize(15)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.verticalLayout_5.addWidget(self.label)
-        self.label_3 = QtGui.QLabel(self.groupBox)
+        self.label_3 = QtWidgets.QLabel(self.groupBox)
         self.label_3.setObjectName("label_3")
         self.verticalLayout_5.addWidget(self.label_3)
         self.verticalLayout_3.addWidget(self.groupBox)
-        self.groupBox_3 = QtGui.QGroupBox(self.tab)
+        self.groupBox_3 = QtWidgets.QGroupBox(self.tab)
         self.groupBox_3.setObjectName("groupBox_3")
-        self.verticalLayout_4 = QtGui.QVBoxLayout(self.groupBox_3)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_3)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_2 = QtGui.QLabel(self.groupBox_3)
+        self.label_2 = QtWidgets.QLabel(self.groupBox_3)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_4.addWidget(self.label_2)
         self.verticalLayout_3.addWidget(self.groupBox_3)
-        self.groupBox_2 = QtGui.QGroupBox(self.tab)
+        self.groupBox_2 = QtWidgets.QGroupBox(self.tab)
         self.groupBox_2.setObjectName("groupBox_2")
-        self.verticalLayout_6 = QtGui.QVBoxLayout(self.groupBox_2)
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_2)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.label_4 = QtGui.QLabel(self.groupBox_2)
+        self.label_4 = QtWidgets.QLabel(self.groupBox_2)
         self.label_4.setObjectName("label_4")
         self.verticalLayout_6.addWidget(self.label_4)
         self.verticalLayout_3.addWidget(self.groupBox_2)
         self.tabWidget.addTab(self.tab, "")
-        self.License = QtGui.QWidget()
+        self.License = QtWidgets.QWidget()
         self.License.setGeometry(QtCore.QRect(0, 0, 494, 377))
         self.License.setObjectName("License")
-        self.verticalLayout = QtGui.QVBoxLayout(self.License)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.License)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.textEdit = QtGui.QTextEdit(self.License)
+        self.textEdit = QtWidgets.QTextEdit(self.License)
         self.textEdit.setObjectName("textEdit")
         self.verticalLayout.addWidget(self.textEdit)
         self.tabWidget.addTab(self.License, "")
-        self.tab_2 = QtGui.QWidget()
+        self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
-        self.verticalLayout_7 = QtGui.QVBoxLayout(self.tab_2)
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.tab_2)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         if (webk):
             self.webView = QtWebKit.QWebView(self.tab_2)
@@ -94,10 +94,10 @@ class Ui_Dialog(object):
             self.webView.setObjectName("webView")
             self.verticalLayout_7.addWidget(self.webView)
         else:
-            self.webLink = QtGui.QLabel(self.groupBox)
+            self.webLink = QtWidgets.QLabel(self.groupBox)
             self.webLink.setFont(font)
             self.webLink.setObjectName("lblLink")
-            self.webLink.setText(QtGui.QApplication.translate(
+            self.webLink.setText(QtWidgets.QApplication.translate(
                 "Dialog", "<a href=\"http://ltworf.github.io/relational/\">Relational's website</a>", None,))
             self.webLink.setOpenExternalLinks(True)
             self.webLink.setTextFormat(QtCore.Qt.AutoText)
@@ -113,48 +113,46 @@ class Ui_Dialog(object):
 
         self.tabWidget.addTab(self.tab_2, "")
         self.verticalLayout_2.addWidget(self.tabWidget)
-        self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_2.addWidget(self.buttonBox)
 
         self.retranslateUi(Dialog)
         self.tabWidget.setCurrentIndex(0)
-        QtCore.QObject.connect(
-            self.buttonBox, QtCore.SIGNAL("accepted()"), Dialog.accept)
-        QtCore.QObject.connect(
-            self.buttonBox, QtCore.SIGNAL("rejected()"), Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+        self.buttonBox.accepted.connect(Dialog.accept)
+        self.buttonBox.rejected.connect(Dialog.reject)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate(
-            "Dialog", "Documentation", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate(
-            "Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate(
-            "Dialog", "Relational", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate(
-            "Dialog", "Version " + version, None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtWidgets.QApplication.translate(
+            "Dialog", "Documentation", None))
+        self.groupBox.setTitle(QtWidgets.QApplication.translate(
+            "Dialog", "Relational", None))
+        self.label.setText(QtWidgets.QApplication.translate(
+            "Dialog", "Relational", None))
+        self.label_3.setText(QtWidgets.QApplication.translate(
+            "Dialog", "Version " + version, None))
         self.label_3.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse)
-        self.groupBox_3.setTitle(QtGui.QApplication.translate(
-            "Dialog", "Author", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate(
-            "Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;<br>Emilio Di Prima &lt;emiliodiprima[at]msn[dot]com&gt; (For the windows setup)", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_3.setTitle(QtWidgets.QApplication.translate(
+            "Dialog", "Author", None))
+        self.label_2.setText(QtWidgets.QApplication.translate(
+            "Dialog", "Salvo \"LtWorf\" Tomaselli &lt;<a href=\"mailto:tiposchi@tiscali.it\">tiposchi@tiscali.it</a>&gt;<br>Emilio Di Prima &lt;emiliodiprima[at]msn[dot]com&gt; (For the windows setup)", None))
         self.label_2.setOpenExternalLinks(True)
         self.label_2.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse)
-        self.groupBox_2.setTitle(QtGui.QApplication.translate(
-            "Dialog", "Links", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate(
-            "Dialog", "<a href=\"http://ltworf.github.io/relational/\">http://ltworf.github.io/relational/</a>", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_2.setTitle(QtWidgets.QApplication.translate(
+            "Dialog", "Links", None))
+        self.label_4.setText(QtWidgets.QApplication.translate(
+            "Dialog", "<a href=\"http://ltworf.github.io/relational/\">http://ltworf.github.io/relational/</a>", None))
         self.label_4.setOpenExternalLinks(True)
         self.label_4.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse)
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate(
-            "Dialog", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.textEdit.setHtml(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate(
+            "Dialog", "About", None))
+        self.textEdit.setHtml(QtWidgets.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                                                            "<html><head><meta name=\"qrichtext\" content=\"1\" /><title>GNU General Public License - GNU Project - Free Software Foundation (FSF)</title><style type=\"text/css\">\n"
                                                            "p, li { white-space: pre-wrap; }\n"
                                                            "</style></head><body style=\" font-family:\'DejaVu Sans\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
@@ -295,17 +293,17 @@ class Ui_Dialog(object):
                                                            "<pre style=\" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Courier New,courier\';\">    under certain conditions; type `show c\' for details. </pre>\n"
                                                            "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The hypothetical commands `show w\' and `show c\' should show the appropriate parts of the General Public License. Of course, your program\'s commands might be different; for a GUI interface, you would use an “about box”. </p>\n"
                                                            "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">You should also get your employer (if you work as a programmer) or school, if any, to sign a “copyright disclaimer” for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see &lt;http://www.gnu.org/licenses/&gt;. </p>\n"
-                                                           "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;. </p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.License), QtGui.QApplication.translate(
-            "Dialog", "License", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate(
-            "Dialog", "Docs", None, QtGui.QApplication.UnicodeUTF8))
+                                                           "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;. </p></body></html>", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.License), QtWidgets.QApplication.translate(
+            "Dialog", "License", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate(
+            "Dialog", "Docs", None))
 
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
-    Dialog = QtGui.QDialog()
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
     Dialog.show()

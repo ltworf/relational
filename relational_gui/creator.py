@@ -17,20 +17,16 @@
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-try:
-    from PyQt4 import QtCore, QtGui
-except:
-    from PySide import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-import compatibility
+from relational_gui import compatibility
+from relational_gui import rel_edit
 from relational import relation
-import rel_edit
 
-
-class creatorForm(QtGui.QDialog):
+class creatorForm(QtWidgets.QDialog):
 
     def __init__(self, rel=None):
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
 
         self.setSizeGripEnabled(True)
         self.result_relation = None
@@ -50,7 +46,7 @@ class creatorForm(QtGui.QDialog):
         self.table.insertRow(0)
 
         for i in rel.header.attributes:
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setText(i)
             self.table.insertColumn(self.table.columnCount())
             self.table.setItem(0, self.table.columnCount() - 1, item)
@@ -58,7 +54,7 @@ class creatorForm(QtGui.QDialog):
         for i in rel.content:
             self.table.insertRow(self.table.rowCount())
             for j in range(len(i)):
-                item = QtGui.QTableWidgetItem()
+                item = QtWidgets.QTableWidgetItem()
                 item.setText(i[j])
                 self.table.setItem(self.table.rowCount() - 1, j, item)
 
@@ -70,10 +66,10 @@ class creatorForm(QtGui.QDialog):
         self.table.insertRow(0)
         self.table.insertRow(0)
 
-        i00 = QtGui.QTableWidgetItem()
-        i01 = QtGui.QTableWidgetItem()
-        i10 = QtGui.QTableWidgetItem()
-        i11 = QtGui.QTableWidgetItem()
+        i00 = QtWidgets.QTableWidgetItem()
+        i01 = QtWidgets.QTableWidgetItem()
+        i10 = QtWidgets.QTableWidgetItem()
+        i11 = QtWidgets.QTableWidgetItem()
         i00.setText('Field name 1')
         i01.setText('Field name 2')
         i10.setText('Value 1')
@@ -92,9 +88,9 @@ class creatorForm(QtGui.QDialog):
                 compatibility.get_py_str(self.table.item(0, i).text()))
         try:
             header = relation.header(hlist)
-        except Exception, e:
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate("Form", "Error"), "%s\n%s" % (
-                QtGui.QApplication.translate("Form", "Header error!"), e.__str__()))
+        except Exception as e:
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" % (
+                QtWidgets.QApplication.translate("Form", "Header error!"), e.__str__()))
             return None
         r = relation.relation()
         r.header = header
@@ -106,8 +102,8 @@ class creatorForm(QtGui.QDialog):
                     hlist.append(
                         compatibility.get_py_str(self.table.item(i, j).text()))
                 except:
-                    QtGui.QMessageBox.information(None, QtGui.QApplication.translate(
-                        "Form", "Error"), QtGui.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))
+                    QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
+                        "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))
                     return None
             r.content.add(tuple(hlist))
         return r
@@ -118,31 +114,25 @@ class creatorForm(QtGui.QDialog):
 
         # Doesn't close the window in case of errors
         if self.result_relation != None:
-            QtGui.QDialog.accept(self)
-        pass
+            QtWidgets.QDialog.accept(self)
 
     def reject(self):
         self.result_relation = None
-        QtGui.QDialog.reject(self)
-        pass
+        QtWidgets.QDialog.reject(self)
 
     def addColumn(self):
         self.table.insertColumn(self.table.columnCount())
-        pass
 
     def addRow(self):
         self.table.insertRow(1)
-        pass
 
     def deleteColumn(self):
         if self.table.columnCount() > 1:
             self.table.removeColumn(self.table.currentColumn())
-        pass
 
     def deleteRow(self):
         if self.table.rowCount() > 2:
             self.table.removeRow(self.table.currentRow())
-        pass
 
 
 def edit_relation(rel=None):
@@ -165,4 +155,4 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     r = relation.relation(
         "/home/salvo/dev/relational/trunk/samples/people.csv")
-    print edit_relation(r)
+    print (edit_relation(r))

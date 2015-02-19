@@ -84,18 +84,20 @@ if __name__ == "__main__":
     if x11:
 
         import sip  # needed on windows
-        from PyQt4 import QtGui
+        from PyQt5 import QtGui, QtWidgets
+        #FIXME remove this
+        from relational_gui import maingui, guihandler, about, surveyForm
         try:
             from relational_gui import maingui, guihandler, about, surveyForm
         except:
-            print >> sys.stderr, "Module relational_gui is missing.\nPlease install relational package."
+            print ("Module relational_gui is missing.\nPlease install relational package.",file=sys.stderr)
             sys.exit(3)
 
         about.version = version
         surveyForm.version = version
         guihandler.version = version
 
-        app = QtGui.QApplication(sys.argv)
+        app = QtWidgets.QApplication(sys.argv)
         app.setOrganizationName('None')
         app.setApplicationName('relational')
 
@@ -110,7 +112,7 @@ if __name__ == "__main__":
 
         for i in range(len(files)):
             if not os.path.isfile(files[i]):
-                print >> sys.stderr, "%s is not a file" % files[i]
+                print ("%s is not a file" % files[i],file=sys.stderr)
                 printhelp(12)
             f = files[i].split('/')
             defname = f[len(f) - 1].lower()
@@ -126,7 +128,7 @@ if __name__ == "__main__":
         try:
             import relational_readline.linegui
         except:
-            print >> sys.stderr, "Module relational_readline is missing.\nPlease install relational-cli package."
+            print ("Module relational_readline is missing.\nPlease install relational-cli package.",file=sys.stderr)
             sys.exit(3)
         relational_readline.linegui.version = version
         relational_readline.linegui.main(files)

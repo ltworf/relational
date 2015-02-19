@@ -19,9 +19,10 @@
 #
 # Stuff non-related to relational algebra, but used for maintenance.
 
-import httplib
-import urllib
-import relation
+import http.client
+import urllib.parse
+
+from relational import relation
 
 
 def send_survey(data):
@@ -33,10 +34,10 @@ def send_survey(data):
         post += '%s: %s\n' % (i, data[i])
 
     # sends the string
-    params = urllib.urlencode({'survey': post})
+    params = urllib.parse.urlencode({'survey': post})
     headers = {"Content-type":
                "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    connection = httplib.HTTPConnection('feedback-ltworf.appspot.com')
+    connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
     connection.request("POST", "/feedback/relational", params, headers)
 
     return connection.getresponse()
@@ -46,7 +47,7 @@ def check_latest_version():
     '''Returns the latest version available.
     Heavely dependent on server and server configurations
     not granted to work forever.'''
-    connection = httplib.HTTPConnection('feedback-ltworf.appspot.com')
+    connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
     connection.request("GET", "/version/relational")
     r = connection.getresponse()
 
@@ -54,7 +55,7 @@ def check_latest_version():
     s = r.read()
     if len(s) == 0:
         return None
-    return s.strip()
+    return str(s.strip())
 
 
 class interface (object):

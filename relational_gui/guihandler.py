@@ -19,21 +19,21 @@
 import sys
 import os
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets, QtWidgets
 
 from relational import relation, parser, optimizer, rtypes
 
-import about
-import survey
-import surveyForm
-import maingui
-import compatibility
+from relational_gui import about
+from relational_gui import survey
+from relational_gui import surveyForm
+from relational_gui import maingui
+from relational_gui import compatibility
 
 
-class relForm(QtGui.QMainWindow):
+class relForm(QtWidgets.QMainWindow):
 
     def __init__(self, ui):
-        QtGui.QMainWindow.__init__(self)
+        QtWidgets.QMainWindow.__init__(self)
         self.About = None
         self.Survey = None
         self.relations = {}  # Dictionary for relations
@@ -49,17 +49,17 @@ class relForm(QtGui.QMainWindow):
         online = maintenance.check_latest_version()
 
         if online > version:
-            r = QtGui.QApplication.translate(
+            r = QtWidgets.QApplication.translate(
                 "Form", "New version available online: %s." % online)
         elif online == version:
-            r = QtGui.QApplication.translate(
+            r = QtWidgets.QApplication.translate(
                 "Form", "Latest version installed.")
         else:
-            r = QtGui.QApplication.translate(
+            r = QtWidgets.QApplication.translate(
                 "Form", "You are using an unstable version.")
 
-        QtGui.QMessageBox.information(
-            self, QtGui.QApplication.translate("Form", "Version"), r)
+        QtWidgets.QMessageBox.information(
+            self, QtWidgets.QApplication.translate("Form", "Version"), r)
 
     def load_query(self, *index):
         self.ui.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
@@ -77,9 +77,9 @@ class relForm(QtGui.QMainWindow):
         try:
             result = optimizer.optimize_all(query, self.relations)
             compatibility.set_utf8_text(self.ui.txtQuery, result)
-        except Exception, e:
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                          (QtGui.QApplication.translate("Form", "Check your query!"), e.__str__()))
+        except Exception as e:
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
+                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
 
     def resumeHistory(self, item):
         itm = compatibility.get_py_str(item.text()).split(' = ', 1)
@@ -94,14 +94,14 @@ class relForm(QtGui.QMainWindow):
             self.ui.txtResult.text())  # result relation's name
 
         if not rtypes.is_valid_relation_name(res_rel):
-            QtGui.QMessageBox.information(self, QtGui.QApplication.translate(
-                "Form", "Error"), QtGui.QApplication.translate("Form", "Wrong name for destination relation."))
+            QtWidgets.QMessageBox.information(self, QtWidgets.QApplication.translate(
+                "Form", "Error"), QtWidgets.QApplication.translate("Form", "Wrong name for destination relation."))
             return
 
         try:
             # Converting string to utf8 and then from qstring to normal string
             expr = parser.parse(query)  # Converting expression to python code
-            print query, "-->", expr  # Printing debug
+            print (query, "-->", expr)  # Printing debug
             result = eval(expr, self.relations)  # Evaluating the expression
 
             self.relations[
@@ -110,10 +110,10 @@ class relForm(QtGui.QMainWindow):
             self.selectedRelation = result
             self.showRelation(self.selectedRelation)
                               # Show the result in the table
-        except Exception, e:
-            print e.__unicode__()
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate("Form", "Error"), u"%s\n%s" %
-                                          (QtGui.QApplication.translate("Form", "Check your query!"), e.__unicode__()))
+        except Exception as e:
+            print (str(e))
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
+                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
             return
 
         # Adds to history
@@ -138,7 +138,7 @@ class relForm(QtGui.QMainWindow):
 
         # Set content
         for i in rel.content:
-            item = QtGui.QTreeWidgetItem()
+            item = QtWidgets.QTreeWidgetItem()
             for j in range(len(i)):
                 item.setText(j, i[j])
             self.ui.table.addTopLevelItem(item)
@@ -168,8 +168,8 @@ class relForm(QtGui.QMainWindow):
                 self.ui.lstRelations.addItem(i)
 
     def saveRelation(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self, QtGui.QApplication.translate(
-            "Form", "Save Relation"), "", QtGui.QApplication.translate("Form", "Relations (*.csv)"))
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, QtWidgets.QApplication.translate(
+            "Form", "Save Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv)"))
 
         filename = compatibility.get_filename(filename)
         if (len(filename) == 0):  # Returns if no file was selected
@@ -183,7 +183,7 @@ class relForm(QtGui.QMainWindow):
         self.updateRelations()
 
     def editRelation(self):
-        import creator
+        from relational_gui import creator
         for i in self.ui.lstRelations.selectedItems():
             result = creator.edit_relation(
                 self.relations[compatibility.get_py_str(i.text())])
@@ -192,17 +192,17 @@ class relForm(QtGui.QMainWindow):
         self.updateRelations()
 
     def newRelation(self):
-        import creator
+        from relational_gui import creator
         result = creator.edit_relation()
 
         if result == None:
             return
-        res = QtGui.QInputDialog.getText(
+        res = QtWidgets.QInputDialog.getText(
             self,
-            QtGui.QApplication.translate("Form", "New relation"),
-            QtGui.QApplication.translate(
+            QtWidgets.QApplication.translate("Form", "New relation"),
+            QtWidgets.QApplication.translate(
                 "Form", "Insert the name for the new relation"),
-            QtGui.QLineEdit.Normal, '')
+            QtWidgets.QLineEdit.Normal, '')
         if res[1] == False or len(res[0]) == 0:
             return
 
@@ -210,18 +210,18 @@ class relForm(QtGui.QMainWindow):
         name = compatibility.get_py_str(res[0])
 
         if not rtypes.is_valid_relation_name(name):
-            r = QtGui.QApplication.translate(
+            r = QtWidgets.QApplication.translate(
                 "Form", str("Wrong name for destination relation: %s." % name))
-            QtGui.QMessageBox.information(
-                self, QtGui.QApplication.translate("Form", "Error"), r)
+            QtWidgets.QMessageBox.information(
+                self, QtWidgets.QApplication.translate("Form", "Error"), r)
             return
 
         try:
             self.relations[name] = result
-        except Exception, e:
-            print e
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                          (QtGui.QApplication.translate("Form", "Check your query!"), e.__str__()))
+        except Exception as e:
+            print (e)
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
+                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
             return
 
         self.updateRelations()
@@ -249,7 +249,7 @@ class relForm(QtGui.QMainWindow):
 
     def showAbout(self):
         if self.About == None:
-            self.About = QtGui.QDialog()
+            self.About = QtWidgets.QDialog()
             ui = about.Ui_Dialog()
             ui.setupUi(self.About)
         self.About.show()
@@ -260,8 +260,8 @@ class relForm(QtGui.QMainWindow):
         It shouldn't be called giving filename but not giving name.'''
         # Asking for file to load
         if filename == None:
-            filename = QtGui.QFileDialog.getOpenFileName(self, QtGui.QApplication.translate(
-                "Form", "Load Relation"), "", QtGui.QApplication.translate("Form", "Relations (*.csv);;Text Files (*.txt);;All Files (*)"))
+            filename = QtWidgets.QFileDialog.getOpenFileName(self, QtWidgets.QApplication.translate(
+                "Form", "Load Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv);;Text Files (*.txt);;All Files (*)"))
             filename = compatibility.get_filename(filename)
 
         # Default relation's name
@@ -275,29 +275,28 @@ class relForm(QtGui.QMainWindow):
             defname = defname[:-4]
 
         if name == None:  # Prompt dialog to insert name for the relation
-            res = QtGui.QInputDialog.getText(
-                self, QtGui.QApplication.translate("Form", "New relation"), QtGui.QApplication.translate(
+            res = QtWidgets.QInputDialog.getText(
+                self, QtWidgets.QApplication.translate("Form", "New relation"), QtWidgets.QApplication.translate(
                     "Form", "Insert the name for the new relation"),
-                QtGui.QLineEdit.Normal, defname)
+                QtWidgets.QLineEdit.Normal, defname)
             if res[1] == False or len(res[0]) == 0:
                 return
 
-            # Patch provided by Angelo 'Havoc' Puglisi
             name = compatibility.get_py_str(res[0])
 
         if not rtypes.is_valid_relation_name(name):
-            r = QtGui.QApplication.translate(
+            r = QtWidgets.QApplication.translate(
                 "Form", str("Wrong name for destination relation: %s." % name))
-            QtGui.QMessageBox.information(
-                self, QtGui.QApplication.translate("Form", "Error"), r)
+            QtWidgets.QMessageBox.information(
+                self, QtWidgets.QApplication.translate("Form", "Error"), r)
             return
 
         try:
             self.relations[name] = relation.relation(filename)
-        except Exception, e:
-            print e
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                          (QtGui.QApplication.translate("Form", "Check your query!"), e.__str__()))
+        except Exception as e:
+            print (e)
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
+                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
             return
 
         self.updateRelations()

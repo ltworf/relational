@@ -42,7 +42,7 @@ To launch the application, run
 ```
 
 If it needs some dependencies:
-Qt4, Python 2.7, either PyQT4 or Pyside.
+Qt5, Python 3.4 or greater, PyQt5
 
 It can run on osx but this is not supported.
 

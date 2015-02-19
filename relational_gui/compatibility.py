@@ -19,22 +19,21 @@
 #
 # Module to unify the use of both pyqt and pyside
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 def get_py_str(a):
     '''Returns a python string out of a QString'''
-    return unicode(a.toUtf8(), 'utf-8')
+    return a
 
 def set_utf8_text(component, text):
-    component.setText(QtCore.QString.fromUtf8(text))
+    component.setText(text)
 
 def get_filename(filename):
+    print (filename)
     return str(filename.toUtf8())
 
 def add_list_item(l, item):
-    history_item = QtCore.QString()
-    history_item.append(item)
-    hitem = QtGui.QListWidgetItem(None, 0)
-    hitem.setText(history_item)
+    hitem = QtWidgets.QListWidgetItem(None, 0)
+    hitem.setText(item)
     l.addItem(hitem)
     l.setCurrentItem(hitem)

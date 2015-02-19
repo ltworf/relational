@@ -17,15 +17,17 @@
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-from PyQt4 import QtCore, QtGui
-
-import compatibility
-from relational import maintenance
 import platform
 import locale
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-class surveyForm (QtGui.QWidget):
+from relational_gui import compatibility
+from relational import maintenance
+
+
+
+class surveyForm (QtWidgets.QWidget):
 
     '''This class is the form used for the survey, needed to intercept the events.
     It also sends the data with http POST to a page'''
@@ -85,10 +87,10 @@ class surveyForm (QtGui.QWidget):
         response = maintenance.send_survey(post)
 
         if response.status != 200:
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate(
-                "Form", "Error"), QtGui.QApplication.translate("Form", "Unable to send the data!"))
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
+                "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unable to send the data!"))
         else:
-            QtGui.QMessageBox.information(None, QtGui.QApplication.translate(
-                "Form", "Thanks"), QtGui.QApplication.translate("Form", "Thanks for sending!"))
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
+                "Form", "Thanks"), QtWidgets.QApplication.translate("Form", "Thanks for sending!"))
 
         self.hide()
