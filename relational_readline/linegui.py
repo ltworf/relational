@@ -322,7 +322,7 @@ def main(files=[]):
             if isinstance(line, str) and len(line) > 0:
                 exec_line(line)
         except KeyboardInterrupt:
-            print ()
+            print ('^C\n')
             continue
         except EOFError:
             print ()
