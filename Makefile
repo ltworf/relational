@@ -1,17 +1,12 @@
 default:
 	echo "sorry, no default action"
-	
-gui: pyqt pyside
 
-pyside:
-	pyside-uic relational_pyside/survey.ui > relational_pyside/survey.py 
-	pyside-uic relational_pyside/maingui.ui > relational_pyside/maingui.py
-	pyside-uic relational_pyside/rel_edit.ui > relational_pyside/rel_edit.py
+gui: pyqt
+
 pyqt:
-	pyuic4 relational_gui/survey.ui > relational_gui/survey.py 
-	pyuic4 relational_gui/maingui.ui > relational_gui/maingui.py
-	pyuic4 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
-	
+	pyuic5 relational_gui/survey.ui > relational_gui/survey.py
+	pyuic5 relational_gui/maingui.ui > relational_gui/maingui.py
+	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
 
 uninstall:
 	rm -rf /opt/relational
@@ -39,7 +34,7 @@ dist: clean
 	rm -rf /tmp/relational/setup/.svn/
 	rm -rf /tmp/relational/debscript/.svn/
 	rm -rf /tmp/relational/mac/.svn/
-	rm -rf /tmp/relational/relational/.svn/ 
+	rm -rf /tmp/relational/relational/.svn/
 	rm -rf /tmp/relational/relational_gui/.svn/
 	rm -rf /tmp/relational/relational_pyside/.svn/
 	rm -rf /tmp/relational/mac
@@ -47,7 +42,7 @@ dist: clean
 	rm -rf /tmp/relational/relational_curses/.svn/
 	rm -rf /tmp/relational/relational_readline/.svn/
 	rm -rf /tmp/relational/test/.svn
-	
+
 	#mv /tmp/relational /tmp/relational-`./relational_gui.py -v | grep Relational | cut -d" " -f2`
 	#(cd /tmp; tar -zcf relational.tar.gz relational-*/)
 	(cd /tmp; tar -zcf relational.tar.gz relational/)
@@ -65,5 +60,5 @@ clean:
 	rm -rf *.deb || echo ok
 	rm -rf relational_mac
 
-debian:    
+debian:
 	dpkg-buildpackage
