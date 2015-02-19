@@ -105,8 +105,8 @@ completer = SimpleCompleter(
 
 def load_relation(filename, defname=None):
     if not os.path.isfile(filename):
-        print >> sys.stderr, colorize(
-            "%s is not a file" % filename, ERROR_COLOR)
+        print (colorize(
+            "%s is not a file" % filename, ERROR_COLOR), file=sys.stderr)
         return None
 
     f = filename.split('/')
@@ -116,17 +116,17 @@ def load_relation(filename, defname=None):
             defname = defname[:-4]
 
     if not rtypes.is_valid_relation_name(defname):
-        print >> sys.stderr, colorize(
-            "%s is not a valid relation name" % defname, ERROR_COLOR)
+        print (colorize(
+            "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
         return
     try:
         relations[defname] = relation.relation(filename)
 
         completer.add_completion(defname)
-        print colorize("Loaded relation %s" % defname, 0x00ff00)
+        print (colorize("Loaded relation %s" % defname, 0x00ff00))
         return defname
-    except Exception, e:
-        print >>sys.stderr, colorize(e, ERROR_COLOR)
+    except Exception as e:
+        print (colorize(e, ERROR_COLOR), file=sys.stderr)
         return None
 
 
@@ -139,7 +139,7 @@ def survey():
     fields = ('System', 'Country', 'School', 'Age', 'How did you find',
               'email (only if you want a reply)', 'Comments')
     for i in fields:
-        a = raw_input('%s: ' % i)
+        a = input('%s: ' % i)
         post[i] = a
     maintenance.send_survey(post)
 
@@ -148,33 +148,37 @@ def help(command):
     '''Prints help on the various functions'''
     p = command.split(' ', 1)
     if len(p) == 1:
-        print 'HELP command'
-        print 'To execute a query:\n[relation =] query\nIf the 1st part is omitted, the result will be stored in the relation last_.'
-        print 'To prevent from printing the relation, append a ; to the end of the query.'
-        print 'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.'
-        print 'Rember: the tab key is enabled and can be very helpful if you can\'t remember something.'
+        print ('HELP command')
+        print (
+            'To execute a query:\n[relation =] query\nIf the 1st part is omitted, the result will be stored in the relation last_.')
+        print (
+            'To prevent from printing the relation, append a ; to the end of the query.')
+        print (
+            'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.')
+        print (
+            'Rember: the tab key is enabled and can be very helpful if you can\'t remember something.')
         return
     cmd = p[1]
 
     if cmd == 'QUIT':
-        print 'Quits the program'
+        print ('Quits the program')
     elif cmd == 'LIST':
-        print "Lists the relations loaded"
+        print ('Lists the relations loaded')
     elif cmd == 'LOAD':
-        print "LOAD filename [relationame]"
-        print "Loads a relation into memory"
+        print ('LOAD filename [relationame]')
+        print ('Loads a relation into memory')
     elif cmd == 'UNLOAD':
-        print "UNLOAD relationame"
-        print "Unloads a relation from memory"
+        print ('UNLOAD relationame')
+        print ('Unloads a relation from memory')
     elif cmd == 'SAVE':
-        print "SAVE filename relationame"
-        print "Saves a relation in a file"
+        print ('SAVE filename relationame')
+        print ('Saves a relation in a file')
     elif cmd == 'HELP':
-        print "Prints the help on a command"
+        print ('Prints the help on a command')
     elif cmd == 'SURVEY':
-        print "Fill and send a survey"
+        print ('Fill and send a survey')
     else:
-        print "Unknown command: %s" % cmd
+        print ('Unknown command: %s' % cmd)
 
 
 def exec_line(command):
@@ -189,13 +193,13 @@ def exec_line(command):
     elif command == 'LIST':  # Lists all the loaded relations
         for i in relations:
             if not i.startswith('_'):
-                print i
+                print (i)
     elif command == 'SURVEY':
         survey()
     elif command.startswith('LOAD '):  # Loads a relation
         pars = command.split(' ')
         if len(pars) == 1:
-            print colorize("Missing parameter", ERROR_COLOR)
+            print (colorize("Missing parameter", ERROR_COLOR))
             return
 
         filename = pars[1]
@@ -208,31 +212,31 @@ def exec_line(command):
     elif command.startswith('UNLOAD '):
         pars = command.split(' ')
         if len(pars) < 2:
-            print colorize("Missing parameter", ERROR_COLOR)
+            print (colorize("Missing parameter", ERROR_COLOR))
             return
         if pars[1] in relations:
             del relations[pars[1]]
             completer.remove_completion(pars[1])
         else:
-            print colorize("No such relation %s" % pars[1], ERROR_COLOR)
+            print (colorize("No such relation %s" % pars[1], ERROR_COLOR))
         pass
     elif command.startswith('SAVE '):
         pars = command.split(' ')
         if len(pars) != 3:
-            print colorize("Missing parameter", ERROR_COLOR)
+            print (colorize("Missing parameter", ERROR_COLOR))
             return
 
         filename = pars[1]
         defname = pars[2]
 
         if defname not in relations:
-            print colorize("No such relation %s" % defname, ERROR_COLOR)
+            print (colorize("No such relation %s" % defname, ERROR_COLOR))
             return
 
         try:
             relations[defname].save(filename)
-        except Exception, e:
-            print colorize(e, ERROR_COLOR)
+        except Exception as e:
+            print (colorize(e, ERROR_COLOR))
     else:
         exec_query(command)
 
@@ -259,7 +263,6 @@ def exec_query(command):
     '''This function executes a query and prints the result on the screen
     if the command terminates with ";" the result will not be printed
     '''
-    command = unicode(command, 'utf-8')
 
     # If it terminates with ; doesn't print the result
     if command.endswith(';'):
@@ -286,22 +289,23 @@ def exec_query(command):
         pyquery = parser.parse(query)
         result = eval(pyquery, relations)
 
-        print colorize("-> query: %s" % pyquery.encode('utf-8'), 0x00ff00)
+        print (colorize("-> query: %s" % pyquery.encode('utf-8'), 0x00ff00))
 
         if printrel:
-            print
-            print result
+            print ()
+            print (result)
 
         relations[relname] = result
 
         completer.add_completion(relname)
-    except Exception, e:
-        print colorize(str(e), ERROR_COLOR)
+    except Exception as e:
+        print (colorize(str(e), ERROR_COLOR))
 
 
 def main(files=[]):
-    print colorize('> ', PROMPT_COLOR) + "; Type HELP to get the HELP"
-    print colorize('> ', PROMPT_COLOR) + "; Completion is activated using the tab (if supported by the terminal)"
+    print (colorize('> ', PROMPT_COLOR) + "; Type HELP to get the HELP")
+    print (colorize('> ', PROMPT_COLOR) +
+           "; Completion is activated using the tab (if supported by the terminal)")
 
     for i in files:
         load_relation(i)
@@ -314,14 +318,14 @@ def main(files=[]):
 
     while True:
         try:
-            line = raw_input(colorize('> ', PROMPT_COLOR))
+            line = input(colorize('> ', PROMPT_COLOR))
             if isinstance(line, str) and len(line) > 0:
                 exec_line(line)
         except KeyboardInterrupt:
-            print
+            print ()
             continue
         except EOFError:
-            print
+            print ()
             sys.exit(0)
 
 

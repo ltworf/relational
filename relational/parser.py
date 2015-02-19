@@ -415,7 +415,7 @@ def parse(expr):
 
 if __name__ == "__main__":
     while True:
-        e = str(raw_input("Expression: "))
+        e = input("Expression: ")
         print (parse(e))
 
     # b=u"σ age>1 and skill=='C' (peopleᐅᐊskills)"
