@@ -23,6 +23,7 @@ from relational_gui import compatibility
 from relational_gui import rel_edit
 from relational import relation
 
+
 class creatorForm(QtWidgets.QDialog):
 
     def __init__(self, rel=None):

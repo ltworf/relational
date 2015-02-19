@@ -79,7 +79,7 @@ class relForm(QtWidgets.QMainWindow):
             compatibility.set_utf8_text(self.ui.txtQuery, result)
         except Exception as e:
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
 
     def resumeHistory(self, item):
         itm = compatibility.get_py_str(item.text()).split(' = ', 1)
@@ -113,7 +113,7 @@ class relForm(QtWidgets.QMainWindow):
         except Exception as e:
             print (str(e))
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
-                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
+                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
             return
 
         # Adds to history
@@ -221,7 +221,7 @@ class relForm(QtWidgets.QMainWindow):
         except Exception as e:
             print (e)
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
             return
 
         self.updateRelations()
@@ -296,7 +296,7 @@ class relForm(QtWidgets.QMainWindow):
         except Exception as e:
             print (e)
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                          (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
             return
 
         self.updateRelations()

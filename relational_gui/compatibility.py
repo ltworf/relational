@@ -21,16 +21,20 @@
 
 from PyQt5 import QtCore, QtWidgets
 
+
 def get_py_str(a):
     '''Returns a python string out of a QString'''
     return a
 
+
 def set_utf8_text(component, text):
     component.setText(text)
+
 
 def get_filename(filename):
     print (filename)
     return str(filename.toUtf8())
+
 
 def add_list_item(l, item):
     hitem = QtWidgets.QListWidgetItem(None, 0)
