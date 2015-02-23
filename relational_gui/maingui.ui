@@ -58,7 +58,7 @@
               <string>Product</string>
              </property>
              <property name="text">
-              <string>*</string>
+              <string notr="true">*</string>
              </property>
             </widget>
            </item>
@@ -68,7 +68,7 @@
               <string>Difference</string>
              </property>
              <property name="text">
-              <string>-</string>
+              <string notr="true">-</string>
              </property>
             </widget>
            </item>
@@ -78,7 +78,7 @@
               <string>Union</string>
              </property>
              <property name="text">
-              <string>ᑌ</string>
+              <string notr="true">ᑌ</string>
              </property>
             </widget>
            </item>
@@ -88,7 +88,7 @@
               <string>Intersection</string>
              </property>
              <property name="text">
-              <string>ᑎ</string>
+              <string notr="true">ᑎ</string>
              </property>
             </widget>
            </item>
@@ -98,7 +98,7 @@
               <string>Division</string>
              </property>
              <property name="text">
-              <string>÷</string>
+              <string notr="true">÷</string>
              </property>
             </widget>
            </item>
@@ -108,7 +108,7 @@
               <string>Natural join</string>
              </property>
              <property name="text">
-              <string>ᐅᐊ</string>
+              <string notr="true">ᐅᐊ</string>
              </property>
             </widget>
            </item>
@@ -118,7 +118,7 @@
               <string>Left outer join</string>
              </property>
              <property name="text">
-              <string>ᐅLEFTᐊ</string>
+              <string notr="true">ᐅLEFTᐊ</string>
              </property>
             </widget>
            </item>
@@ -128,7 +128,7 @@
               <string>Right outer join</string>
              </property>
              <property name="text">
-              <string>ᐅRIGHTᐊ</string>
+              <string notr="true">ᐅRIGHTᐊ</string>
              </property>
             </widget>
            </item>
@@ -138,7 +138,7 @@
               <string>Full outer join</string>
              </property>
              <property name="text">
-              <string>ᐅFULLᐊ</string>
+              <string notr="true">ᐅFULLᐊ</string>
              </property>
             </widget>
            </item>
@@ -148,7 +148,7 @@
               <string>Projection</string>
              </property>
              <property name="text">
-              <string>π</string>
+              <string notr="true">π</string>
              </property>
             </widget>
            </item>
@@ -158,7 +158,7 @@
               <string>Selection</string>
              </property>
              <property name="text">
-              <string>σ</string>
+              <string notr="true">σ</string>
              </property>
             </widget>
            </item>
@@ -168,14 +168,14 @@
               <string>Rename</string>
              </property>
              <property name="text">
-              <string>ρ</string>
+              <string notr="true">ρ</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="cmdArrow">
              <property name="text">
-              <string>➡</string>
+              <string notr="true">➡</string>
              </property>
             </widget>
            </item>
@@ -251,11 +251,6 @@
               <width>0</width>
               <height>0</height>
              </size>
-            </property>
-            <property name="font">
-             <font>
-              <strikeout>false</strikeout>
-             </font>
             </property>
            </widget>
           </item>
