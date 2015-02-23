@@ -197,34 +197,36 @@ class relForm(QtWidgets.QMainWindow):
 
         if result == None:
             return
-        res = QtWidgets.QInputDialog.getText(
-            self,
-            QtWidgets.QApplication.translate("Form", "New relation"),
-            QtWidgets.QApplication.translate(
-                "Form", "Insert the name for the new relation"),
-            QtWidgets.QLineEdit.Normal, '')
-        if res[1] == False or len(res[0]) == 0:
-            return
+        while True:
+            res = QtWidgets.QInputDialog.getText(
+                self,
+                QtWidgets.QApplication.translate("Form", "New relation"),
+                QtWidgets.QApplication.translate(
+                    "Form", "Insert the name for the new relation"),
+                QtWidgets.QLineEdit.Normal, ''
+            )
+            if res[1] == False:# or len(res[0]) == 0:
+                return
+            name = compatibility.get_py_str(res[0])
 
-        # Patch provided by Angelo 'Havoc' Puglisi
-        name = compatibility.get_py_str(res[0])
+            if not rtypes.is_valid_relation_name(name):
+                r = QtWidgets.QApplication.translate(
+                    "Form", str("Wrong name for destination relation: %s." % name)
+                )
+                QtWidgets.QMessageBox.information(
+                    self, QtWidgets.QApplication.translate("Form", "Error"), r
+                )
+                continue
 
-        if not rtypes.is_valid_relation_name(name):
-            r = QtWidgets.QApplication.translate(
-                "Form", str("Wrong name for destination relation: %s." % name))
-            QtWidgets.QMessageBox.information(
-                self, QtWidgets.QApplication.translate("Form", "Error"), r)
-            return
-
-        try:
-            self.relations[name] = result
-        except Exception as e:
-            print (e)
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
-            return
-
-        self.updateRelations()
+            try:
+                self.relations[name] = result
+                self.updateRelations()
+            except Exception as e:
+                print (e)
+                QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
+                                                (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+            finally:
+                return
 
     def closeEvent(self, event):
         self.save_settings()
