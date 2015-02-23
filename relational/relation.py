@@ -527,6 +527,9 @@ class header (object):
             if not is_valid_relation_name(i):
                 raise Exception('"%s" is not a valid attribute name' % i)
 
+        if len(attributes) != len(set(attributes)):
+            raise Exception('Attribute names must be unique')
+
     def __repr__(self):
         return "header(%s)" % (self.attributes.__repr__())
 
