@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/rel_edit.ui'
 #
-# Created: Thu Feb 19 13:07:47 2015
+# Created: Mon Feb 23 15:16:57 2015
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!

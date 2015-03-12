@@ -102,13 +102,12 @@ if __name__ == "__main__":
         app.setApplicationName('relational')
 
         ui = maingui.Ui_MainWindow()
-        Form = guihandler.relForm(ui)
+        form = guihandler.relForm(ui)
+        form.setStyleSheet("font: 12pt \"Dejavu Sans Bold\";");
+        #form.setFont(QtGui.QFont(""))
 
-        # if os.name=='nt':
-        Form.setFont(QtGui.QFont("Dejavu Sans Bold"))
-
-        ui.setupUi(Form)
-        Form.restore_settings()
+        ui.setupUi(form)
+        form.restore_settings()
 
         for i in range(len(files)):
             if not os.path.isfile(files[i]):
@@ -119,9 +118,9 @@ if __name__ == "__main__":
             if defname.endswith(".csv"):  # removes the extension
                 defname = defname[:-4]
             print ('Loading file "%s" with name "%s"' % (files[i], defname))
-            Form.loadRelation(files[i], defname)
+            form.loadRelation(files[i], defname)
 
-        Form.show()
+        form.show()
         sys.exit(app.exec_())
     else:
         printver(False)
