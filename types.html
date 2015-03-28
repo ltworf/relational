@@ -108,3 +108,114 @@ Objects of type <code>rdate</code> support the operators <code>+ - == > < >= <= 
 
   </body>
 </html>
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta name="description" content="Relational : Educational tool for relational algebra">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <title>Relational</title>
+  </head>
+
+  <body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60691223-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ltworf/relational">View on GitHub</a>
+
+          <h1 id="project_title"><a href="index.html">Relational</a></h1>
+          <h2 id="project_tagline">Educational tool for relational algebra</h2>
+
+            <section id="download">
+              <a href="https://code.google.com/p/relational/downloads/list">Downloads</a> | 
+              <a href="screnshots.html">Screenshots</a> |
+              <a href="allowed_expressions.html">Syntax</a> |
+              <a href="grammar.html">Grammar</a> |
+              <a href="types.html">Types</a> |
+              <a href="optimizations.html">Optimizations</a> |
+              <a href="https://github.com/ltworf/relational">Sources</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+
+<h3>Types and casting rules</h3>
+
+<p>When performing <strong>selection</strong>, implicit casting will be performed to allow the use of operators other than == and !=.</p>
+
+<h4>Rules</h4>
+
+<ul>
+
+<li>If the string matches this regexp: <code>^[\+\-]{0,1}[0-9]+$</code> it will be casted to python's int type</li>
+<li>If the string matches this regexp: <code>^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$</code> it will be casted to python's float type</li>
+<li>If the string matches this regexp: <code>^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$</code> that represents <em>YYYY-MM-DD date</em>, and the values correctly represent a date, it will be casted to relational's internal rdate type</li>
+<li>Otherwise the string will be kept as a string type</li>
+</ul>
+
+<p>According to the regexp, a string like '.3' will not be casted to float. I've never liked this format and hence it is forbidden in relational.</p>
+
+
+<h3>Prevent casting</h3>
+<p>Consider the following relation:<p>
+
+<table class="inline">
+    <tr class="row0">
+        <th class="col0"> id </th><th class="col1"> product </th>
+    </tr>
+    <tr class="row1">
+        <td class="col0"> 113 </td><td class="col1"> scanner </td>
+    </tr>
+    <tr class="row2">
+        <td class="col0"> 113a </td><td class="col1"> new scanner </td>
+    </tr>
+</table>
+
+<p>
+The id field of the 1st tuple will be casted to <code>int</code>, but the same field of the 2nd tuple will not be casted. To avoid anomalies in queries dealing with such fields you must prevent implicit casting.<br />Achieving this is simple, just cast back to string, using <em>str()</em>
+</p>
+
+<h4>Example</h4>
+
+<code>σ (str(id).endswith(&#039;3&#039;)) (products)</code>
+
+<h3>Type rdate</h3>
+<h4>Fields</h4>
+
+<ul>
+<li>day</li>
+<li>month</li>
+<li>weekday</li>
+<li>year</li>
+</ul>
+
+<h4>Methods</h4>
+Objects of type <code>rdate</code> support the operators <code>+ - == > < >= <= !=</code>.
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
+        <p> Last updated: March 28, 2015, 5:42 pm</p>
+      </footer>
+    </div>
+
+  </body>
+</html>
