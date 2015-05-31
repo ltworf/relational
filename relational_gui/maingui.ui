@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>612</height>
+    <height>669</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -233,51 +233,124 @@
            <enum>QLayout::SetMinimumSize</enum>
           </property>
           <item>
-           <widget class="QListWidget" name="lstHistory">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QFrame" name="frmOptimizations">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
             </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
+            <property name="lineWidth">
+             <number>0</number>
             </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QListWidget" name="lstHistory">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QPushButton" name="cmdOptimize">
+                 <property name="text">
+                  <string>Optimize</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="cmdUndoOptimize">
+                 <property name="text">
+                  <string>Undo optimize</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="cmdClearHistory">
+                 <property name="text">
+                  <string>Clear history</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QPushButton" name="cmdOptimize">
-              <property name="text">
-               <string>Optimize</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdUndoOptimize">
-              <property name="text">
-               <string>Undo optimize</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdClearHistory">
-              <property name="text">
-               <string>Clear history</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QFrame" name="frmMultiLine">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPlainTextEdit" name="txtMultiQuery">
+               <property name="font">
+                <font>
+                 <family>DejaVu Sans</family>
+                 <pointsize>11</pointsize>
+                 <weight>50</weight>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                 <underline>false</underline>
+                 <strikeout>false</strikeout>
+                 <kerning>true</kerning>
+                </font>
+               </property>
+               <property name="plainText">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <widget class="QPushButton" name="cmdClearMultilineQuery">
+                 <property name="text">
+                  <string>⌫</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="cmdExecuteMultiline">
+                 <property name="text">
+                  <string>Execute</string>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="default">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -399,48 +472,65 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLineEdit" name="txtResult">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>_last1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>=</string>
-        </property>
-        <property name="buddy">
-         <cstring>txtQuery</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="txtQuery"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cmdClearQuery">
-        <property name="text">
-         <string>⌫</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cmdExecute">
-        <property name="text">
-         <string>Execute</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QFrame" name="lineExpressionFrame">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="txtResult">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>_last1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>=</string>
+         </property>
+         <property name="buddy">
+          <cstring>txtQuery</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txtQuery"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cmdClearQuery">
+         <property name="text">
+          <string>⌫</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cmdExecute">
+         <property name="text">
+          <string>Execute</string>
+         </property>
+         <property name="autoDefault">
+          <bool>true</bool>
+         </property>
+         <property name="default">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -478,8 +568,15 @@
     <addaction name="actionEdit_relation"/>
     <addaction name="actionUnload_relation"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionMulti_line_mode"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRelations"/>
+   <addaction name="menuSettings"/>
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionAbout">
@@ -561,6 +658,17 @@
     <string>Unload relation</string>
    </property>
   </action>
+  <action name="actionMulti_line_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Multi-line mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>cmdAbout</tabstop>
@@ -583,9 +691,14 @@
   <tabstop>cmdOptimize</tabstop>
   <tabstop>cmdUndoOptimize</tabstop>
   <tabstop>cmdClearHistory</tabstop>
+  <tabstop>txtMultiQuery</tabstop>
+  <tabstop>cmdClearMultilineQuery</tabstop>
+  <tabstop>cmdExecuteMultiline</tabstop>
   <tabstop>lstRelations</tabstop>
+  <tabstop>cmdNew</tabstop>
   <tabstop>cmdLoad</tabstop>
   <tabstop>cmdSave</tabstop>
+  <tabstop>cmdEdit</tabstop>
   <tabstop>cmdUnload</tabstop>
   <tabstop>lstAttributes</tabstop>
   <tabstop>txtResult</tabstop>
@@ -596,78 +709,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>cmdClearQuery</sender>
-   <signal>clicked()</signal>
-   <receiver>txtQuery</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>686</x>
-     <y>591</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>206</x>
-     <y>591</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdClearHistory</sender>
-   <signal>clicked()</signal>
-   <receiver>lstHistory</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>490</x>
-     <y>563</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>397</x>
-     <y>525</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtQuery</sender>
-   <signal>returnPressed()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>execute()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>450</x>
-     <y>599</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>438</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdExecute</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>execute()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>732</x>
-     <y>592</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>592</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>cmdAbout</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>showAbout()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>82</x>
-     <y>75</y>
+     <x>97</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
      <x>79</x>
@@ -730,8 +779,8 @@
    <slot>addArrow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>107</x>
-     <y>490</y>
+     <x>101</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>58</x>
@@ -746,8 +795,8 @@
    <slot>addRename()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>463</y>
+     <x>69</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>111</x>
@@ -762,8 +811,8 @@
    <slot>addSelection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>84</x>
-     <y>436</y>
+     <x>99</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
      <x>16</x>
@@ -778,8 +827,8 @@
    <slot>addProjection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>107</x>
-     <y>409</y>
+     <x>101</x>
+     <y>445</y>
     </hint>
     <hint type="destinationlabel">
      <x>91</x>
@@ -794,8 +843,8 @@
    <slot>unloadRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>788</x>
-     <y>280</y>
+     <x>785</x>
+     <y>387</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -810,8 +859,8 @@
    <slot>saveRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>788</x>
-     <y>253</y>
+     <x>785</x>
+     <y>325</y>
     </hint>
     <hint type="destinationlabel">
      <x>760</x>
@@ -826,60 +875,12 @@
    <slot>loadRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>788</x>
-     <y>226</y>
+     <x>785</x>
+     <y>294</y>
     </hint>
     <hint type="destinationlabel">
      <x>753</x>
      <y>594</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdOptimize</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>optimize()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>245</x>
-     <y>554</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>684</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdUndoOptimize</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>undoOptimize()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>336</x>
-     <y>560</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>652</x>
-     <y>604</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtResult</sender>
-   <signal>returnPressed()</signal>
-   <receiver>txtQuery</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>590</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>182</x>
-     <y>590</y>
     </hint>
    </hints>
   </connection>
@@ -890,8 +891,8 @@
    <slot>addORight()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>102</x>
-     <y>355</y>
+     <x>101</x>
+     <y>383</y>
     </hint>
     <hint type="destinationlabel">
      <x>58</x>
@@ -906,8 +907,8 @@
    <slot>addOuter()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>46</x>
-     <y>382</y>
+     <x>61</x>
+     <y>414</y>
     </hint>
     <hint type="destinationlabel">
      <x>86</x>
@@ -938,8 +939,8 @@
    <slot>addJoin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>107</x>
-     <y>301</y>
+     <x>101</x>
+     <y>321</y>
     </hint>
     <hint type="destinationlabel">
      <x>147</x>
@@ -1024,38 +1025,6 @@
     <hint type="destinationlabel">
      <x>510</x>
      <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdClearQuery</sender>
-   <signal>clicked()</signal>
-   <receiver>txtQuery</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>693</x>
-     <y>599</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>588</x>
-     <y>597</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lstHistory</sender>
-   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>resumeHistory(QListWidgetItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>349</x>
-     <y>492</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>305</y>
     </hint>
    </hints>
   </connection>
@@ -1146,8 +1115,8 @@
    <slot>editRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>683</x>
-     <y>323</y>
+     <x>785</x>
+     <y>356</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1178,8 +1147,8 @@
    <slot>newRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>683</x>
-     <y>296</y>
+     <x>785</x>
+     <y>263</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1219,6 +1188,150 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionMulti_line_mode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setMultiline(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClearMultilineQuery</sender>
+   <signal>clicked()</signal>
+   <receiver>txtMultiQuery</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>518</x>
+     <y>564</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>578</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdExecuteMultiline</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>execute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>550</x>
+     <y>596</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>795</x>
+     <y>650</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClearQuery</sender>
+   <signal>clicked()</signal>
+   <receiver>txtQuery</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>674</x>
+     <y>639</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>590</x>
+     <y>644</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdClearHistory</sender>
+   <signal>clicked()</signal>
+   <receiver>lstHistory</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>511</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>490</x>
+     <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOptimize</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>optimize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>623</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdUndoOptimize</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>undoOptimize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>369</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>544</x>
+     <y>624</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdExecute</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>execute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>740</x>
+     <y>636</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>797</x>
+     <y>627</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtQuery</sender>
+   <signal>returnPressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>execute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>484</x>
+     <y>642</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>796</x>
+     <y>514</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
@@ -1254,5 +1367,6 @@
   <slot>newSession()</slot>
   <slot>saveSessionAs()</slot>
   <slot>manageSessions()</slot>
+  <slot>setMultiline(bool)</slot>
  </slots>
 </ui>

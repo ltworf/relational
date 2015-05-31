@@ -61,6 +61,14 @@ class relForm(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.information(
             self, QtWidgets.QApplication.translate("Form", "Version"), r)
 
+    def setMultiline(self, multiline):
+        self.multiline = multiline
+        self.settings.setValue('multiline', multiline)
+        self.ui.lineExpressionFrame.setVisible(not multiline)
+        self.ui.frmOptimizations.setVisible(not multiline)
+        self.ui.frmMultiLine.setVisible(multiline)
+        self.ui.actionMulti_line_mode.setChecked(multiline)
+
     def load_query(self, *index):
         self.ui.txtQuery.setText(self.savedQ.itemData(index[0]).toString())
 
@@ -88,7 +96,37 @@ class relForm(QtWidgets.QMainWindow):
 
     def execute(self):
         '''Executes the query'''
+        if self.multiline:
+            query = compatibility.get_py_str(self.ui.txtMultiQuery.toPlainText())
+            queries = query.split('\n')
 
+            for query in queries:
+                if query.strip() == '':
+                    continue
+
+                parts = query.split('=', 1)
+                parts[0] = parts[0].strip()
+                if len(parts) > 1 and rtypes.is_valid_relation_name(parts[0].strip()):
+                    relname = parts[0].strip()
+                    query = parts[1]
+                else:
+                    relname = 'last_'
+
+                try:
+                    expr = parser.parse(query)
+                    result = eval(expr, self.relations)
+                    self.relations[relname] = result
+                    self.updateRelations()  # update the list
+                    self.selectedRelation = result
+                    self.showRelation(self.selectedRelation)
+                except Exception as e:
+                    print(str(e))
+                    QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
+                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
+            return
+
+
+        #Single line query
         query = compatibility.get_py_str(self.ui.txtQuery.text())
         res_rel = compatibility.get_py_str(
             self.ui.txtResult.text())  # result relation's name
@@ -238,7 +276,7 @@ class relForm(QtWidgets.QMainWindow):
 
     def restore_settings(self):
         # self.settings.value('session_name','default').toString()
-        pass
+        self.setMultiline(self.settings.value('multiline','false')=='true')
 
     def showSurvey(self):
         if self.Survey == None:
@@ -343,5 +381,9 @@ class relForm(QtWidgets.QMainWindow):
         self.addSymbolInQuery(parser.ARROW)
 
     def addSymbolInQuery(self, symbol):
-        self.ui.txtQuery.insert(symbol)
-        self.ui.txtQuery.setFocus()
+        if self.multiline:
+            self.ui.txtMultiQuery.insertPlainText(symbol)
+            self.ui.txtMultiQuery.setFocus()
+        else:
+            self.ui.txtQuery.insert(symbol)
+            self.ui.txtQuery.setFocus()
