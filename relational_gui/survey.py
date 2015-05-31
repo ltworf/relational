@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/survey.ui'
 #
-# Created: Mon Feb 23 15:16:57 2015
-#      by: PyQt5 UI code generator 5.3.2
+# Created by: PyQt5 UI code generator 5.4.1
 #
 # WARNING! All changes made in this file will be lost!
 

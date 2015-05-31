@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Mon Feb 23 15:16:57 2015
-#      by: PyQt5 UI code generator 5.3.2
+# Created by: PyQt5 UI code generator 5.4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -49,11 +48,11 @@ class Ui_MainWindow(object):
         self.cmdDifference.setObjectName("cmdDifference")
         self.verticalLayout_10.addWidget(self.cmdDifference)
         self.cmdUnion = QtWidgets.QPushButton(self.groupBox_4)
-        self.cmdUnion.setText("ᑌ")
+        self.cmdUnion.setText("∪")
         self.cmdUnion.setObjectName("cmdUnion")
         self.verticalLayout_10.addWidget(self.cmdUnion)
         self.cmdIntersection = QtWidgets.QPushButton(self.groupBox_4)
-        self.cmdIntersection.setText("ᑎ")
+        self.cmdIntersection.setText("∩")
         self.cmdIntersection.setObjectName("cmdIntersection")
         self.verticalLayout_10.addWidget(self.cmdIntersection)
         self.cmdDivision = QtWidgets.QPushButton(self.groupBox_4)
@@ -61,19 +60,19 @@ class Ui_MainWindow(object):
         self.cmdDivision.setObjectName("cmdDivision")
         self.verticalLayout_10.addWidget(self.cmdDivision)
         self.cmdJoin = QtWidgets.QPushButton(self.groupBox_4)
-        self.cmdJoin.setText("ᐅᐊ")
+        self.cmdJoin.setText("⋈")
         self.cmdJoin.setObjectName("cmdJoin")
         self.verticalLayout_10.addWidget(self.cmdJoin)
         self.cmdOuterLeft = QtWidgets.QPushButton(self.groupBox_4)
-        self.cmdOuterLeft.setText("ᐅLEFTᐊ")
+        self.cmdOuterLeft.setText("⧑")
         self.cmdOuterLeft.setObjectName("cmdOuterLeft")
         self.verticalLayout_10.addWidget(self.cmdOuterLeft)
         self.cmdOuterRight = QtWidgets.QPushButton(self.groupBox_4)
-        self.cmdOuterRight.setText("ᐅRIGHTᐊ")
+        self.cmdOuterRight.setText("⧒")
         self.cmdOuterRight.setObjectName("cmdOuterRight")
         self.verticalLayout_10.addWidget(self.cmdOuterRight)
         self.cmdOuter = QtWidgets.QPushButton(self.groupBox_4)
-        self.cmdOuter.setText("ᐅFULLᐊ")
+        self.cmdOuter.setText("⧓")
         self.cmdOuter.setObjectName("cmdOuter")
         self.verticalLayout_10.addWidget(self.cmdOuter)
         self.cmdProjection = QtWidgets.QPushButton(self.groupBox_4)
@@ -209,7 +208,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addLayout(self.horizontalLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 19))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
