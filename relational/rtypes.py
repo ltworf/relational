@@ -35,10 +35,16 @@ class rstring (str):
         the following regexp:
         r'^[\+\-]{0,1}[0-9]+$'
         '''
+        try:
+            return self._isint
+        except:
+            pass
+
         if re.match(r'^[\+\-]{0,1}[0-9]+$', self) == None:
-            return False
+            self._isint = False
         else:
-            return True
+            self._isint = True
+        return self._isint
 
     def isFloat(self):
         '''Returns true if the string represents a float number
@@ -46,10 +52,16 @@ class rstring (str):
         the following regexp:
             r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$'
         '''
+        try:
+            return self._isfloat
+        except:
+            pass
+
         if re.match(r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$', self) == None:
-            return False
+            self._isfloat = False
         else:
-            return True
+            self._isfloat = True
+        return self._isfloat
 
     def isDate(self):
         '''Returns true if the string represents a date,
