@@ -94,37 +94,41 @@ class relForm(QtWidgets.QMainWindow):
         compatibility.set_utf8_text(self.ui.txtResult, itm[0])
         compatibility.set_utf8_text(self.ui.txtQuery, itm[1])
 
+    def _run_multiline(self):
+        query = compatibility.get_py_str(self.ui.txtMultiQuery.toPlainText())
+        self.settings.setValue('multiline/query', query)
+
+        queries = query.split('\n')
+
+        for query in queries:
+            if query.strip() == '':
+                continue
+
+            parts = query.split('=', 1)
+            parts[0] = parts[0].strip()
+            if len(parts) > 1 and rtypes.is_valid_relation_name(parts[0].strip()):
+                relname = parts[0].strip()
+                query = parts[1]
+            else:
+                relname = 'last_'
+
+            try:
+                expr = parser.parse(query)
+                result = eval(expr, self.relations)
+                self.relations[relname] = result
+            except Exception as e:
+                print(str(e))
+                QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
+                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
+                break
+        self.updateRelations()  # update the list
+        self.selectedRelation = result
+        self.showRelation(self.selectedRelation)
+
     def execute(self):
         '''Executes the query'''
         if self.multiline:
-            query = compatibility.get_py_str(self.ui.txtMultiQuery.toPlainText())
-            queries = query.split('\n')
-
-            for query in queries:
-                if query.strip() == '':
-                    continue
-
-                parts = query.split('=', 1)
-                parts[0] = parts[0].strip()
-                if len(parts) > 1 and rtypes.is_valid_relation_name(parts[0].strip()):
-                    relname = parts[0].strip()
-                    query = parts[1]
-                else:
-                    relname = 'last_'
-
-                try:
-                    expr = parser.parse(query)
-                    result = eval(expr, self.relations)
-                    self.relations[relname] = result
-                    self.updateRelations()  # update the list
-                    self.selectedRelation = result
-                    self.showRelation(self.selectedRelation)
-                except Exception as e:
-                    print(str(e))
-                    QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
-                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
-            return
-
+            return self._run_multiline()
 
         #Single line query
         query = compatibility.get_py_str(self.ui.txtQuery.text())
@@ -277,6 +281,7 @@ class relForm(QtWidgets.QMainWindow):
     def restore_settings(self):
         # self.settings.value('session_name','default').toString()
         self.setMultiline(self.settings.value('multiline','false')=='true')
+        self.ui.txtMultiQuery.setPlainText(self.settings.value('multiline/query',''))
 
     def showSurvey(self):
         if self.Survey == None:
