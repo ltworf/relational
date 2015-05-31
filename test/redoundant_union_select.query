@@ -1,1 +1,1 @@
-σ (id==2) (σ age>5 (people ᑌ people))
+σ (id==2) (σ age>5 (people ∪ people))

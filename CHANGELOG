@@ -1,8 +1,12 @@
-1.3
+2.0
 - Fix bug in relational-cli that made it crash when an exception was raised
 - Point to new website
 - Drop support for PySide
 - Switch to Python3 and drop support for Python2
+- Switch to Qt5
+- Radical change of language. The UNICODE symbols used previously were meant for a
+  Canadian Aborigenal script. Now switched them to use UNICODE math symbols.
+- Since the language is changing, take the chance to use better symbols for JOIN
 
 1.2
 - Better tokenizer, gives more indicative errors

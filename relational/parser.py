@@ -50,13 +50,13 @@ BINARY = 2
 
 PRODUCT = u'*'
 DIFFERENCE = u'-'
-UNION = u'ᑌ'
-INTERSECTION = u'ᑎ'
+UNION = u'∪'
+INTERSECTION = u'∩'
 DIVISION = u'÷'
-JOIN = u'ᐅᐊ'
-JOIN_LEFT = u'ᐅLEFTᐊ'
-JOIN_RIGHT = u'ᐅRIGHTᐊ'
-JOIN_FULL = u'ᐅFULLᐊ'
+JOIN = u'⋈'
+JOIN_LEFT = u'⧑'
+JOIN_RIGHT = u'⧒'
+JOIN_FULL = u'⧓'
 PROJECTION = u'π'
 SELECTION = u'σ'
 RENAME = u'ρ'
@@ -330,7 +330,7 @@ def tokenize(expression):
             # Removes the entire parentesis and content from the expression
             expression = expression[end + 1:].strip()
 
-        elif expression.startswith((u"σ", u"π", u"ρ")):  # Unary 2 bytes
+        elif expression.startswith((SELECTION, RENAME, PROJECTION)):  # Unary 2 bytes
             items.append(expression[0:1])
                          # Adding operator in the top of the list
             expression = expression[
@@ -346,16 +346,9 @@ def tokenize(expression):
                          # Inserting parameter of the operator
             expression = expression[
                 par:].strip()  # Removing parameter from the expression
-        elif expression.startswith((u"÷", u"ᑎ", u"ᑌ", u"*", u"-")):
+        elif expression.startswith((DIVISION, INTERSECTION, UNION, PRODUCT, DIFFERENCE, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)):
             items.append(expression[0])
             expression = expression[1:].strip()  # 1 char from the expression
-            state = 4
-        elif expression.startswith(u"ᐅ"):  # Binary long
-            i = expression.find(u"ᐊ")
-            if i == -1:
-                raise TokenizerException(u"Expected ᐊ in %s" % (expression,))
-            items.append(expression[:i + 1])
-            expression = expression[i + 1:].strip()
             state = 4
         elif re.match(r'[_0-9A-Za-z]', expression[0]) == None:  # At this point we only have relation names, so we raise errors for anything else
             raise TokenizerException(
