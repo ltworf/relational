@@ -304,43 +304,43 @@ class relForm(QtWidgets.QMainWindow):
         self.updateRelations()
 
     def addProduct(self):
-        self.addSymbolInQuery(u"*")
+        self.addSymbolInQuery(parser.PRODUCT)
 
     def addDifference(self):
-        self.addSymbolInQuery(u"-")
+        self.addSymbolInQuery(parser.DIFFERENCE)
 
     def addUnion(self):
-        self.addSymbolInQuery(u"ᑌ")
+        self.addSymbolInQuery(parser.UNION)
 
     def addIntersection(self):
-        self.addSymbolInQuery(u"ᑎ")
+        self.addSymbolInQuery(parser.INTERSECTION)
 
     def addDivision(self):
-        self.addSymbolInQuery(u"÷")
+        self.addSymbolInQuery(parser.DIVISION)
 
     def addOLeft(self):
-        self.addSymbolInQuery(u"ᐅLEFTᐊ")
+        self.addSymbolInQuery(parser.JOIN_LEFT)
 
     def addJoin(self):
-        self.addSymbolInQuery(u"ᐅᐊ")
+        self.addSymbolInQuery(parser.JOIN)
 
     def addORight(self):
-        self.addSymbolInQuery(u"ᐅRIGHTᐊ")
+        self.addSymbolInQuery(parser.JOIN_RIGHT)
 
     def addOuter(self):
-        self.addSymbolInQuery(u"ᐅFULLᐊ")
+        self.addSymbolInQuery(parser.JOIN_FULL)
 
     def addProjection(self):
-        self.addSymbolInQuery(u"π")
+        self.addSymbolInQuery(parser.PROJECTION)
 
     def addSelection(self):
-        self.addSymbolInQuery(u"σ")
+        self.addSymbolInQuery(parser.SELECTION)
 
     def addRename(self):
-        self.addSymbolInQuery(u"ρ")
+        self.addSymbolInQuery(parser.RENAME)
 
     def addArrow(self):
-        self.addSymbolInQuery(u"➡")
+        self.addSymbolInQuery(parser.ARROW)
 
     def addSymbolInQuery(self, symbol):
         self.ui.txtQuery.insert(symbol)
