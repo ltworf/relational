@@ -100,11 +100,10 @@ if __name__ == "__main__":
         app = QtWidgets.QApplication(sys.argv)
         app.setOrganizationName('None')
         app.setApplicationName('relational')
+        app.setOrganizationDomain("None")
 
         ui = maingui.Ui_MainWindow()
         form = guihandler.relForm(ui)
-        form.setStyleSheet("font: 12pt \"Dejavu Sans Bold\";");
-        #form.setFont(QtGui.QFont(""))
 
         ui.setupUi(form)
         form.restore_settings()
