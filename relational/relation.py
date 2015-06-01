@@ -197,6 +197,7 @@ class relation (object):
 
         newt.content = self.content
         newt._readonly = True
+        self._readonly = True
         return newt
 
     def intersection(self, other):
