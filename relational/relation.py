@@ -550,9 +550,4 @@ class header (object):
 
     def getAttributesId(self, param):
         '''Returns a list with numeric index corresponding to field's name'''
-        res = []
-        for i in param:
-            for j in range(len(self.attributes)):
-                if i == self.attributes[j]:
-                    res.append(j)
-        return res
+        return [self.attributes.index(i) for i in param]
