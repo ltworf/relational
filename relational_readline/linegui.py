@@ -289,7 +289,7 @@ def exec_query(command):
         pyquery = parser.parse(query)
         result = eval(pyquery, relations)
 
-        print (colorize("-> query: %s" % pyquery.encode('utf-8'), 0x00ff00))
+        print (colorize("-> query: %s" % pyquery, 0x00ff00))
 
         if printrel:
             print ()
