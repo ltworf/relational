@@ -243,19 +243,19 @@ def exec_line(command):
 
 def replacements(query):
     '''This funcion replaces ascii easy operators with the correct ones'''
-    query = query.replace(u'_PRODUCT',   u'*')
-    query = query.replace(u'_UNION',   u'ᑌ')
-    query = query.replace(u'_INTERSECTION',   u'ᑎ')
-    query = query.replace(u'_DIFFERENCE',   u'-')
-    query = query.replace(u'_JOIN',   u'ᐅᐊ')
-    query = query.replace(u'_LJOIN',   u'ᐅLEFTᐊ')
-    query = query.replace(u'_RJOIN',   u'ᐅRIGHTᐊ')
-    query = query.replace(u'_FJOIN',   u'ᐅFULLᐊ')
-    query = query.replace(u'_PROJECTION',   u'π')
-    query = query.replace(u'_RENAME_TO',   u'➡')
-    query = query.replace(u'_SELECTION',   u'σ')
-    query = query.replace(u'_RENAME',   u'ρ')
-    query = query.replace(u'_DIVISION',   u'÷')
+    query = query.replace(u'_PRODUCT', parser.PRODUCT)
+    query = query.replace(u'_UNION', parser.UNION)
+    query = query.replace(u'_INTERSECTION', parser.INTERSECTION)
+    query = query.replace(u'_DIFFERENCE', parser.DIFFERENCE)
+    query = query.replace(u'_JOIN', parser.JOIN)
+    query = query.replace(u'_LJOIN', parser.JOIN_LEFT)
+    query = query.replace(u'_RJOIN', parser.JOIN_RIGHT)
+    query = query.replace(u'_FJOIN', parser.JOIN_FULL)
+    query = query.replace(u'_PROJECTION', parser.PROJECTION)
+    query = query.replace(u'_RENAME_TO', parser.ARROW)
+    query = query.replace(u'_SELECTION', parser.SELECTION)
+    query = query.replace(u'_RENAME', parser.RENAME)
+    query = query.replace(u'_DIVISION', parser.DIVISION)
     return query
 
 
