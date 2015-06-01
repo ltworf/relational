@@ -21,7 +21,7 @@ import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 try:  # If QtWebKit is available, uses it
-    from PyQt5 import QtWebKit
+    from PyQt5 import QtWebKitWidgets
     webk = True
 except:
     webk = False
@@ -88,7 +88,7 @@ class Ui_Dialog(object):
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.tab_2)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         if (webk):
-            self.webView = QtWebKit.QWebView(self.tab_2)
+            self.webView = QtWebKitWidgets.QWebView(self.tab_2)
             self.webView.setUrl(
                 QtCore.QUrl("http://ltworf.github.io/relational/allowed_expressions.html"))
             self.webView.setObjectName("webView")
