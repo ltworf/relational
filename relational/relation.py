@@ -194,8 +194,7 @@ class relation (object):
         newt.header = header(list(self.header.attributes))
 
         for old, new in params.items():
-            if (newt.header.rename(old, new)) == False:
-                raise Exception('Unable to find attribute: %s' % old)
+            newt.header.rename(old, new)
 
         newt.content = self.content
         newt._readonly = True
@@ -522,7 +521,7 @@ class header (object):
 
     def rename(self, old, new):
         '''Renames a field. Doesn't check if it is a duplicate.
-        Returns True if the field was renamed, False otherwise'''
+        Returns True'''
 
         if not is_valid_relation_name(new):
             raise Exception('%s is not a valid attribute name' % new)
@@ -531,7 +530,7 @@ class header (object):
             id_ = self.attributes.index(old)
             self.attributes[id_] = new
         except:
-            return False
+            raise Exception('Field not found: %s' & old)
         return True
 
     def sharedAttributes(self, other):
