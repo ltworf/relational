@@ -114,6 +114,7 @@ class relForm(QtWidgets.QMainWindow):
 
             try:
                 expr = parser.parse(query)
+                print ('%s <- %s' % (relname, expr))
                 result = eval(expr, self.relations)
                 self.relations[relname] = result
             except Exception as e:
