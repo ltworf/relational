@@ -106,7 +106,7 @@ class creatorForm(QtWidgets.QDialog):
                     QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
                         "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))
                     return None
-            r.content.add(tuple(hlist))
+            r.insert(tuple(hlist))
         return r
 
     def accept(self):
