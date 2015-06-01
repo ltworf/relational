@@ -468,9 +468,14 @@ class relation (object):
         This function will not insert duplicate tuples.
         All the values will be converted in string.
         Will return the number of inserted rows.'''
-        # Returns if tuple doesn't fit the number of attributes
+
         if len(self.header.attributes) != len(values):
-            return 0
+            raise Exception(
+                'Tuple has the wrong size. Expected %d, got %d' % (
+                    len(self.header.attributes),
+                    len(values)
+                )
+            )
 
         self._make_writable()
 
