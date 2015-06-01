@@ -74,7 +74,7 @@ class relation (object):
         it will use the old format with space separated values.
         '''
 
-        fp = file(filename, 'w')  # Opening file in write mode
+        fp = open(filename, 'w')  # Opening file in write mode
 
         writer = csv.writer(fp)  # Creating csv writer
 
