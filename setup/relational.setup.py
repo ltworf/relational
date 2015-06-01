@@ -20,4 +20,3 @@
 import installer_common
 
 installer_common.c_setup('relational_gui')
-#installer_common.c_setup('relational_pyside')
