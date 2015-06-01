@@ -100,18 +100,6 @@ class relation (object):
             ','.join(self.header.attributes) , ','.join(other.header.attributes)
             ))
 
-    def _autocast(self, string):
-        '''Depending on the regexp matched by the string,
-        it will perform automatic casting'''
-        if len(string) > 0 and string.isInt():
-            return int(string)
-        elif len(string) > 0 and string.isFloat():
-            return float(string)
-        elif len(string) > 0 and string.isDate():
-            return rdate(string)
-        else:
-            return string
-
     def selection(self, expr):
         '''Selection, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.'''
@@ -121,7 +109,7 @@ class relation (object):
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
             for j in range(len(self.header.attributes)):
-                attributes[self.header.attributes[j]] = self._autocast(i[j])
+                attributes[self.header.attributes[j]] = i[j].autocast()
 
             try:
                 if eval(expr, attributes):
@@ -448,7 +436,7 @@ class relation (object):
         # new_content=[] #New content of the relation
         for i in self.content:
             for j in range(len(self.header.attributes)):
-                attributes[self.header.attributes[j]] = self._autocast(i[j])
+                attributes[self.header.attributes[j]] = i[j].autocast()
 
             if eval(expr, attributes):  # If expr is true, changing the tuple
                 affected += 1

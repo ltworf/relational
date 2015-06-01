@@ -28,6 +28,25 @@ import re
 class rstring (str):
 
     '''String subclass with some custom methods'''
+    def autocast(self):
+        '''
+        Returns the automatic cast for this
+        value.
+        '''
+        try:
+            return self._autocast
+        except:
+            pass
+
+        self._autocast = self
+        if len(self) > 0:
+            if self.isInt():
+                self._autocast = int(self)
+            elif self.isFloat():
+                self._autocast = float(self)
+            elif self.isDate():
+                self._autocast = rdate(self)
+        return self._autocast
 
     def isInt(self):
         '''Returns true if the string represents an int number
@@ -35,16 +54,10 @@ class rstring (str):
         the following regexp:
         r'^[\+\-]{0,1}[0-9]+$'
         '''
-        try:
-            return self._isint
-        except:
-            pass
-
         if re.match(r'^[\+\-]{0,1}[0-9]+$', self) == None:
-            self._isint = False
+            return False
         else:
-            self._isint = True
-        return self._isint
+            return True
 
     def isFloat(self):
         '''Returns true if the string represents a float number
@@ -52,16 +65,10 @@ class rstring (str):
         the following regexp:
             r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$'
         '''
-        try:
-            return self._isfloat
-        except:
-            pass
-
         if re.match(r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$', self) == None:
-            self._isfloat = False
+            return False
         else:
-            self._isfloat = True
-        return self._isfloat
+            return True
 
     def isDate(self):
         '''Returns true if the string represents a date,
