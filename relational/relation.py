@@ -94,9 +94,11 @@ class relation (object):
         Will return None if they don't share the same attributes'''
         if (self.__class__ != other.__class__):
             raise Exception('Expected an instance of the same class')
-        if self.header.sharedAttributes(other.header) == len(self.header.attributes) == len(other.header.attributes):
+        if self.header.sharedAttributes(other.header) == len(self.header.attributes):
             return other.projection(list(self.header.attributes))
-        return None
+        raise Exception('Relations differ: [%s] [%s]' % (
+            ','.join(self.header.attributes) , ','.join(other.header.attributes)
+            ))
 
     def _autocast(self, string):
         '''Depending on the regexp matched by the string,
@@ -207,9 +209,6 @@ class relation (object):
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
         other = self._rearrange_(other)  # Rearranges attributes' order
-        if (self.__class__ != other.__class__)or(self.header != other.header):
-            raise Exception(
-                'Unable to perform intersection on relations with different attributes')
         newt = relation()
         newt.header = header(list(self.header.attributes))
 
@@ -223,9 +222,6 @@ class relation (object):
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
         other = self._rearrange_(other)  # Rearranges attributes' order
-        if (self.__class__ != other.__class__)or(self.header != other.header):
-            raise Exception(
-                'Unable to perform difference on relations with different attributes')
         newt = relation()
         newt.header = header(list(self.header.attributes))
 
@@ -269,9 +265,6 @@ class relation (object):
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
         other = self._rearrange_(other)  # Rearranges attributes' order
-        if (self.__class__ != other.__class__)or(self.header != other.header):
-            raise Exception(
-                'Unable to perform union on relations with different attributes')
         newt = relation()
         newt.header = header(list(self.header.attributes))
 
@@ -402,14 +395,11 @@ class relation (object):
         if self.__class__ != other.__class__:
             return False
 
-        other = self._rearrange_(
-            other)  # Rearranges attributes' order so can compare tuples directly
-
-        if self.header != other.header:
-            return False  # Both parameters must be a relation
-
         if set(self.header.attributes) != set(other.header.attributes):
             return False
+
+        # Rearranges attributes' order so can compare tuples directly
+        other = self._rearrange_(other)
 
         # comparing content
         return self.content == other.content
@@ -478,7 +468,6 @@ class relation (object):
         This function will not insert duplicate tuples.
         All the values will be converted in string.
         Will return the number of inserted rows.'''
-
         # Returns if tuple doesn't fit the number of attributes
         if len(self.header.attributes) != len(values):
             return 0
