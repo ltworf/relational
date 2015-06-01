@@ -1,3 +1,15 @@
+relational (2.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * Now uses Python3
+  * Now uses PyQt5
+  * Bump standards version
+  * Recommends python3-pyqt5.qtwebkit to open the documentation from the UI but
+    it is not a necessity
+
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Mon, 01 Jun 2015 09:40:09 +0200
+
 relational (1.2-2) unstable; urgency=medium
 
   * Fix problem in relational-cli that made it crash when exceptions
@@ -17,7 +29,7 @@ relational (1.2-1) unstable; urgency=medium
 relational (1.1-1) unstable; urgency=low
 
   * New upstream release
-  * Can use either PyQt or PySide 
+  * Can use either PyQt or PySide
   * python-relational now uses unicode instead of utf-8 encoded strings
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Sat, 22 Oct 2011 15:27:01 +0200
@@ -34,7 +46,7 @@ relational (1.0-1) unstable; urgency=low
 relational (0.11-2) unstable; urgency=low
 
   * New package relational-cli
-  * Creates menu entry for relational 
+  * Creates menu entry for relational
   * Ships examples with the python-relational package
   * Links examples from python-relational into /usr/share/doc/relational and
     /usr/share/doc/relational-cli

@@ -2,14 +2,14 @@ Source: relational
 Section: math
 Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
-Build-Depends: debhelper (>= 7.0.50~), python, python-support, python-xtermcolor
-Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 7.0.50~), python3, dh-python, python3-xtermcolor
+Standards-Version: 3.9.6
 Homepage: http://ltworf.github.io/relational/
 
-Package: python-relational
+Package: python3-relational
 Architecture: all
 Section: python
-Depends: ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python3:Depends}
 Description: Educational tool for relational algebra (standalone module)
  Relational is primarily a tool to provide a workspace for experimenting with
  relational algebra, an offshoot of first-order logic.
@@ -19,7 +19,8 @@ Description: Educational tool for relational algebra (standalone module)
 
 Package: relational
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-relational (>= ${binary:Version}), python-qt4
+Depends: ${misc:Depends}, ${python3:Depends}, python3-relational (>= ${binary:Version}), python3-pyqt5
+Recommends: python3-pyqt5.qtwebkit
 Description: Educational tool for relational algebra (graphical user interface)
  Relational is primarily a tool to provide a workspace for experimenting with
  relational algebra, an offshoot of first-order logic.
@@ -29,8 +30,8 @@ Description: Educational tool for relational algebra (graphical user interface)
 
 Package: relational-cli
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-relational (>= ${binary:Version}),
- python-xtermcolor
+Depends: ${misc:Depends}, ${python3:Depends}, python3-relational (>= ${binary:Version}),
+ python3-xtermcolor
 Description: Educational tool for relational algebra (command line interface)
  Relational is primarily a tool to provide a workspace for experimenting with
  relational algebra, an offshoot of first-order logic.
