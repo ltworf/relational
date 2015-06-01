@@ -276,13 +276,19 @@ class relForm(QtWidgets.QMainWindow):
         event.accept()
 
     def save_settings(self):
-        # self.settings.setValue("width",)
-        pass
+        print('save')
+        self.settings.setValue('maingui/geometry', self.saveGeometry())
+        self.settings.setValue('maingui/windowState', self.saveState())
 
     def restore_settings(self):
         # self.settings.value('session_name','default').toString()
         self.setMultiline(self.settings.value('multiline','false')=='true')
         self.ui.txtMultiQuery.setPlainText(self.settings.value('multiline/query',''))
+        try:
+            self.restoreGeometry(self.settings.value('maingui/geometry'))
+            self.restoreState(self.settings.value('maingui/windowState'))
+        except:
+            pass
 
     def showSurvey(self):
         if self.Survey == None:
