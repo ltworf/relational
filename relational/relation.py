@@ -54,7 +54,8 @@ class relation (object):
         self.content = set()
 
         for i in reader:  # Iterating rows
-            self.content.add(tuple(i))
+
+            self.content.add(tuple(map (rstring, i)))
 
         # Closing file
         fp.close()
@@ -92,7 +93,7 @@ class relation (object):
         internally.
         Will return None if they don't share the same attributes'''
         if (self.__class__ != other.__class__):
-            return None
+            raise Exception('Expected an instance of the same class')
         if self.header.sharedAttributes(other.header) == len(self.header.attributes) == len(other.header.attributes):
             return other.projection(list(self.header.attributes))
         return None
@@ -100,15 +101,14 @@ class relation (object):
     def _autocast(self, string):
         '''Depending on the regexp matched by the string,
         it will perform automatic casting'''
-        tmpstring = rstring(string)
-        if len(tmpstring) > 0 and tmpstring.isInt():
-            return int(tmpstring)
-        elif len(tmpstring) > 0 and tmpstring.isFloat():
-            return float(tmpstring)
-        elif len(tmpstring) > 0 and tmpstring.isDate():
-            return rdate(tmpstring)
+        if len(string) > 0 and string.isInt():
+            return int(string)
+        elif len(string) > 0 and string.isFloat():
+            return float(string)
+        elif len(string) > 0 and string.isDate():
+            return rdate(string)
         else:
-            return tmpstring
+            return string
 
     def selection(self, expr):
         '''Selection, expr must be a valid boolean expression, can contain field names,
@@ -398,10 +398,13 @@ class relation (object):
     def __eq__(self, other):
         '''Returns true if the relations are the same, ignoring order of items.
         This operation is rather heavy, since it requires sorting and comparing.'''
+        if self.__class__ != other.__class__:
+            return False
+
         other = self._rearrange_(
             other)  # Rearranges attributes' order so can compare tuples directly
 
-        if (self.__class__ != other.__class__)or(self.header != other.header):
+        if self.header != other.header:
             return False  # Both parameters must be a relation
 
         if set(self.header.attributes) != set(other.header.attributes):
@@ -465,7 +468,7 @@ class relation (object):
                 # being affected.
                 self.content.remove(i)
                 for k in range(len(keys)):
-                    new_tuple[f_ids[k]] = str(dic[keys[k]])
+                    new_tuple[f_ids[k]] = rstring(dic[keys[k]])
                 self.content.add(tuple(new_tuple))
         return affected
 
@@ -481,13 +484,8 @@ class relation (object):
 
         self._make_writable()
 
-        # Creating list containing only strings
-        t = []
-        for i in values:
-            t.append(str(i))
-
         prevlen = len(self.content)
-        self.content.add(tuple(t))
+        self.content.add(tuple(map(rstring, values)))
         return len(self.content) - prevlen
 
     def delete(self, expr):
