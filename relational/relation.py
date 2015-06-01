@@ -495,19 +495,13 @@ class relation (object):
         This operation will change the relation itself instead of generating a new one,
         deleting all the tuples that make expr true.
         Returns the number of affected rows.'''
-        self._make_writable()
-        attributes = {}
-        affected = len(self.content)
-        new_content = set()  # New content of the relation
-        for i in self.content:
-            for j in range(len(self.header.attributes)):
-                attributes[self.header.attributes[j]] = self._autocast(i[j])
 
-            if not eval(expr, attributes):
-                affected -= 1
-                new_content.add(i)
-        self.content = new_content
-        return affected
+        #Not necessary self._make_writable()
+
+        l = len(self.content)
+        self._readonly = False
+        self.content = self.difference(self.selection(expr)).content
+        return len(self.content) - l
 
 
 class header (object):
