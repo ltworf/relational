@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created by: PyQt5 UI code generator 5.4.1
+# Created: Tue Jun  2 15:11:30 2015
+#      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -352,6 +353,7 @@ class Ui_MainWindow(object):
         self.cmdUndoOptimize.clicked.connect(MainWindow.undoOptimize)
         self.cmdExecute.clicked.connect(MainWindow.execute)
         self.txtQuery.returnPressed.connect(MainWindow.execute)
+        self.lstHistory.itemDoubleClicked['QListWidgetItem*'].connect(MainWindow.resumeHistory)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cmdAbout, self.cmdSurvey)
         MainWindow.setTabOrder(self.cmdSurvey, self.cmdProduct)
