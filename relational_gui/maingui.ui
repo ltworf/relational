@@ -1332,6 +1332,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>lstHistory</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>resumeHistory(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>282</x>
+     <y>465</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>620</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
