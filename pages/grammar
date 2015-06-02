@@ -1,3 +1,5 @@
+<p>Since version 2.0 the language has been changed. If you have an older version of relational, check the <a href="grammar_old.html">old grammar definition</a>.</p>
+
 <h3>Literals</h3>
 
 <p><em>Ident</em> literals are recognized by the regular expression:</p>
@@ -10,12 +12,12 @@
 
 <p>For the query</p>
 
-<pre><code>    ᑌ ᑎ ᐅᐊ ÷ ᐅLEFTᐊ ᐅRIGHTᐊ ᐅFULLᐊ σ π ρ ➡ ( ) , - *</pre></code>
+<pre><code>    * - ∪ ∩ ÷ ⋈ ⧑ ⧒ ⧓ π σ ρ ➡ ( ) , - *</pre></code>
 
 
 <p>For the expression in the select</p>
 
-<pre><code>    + - * / > < >= <= == != and or not **</pre></code>
+<pre><code>    + - * / > < >= <= == != and or not in **</pre></code>
 
 
 <h3>Grammar</h3>
@@ -29,6 +31,7 @@
     Query := ρ RenameList (Query)
     FieldList := Ident | Ident , FieldList
     RenameList := Ident ➡ Ident | Ident ➡ Ident , RenameList
-    BinaryOp := * | - | ᑌ | ᑎ | ÷ | ᐅᐊ | ᐅLEFTᐊ | ᐅRIGHTᐊ | ᐅFULLᐊ
+    BinaryOp := * | - | ∪ | ∩ | ÷ | ⋈ | ⧑ | ⧒ | ⧓
 </pre></code>
 
+<p>Note the double definition of the select. It means that if the selection expression contains parenthesis, then the entire expression must be enclosed in an extra set of parenthesis.</p>
