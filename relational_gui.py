@@ -23,6 +23,7 @@ import sys
 import os
 import os.path
 import getopt
+
 from relational import relation, parser
 version = "2.0"
 
@@ -85,8 +86,6 @@ if __name__ == "__main__":
 
         import sip  # needed on windows
         from PyQt5 import QtGui, QtWidgets
-        #FIXME remove this
-        from relational_gui import maingui, guihandler, about, surveyForm
         try:
             from relational_gui import maingui, guihandler, about, surveyForm
         except:
@@ -108,16 +107,13 @@ if __name__ == "__main__":
         ui.setupUi(form)
         form.restore_settings()
 
-        for i in range(len(files)):
-            if not os.path.isfile(files[i]):
-                print ("%s is not a file" % files[i],file=sys.stderr)
-                printhelp(12)
-            f = files[i].split('/')
-            defname = f[len(f) - 1].lower()
-            if defname.endswith(".csv"):  # removes the extension
-                defname = defname[:-4]
-            print ('Loading file "%s" with name "%s"' % (files[i], defname))
-            form.loadRelation(files[i], defname)
+        m = enumerate(map(os.path.isfile, files))
+        invalid = ' '.join((files[i[0]] for i in (filter(lambda x: not x[1], m))))
+        if invalid:
+            print ("%s: not a file" % invalid,file=sys.stderr)
+            printhelp(12)
+        if len(files):
+            form.loadRelation(files)
 
         form.show()
         sys.exit(app.exec_())

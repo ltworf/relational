@@ -18,6 +18,7 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 import sys
 import os
+import os.path
 
 from PyQt5 import QtCore, QtWidgets, QtWidgets
 
@@ -276,7 +277,6 @@ class relForm(QtWidgets.QMainWindow):
         event.accept()
 
     def save_settings(self):
-        print('save')
         self.settings.setValue('maingui/geometry', self.saveGeometry())
         self.settings.setValue('maingui/windowState', self.saveState())
 
@@ -306,50 +306,40 @@ class relForm(QtWidgets.QMainWindow):
             ui.setupUi(self.About)
         self.About.show()
 
-    def loadRelation(self, filename=None, name=None):
+    def loadRelation(self, filenames=None):
         '''Loads a relation. Without parameters it will ask the user which relation to load,
         otherwise it will load filename, giving it name.
         It shouldn't be called giving filename but not giving name.'''
         # Asking for file to load
-        if filename == None:
-            filename = QtWidgets.QFileDialog.getOpenFileName(self, QtWidgets.QApplication.translate(
+        if not filenames:
+            f = QtWidgets.QFileDialog.getOpenFileNames(self, QtWidgets.QApplication.translate(
                 "Form", "Load Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv);;Text Files (*.txt);;All Files (*)"))
-            filename = compatibility.get_filename(filename)
+            filenames = f[0]
 
-        # Default relation's name
-        f = filename.split('/')  # Split the full path
-        defname = f[len(f) - 1].lower()  # Takes only the lowercase filename
+        for f in filenames:
+            # Default relation's name
+            name = os.path.basename(f).lower()
 
-        if len(defname) == 0:
-            return
-
-        if (defname.endswith(".csv")):  # removes the extension
-            defname = defname[:-4]
-
-        if name == None:  # Prompt dialog to insert name for the relation
-            res = QtWidgets.QInputDialog.getText(
-                self, QtWidgets.QApplication.translate("Form", "New relation"), QtWidgets.QApplication.translate(
-                    "Form", "Insert the name for the new relation"),
-                QtWidgets.QLineEdit.Normal, defname)
-            if res[1] == False or len(res[0]) == 0:
+            if len(name) == 0:
                 return
 
-            name = compatibility.get_py_str(res[0])
+            if (name.endswith(".csv")):  # removes the extension
+                name = name[:-4]
 
-        if not rtypes.is_valid_relation_name(name):
-            r = QtWidgets.QApplication.translate(
-                "Form", str("Wrong name for destination relation: %s." % name))
-            QtWidgets.QMessageBox.information(
-                self, QtWidgets.QApplication.translate("Form", "Error"), r)
-            return
+            if not rtypes.is_valid_relation_name(name):
+                r = QtWidgets.QApplication.translate(
+                    "Form", str("Wrong name for destination relation: %s." % name))
+                QtWidgets.QMessageBox.information(
+                    self, QtWidgets.QApplication.translate("Form", "Error"), r)
+                continue
 
-        try:
-            self.relations[name] = relation.relation(filename)
-        except Exception as e:
-            print (e)
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
+            try:
+                self.relations[name] = relation.relation(f)
+            except Exception as e:
+                print (e)
+                QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
                                               (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
-            return
+                continue
 
         self.updateRelations()
 
