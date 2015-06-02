@@ -212,14 +212,19 @@ class relForm(QtWidgets.QMainWindow):
                 self.ui.lstRelations.addItem(i)
 
     def saveRelation(self):
+        if self.selectedRelation is None:
+            r = QtWidgets.QApplication.translate(
+                "Form", "Select a relation first."
+            )
+            QtWidgets.QMessageBox.information(
+                self, QtWidgets.QApplication.translate("Form", "Error"), r
+            )
+            return
         filename = QtWidgets.QFileDialog.getSaveFileName(self, QtWidgets.QApplication.translate(
-            "Form", "Save Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv)"))
-
-        filename = compatibility.get_filename(filename)
+            "Form", "Save Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv)"))[0]
         if (len(filename) == 0):  # Returns if no file was selected
             return
         self.selectedRelation.save(filename)
-        return
 
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
