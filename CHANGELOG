@@ -8,6 +8,8 @@
 - Since the language is changing, take the chance to use better symbols for JOIN
 - GUI has a new mode to insert multiple queries at once, assigning them to variables
 - Automatic casting is now faster
+- GUI can load multiple relations at once
+- GUI will only assign default names to loaded relations, without prompting the user
 
 1.2
 - Better tokenizer, gives more indicative errors
