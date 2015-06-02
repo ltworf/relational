@@ -19,7 +19,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from relational_gui import compatibility
 from relational_gui import rel_edit
 from relational import relation
 
@@ -85,8 +84,7 @@ class creatorForm(QtWidgets.QDialog):
         hlist = []
 
         for i in range(self.table.columnCount()):
-            hlist.append(
-                compatibility.get_py_str(self.table.item(0, i).text()))
+            hlist.append(self.table.item(0, i).text())
         try:
             header = relation.header(hlist)
         except Exception as e:
@@ -100,8 +98,7 @@ class creatorForm(QtWidgets.QDialog):
             hlist = []
             for j in range(self.table.columnCount()):
                 try:
-                    hlist.append(
-                        compatibility.get_py_str(self.table.item(i, j).text()))
+                    hlist.append(self.table.item(i, j).text())
                 except:
                     QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
                         "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))

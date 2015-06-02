@@ -22,7 +22,6 @@ import locale
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from relational_gui import compatibility
 from relational import maintenance
 
 
@@ -66,14 +65,13 @@ class surveyForm (QtWidgets.QWidget):
         post = {}
         post['software'] = "Relational algebra"
         post["version"] = version
-        post["system"] = compatibility.get_py_str(self.ui.txtSystem.text())
-        post["country"] = compatibility.get_py_str(self.ui.txtCountry.text())
-        post["school"] = compatibility.get_py_str(self.ui.txtSchool.text())
-        post["age"] = compatibility.get_py_str(self.ui.txtAge.text())
-        post["find"] = compatibility.get_py_str(self.ui.txtFind.text())
-        post["email"] = compatibility.get_py_str(self.ui.txtEmail.text())
-        post["comments"] = compatibility.get_py_str(
-            self.ui.txtComments.toPlainText())
+        post["system"] = self.ui.txtSystem.text()
+        post["country"] = self.ui.txtCountry.text()
+        post["school"] = self.ui.txtSchool.text()
+        post["age"] = self.ui.txtAge.text()
+        post["find"] = self.ui.txtFind.text()
+        post["email"] = self.ui.txtEmail.text()
+        post["comments"] = self.ui.txtComments.toPlainText()
 
         # Clears the form
         self.ui.txtSystem.clear()

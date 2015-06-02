@@ -28,7 +28,6 @@ from relational_gui import about
 from relational_gui import survey
 from relational_gui import surveyForm
 from relational_gui import maingui
-from relational_gui import compatibility
 
 
 class relForm(QtWidgets.QMainWindow):
@@ -82,21 +81,21 @@ class relForm(QtWidgets.QMainWindow):
         '''Performs all the possible optimizations on the query'''
         self.undo = self.ui.txtQuery.text()  # Storing the query in undo list
 
-        query = compatibility.get_py_str(self.ui.txtQuery.text())
+        query = self.ui.txtQuery.text()
         try:
             result = optimizer.optimize_all(query, self.relations)
-            compatibility.set_utf8_text(self.ui.txtQuery, result)
+            self.ui.txtQuery.setText(result)
         except Exception as e:
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
                                               (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
 
     def resumeHistory(self, item):
-        itm = compatibility.get_py_str(item.text()).split(' = ', 1)
-        compatibility.set_utf8_text(self.ui.txtResult, itm[0])
-        compatibility.set_utf8_text(self.ui.txtQuery, itm[1])
+        itm = item.text().split(' = ', 1)
+        self.ui.txtResult.setText(itm[0])
+        self.ui.txtQuery.setText(itm[1])
 
     def _run_multiline(self):
-        query = compatibility.get_py_str(self.ui.txtMultiQuery.toPlainText())
+        query = self.ui.txtMultiQuery.toPlainText()
         self.settings.setValue('multiline/query', query)
 
         queries = query.split('\n')
@@ -133,9 +132,8 @@ class relForm(QtWidgets.QMainWindow):
             return self._run_multiline()
 
         #Single line query
-        query = compatibility.get_py_str(self.ui.txtQuery.text())
-        res_rel = compatibility.get_py_str(
-            self.ui.txtResult.text())  # result relation's name
+        query = self.ui.txtQuery.text()
+        res_rel = self.ui.txtResult.text()  # result relation's name
 
         if not rtypes.is_valid_relation_name(res_rel):
             QtWidgets.QMessageBox.information(self, QtWidgets.QApplication.translate(
@@ -161,14 +159,17 @@ class relForm(QtWidgets.QMainWindow):
             return
 
         # Adds to history
-        item = u'%s = %s' % (compatibility.get_py_str(
-            self.ui.txtResult.text()), compatibility.get_py_str(self.ui.txtQuery.text()))
-        # item=item.decode('utf-8'))
-        compatibility.add_list_item(self.ui.lstHistory, item)
+        item = u'%s = %s' % (
+            self.ui.txtResult.text(),
+            self.ui.txtQuery.text()
+        )
+        hitem = QtWidgets.QListWidgetItem(None, 0)
+        hitem.setText(item)
+        self.ui.lstHistory.addItem(hitem)
+        self.ui.lstHistory.setCurrentItem(hitem)
 
         self.qcounter += 1
-        compatibility.set_utf8_text(self.ui.txtResult, u"_last%d" %
-                                    self.qcounter)  # Sets the result relation name to none
+        self.ui.txtResult.setText(u"_last%d" % self.qcounter)  # Sets the result relation name to none
 
     def showRelation(self, rel):
         '''Shows the selected relation into the table'''
@@ -194,13 +195,12 @@ class relForm(QtWidgets.QMainWindow):
                 i)  # Must be done in order to avoid  too small columns
 
     def printRelation(self, item):
-        self.selectedRelation = self.relations[
-            compatibility.get_py_str(item.text())]
+        self.selectedRelation = self.relations[item.text()]
         self.showRelation(self.selectedRelation)
 
     def showAttributes(self, item):
         '''Shows the attributes of the selected relation'''
-        rel = compatibility.get_py_str(item.text())
+        rel = item.text()
         self.ui.lstAttributes.clear()
         for j in self.relations[rel].header.attributes:
             self.ui.lstAttributes.addItem(j)
@@ -228,16 +228,16 @@ class relForm(QtWidgets.QMainWindow):
 
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
-            del self.relations[compatibility.get_py_str(i.text())]
+            del self.relations[i.text()]
         self.updateRelations()
 
     def editRelation(self):
         from relational_gui import creator
         for i in self.ui.lstRelations.selectedItems():
             result = creator.edit_relation(
-                self.relations[compatibility.get_py_str(i.text())])
+                self.relations[i.text()])
             if result != None:
-                self.relations[compatibility.get_py_str(i.text())] = result
+                self.relations[i.text()] = result
         self.updateRelations()
 
     def newRelation(self):
@@ -256,7 +256,7 @@ class relForm(QtWidgets.QMainWindow):
             )
             if res[1] == False:# or len(res[0]) == 0:
                 return
-            name = compatibility.get_py_str(res[0])
+            name = res[0]
 
             if not rtypes.is_valid_relation_name(name):
                 r = QtWidgets.QApplication.translate(
