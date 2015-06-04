@@ -103,8 +103,14 @@ if __name__ == "__main__":
 
         ui = maingui.Ui_MainWindow()
         form = guihandler.relForm(ui)
-
         ui.setupUi(form)
+        if sys.platform.startswith('win'):
+            winFont = 'Cambria'
+            ui.lstHistory.setFont(QtGui.QFont(winFont))
+            ui.txtMultiQuery.setFont(QtGui.QFont(winFont))
+            ui.txtQuery.setFont(QtGui.QFont(winFont))
+            ui.groupOperators.setFont(QtGui.QFont(winFont))
+
         form.restore_settings()
 
         m = enumerate(map(os.path.isfile, files))

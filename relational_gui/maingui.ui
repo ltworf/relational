@@ -47,7 +47,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_4">
+         <widget class="QGroupBox" name="groupOperators">
           <property name="title">
            <string>Operators</string>
           </property>
