@@ -1,14 +1,13 @@
 Requirements:
-1)Python 2.6;
-2)PyQt for python 2.6 (it should already include the qt libs);
+1)Python 3.4, 32bit
+2)PyQt5 for python 3.4, 32bit (it should already include the qt libs);
 3)Py2exe
 4)Innosetup
 
-It might be necessary to have the: Microsoft Visual C++ 2008 Redistributable Package, because python 2.6 uses it and it's not installed by default in windows.
+It might be necessary to have the: Microsoft Visual C++ 2008 Redistributable Package, because python 2.6 uses it and it's not installed by default in windows. I don't know if python 3 still needs it.
 
 
 	Create an exe file
-- Remove the directory relational_pyside (uses symlinks that won't work on windows)
 - Move the file windows/input.py to ../
 - Chech that the version number is correct
 - Execute "python input.py py2exe"
