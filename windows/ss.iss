@@ -37,7 +37,7 @@ Source: "samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs creat
 
 [Icons]
 Name: "{group}\Relational"; Filename: "{app}\relational_gui.exe"
-Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "https://github.com/ltworf/relational"
+Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "http://ltworf.github.io/relational/"
 Name: "{group}\{cm:UninstallProgram,Relational}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Relational"; Filename: "{app}\relational_gui.exe"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Filename: "{app}\relational_gui.exe"; Tasks: quicklaunchicon
