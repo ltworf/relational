@@ -330,6 +330,8 @@ class relForm(QtWidgets.QMainWindow):
 
             if (name.endswith(".csv")):  # removes the extension
                 name = name[:-4]
+            else:
+                name.replace('.','')
 
             if not rtypes.is_valid_relation_name(name):
                 r = QtWidgets.QApplication.translate(
