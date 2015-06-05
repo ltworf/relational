@@ -297,7 +297,7 @@ class relation (object):
         newt.header = header(list(self.header.attributes))
 
         # Adds all the attributes of the 2nd, when non shared
-        for i in other.header.attributes:
+        for i in other.header:
             if i not in shared:
                 newt.header.attributes.append(i)
         # Shared ids of self
@@ -306,10 +306,7 @@ class relation (object):
         oid = other.header.getAttributesId(shared)
 
         # Non shared ids of the other relation
-        noid = []
-        for i in range(len(other.header.attributes)):
-            if i not in oid:
-                noid.append(i)
+        noid = [i for i in range(len(other.header)) if i not in oid]
 
         for i in self.content:
             # Tuple partecipated to the join?
@@ -320,17 +317,13 @@ class relation (object):
                     match = match and (i[sid[k]] == j[oid[k]])
 
                 if match:
-                    item = list(i)
-                    for l in noid:
-                        item.append(j[l])
+                    item = chain(i,(j[l] for l in noid))
 
                     newt.content.add(tuple(item))
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = list(i)
-                for l in range(len(noid)):
-                    item.append("---")
+                item = chain(i,repeat('---',len(noid)))
                 newt.content.add(tuple(item))
 
         return newt
@@ -340,8 +333,7 @@ class relation (object):
         shared attributes, it will behave as cartesian product.'''
 
         # List of attributes in common between the relations
-        shared = list(set(self.header.attributes)
-                      .intersection(set(other.header.attributes)))
+        shared = set(self.header).intersection(set(other.header))
 
         newt = relation()  # Creates the new relation
 
@@ -547,6 +539,9 @@ class header (object):
 
     def __iter__(self):
         return iter(self.attributes)
+
+    def __len__(self):
+        return len(self.attributes)
 
     def getAttributesId(self, param):
         '''Returns a list with numeric index corresponding to field's name'''
