@@ -289,10 +289,7 @@ class relation (object):
         problems when saving the relation.
         Just like natural join, it works considering shared attributes.'''
 
-        shared = []
-        for i in self.header.attributes:
-            if i in other.header.attributes:
-                shared.append(i)
+        shared = self.header.intersection(other.header)
 
         newt = relation()  # Creates the new relation
 
@@ -526,6 +523,14 @@ class header (object):
     def sharedAttributes(self, other):
         '''Returns how many attributes this header has in common with a given one'''
         return len(set(self.attributes).intersection(set(other.attributes)))
+
+    def union(self, other):
+        '''Returns the union of the sets of attributes with another header.'''
+        return set(self.attributes).union(set(other.attributes))
+
+    def intersection(self, other):
+        '''Returns the set of common attributes with another header.'''
+        return set(self.attributes).intersection(set(other.attributes))
 
     def __str__(self):
         '''Returns String representation of the field's list'''
