@@ -68,6 +68,12 @@ class relation (object):
             self.content = set(self.content)
             self._readonly = False
 
+    def __iter__(self):
+        return iter(self.content)
+
+    def __contains__(self, key):
+        return key in self.content
+
     def save(self, filename):
         '''Saves the relation in a file. By default will save using the csv
         format as defined in RFC4180, but setting comma_separated to False,
@@ -534,6 +540,12 @@ class header (object):
 
     def __ne__(self, other):
         return self.attributes != other.attributes
+
+    def __contains__(self, key):
+        return key in self.attributes
+
+    def __iter__(self):
+        return iter(self.attributes)
 
     def getAttributesId(self, param):
         '''Returns a list with numeric index corresponding to field's name'''
