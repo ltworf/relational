@@ -21,6 +21,7 @@
 # relational operations on them.
 
 import csv
+from itertools import chain
 
 from relational.rtypes import *
 
@@ -171,9 +172,7 @@ class relation (object):
 
         # Create the body
         for i in self.content:
-            row = []
-            for j in ids:
-                row.append(i[j])
+            row = (i[j] for j in ids)
             newt.content.add(tuple(row))
         return newt
 
@@ -374,10 +373,7 @@ class relation (object):
                     match = match and (i[sid[k]] == j[oid[k]])
 
                 if match:
-                    item = list(i)
-                    for l in noid:
-                        item.append(j[l])
-
+                    item = chain(i, (j[l] for l in noid))
                     newt.content.add(tuple(item))
 
         return newt
