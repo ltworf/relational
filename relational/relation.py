@@ -382,6 +382,9 @@ class relation (object):
         # comparing content
         return self.content == other.content
 
+    def __len__(self):
+        return len(self.content)
+
     def __str__(self):
         '''Returns a string representation of the relation, can be printed with
         monospaced fonts'''
