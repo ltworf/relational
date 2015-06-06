@@ -153,11 +153,8 @@ class relation (object):
             attributes = attributes[0]
 
         # Avoiding duplicated attributes
-        attributes1 = []
-        for i in attributes:
-            if i not in attributes1:
-                attributes1.append(i)
-        attributes = attributes1
+        if len(set(attributes)) != len (attributes):
+            raise Exception('Duplicated attributes in projection')
 
         ids = self.header.getAttributesId(attributes)
 
