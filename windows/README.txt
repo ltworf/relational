@@ -14,6 +14,8 @@ It might be necessary to have the: Microsoft Visual C++ 2008 Redistributable Pac
 
 At the end, there should be a directory named "dist" containing the exe file and the needed libs (excluding for the c++ one)
 
+- manually copy the platforms subdirectory of plugins from the PyQt5 folder into dist
+
 	Create the setup with Inno Setup
 - Move windows/ss.iss to ../
 - Open ss.iss with Inno Setup, Build and Compile
