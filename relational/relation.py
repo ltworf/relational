@@ -21,7 +21,7 @@
 # relational operations on them.
 
 import csv
-from itertools import chain
+from itertools import chain, repeat
 
 from relational.rtypes import *
 
