@@ -106,7 +106,7 @@ if __name__ == "__main__":
         ui.setupUi(form)
         if sys.platform.startswith('win'):
             winFont = 'Cambria'
-            size = 12
+            size = 10
             increment = 4
             symbolFont = 'Segoe UI Symbol'
             form.setFont(QtGui.QFont('Dejavu Sans',size))
