@@ -31,7 +31,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "dist\relational_gui.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-; Source: "windows\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
+Source: "windows\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
 Source: "samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
