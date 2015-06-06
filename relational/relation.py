@@ -152,10 +152,6 @@ class relation (object):
         if isinstance(attributes[0], list):
             attributes = attributes[0]
 
-        # Avoiding duplicated attributes
-        if len(set(attributes)) != len (attributes):
-            raise Exception('Duplicated attributes in projection')
-
         ids = self.header.getAttributesId(attributes)
 
         if len(ids) == 0 or len(ids) != len(attributes):
