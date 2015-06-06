@@ -104,18 +104,23 @@ if __name__ == "__main__":
         ui = maingui.Ui_MainWindow()
         form = guihandler.relForm(ui)
         ui.setupUi(form)
+        f = QtGui.QFont()
+        size = f.pointSize();
         if sys.platform.startswith('win'):
             winFont = 'Cambria'
-            size = 10
-            increment = 4
             symbolFont = 'Segoe UI Symbol'
-            form.setFont(QtGui.QFont('Dejavu Sans',size))
-            ui.lstHistory.setFont(QtGui.QFont(winFont,size+increment))
-            ui.txtMultiQuery.setFont(QtGui.QFont(winFont,size+increment))
-            ui.txtQuery.setFont(QtGui.QFont(winFont,size+increment))
-            ui.groupOperators.setFont(QtGui.QFont(winFont,size+increment))
-            ui.cmdClearMultilineQuery.setFont(QtGui.QFont(symbolFont))
-            ui.cmdClearQuery.setFont(QtGui.QFont(symbolFont))
+            increment = 4
+        else:
+            winFont = f.family()
+            symbolFont = f.family()
+            increment = 2
+
+        ui.lstHistory.setFont(QtGui.QFont(winFont,size+increment))
+        ui.txtMultiQuery.setFont(QtGui.QFont(winFont,size+increment))
+        ui.txtQuery.setFont(QtGui.QFont(winFont,size+increment))
+        ui.groupOperators.setFont(QtGui.QFont(winFont,size+increment))
+        ui.cmdClearMultilineQuery.setFont(QtGui.QFont(symbolFont))
+        ui.cmdClearQuery.setFont(QtGui.QFont(symbolFont))
 
         form.restore_settings()
 
