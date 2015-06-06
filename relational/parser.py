@@ -218,7 +218,7 @@ class node (object):
             return
 
         if self.kind == RELATION:
-            return list(rels[self.name].header.attributes)
+            return list(rels[self.name].header)
         elif self.kind == BINARY and self.name in (DIFFERENCE, UNION, INTERSECTION):
             return self.left.result_format(rels)
         elif self.kind == BINARY and self.name == DIVISION:
