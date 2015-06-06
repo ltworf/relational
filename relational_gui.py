@@ -106,10 +106,16 @@ if __name__ == "__main__":
         ui.setupUi(form)
         if sys.platform.startswith('win'):
             winFont = 'Cambria'
-            ui.lstHistory.setFont(QtGui.QFont(winFont))
-            ui.txtMultiQuery.setFont(QtGui.QFont(winFont))
-            ui.txtQuery.setFont(QtGui.QFont(winFont))
-            ui.groupOperators.setFont(QtGui.QFont(winFont))
+            size = 12
+            increment = 4
+            symbolFont = 'Segoe UI Symbol'
+            form.setFont(QtGui.QFont('Dejavu Sans',size))
+            ui.lstHistory.setFont(QtGui.QFont(winFont,size+increment))
+            ui.txtMultiQuery.setFont(QtGui.QFont(winFont,size+increment))
+            ui.txtQuery.setFont(QtGui.QFont(winFont,size+increment))
+            ui.groupOperators.setFont(QtGui.QFont(winFont,size+increment))
+            ui.cmdClearMultilineQuery.setFont(QtGui.QFont(symbolFont))
+            ui.cmdClearQuery.setFont(QtGui.QFont(symbolFont))
 
         form.restore_settings()
 
