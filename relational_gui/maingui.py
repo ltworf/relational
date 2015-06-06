@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Thu Jun  4 22:17:58 2015
+# Created: Sun Jun  7 01:48:25 2015
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,6 +37,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addWidget(self.cmdSurvey)
         self.verticalLayout_11.addWidget(self.groupBox_3)
         self.groupOperators = QtWidgets.QGroupBox(self.layoutWidget)
+        self.groupOperators.setTitle("")
+        self.groupOperators.setFlat(True)
         self.groupOperators.setObjectName("groupOperators")
         self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.groupOperators)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
@@ -395,7 +397,6 @@ class Ui_MainWindow(object):
         self.groupBox_3.setTitle(_translate("MainWindow", "Menu"))
         self.cmdAbout.setText(_translate("MainWindow", "About"))
         self.cmdSurvey.setText(_translate("MainWindow", "Survey"))
-        self.groupOperators.setTitle(_translate("MainWindow", "Operators"))
         self.cmdProduct.setToolTip(_translate("MainWindow", "Product"))
         self.cmdDifference.setToolTip(_translate("MainWindow", "Difference"))
         self.cmdUnion.setToolTip(_translate("MainWindow", "Union"))
