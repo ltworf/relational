@@ -165,9 +165,7 @@ class relation (object):
             raise Exception('Invalid attributes for projection')
         newt = relation()
         # Create the header
-        h = []
-        for i in ids:
-            h.append(self.header.attributes[i])
+        h = [self.header.attributes[i] for i in ids]
         newt.header = header(h)
 
         # Create the body
