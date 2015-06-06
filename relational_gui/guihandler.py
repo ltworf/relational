@@ -179,7 +179,7 @@ class relForm(QtWidgets.QMainWindow):
             self.ui.table.setColumnCount(1)
             self.ui.table.headerItem().setText(0, "Empty relation")
             return
-        self.ui.table.setColumnCount(len(rel.header.attributes))
+        self.ui.table.setColumnCount(len(rel.header))
 
         # Set content
         for i in rel.content:
@@ -189,8 +189,8 @@ class relForm(QtWidgets.QMainWindow):
             self.ui.table.addTopLevelItem(item)
 
         # Sets columns
-        for i in range(len(rel.header.attributes)):
-            self.ui.table.headerItem().setText(i, rel.header.attributes[i])
+        for i,attr in enumerate(rel.header):
+            self.ui.table.headerItem().setText(i, attr)
             self.ui.table.resizeColumnToContents(
                 i)  # Must be done in order to avoid  too small columns
 
@@ -202,7 +202,7 @@ class relForm(QtWidgets.QMainWindow):
         '''Shows the attributes of the selected relation'''
         rel = item.text()
         self.ui.lstAttributes.clear()
-        for j in self.relations[rel].header.attributes:
+        for j in self.relations[rel].header:
             self.ui.lstAttributes.addItem(j)
 
     def updateRelations(self):
