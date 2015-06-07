@@ -4,8 +4,7 @@ Requirements:
 3)Py2exe
 4)Innosetup
 
-It might be necessary to have the: Microsoft Visual C++ 2008 Redistributable Package, because python 2.6 uses it and it's not installed by default in windows. I don't know if python 3 still needs it.
-
+It is necessary to have the: Microsoft Visual C++ 2010 Redistributable Package.
 
 	Create an exe file
 - Move the file windows/input.py to ../
@@ -18,6 +17,7 @@ At the end, there should be a directory named "dist" containing the exe file and
 
 	Create the setup with Inno Setup
 - Move windows/ss.iss to ../
+- Download the Microsoft Visual C++ 2010 Redistributable, call it vcredist_x86.exe and save it in the relational main directory
 - Open ss.iss with Inno Setup, Build and Compile
 
 A directory named "Output" will be created, which will contain the installer.
