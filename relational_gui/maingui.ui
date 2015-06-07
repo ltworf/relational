@@ -1137,6 +1137,214 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmdProduct</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addProduct()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDifference</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addDifference()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdUnion</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addUnion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdIntersection</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addIntersection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDivision</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addDivision()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOuter</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addOuter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>386</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOuterLeft</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addOLeft()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOuterRight</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addORight()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdJoin</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addJoin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>293</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdProjection</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addProjection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>417</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdSelection</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>448</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdRename</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addRename()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>479</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdArrow</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addArrow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
