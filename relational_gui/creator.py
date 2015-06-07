@@ -45,7 +45,7 @@ class creatorForm(QtWidgets.QDialog):
 
         self.table.insertRow(0)
 
-        for i in rel.header.attributes:
+        for i in rel.header:
             item = QtWidgets.QTableWidgetItem()
             item.setText(i)
             self.table.insertColumn(self.table.columnCount())
@@ -81,12 +81,10 @@ class creatorForm(QtWidgets.QDialog):
         self.table.setItem(1, 1, i11)
 
     def create_relation(self):
-        hlist = []
+        h = (self.table.item(0, i).text() for i in range(self.table.columnCount()))
 
-        for i in range(self.table.columnCount()):
-            hlist.append(self.table.item(0, i).text())
         try:
-            header = relation.header(hlist)
+            header = relation.header(h)
         except Exception as e:
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" % (
                 QtWidgets.QApplication.translate("Form", "Header error!"), e.__str__()))
@@ -103,7 +101,7 @@ class creatorForm(QtWidgets.QDialog):
                     QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
                         "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))
                     return None
-            r.insert(tuple(hlist))
+            r.insert(hlist)
         return r
 
     def accept(self):
