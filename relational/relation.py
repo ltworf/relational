@@ -22,6 +22,7 @@
 
 import csv
 from itertools import chain, repeat
+from collections import deque
 
 from relational.rtypes import *
 
@@ -47,19 +48,14 @@ class relation (object):
             self.content = set()
             self.header = header([])
             return
-        # Opening file
-        fp = open(filename)
+        with open(filename) as fp:
+            reader = csv.reader(fp)  # Creating a csv reader
+            self.header = header(next(reader))  # read 1st line
+            self.content = set()
+            attributes = len(self.header)
 
-        reader = csv.reader(fp)  # Creating a csv reader
-        self.header = header(next(reader))  # read 1st line
-        self.content = set()
-
-        for i in reader:  # Iterating rows
-
-            self.content.add(tuple(map (rstring, i)))
-
-        # Closing file
-        fp.close()
+            iterator = ((self.insert(i) for i in reader))
+            deque(iterator, maxlen=0)
 
     def _make_writable(self):
         '''If this relation is marked as readonly, this
