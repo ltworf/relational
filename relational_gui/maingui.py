@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'relational_gui/maingui.ui'
 #
-# Created: Sun Jun  7 13:34:01 2015
+# Created: Mon Jun  8 01:14:09 2015
 #      by: PyQt5 UI code generator 5.3.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 669)
+        MainWindow.resize(800, 671)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -196,9 +196,6 @@ class Ui_MainWindow(object):
         self.cmdEdit = QtWidgets.QPushButton(self.groupBox)
         self.cmdEdit.setObjectName("cmdEdit")
         self.gridLayout.addWidget(self.cmdEdit, 1, 1, 1, 1)
-        self.cmdUnload = QtWidgets.QPushButton(self.groupBox)
-        self.cmdUnload.setObjectName("cmdUnload")
-        self.gridLayout.addWidget(self.cmdUnload, 2, 0, 1, 1)
         self.cmdLoad = QtWidgets.QPushButton(self.groupBox)
         self.cmdLoad.setObjectName("cmdLoad")
         self.gridLayout.addWidget(self.cmdLoad, 0, 0, 1, 1)
@@ -208,6 +205,9 @@ class Ui_MainWindow(object):
         self.cmdNew = QtWidgets.QPushButton(self.groupBox)
         self.cmdNew.setObjectName("cmdNew")
         self.gridLayout.addWidget(self.cmdNew, 1, 0, 1, 1)
+        self.cmdUnload = QtWidgets.QPushButton(self.groupBox)
+        self.cmdUnload.setObjectName("cmdUnload")
+        self.gridLayout.addWidget(self.cmdUnload, 2, 0, 1, 2)
         self.verticalLayout_7.addLayout(self.gridLayout)
         self.groupBox_2 = QtWidgets.QGroupBox(self.splitter)
         self.groupBox_2.setMinimumSize(QtCore.QSize(0, 0))
@@ -342,6 +342,19 @@ class Ui_MainWindow(object):
         self.cmdExecute.clicked.connect(MainWindow.execute)
         self.txtQuery.returnPressed.connect(MainWindow.execute)
         self.lstHistory.itemDoubleClicked['QListWidgetItem*'].connect(MainWindow.resumeHistory)
+        self.cmdProduct.clicked.connect(MainWindow.addProduct)
+        self.cmdDifference.clicked.connect(MainWindow.addDifference)
+        self.cmdUnion.clicked.connect(MainWindow.addUnion)
+        self.cmdIntersection.clicked.connect(MainWindow.addIntersection)
+        self.cmdDivision.clicked.connect(MainWindow.addDivision)
+        self.cmdOuter.clicked.connect(MainWindow.addOuter)
+        self.cmdOuterLeft.clicked.connect(MainWindow.addOLeft)
+        self.cmdOuterRight.clicked.connect(MainWindow.addORight)
+        self.cmdJoin.clicked.connect(MainWindow.addJoin)
+        self.cmdProjection.clicked.connect(MainWindow.addProjection)
+        self.cmdSelection.clicked.connect(MainWindow.addSelection)
+        self.cmdRename.clicked.connect(MainWindow.addRename)
+        self.cmdArrow.clicked.connect(MainWindow.addArrow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.cmdAbout, self.cmdSurvey)
         MainWindow.setTabOrder(self.cmdSurvey, self.cmdProduct)
@@ -400,10 +413,10 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("MainWindow", "Relations"))
         self.lstRelations.setSortingEnabled(True)
         self.cmdEdit.setText(_translate("MainWindow", "Edit"))
-        self.cmdUnload.setText(_translate("MainWindow", "Unload"))
         self.cmdLoad.setText(_translate("MainWindow", "Load"))
         self.cmdSave.setText(_translate("MainWindow", "Save"))
         self.cmdNew.setText(_translate("MainWindow", "New"))
+        self.cmdUnload.setText(_translate("MainWindow", "Unload"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Attributes"))
         self.txtResult.setText(_translate("MainWindow", "_last1"))
         self.label.setText(_translate("MainWindow", "="))
