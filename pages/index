@@ -38,13 +38,12 @@ A ᐅᐊ B
 <pre><code>./relational_gui.py
 </code></pre>
 
-<p>If it needs some dependencies:
-Qt4, Python 2.7, either PyQT4 or Pyside.</p>
+<p>If it needs some dependencies: PyQt5, Python 3.4.</p>
 
 <p>It can run on osx but this is not supported.</p>
 
 <h1>Used by</h1>
 <ul>
-<li><a href="http://link.springer.com/chapter/10.1007%2F978-3-642-32498-7_1">This paper that I have no access to</a></li>
+<li><a href="http://link.springer.com/chapter/10.1007%2F978-3-642-32498-7_1">Ontology-Based Identification of Research Gaps and Immature Research Areas</a></li>
 
 </ul>
