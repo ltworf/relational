@@ -240,12 +240,7 @@ class relForm(QtWidgets.QMainWindow):
                 self.relations[i.text()] = result
         self.updateRelations()
 
-    def newRelation(self):
-        from relational_gui import creator
-        result = creator.edit_relation()
-
-        if result == None:
-            return
+    def promptRelationName(self):
         while True:
             res = QtWidgets.QInputDialog.getText(
                 self,
@@ -255,9 +250,8 @@ class relForm(QtWidgets.QMainWindow):
                 QtWidgets.QLineEdit.Normal, ''
             )
             if res[1] == False:# or len(res[0]) == 0:
-                return
+                return None
             name = res[0]
-
             if not rtypes.is_valid_relation_name(name):
                 r = QtWidgets.QApplication.translate(
                     "Form", str("Wrong name for destination relation: %s." % name)
@@ -266,16 +260,25 @@ class relForm(QtWidgets.QMainWindow):
                     self, QtWidgets.QApplication.translate("Form", "Error"), r
                 )
                 continue
+            return name
 
-            try:
-                self.relations[name] = result
-                self.updateRelations()
-            except Exception as e:
-                print (e)
-                QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                                (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
-            finally:
-                return
+    def newRelation(self):
+        from relational_gui import creator
+        result = creator.edit_relation()
+
+        if result == None:
+            return
+        name = self.promptRelationName()
+
+        try:
+            self.relations[name] = result
+            self.updateRelations()
+        except Exception as e:
+            print (e)
+            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
+                                            (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+        finally:
+            return
 
     def closeEvent(self, event):
         self.save_settings()
@@ -330,14 +333,11 @@ class relForm(QtWidgets.QMainWindow):
 
             if (name.endswith(".csv")):  # removes the extension
                 name = name[:-4]
-            else:
-                name.replace('.','')
 
             if not rtypes.is_valid_relation_name(name):
-                r = QtWidgets.QApplication.translate(
-                    "Form", str("Wrong name for destination relation: %s." % name))
-                QtWidgets.QMessageBox.information(
-                    self, QtWidgets.QApplication.translate("Form", "Error"), r)
+                name = self.promptRelationName()
+
+            if name is None:
                 continue
 
             try:
