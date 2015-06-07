@@ -8,532 +8,529 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>669</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Relational</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_7">
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
-     <widget class="QSplitter" name="splitter_4">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout_11">
-        <item>
-         <widget class="QGroupBox" name="groupBox_3">
-          <property name="title">
-           <string>Menu</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <widget class="QPushButton" name="cmdAbout">
-             <property name="text">
-              <string>About</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdSurvey">
-             <property name="text">
-              <string>Survey</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupOperators">
-          <property name="title">
-           <string/>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_10">
-           <item>
-            <widget class="QPushButton" name="cmdProduct">
-             <property name="toolTip">
-              <string>Product</string>
-             </property>
-             <property name="text">
-              <string notr="true">*</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdDifference">
-             <property name="toolTip">
-              <string>Difference</string>
-             </property>
-             <property name="text">
-              <string notr="true">-</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdUnion">
-             <property name="toolTip">
-              <string>Union</string>
-             </property>
-             <property name="text">
-              <string notr="true">∪</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdIntersection">
-             <property name="toolTip">
-              <string>Intersection</string>
-             </property>
-             <property name="text">
-              <string notr="true">∩</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdDivision">
-             <property name="toolTip">
-              <string>Division</string>
-             </property>
-             <property name="text">
-              <string notr="true">÷</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdJoin">
-             <property name="toolTip">
-              <string>Natural join</string>
-             </property>
-             <property name="text">
-              <string notr="true">⋈</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdOuterLeft">
-             <property name="toolTip">
-              <string>Left outer join</string>
-             </property>
-             <property name="text">
-              <string notr="true">⧑</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdOuterRight">
-             <property name="toolTip">
-              <string>Right outer join</string>
-             </property>
-             <property name="text">
-              <string notr="true">⧒</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdOuter">
-             <property name="toolTip">
-              <string>Full outer join</string>
-             </property>
-             <property name="text">
-              <string notr="true">⧓</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdProjection">
-             <property name="toolTip">
-              <string>Projection</string>
-             </property>
-             <property name="text">
-              <string notr="true">π</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdSelection">
-             <property name="toolTip">
-              <string>Selection</string>
-             </property>
-             <property name="text">
-              <string notr="true">σ</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdRename">
-             <property name="toolTip">
-              <string>Rename</string>
-             </property>
-             <property name="text">
-              <string notr="true">ρ</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdArrow">
-             <property name="text">
-              <string notr="true">➡</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>25</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QSplitter" name="splitter_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QSplitter" name="splitter_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+     <layout class="QVBoxLayout" name="verticalLayout_11">
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Menu</string>
         </property>
-        <widget class="QTreeWidget" name="table">
-         <property name="minimumSize">
-          <size>
-           <width>450</width>
-           <height>400</height>
-          </size>
-         </property>
-         <property name="sizeIncrement">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="rootIsDecorated">
-          <bool>false</bool>
-         </property>
-         <column>
-          <property name="text">
-           <string notr="true">Empty relation</string>
-          </property>
-         </column>
-        </widget>
-        <widget class="QWidget" name="layoutWidget">
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinimumSize</enum>
-          </property>
-          <item>
-           <widget class="QFrame" name="frmOptimizations">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="lineWidth">
-             <number>0</number>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item>
-              <widget class="QListWidget" name="lstHistory">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="baseSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <widget class="QPushButton" name="cmdOptimize">
-                 <property name="text">
-                  <string>Optimize</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="cmdUndoOptimize">
-                 <property name="text">
-                  <string>Undo optimize</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="cmdClearHistory">
-                 <property name="text">
-                  <string>Clear history</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QFrame" name="frmMultiLine">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="lineWidth">
-             <number>0</number>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QPlainTextEdit" name="txtMultiQuery">
-               <property name="font">
-                <font>
-                 <family>DejaVu Sans</family>
-                 <pointsize>11</pointsize>
-                 <weight>50</weight>
-                 <italic>false</italic>
-                 <bold>false</bold>
-                 <underline>false</underline>
-                 <strikeout>false</strikeout>
-                 <kerning>true</kerning>
-                </font>
-               </property>
-               <property name="plainText">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_4">
-               <item>
-                <widget class="QPushButton" name="cmdClearMultilineQuery">
-                 <property name="text">
-                  <string>⌫</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="cmdExecuteMultiline">
-                 <property name="text">
-                  <string>Execute</string>
-                 </property>
-                 <property name="autoDefault">
-                  <bool>false</bool>
-                 </property>
-                 <property name="default">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QPushButton" name="cmdAbout">
+           <property name="text">
+            <string>About</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdSurvey">
+           <property name="text">
+            <string>Survey</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-       <widget class="QSplitter" name="splitter">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>300</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Relations</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QListWidget" name="lstRelations">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="sortingEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdNew">
-            <property name="text">
-             <string>New relation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdLoad">
-            <property name="text">
-             <string>Load relation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdSave">
-            <property name="text">
-             <string>Save relation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdEdit">
-            <property name="text">
-             <string>Edit relation</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdUnload">
-            <property name="text">
-             <string>Unload relation</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>300</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Attributes</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QListWidget" name="lstAttributes">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="groupOperators">
+        <layout class="QVBoxLayout" name="verticalLayout_10">
+         <item>
+          <widget class="QPushButton" name="cmdProduct">
+           <property name="toolTip">
+            <string>Product</string>
+           </property>
+           <property name="text">
+            <string notr="true">*</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdDifference">
+           <property name="toolTip">
+            <string>Difference</string>
+           </property>
+           <property name="text">
+            <string notr="true">-</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdUnion">
+           <property name="toolTip">
+            <string>Union</string>
+           </property>
+           <property name="text">
+            <string notr="true">∪</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdIntersection">
+           <property name="toolTip">
+            <string>Intersection</string>
+           </property>
+           <property name="text">
+            <string notr="true">∩</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdDivision">
+           <property name="toolTip">
+            <string>Division</string>
+           </property>
+           <property name="text">
+            <string notr="true">÷</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdJoin">
+           <property name="toolTip">
+            <string>Natural join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⋈</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdOuterLeft">
+           <property name="toolTip">
+            <string>Left outer join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⧑</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdOuterRight">
+           <property name="toolTip">
+            <string>Right outer join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⧒</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdOuter">
+           <property name="toolTip">
+            <string>Full outer join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⧓</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdProjection">
+           <property name="toolTip">
+            <string>Projection</string>
+           </property>
+           <property name="text">
+            <string notr="true">π</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdSelection">
+           <property name="toolTip">
+            <string>Selection</string>
+           </property>
+           <property name="text">
+            <string notr="true">σ</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdRename">
+           <property name="toolTip">
+            <string>Rename</string>
+           </property>
+           <property name="text">
+            <string notr="true">ρ</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdArrow">
+           <property name="text">
+            <string notr="true">➡</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>25</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
-      </widget>
-     </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QFrame" name="lineExpressionFrame">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>0</number>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLineEdit" name="txtResult">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QSplitter" name="splitter_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QSplitter" name="splitter_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="text">
-          <string>_last1</string>
-         </property>
+         <widget class="QTreeWidget" name="table">
+          <property name="minimumSize">
+           <size>
+            <width>450</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="rootIsDecorated">
+           <bool>false</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string notr="true">Empty relation</string>
+           </property>
+          </column>
+         </widget>
+         <widget class="QWidget" name="layoutWidget">
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinimumSize</enum>
+           </property>
+           <item>
+            <widget class="QFrame" name="frmOptimizations">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QListWidget" name="lstHistory">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="baseSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QPushButton" name="cmdOptimize">
+                  <property name="text">
+                   <string>Optimize</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdUndoOptimize">
+                  <property name="text">
+                   <string>Undo optimize</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdClearHistory">
+                  <property name="text">
+                   <string>Clear history</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frmMultiLine">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QPlainTextEdit" name="txtMultiQuery">
+                <property name="font">
+                 <font>
+                  <family>DejaVu Sans</family>
+                  <pointsize>11</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
+                  <underline>false</underline>
+                  <strikeout>false</strikeout>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+                <property name="plainText">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_4">
+                <item>
+                 <widget class="QPushButton" name="cmdClearMultilineQuery">
+                  <property name="text">
+                   <string>⌫</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdExecuteMultiline">
+                  <property name="text">
+                   <string>Execute</string>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>false</bool>
+                  </property>
+                  <property name="default">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>=</string>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="buddy">
-          <cstring>txtQuery</cstring>
-         </property>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Relations</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QListWidget" name="lstRelations">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="1" column="1">
+              <widget class="QPushButton" name="cmdEdit">
+               <property name="text">
+                <string>Edit</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="cmdLoad">
+               <property name="text">
+                <string>Load</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="cmdSave">
+               <property name="text">
+                <string>Save</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="cmdNew">
+               <property name="text">
+                <string>New</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QPushButton" name="cmdUnload">
+               <property name="text">
+                <string>Unload</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Attributes</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QListWidget" name="lstAttributes">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="txtQuery"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="cmdClearQuery">
-         <property name="text">
-          <string>⌫</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="cmdExecute">
-         <property name="text">
-          <string>Execute</string>
-         </property>
-         <property name="autoDefault">
-          <bool>true</bool>
-         </property>
-         <property name="default">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="lineExpressionFrame">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLineEdit" name="txtResult">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>_last1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>=</string>
+           </property>
+           <property name="buddy">
+            <cstring>txtQuery</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="txtQuery"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdClearQuery">
+           <property name="text">
+            <string>⌫</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdExecute">
+           <property name="text">
+            <string>Execute</string>
+           </property>
+           <property name="autoDefault">
+            <bool>true</bool>
+           </property>
+           <property name="default">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -698,9 +695,6 @@
   <tabstop>cmdClearMultilineQuery</tabstop>
   <tabstop>cmdExecuteMultiline</tabstop>
   <tabstop>lstRelations</tabstop>
-  <tabstop>cmdNew</tabstop>
-  <tabstop>cmdLoad</tabstop>
-  <tabstop>cmdSave</tabstop>
   <tabstop>cmdEdit</tabstop>
   <tabstop>cmdUnload</tabstop>
   <tabstop>lstAttributes</tabstop>
@@ -740,102 +734,6 @@
     <hint type="destinationlabel">
      <x>99</x>
      <y>605</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdProduct</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addProduct()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>53</x>
-     <y>166</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>180</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdDifference</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addDifference()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>94</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>46</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdArrow</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addArrow()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>538</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>58</x>
-     <y>608</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdRename</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addRename()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>69</x>
-     <y>507</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>111</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdSelection</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addSelection()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>99</x>
-     <y>476</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>16</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdProjection</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addProjection()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>445</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>91</x>
-     <y>597</y>
     </hint>
    </hints>
   </connection>
@@ -884,118 +782,6 @@
     <hint type="destinationlabel">
      <x>753</x>
      <y>594</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdOuterRight</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addORight()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>383</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>58</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdOuter</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addOuter()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>61</x>
-     <y>414</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>86</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdOuterLeft</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addOLeft()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>44</x>
-     <y>328</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>66</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdJoin</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addJoin()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>321</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>147</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdDivision</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addDivision()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>71</x>
-     <y>272</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>185</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdIntersection</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addIntersection()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>99</x>
-     <y>244</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>228</x>
-     <y>611</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdUnion</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addUnion()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>32</x>
-     <y>220</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>279</x>
-     <y>611</y>
     </hint>
    </hints>
   </connection>
