@@ -44,9 +44,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
-<p>Since version 2.0 the language has been changed. If you have an older version of relational, check the <a href="allowed_expressions_old.html">old syntax</a>.</p>
-
-<p>This page explains the language supported by relational.</p>
+This page explains the language supported by relational
 
 <h3>Operators</h3>
 
@@ -69,25 +67,25 @@ Syntax for those operators is: <code>relation operator relation</code>.
         <td class="col0"> - </td><td class="col1">difference</td><td class="col2"> A - B </td>
     </tr>
     <tr class="row3">
-        <td class="col0"> ∪ </td><td class="col1">union</td><td class="col2"> A ∪ B </td>
+        <td class="col0"> ᑌ </td><td class="col1">union</td><td class="col2"> A ᑌ B </td>
     </tr>
     <tr class="row4">
-        <td class="col0"> ∩ </td><td class="col1">intersection</td><td class="col2"> A ∩ B </td>
+        <td class="col0"> ᑎ </td><td class="col1">intersection</td><td class="col2"> A ᑎ B </td>
     </tr>
     <tr class="row5">
         <td class="col0"> ÷ </td><td class="col1">division</td><td class="col2"> A ÷ B </td>
     </tr>
     <tr class="row6">
-        <td class="col0"> ⋈ </td><td class="col1">join</td><td class="col2"> A ⋈ B </td>
+        <td class="col0"> ᐅᐊ </td><td class="col1">join</td><td class="col2"> A ᐅᐊ B </td>
     </tr>
     <tr class="row7">
-        <td class="col0"> ⧑ </td><td class="col1">left outer join</td><td class="col2"> A ⧑ B </td>
+        <td class="col0"> ᐅLEFTᐊ </td><td class="col1">left outer join</td><td class="col2"> A ᐅLEFTᐊ B </td>
     </tr>
     <tr class="row8">
-        <td class="col0"> ⧒ </td><td class="col1">right outer join</td><td class="col2"> A ⧒ B </td>
+        <td class="col0"> ᐅRIGHTᐊ </td><td class="col1">right outer join</td><td class="col2"> A ᐅRIGHTᐊ B </td>
     </tr>
     <tr class="row9">
-        <td class="col0"> ⧓ </td><td class="col1">full outer join</td><td class="col2"> A ⧓ B </td>
+        <td class="col0"> ᐅFULLᐊ </td><td class="col1">full outer join</td><td class="col2"> A ᐅFULLᐊ B </td>
     </tr>
 </table>
 
@@ -113,20 +111,20 @@ Syntax for those is: <code>operator parameters (relation)</code>
 </table>
 
 <h4>Mixing operators</h4>
-<p>Since a*b is a relation itself, you can parse π a,b (a*b); and since π a,b (A) is a relation, you can parse π a,b (A) ∪ B.</p>
+<p>Since a*b is a relation itself, you can parse π a,b (a*b); and since π a,b (A) is a relation, you can parse π a,b (A) ᑌ B.</p>
 
-<p>You can use parenthesis to change priority: a ⋈ (q ∪ d)
+<p>You can use parenthesis to change priority: a ᐅᐊ (q ᑌ d)
 </p>
 
 <h3>Examples</h3>
 <pre><code>
 σage > 25 and rank == weight(A)
 σ (name.upper().startswith('J') and age>21 )(people)
-Q ⋈ π a,b(A) ⋈ B
-ρid➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage > 25 or rank = weight(A)
+Q ᐅᐊ π a,b(A) ᐅᐊ B
+ρid➡i,name➡n(A) - π a,b(π a,b(A)) ᑎ σage > 25 or rank = weight(A)
 π a,b(π a,b(A))
 ρid➡i,name➡n(π a,b(A))
-A ⋈ B
+A ᐅᐊ B
 </code></pre>
 
 <h3>Dates</h3>
