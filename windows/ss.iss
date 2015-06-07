@@ -31,12 +31,12 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Run]
 ; add the Parameters, WorkingDir and StatusMsg as you wish, just keep here
 ; the conditional installation Check
-Filename: "{tmp}\vcredist_x86.exe"; Check: VCRedistNeedsInstall
+Filename: "{tmp}\vcredist_x86.exe";
 
 [Files]
 Source: "dist\relational_gui.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "windows\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
+; Source: "windows\font dejavu\*"; DestDir: "{fonts}"; FontInstall: "Dejavu Sans"
 Source: "samples\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "vcredist_x86.exe"; DestDir: {tmp}; Flags: deleteafterinstall
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
