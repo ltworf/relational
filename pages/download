@@ -1,0 +1,12 @@
+<h3>Downloads</h3>
+
+<p>The latest available version of relational can be downloaded here.</p>
+
+<ul>
+<li><a href="https://github.com/ltworf/relational/releases/download/v2.0/relational_setup.exe">Windows download (32 bit)</a></li>
+<li><a href="https://github.com/ltworf/relational/releases/download/v2.0/relational_2.0.orig.tar.gz">Sources</a></li>
+</ul>
+
+<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
+
+<p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
