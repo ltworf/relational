@@ -1,0 +1,30 @@
+<h2>Contribute</h2>
+
+Contributions are welcome in this project.
+
+<h3>Bug reports</h3>
+<p>The easiest way to contribute is to submit a bug report.</p>
+
+<p>You can do so by using <a href="https://github.com/ltworf/relational/issues">GitHub issue tracker</a>.</p>
+
+<p>If you encounter an error by running a query, please attach the relations that you are using, and the query that generates the error.</p>
+
+<h3>Patches</h3>
+<p>Patches are welcome, you can send pull requests using GitHub, or just email me (tiposchi at tiscali dot it) a patch.</p>
+
+<p>Patches to the backend parser, optimizations, or data structure, should pass all the tests in the testsuite before submission. You can run <code><pre>./driver.py</pre></code> to make sure that your patch doesn't break things.</p>
+
+<h3>Things that could use contributors</h3>
+
+<p>Here's a list of ideas for possible contributions.</p>
+
+<ul>
+<li>A proper icon</li>
+<li>A .app bundle for OsX</li>
+<li>Possibly easier documentation for newcomers</li>
+<li>Support in the parser to memoize operations that might benefit from it. Without doing so for every operation, because that would lead to excessive memory consumption.</li>
+<li>Support for parallel execution, with run-time decisions on splitting the tasks among processors.</li>
+<li>A website that works on phones</li>
+<li>A 64 bit version for Windows</li>
+<li>Packages and inclusion in other distributions</li>
+</ul>
