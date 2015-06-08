@@ -43,40 +43,18 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
-<h3>Literals</h3>
+<h2>Downloads</h2>
 
-<p><em>Ident</em> literals are recognized by the regular expression:</p>
+<p>The latest available version of relational can be downloaded here.</p>
 
-<pre><code>( letter | '_')( letter | digit | '_')*</pre></code>
+<ul>
+<li><a href="https://github.com/ltworf/relational/releases/download/v2.0/relational_setup.exe">Windows download (32 bit)</a></li>
+<li><a href="https://github.com/ltworf/relational/releases/download/v2.0/relational_2.0.orig.tar.gz">Sources</a></li>
+</ul>
 
-<p>String literals String have the form <code>'x'</code>, where x is any sequence of any characters except <code>"</code> and <code>'</code>.</p>
+<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
 
-<p>Reserved words and symbols, separated by a space</p>
-
-<p>For the query</p>
-
-<pre><code>    ᑌ ᑎ ᐅᐊ ÷ ᐅLEFTᐊ ᐅRIGHTᐊ ᐅFULLᐊ σ π ρ ➡ ( ) , - *</pre></code>
-
-
-<p>For the expression in the select</p>
-
-<pre><code>    + - * / > < >= <= == != and or not **</pre></code>
-
-
-<h3>Grammar</h3>
-
-<pre><code>
-    Query := Ident
-    Query := Query BinaryOp Query
-    Query := (Query)
-    Query := σ PYExprWithoutParenthesis (Query) | σ (PYExpr) (Query)
-    Query := π FieldList (Query)
-    Query := ρ RenameList (Query)
-    FieldList := Ident | Ident , FieldList
-    RenameList := Ident ➡ Ident | Ident ➡ Ident , RenameList
-    BinaryOp := * | - | ᑌ | ᑎ | ÷ | ᐅᐊ | ᐅLEFTᐊ | ᐅRIGHTᐊ | ᐅFULLᐊ
-</pre></code>
-
+<p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
       </section>
     </div>
 
