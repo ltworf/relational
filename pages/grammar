@@ -1,3 +1,6 @@
+<h2>Grammar definition</h2>
+<p>This page defines the <em>formal grammar</em> that is used by relational.</p>
+
 <p>Since version 2.0 the language has been changed. If you have an older version of relational, check the <a href="grammar_old.html">old grammar definition</a>.</p>
 
 <h3>Literals</h3>

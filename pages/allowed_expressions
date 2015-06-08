@@ -1,15 +1,20 @@
+<h2>Query language</h2>
 <p>Since version 2.0 the language has been changed. If you have an older version of relational, check the <a href="allowed_expressions_old.html">old syntax</a>.</p>
 
-<p>This page explains the language supported by relational.</p>
+<p>This page explains the query language supported by relational.</p>
 
 <h3>Operators</h3>
 
 It has 2 class of operators:
+<ul>
+<li><a href="#noparam">Without parameters</a></li>
+<li><a href="#param"  >With parameters</a></li>
+</ul>
 
-<h4>Without parameters</h4>
+<h4><a id="noparam">Without parameters</a></h4>
 
 <p>
-Syntax for those operators is: <code>relation operator relation</code>.
+Operators without parameters work on two relations. The syntax for those operators is: <code>relation operator relation</code>.
 </p>
 
 <table class="inline">
@@ -45,10 +50,10 @@ Syntax for those operators is: <code>relation operator relation</code>.
     </tr>
 </table>
 
-<h4>With parameters</h4>
+<h4><a id="param">With parameters</a></h4>
 
 <p>
-Syntax for those is: <code>operator parameters (relation)</code>
+Operators with parameters work on a single relation, and the result will depend on the passed parameters. The syntax for those is: <code>operator parameters (relation)</code>
 </p>
 
 <table class="inline">
@@ -62,24 +67,26 @@ Syntax for those is: <code>operator parameters (relation)</code>
         <td class="col0"> π </td><td class="col1">projection</td><td class="col2"> π name,age (A) </td><td class="col3"></td>
     </tr>
     <tr class="row3">
-        <td class="col0"> ρ </td><td class="col1">rename</td><td class="col2"> ρ index➡id,age➡old (A) </td><td class="col3"> Spaces in the parameters will be ignored </td>
+        <td class="col0"> ρ </td><td class="col1">rename</td><td class="col2"> ρ old_name➡new_name,age➡old (A) </td><td class="col3"> </td>
     </tr>
 </table>
 
-<h4>Mixing operators</h4>
-<p>Since a*b is a relation itself, you can parse π a,b (a*b); and since π a,b (A) is a relation, you can parse π a,b (A) ∪ B.</p>
+<h4>Complex queries</h4>
+<p>In any place where a relation is expected, a query can be used instead. For example, since a*b is a relation itself, you can evaluate π f1,f2 (a*b) ∪ R</p>
 
 <p>You can use parenthesis to change priority: a ⋈ (q ∪ d)
 </p>
 
 <h3>Examples</h3>
+<p>These are some valid queries.</p>
+
 <pre><code>
 σage > 25 and rank == weight(A)
 σ (name.upper().startswith('J') and age>21 )(people)
 Q ⋈ π a,b(A) ⋈ B
-ρid➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage > 25 or rank = weight(A)
+ρ id➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage > 25 or rank = weight(A)
 π a,b(π a,b(A))
-ρid➡i,name➡n(π a,b(A))
+ρ id➡i,name➡n(π a,b(A))
 A ⋈ B
 </code></pre>
 

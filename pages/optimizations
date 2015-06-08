@@ -1,4 +1,4 @@
-
+<h2>Optimizations</h2>
 <p>The optimize module provides a way to perform various optimizations on queries. It assumes that the query is correct.</p>
 
 <p>An optimized query should return the same result of the original query. If you find a non working query please submit a bug.</p>

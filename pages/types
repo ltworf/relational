@@ -1,4 +1,4 @@
-<h3>Types and casting rules</h3>
+<h2>Types and casting rules</h2>
 
 <p>When performing <strong>selection</strong>, implicit casting will be performed to allow the use of operators other than == and !=.</p>
 
