@@ -6,7 +6,7 @@ relational (2.0-1) unstable; urgency=medium
   * Bump standards version
   * Recommends python3-pyqt5.qtwebkit to open the documentation from the UI but
     it is not a necessity
-
+  * Switch to dh-python (Closes: #786263)
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Mon, 01 Jun 2015 09:40:09 +0200
 
