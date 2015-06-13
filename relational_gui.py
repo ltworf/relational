@@ -25,7 +25,7 @@ import os.path
 import getopt
 
 from relational import relation, parser
-version = "2.0"
+version = "2.1"
 
 
 def printver(exit=True):

@@ -37,5 +37,5 @@ setup(options = {
           {"script": "relational_gui.py","icon_resources": [(0, "windows/favicon.ico")]}
           ]
       ,name="Relational",
-               version="2.0"
+               version="2.1"
       )

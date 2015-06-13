@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{6F127615-6AD4-4BD7-8135-2444A335B5CD}
 AppName=Relational
-AppVerName=Relational ver. 2.0
+AppVerName=Relational ver. 2.1
 AppPublisher=Salvo 'LtWorf' Tomaselli
 AppPublisherURL=http://ltworf.github.io/relational/
 AppSupportURL=http://ltworf.github.io/relational/

@@ -1,3 +1,5 @@
+2.1
+
 2.0
 - Fix bug in relational-cli that made it crash when an exception was raised
 - Point to new website
