@@ -55,7 +55,7 @@ def check_latest_version():
     s = r.read()
     if len(s) == 0:
         return None
-    return str(s.strip())
+    return s.decode().strip()
 
 
 class interface (object):
