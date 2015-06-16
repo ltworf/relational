@@ -22,7 +22,9 @@
 import http.client
 import urllib.parse
 
-from relational import relation
+from relational.relation import relation
+from relational import parser
+from relational.rtypes import is_valid_relation_name
 
 
 def send_survey(data):
@@ -58,23 +60,24 @@ def check_latest_version():
     return s.decode().strip()
 
 
-class interface (object):
+class user_interface (object):
 
     '''It is used to provide services to the user interfaces, in order to
     reduce the amount of duplicated code present in different user interfaces.
     '''
 
     def __init__(self):
-        self.rels = {}
+        self.relations = {}
 
     def load(self, filename, name):
         '''Loads a relation from file, and gives it a name to
         be used in subsequent queries.'''
-        pass
+        rel = relation(filename)
+        self.set_relation(name, rel)
 
     def unload(self, name):
         '''Unloads an existing relation.'''
-        pass
+        del self.relations[name]
 
     def store(self, filename, name):
         '''Stores a relation to file.'''
@@ -82,14 +85,53 @@ class interface (object):
 
     def get_relation(self, name):
         '''Returns the relation corresponding to name.'''
-        pass
+        return self.relations[name]
 
     def set_relation(self, name, rel):
         '''Sets the relation corresponding to name.'''
-        pass
+        if not is_valid_relation_name(name):
+            raise Exception('Invalid name for destination relation')
+        self.relations[name] = rel
 
     def execute(self, query, relname='last_'):
         '''Executes a query, returns the result and if
         relname is not None, adds the result to the
         dictionary, with the name given in relname.'''
-        pass
+        if not is_valid_relation_name(relname):
+            raise Exception('Invalid name for destination relation')
+
+        expr = parser.parse(query)
+        result = eval(expr, self.relations)
+        self.relations[relname] = result
+        return result
+
+    def multi_execute(self, query):
+        '''Executes multiple queries, separated by \n
+
+        They can have a syntax of
+        [varname =] query
+        to assign the result to a new relation
+        '''
+        r = relation()
+        queries = query.split('\n')
+        for query in queries:
+            if query.strip() == '':
+                continue
+            parts = query.split('=', 1)
+            parts[0] = parts[0].strip()
+            if len(parts) > 1 and is_valid_relation_name(parts[0]):
+                relname, query = parts
+            else:
+                relname = 'last_'
+
+            try:
+                r = self.execute(query, relname)
+            except Exception as e:
+                raise Exception('Error in query: %s\n%s' % (
+                    query,
+                    str(e)
+                ))
+        return r
+
+
+
