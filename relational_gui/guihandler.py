@@ -23,6 +23,7 @@ import os.path
 from PyQt5 import QtCore, QtWidgets, QtWidgets
 
 from relational import relation, parser, optimizer, rtypes
+from relational.maintenance import user_interface
 
 from relational_gui import about
 from relational_gui import survey
@@ -36,11 +37,11 @@ class relForm(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self)
         self.About = None
         self.Survey = None
-        self.relations = {}  # Dictionary for relations
         self.undo = None  # UndoQueue for queries
         self.selectedRelation = None
         self.ui = ui
         self.qcounter = 1  # Query counter
+        self.user_interface = user_interface()
 
         self.settings = QtCore.QSettings()
 
@@ -83,11 +84,10 @@ class relForm(QtWidgets.QMainWindow):
 
         query = self.ui.txtQuery.text()
         try:
-            result = optimizer.optimize_all(query, self.relations)
+            result = optimizer.optimize_all(query, self.user_interface.relations)
             self.ui.txtQuery.setText(result)
         except Exception as e:
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+            self.error(e)
 
     def resumeHistory(self, item):
         itm = item.text().split(' = ', 1)
@@ -98,30 +98,10 @@ class relForm(QtWidgets.QMainWindow):
         query = self.ui.txtMultiQuery.toPlainText()
         self.settings.setValue('multiline/query', query)
 
-        queries = query.split('\n')
-
-        for query in queries:
-            if query.strip() == '':
-                continue
-
-            parts = query.split('=', 1)
-            parts[0] = parts[0].strip()
-            if len(parts) > 1 and rtypes.is_valid_relation_name(parts[0].strip()):
-                relname = parts[0].strip()
-                query = parts[1]
-            else:
-                relname = 'last_'
-
-            try:
-                expr = parser.parse(query)
-                print ('%s <- %s' % (relname, expr))
-                result = eval(expr, self.relations)
-                self.relations[relname] = result
-            except Exception as e:
-                print(str(e))
-                QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
-                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
-                break
+        try:
+            result = self.user_interface.multi_execute(query)
+        except Exception as e:
+            return self.error(e)
         self.updateRelations()  # update the list
         self.selectedRelation = result
         self.showRelation(self.selectedRelation)
@@ -135,28 +115,12 @@ class relForm(QtWidgets.QMainWindow):
         query = self.ui.txtQuery.text()
         res_rel = self.ui.txtResult.text()  # result relation's name
 
-        if not rtypes.is_valid_relation_name(res_rel):
-            QtWidgets.QMessageBox.information(self, QtWidgets.QApplication.translate(
-                "Form", "Error"), QtWidgets.QApplication.translate("Form", "Wrong name for destination relation."))
-            return
-
         try:
-            # Converting string to utf8 and then from qstring to normal string
-            expr = parser.parse(query)  # Converting expression to python code
-            print (query, "-->", expr)  # Printing debug
-            result = eval(expr, self.relations)  # Evaluating the expression
-
-            self.relations[
-                res_rel] = result  # Add the relation to the dictionary
+            self.selectedRelation = self.user_interface.execute(query, res_rel)
             self.updateRelations()  # update the list
-            self.selectedRelation = result
             self.showRelation(self.selectedRelation)
-                              # Show the result in the table
         except Exception as e:
-            print (str(e))
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), u"%s\n%s" %
-                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), str(e)))
-            return
+            return self.error(e)
 
         # Adds to history
         item = u'%s = %s' % (
@@ -169,7 +133,8 @@ class relForm(QtWidgets.QMainWindow):
         self.ui.lstHistory.setCurrentItem(hitem)
 
         self.qcounter += 1
-        self.ui.txtResult.setText(u"_last%d" % self.qcounter)  # Sets the result relation name to none
+        # Sets the result relation name to none
+        self.ui.txtResult.setText(u"_last%d" % self.qcounter)
 
     def showRelation(self, rel):
         '''Shows the selected relation into the table'''
@@ -195,19 +160,19 @@ class relForm(QtWidgets.QMainWindow):
                 i)  # Must be done in order to avoid  too small columns
 
     def printRelation(self, item):
-        self.selectedRelation = self.relations[item.text()]
+        self.selectedRelation = self.user_interface.relations[item.text()]
         self.showRelation(self.selectedRelation)
 
     def showAttributes(self, item):
         '''Shows the attributes of the selected relation'''
         rel = item.text()
         self.ui.lstAttributes.clear()
-        for j in self.relations[rel].header:
+        for j in self.user_interface.relations[rel].header:
             self.ui.lstAttributes.addItem(j)
 
     def updateRelations(self):
         self.ui.lstRelations.clear()
-        for i in self.relations:
+        for i in self.user_interface.relations:
             if i != "__builtins__":
                 self.ui.lstRelations.addItem(i)
 
@@ -228,17 +193,25 @@ class relForm(QtWidgets.QMainWindow):
 
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
-            del self.relations[i.text()]
+            del self.user_interface.relations[i.text()]
         self.updateRelations()
 
     def editRelation(self):
         from relational_gui import creator
         for i in self.ui.lstRelations.selectedItems():
             result = creator.edit_relation(
-                self.relations[i.text()])
+                self.user_interface.get_relation(i.text())
+            )
             if result != None:
-                self.relations[i.text()] = result
+                self.user_interface.set_relation(i.text(), result)
         self.updateRelations()
+
+    def error(self,exception):
+        print (exception)
+        QtWidgets.QMessageBox.information(
+            None, QtWidgets.QApplication.translate("Form", "Error"),
+            str(exception)
+        )
 
     def promptRelationName(self):
         while True:
@@ -271,12 +244,10 @@ class relForm(QtWidgets.QMainWindow):
         name = self.promptRelationName()
 
         try:
-            self.relations[name] = result
+            self.user_interface.relations[name] = result
             self.updateRelations()
         except Exception as e:
-            print (e)
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                            (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+            self.error(e)
         finally:
             return
 
@@ -341,11 +312,9 @@ class relForm(QtWidgets.QMainWindow):
                 continue
 
             try:
-                self.relations[name] = relation.relation(f)
+                self.user_interface.load(f,name)
             except Exception as e:
-                print (e)
-                QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" %
-                                              (QtWidgets.QApplication.translate("Form", "Check your query!"), e.__str__()))
+                self.error(e)
                 continue
 
         self.updateRelations()
