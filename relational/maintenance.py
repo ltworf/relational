@@ -21,6 +21,7 @@
 
 import http.client
 import urllib.parse
+import os.path
 
 from relational.relation import relation
 from relational import parser
@@ -92,6 +93,25 @@ class user_interface (object):
         if not is_valid_relation_name(name):
             raise Exception('Invalid name for destination relation')
         self.relations[name] = rel
+
+    def suggest_name(self, filename):
+        '''
+        Returns a possible name for a relation, given
+        a filename.
+
+        If it is impossible to extract a possible name,
+        returns None
+        '''
+        name = os.path.basename(filename).lower()
+        if len(name) == 0:
+            return None
+
+        if (name.endswith(".csv")):  # removes the extension
+            name = name[:-4]
+
+        if not is_valid_relation_name(name):
+            return None
+        return name
 
     def execute(self, query, relname='last_'):
         '''Executes a query, returns the result and if
