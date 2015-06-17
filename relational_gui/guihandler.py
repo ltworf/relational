@@ -16,10 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-import sys
-import os
-import os.path
-
 from PyQt5 import QtCore, QtWidgets, QtWidgets
 
 from relational import relation, parser, optimizer, rtypes
@@ -297,17 +293,9 @@ class relForm(QtWidgets.QMainWindow):
 
         for f in filenames:
             # Default relation's name
-            name = os.path.basename(f).lower()
-
-            if len(name) == 0:
-                return
-
-            if (name.endswith(".csv")):  # removes the extension
-                name = name[:-4]
-
-            if not rtypes.is_valid_relation_name(name):
+            name = self.user_interface.suggest_name(f)
+            if name is None:
                 name = self.promptRelationName()
-
             if name is None:
                 continue
 
