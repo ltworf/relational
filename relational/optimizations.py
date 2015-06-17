@@ -289,10 +289,7 @@ def futile_renames(n):
         # Scans dictionary to locate things like "a->b,b->c" and replace them
         # with "a->c"
         for key in list(_vars.keys()):
-            try:
-                value = _vars[key]
-            except:
-                value = None
+            value = _vars.get(key)
             if key == value:
                 _vars.pop(value)  # Removes the unused one
         # Reset prop var
@@ -332,10 +329,7 @@ def subsequent_renames(n):
         # Scans dictionary to locate things like "a->b,b->c" and replace them
         # with "a->c"
         for key in list(_vars.keys()):
-            try:
-                value = _vars[key]
-            except:
-                value = None
+            value = _vars.get(key)
             if value in _vars.keys():
                 if _vars[value] != key:
                     # Double rename on attribute
@@ -593,8 +587,7 @@ def selection_and_product(n, rels):
             n.child.right = r_node
             while len(right) > 0:
                 c = right.pop(0)
-                for i in c:
-                    r_node.prop += i + ' '
+                r_node.prop += ' '.join(c)
                 if len(right) > 0:
                     r_node.prop += ' and '
             if '(' in r_node.prop:
@@ -604,8 +597,7 @@ def selection_and_product(n, rels):
         if len(both) != 0:
             while len(both) > 0:
                 c = both.pop(0)
-                for i in c:
-                    n.prop += i + ' '
+                n.prop += ' '.join(c)
                 if len(both) > 0:
                     n.prop += ' and '
             if '(' in n.prop:
@@ -616,8 +608,17 @@ def selection_and_product(n, rels):
     return changes + recoursive_scan(selection_and_product, n, rels)
 
 general_optimizations = [
-    duplicated_select, down_to_unions_subtractions_intersections, duplicated_projection, selection_inside_projection,
-    subsequent_renames, swap_rename_select, futile_union_intersection_subtraction, swap_union_renames, swap_rename_projection, select_union_intersect_subtract]
+    duplicated_select,
+    down_to_unions_subtractions_intersections,
+    duplicated_projection,
+    selection_inside_projection,
+    subsequent_renames,
+    swap_rename_select,
+    futile_union_intersection_subtraction,
+    swap_union_renames,
+    swap_rename_projection,
+    select_union_intersect_subtract
+]
 specific_optimizations = [selection_and_product]
 
 if __name__ == "__main__":
