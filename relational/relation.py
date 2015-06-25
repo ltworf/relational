@@ -106,13 +106,11 @@ class relation (object):
     def selection(self, expr):
         '''Selection, expr must be a valid boolean expression, can contain field names,
         constant, math operations and boolean ones.'''
-        attributes = {}
         newt = relation()
         newt.header = header(self.header)
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
-            for j,attr in enumerate(self.header):
-                attributes[attr] = i[j].autocast()
+            attributes = {attr:i[j].autocast() for j, attr in enumerate(self.header)}
 
             try:
                 if eval(expr, attributes):
