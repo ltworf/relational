@@ -89,15 +89,17 @@ class relation (object):
         writer.writerows(self.content)
         fp.close()  # Closing file
 
-    def _rearrange_(self, other):
+    def _rearrange(self, other):
         '''If two relations share the same attributes in a different order, this method
         will use projection to make them have the same attributes' order.
         It is not exactely related to relational algebra. Just a method used
         internally.
-        Will return None if they don't share the same attributes'''
+        Will raise an exception if they don't share the same attributes'''
         if (self.__class__ != other.__class__):
             raise Exception('Expected an instance of the same class')
-        if self.header.sharedAttributes(other.header) == len(self.header):
+        elif self.header == other.header:
+            return other
+        elif self.header.sharedAttributes(other.header) == len(self.header):
             return other.projection(self.header)
         raise Exception('Relations differ: [%s] [%s]' % (
             ','.join(self.header) , ','.join(other.header)
@@ -182,7 +184,7 @@ class relation (object):
         Will return an empty one if there are no common items.
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
-        other = self._rearrange_(other)  # Rearranges attributes' order
+        other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
         newt.header = header(self.header)
 
@@ -195,7 +197,7 @@ class relation (object):
         Will return an empty one if the second is a superset of first.
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
-        other = self._rearrange_(other)  # Rearranges attributes' order
+        other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
         newt.header = header(self.header)
 
@@ -237,7 +239,7 @@ class relation (object):
         Will not insert tuplicated items.
         Will return None if headers are different.
         It is possible to use projection and rename to make headers match.'''
-        other = self._rearrange_(other)  # Rearranges attributes' order
+        other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
         newt.header = header(self.header)
 
@@ -350,7 +352,7 @@ class relation (object):
             return False
 
         # Rearranges attributes' order so can compare tuples directly
-        other = self._rearrange_(other)
+        other = self._rearrange(other)
 
         # comparing content
         return self.content == other.content
