@@ -48,19 +48,19 @@ RELATION = 0
 UNARY = 1
 BINARY = 2
 
-PRODUCT = u'*'
-DIFFERENCE = u'-'
-UNION = u'∪'
-INTERSECTION = u'∩'
-DIVISION = u'÷'
-JOIN = u'⋈'
-JOIN_LEFT = u'⧑'
-JOIN_RIGHT = u'⧒'
-JOIN_FULL = u'⧓'
-PROJECTION = u'π'
-SELECTION = u'σ'
-RENAME = u'ρ'
-ARROW = u'➡'
+PRODUCT = '*'
+DIFFERENCE = '-'
+UNION = '∪'
+INTERSECTION = '∩'
+DIVISION = '÷'
+JOIN = '⋈'
+JOIN_LEFT = '⧑'
+JOIN_RIGHT = '⧒'
+JOIN_FULL = '⧓'
+PROJECTION = 'π'
+SELECTION = 'σ'
+RENAME = 'ρ'
+ARROW = '➡'
 
 b_operators = (PRODUCT, DIFFERENCE, UNION, INTERSECTION, DIVISION,
                JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)  # List of binary operators
