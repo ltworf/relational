@@ -1,4 +1,7 @@
 2.1
+- Improve error reporting
+- Fix bug in code to check for new version
+- Performance improvements
 
 2.0
 - Fix bug in relational-cli that made it crash when an exception was raised
