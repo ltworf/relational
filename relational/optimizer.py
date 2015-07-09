@@ -34,9 +34,6 @@ RELATION = parser.RELATION
 UNARY = parser.UNARY
 BINARY = parser.BINARY
 
-
-b_operators = parser.b_operators
-u_operators = parser.u_operators
 op_functions = parser.op_functions
 node = parser.node
 tokenize = parser.tokenize
