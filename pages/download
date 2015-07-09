@@ -4,6 +4,7 @@
 <p>The latest available version of relational can be downloaded here.</p>
 
 <table id="dtable"></table>
+<p id="nojs">Javascript is disabled. Please go to the <a href="https://github.com/ltworf/relational/tags">github download page</a>.</p>
 
 <p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
 
@@ -78,6 +79,8 @@ function myFunction(arr) {
     }
     
     document.getElementById("dtable").innerHTML = out;
+    document.getElementById("nojs").innerHTML = '';
+
 }
 </script>
 
