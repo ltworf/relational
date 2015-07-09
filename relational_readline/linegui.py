@@ -287,7 +287,7 @@ def exec_query(command):
     # Execute query
     try:
         pyquery = parser.parse(query)
-        result = eval(pyquery, relations)
+        result = pyquery(relations)
 
         print (colorize("-> query: %s" % pyquery, 0x00ff00))
 

@@ -121,7 +121,7 @@ class user_interface (object):
             raise Exception('Invalid name for destination relation')
 
         expr = parser.parse(query)
-        result = eval(expr, self.relations)
+        result = expr(self.relations)
         self.relations[relname] = result
         return result
 
