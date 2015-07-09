@@ -79,6 +79,13 @@ class TokenizerException (Exception):
 class ParserException (Exception):
     pass
 
+class CallableString(str):
+    def __call__(self, context=None):
+        '''
+        context is a dictionary where to
+        each name is associated the relative relation
+        '''
+        return eval(self,context)
 
 class node (object):
 
@@ -168,7 +175,7 @@ class node (object):
         '''This method converts the expression into a python code string, which
         will require the relation module to be executed.'''
         if self.name in b_operators:
-            return '%s.%s(%s)' % (self.left.toPython(), op_functions[self.name], self.right.toPython())
+            return CallableString('%s.%s(%s)' % (self.left.toPython(), op_functions[self.name], self.right.toPython()))
         elif self.name in u_operators:
             prop = self.prop
 
@@ -181,10 +188,8 @@ class node (object):
             else:  # Selection
                 prop = '\"%s\"' % prop
 
-            return '%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop)
-        else:
-            return self.name
-        pass
+            return CallableString('%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop))
+        return CallableString(self.name)
 
     def printtree(self, level=0):
         '''returns a representation of the tree using indentation'''
