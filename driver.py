@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# coding=UTF-8
 # Relational
 # Copyright (C) 2010  Salvo "LtWorf" Tomaselli
 #
@@ -168,10 +166,10 @@ def run_py_test(testname):
     try:
 
         expr = readfile('%s%s.python' % (tests_path, testname))
-        result = eval(expr, rels)  # Evaluating the expression
+        result = eval(expr, rels)
 
         expr = readfile('%s%s.result' % (tests_path, testname))
-        exp_result = eval(expr, rels)  # Evaluating the expression
+        exp_result = eval(expr, rels)
 
         if result == exp_result:
             print (colorize('Test passed', COLOR_GREEN))
@@ -210,14 +208,13 @@ def run_test(testname):
         query = readfile('%s%s.query' % (tests_path, testname)).strip()
         o_query = optimizer.optimize_all(query, rels)
 
-        expr = parser.parse(query)  # Converting expression to python string
-        result = eval(expr, rels)  # Evaluating the expression
+        expr = parser.parse(query)
+        result = expr(rels)
 
-        o_expr = parser.parse(
-            o_query)  # Converting expression to python string
-        o_result = eval(o_expr, rels)  # Evaluating the expression
+        o_expr = parser.parse(o_query)
+        o_result = o_expr(rels)
 
-        c_expr = parser.tree(query).toCode()  # Converting to python code
+        c_expr = parser.tree(query).toCode()
         c_result = eval(c_expr, rels)
 
         if (o_result == result_rel) and (result == result_rel) and (c_result == result_rel):
