@@ -374,7 +374,7 @@ def tokenize(expression):
             items.append(expression[0])
             expression = expression[1:].strip()  # 1 char from the expression
             state = 4
-        elif re.match(r'[_0-9A-Za-z]', expression[0]) == None:  # At this point we only have relation names, so we raise errors for anything else
+        elif re.match(rtypes.RELATION_NAME_REGEXP, expression[0]) == None:  # At this point we only have relation names, so we raise errors for anything else
             raise TokenizerException(
                 "Unexpected '%c' in '%s'" % (expression[0], expression))
         else:  # Relation (hopefully)
