@@ -352,6 +352,9 @@ class relation (object):
         if not isinstance(other, relation):
             return False
 
+        if len(self.content) != len(other.content):
+            return False
+
         if set(self.header) != set(other.header):
             return False
 
