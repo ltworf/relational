@@ -28,19 +28,31 @@ from relational.rtypes import *
 
 class relation (object):
 
-    '''This objects defines a relation (as a group of consistent tuples) and operations
-    A relation can be represented using a table
-    Calling an operation and providing a non relation parameter when it is expected will
-    result in a None value'''
+    '''
+    This object defines a relation (as a group of consistent tuples) and operations.
+
+    A relation is a particular kind of set, which has a number of named attributes and
+    a number of tuples, which must express a value for every attribute.
+
+    Set operations like union, intersection and difference are restricted and can only be
+    performed on relations which share the same set of named attributes.
+
+    The constructor optionally accepts a filename and then it will load the relation from
+    that file.
+
+    If no parameter is supplied an empty relation is created.
+
+    Files need to be comma separated as described in RFC4180.
+
+    The first line need to contain the attributes of the relation while the
+    following lines contain the tuples of the relation.
+
+    An empty relation needs a header, and can be filled using the insert()
+    method.
+    '''
     __hash__ = None
 
     def __init__(self, filename=""):
-        '''Creates a relation, accepts a filename and then it will load the relation from
-        that file. If no parameter is supplied an empty relation is created. Empty
-        relations are used in internal operations.
-        By default the file will be handled like a comma separated as described in
-        RFC4180.'''
-
         self._readonly = False
 
         if len(filename) == 0:  # Empty relation
@@ -71,9 +83,9 @@ class relation (object):
         return key in self.content
 
     def save(self, filename):
-        '''Saves the relation in a file. By default will save using the csv
-        format as defined in RFC4180, but setting comma_separated to False,
-        it will use the old format with space separated values.
+        '''
+        Saves the relation in a file. Will save using the csv
+        format as defined in RFC4180.
         '''
 
         fp = open(filename, 'w')  # Opening file in write mode
@@ -105,8 +117,9 @@ class relation (object):
         ))
 
     def selection(self, expr):
-        '''Selection, expr must be a valid boolean expression, can contain field names,
-        constant, math operations and boolean ones.'''
+        '''
+        Selection, expr must be a valid Python expression; can contain field names.
+        '''
         newt = relation()
         newt.header = header(self.header)
         for i in self.content:
@@ -124,10 +137,9 @@ class relation (object):
         return newt
 
     def product(self, other):
-        '''Cartesian product, attributes must be different to avoid collisions
-        Doing this operation on relations with colliding attributes will
-        cause an exception.
-        It is possible to use rename on attributes and then use the product'''
+        '''
+        Cartesian product. Attributes of the relations must differ.
+        '''
 
         if (not isinstance(other, relation)):
             raise Exception('Operand must be a relation')
@@ -144,10 +156,17 @@ class relation (object):
         return newt
 
     def projection(self, * attributes):
-        '''Projection operator, takes many parameters, for each field to use.
-        Can also use a single parameter with a list.
-        Will delete duplicate items
-        If an empty list or no parameters are provided, returns None'''
+        '''
+        Can be called in two different ways:
+        a.projection('field1','field2')
+
+        or
+
+        a.projection(['field1','field2'])
+
+        The cardinality of the result, might be less than the cardinality
+        of the original object.
+        '''
         # Parameters are supplied in a list, instead with multiple parameters
         if not isinstance(attributes[0], str):
             attributes = attributes[0]
@@ -168,9 +187,13 @@ class relation (object):
         return newt
 
     def rename(self, params):
-        '''Operation rename. Takes a dictionary
-        Will replace the itmem with its content.
-        For example if you want to rename a to b, provide {"a":"b"}
+        '''
+        Takes a dictionary.
+
+        Will replace the field name as the key with its value.
+
+        For example if you want to rename a to b, call
+        rel.rename({'a':'b'})
         '''
         result = []
 
@@ -183,11 +206,11 @@ class relation (object):
         return newt
 
     def intersection(self, other):
-        '''Intersection operation. The result will contain items present in both
+        '''
+        Intersection operation. The result will contain items present in both
         operands.
         Will return an empty one if there are no common items.
-        Will return None if headers are different.
-        It is possible to use projection and rename to make headers match.'''
+        '''
         other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
         newt.header = header(self.header)
@@ -198,9 +221,7 @@ class relation (object):
     def difference(self, other):
         '''Difference operation. The result will contain items present in first
         operand but not in second one.
-        Will return an empty one if the second is a superset of first.
-        Will return None if headers are different.
-        It is possible to use projection and rename to make headers match.'''
+        '''
         other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
         newt.header = header(self.header)
@@ -220,18 +241,16 @@ class relation (object):
         # d_headers are the headers from self that aren't also headers in other
         d_headers = tuple(set(self.header) - set(other.header))
 
-        '''
-        Wikipedia defines the division as follows:
+        # Wikipedia defines the division as follows:
 
-        a1,....,an are the d_headers
+        # a1,....,an are the d_headers
 
-        T := πa1,...,an(R) × S
-        U := T - R
-        V := πa1,...,an(U)
-        W := πa1,...,an(R) - V
+        # T := πa1,...,an(R) × S
+        # U := T - R
+        # V := πa1,...,an(U)
+        # W := πa1,...,an(R) - V
 
-        W is the result that we want
-        '''
+        # W is the result that we want
 
         t = self.projection(d_headers).product(other)
         return self.projection(d_headers).difference(t.difference(self).projection(d_headers))
@@ -239,10 +258,7 @@ class relation (object):
     def union(self, other):
         '''Union operation. The result will contain items present in first
         and second operands.
-        Will return an empty one if both are empty.
-        Will not insert tuplicated items.
-        Will return None if headers are different.
-        It is possible to use projection and rename to make headers match.'''
+        '''
         other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
         newt.header = header(self.header)
@@ -262,19 +278,19 @@ class relation (object):
         return a.union(b)
 
     def outer_right(self, other):
-        '''Outer right join. Considers self as left and param as right. If the
+        '''
+        Outer right join. Considers self as left and param as right. If the
         tuple has no corrispondence, empy attributes are filled with a "---"
-        string. This is due to the fact that empty string or a space would cause
-        problems when saving the relation.
-        Just like natural join, it works considering shared attributes.'''
+        string. This is due to the fact that the None token would cause
+        problems when saving and reloading the relation.
+        Just like natural join, it works considering shared attributes.
+        '''
         return other.outer_left(self)
 
     def outer_left(self, other, swap=False):
-        '''Outer left join. Considers self as left and param as right. If the
-        tuple has no corrispondence, empty attributes are filled with a "---"
-        string. This is due to the fact that empty string or a space would cause
-        problems when saving the relation.
-        Just like natural join, it works considering shared attributes.'''
+        '''
+        See documentation for outer_right
+        '''
 
         shared = self.header.intersection(other.header)
 
@@ -313,8 +329,10 @@ class relation (object):
         return newt
 
     def join(self, other):
-        '''Natural join, joins on shared attributes (one or more). If there are no
-        shared attributes, it will behave as cartesian product.'''
+        '''
+        Natural join, joins on shared attributes (one or more). If there are no
+        shared attributes, it will behave as the cartesian product.
+        '''
 
         # List of attributes in common between the relations
         shared = self.header.intersection(other.header)
@@ -347,8 +365,6 @@ class relation (object):
         return newt
 
     def __eq__(self, other):
-        '''Returns true if the relations are the same, ignoring order of items.
-        This operation is rather heavy, since it requires sorting and comparing.'''
         if not isinstance(other, relation):
             return False
 
@@ -368,8 +384,6 @@ class relation (object):
         return len(self.content)
 
     def __str__(self):
-        '''Returns a string representation of the relation, can be printed with
-        monospaced fonts'''
         m_len = []  # Maximum lenght string
         for f in self.header:
             m_len.append(len(f))
@@ -395,13 +409,19 @@ class relation (object):
         return res
 
     def update(self, expr, dic):
-        '''Update, expr must be a valid boolean expression, can contain field names,
-        constant, math operations and boolean ones.
+        '''
+        Updates certain values of a relation.
+
+        expr must be a valid Python expression that can contain field names.
+
         This operation will change the relation itself instead of generating a new one,
-        updating all the tuples that make expr true.
-        Dic must be a dictionary that has the form field name:value. Every kind of value
+        updating all the tuples where expr evaluates as True.
+
+        Dic must be a dictionary that has the form "field name":"new value". Every kind of value
         will be converted into a string.
-        Returns the number of affected rows.'''
+
+        Returns the number of affected rows.
+        '''
         self._make_writable()
         affected = 0
         attributes = {}
@@ -409,7 +429,7 @@ class relation (object):
         f_ids = self.header.getAttributesId(keys)
 
         # new_content=[] #New content of the relation
-        for i in self.content:
+        for i in set(self.content):
             for j, attr in enumerate(self.header):
                 attributes[attr] = i[j].autocast()
 
@@ -426,10 +446,14 @@ class relation (object):
         return affected
 
     def insert(self, values):
-        '''Inserts a tuple in the relation.
+        '''
+        Inserts a tuple in the relation.
         This function will not insert duplicate tuples.
         All the values will be converted in string.
-        Will return the number of inserted rows.'''
+        Will return the number of inserted rows.
+
+        Will fail if the tuple has the wrong amount of items.
+        '''
 
         if len(self.header) != len(values):
             raise Exception(
@@ -446,13 +470,13 @@ class relation (object):
         return len(self.content) - prevlen
 
     def delete(self, expr):
-        '''Delete, expr must be a valid boolean expression, can contain field names,
-        constant, math operations and boolean ones.
-        This operation will change the relation itself instead of generating a new one,
-        deleting all the tuples that make expr true.
-        Returns the number of affected rows.'''
+        '''
+        Delete, expr must be a valid Python expression; can contain field names.
 
-        # Not necessary self._make_writable()
+        This operation will change the relation itself instead of generating a new one,
+        deleting all the tuples where expr evaluates as True.
+
+        Returns the number of affected rows.'''
 
         l = len(self.content)
         self._readonly = False
