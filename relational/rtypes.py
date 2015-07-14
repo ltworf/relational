@@ -25,9 +25,11 @@ import re
 
 RELATION_NAME_REGEXP = r'^[_a-zA-Z]+[_a-zA-Z0-9]*$'
 
+
 class rstring (str):
 
     '''String subclass with some custom methods'''
+
     def autocast(self):
         '''
         Returns the automatic cast for this

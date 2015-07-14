@@ -79,7 +79,8 @@ class relForm(QtWidgets.QMainWindow):
 
         query = self.ui.txtQuery.text()
         try:
-            result = optimizer.optimize_all(query, self.user_interface.relations)
+            result = optimizer.optimize_all(
+                query, self.user_interface.relations)
             self.ui.txtQuery.setText(result)
         except Exception as e:
             self.error(e)
@@ -106,7 +107,7 @@ class relForm(QtWidgets.QMainWindow):
         if self.multiline:
             return self._run_multiline()
 
-        #Single line query
+        # Single line query
         query = self.ui.txtQuery.text()
         res_rel = self.ui.txtResult.text()  # result relation's name
 
@@ -149,7 +150,7 @@ class relForm(QtWidgets.QMainWindow):
             self.ui.table.addTopLevelItem(item)
 
         # Sets columns
-        for i,attr in enumerate(rel.header):
+        for i, attr in enumerate(rel.header):
             self.ui.table.headerItem().setText(i, attr)
             self.ui.table.resizeColumnToContents(
                 i)  # Must be done in order to avoid  too small columns
@@ -201,7 +202,7 @@ class relForm(QtWidgets.QMainWindow):
                 self.user_interface.set_relation(i.text(), result)
         self.updateRelations()
 
-    def error(self,exception):
+    def error(self, exception):
         print (exception)
         QtWidgets.QMessageBox.information(
             None, QtWidgets.QApplication.translate("Form", "Error"),
@@ -217,12 +218,13 @@ class relForm(QtWidgets.QMainWindow):
                     "Form", "Insert the name for the new relation"),
                 QtWidgets.QLineEdit.Normal, ''
             )
-            if res[1] == False:# or len(res[0]) == 0:
+            if res[1] == False:  # or len(res[0]) == 0:
                 return None
             name = res[0]
             if not rtypes.is_valid_relation_name(name):
                 r = QtWidgets.QApplication.translate(
-                    "Form", str("Wrong name for destination relation: %s." % name)
+                    "Form", str(
+                        "Wrong name for destination relation: %s." % name)
                 )
                 QtWidgets.QMessageBox.information(
                     self, QtWidgets.QApplication.translate("Form", "Error"), r
@@ -256,8 +258,9 @@ class relForm(QtWidgets.QMainWindow):
 
     def restore_settings(self):
         # self.settings.value('session_name','default').toString()
-        self.setMultiline(self.settings.value('multiline','false')=='true')
-        self.ui.txtMultiQuery.setPlainText(self.settings.value('multiline/query',''))
+        self.setMultiline(self.settings.value('multiline', 'false') == 'true')
+        self.ui.txtMultiQuery.setPlainText(
+            self.settings.value('multiline/query', ''))
         try:
             self.restoreGeometry(self.settings.value('maingui/geometry'))
             self.restoreState(self.settings.value('maingui/windowState'))
@@ -299,7 +302,7 @@ class relForm(QtWidgets.QMainWindow):
                 continue
 
             try:
-                self.user_interface.load(f,name)
+                self.user_interface.load(f, name)
             except Exception as e:
                 self.error(e)
                 continue

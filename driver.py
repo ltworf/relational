@@ -38,7 +38,7 @@ tests_path = 'test/'
 
 def readfile(fname):
     '''Reads a file as string and returns its content'''
-    fd = open(fname,encoding='utf-8')
+    fd = open(fname, encoding='utf-8')
     expr = fd.read()
     fd.close()
     return expr

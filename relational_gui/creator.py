@@ -80,7 +80,8 @@ class creatorForm(QtWidgets.QDialog):
         self.table.setItem(1, 1, i11)
 
     def create_relation(self):
-        h = (self.table.item(0, i).text() for i in range(self.table.columnCount()))
+        h = (self.table.item(0, i).text()
+             for i in range(self.table.columnCount()))
 
         try:
             header = relation.header(h)

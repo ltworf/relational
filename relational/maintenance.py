@@ -151,6 +151,3 @@ class user_interface (object):
                     str(e)
                 ))
         return r
-
-
-

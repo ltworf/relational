@@ -77,7 +77,9 @@ class TokenizerException (Exception):
 class ParserException (Exception):
     pass
 
+
 class CallableString(str):
+
     '''
     This is a string. However it is also callable.
 
@@ -94,7 +96,8 @@ class CallableString(str):
         context is a dictionary where to
         each name is associated the relative relation
         '''
-        return eval(self,context)
+        return eval(self, context)
+
 
 class node (object):
 
@@ -136,16 +139,16 @@ class node (object):
                     u"'%s' is not a valid relation name" % self.name)
             return
 
-        #Expression from right to left, searching for binary operators
-        #this means that binary operators have lesser priority than
-        #unary operators.
-        #It finds the operator with lesser priority, uses it as root of this
-        #(sub)tree using everything on its left as left parameter (so building
-        #a left subtree with the part of the list located on left) and doing
-        #the same on right.
-        #Since it searches for strings, and expressions into parenthesis are
-        #within sub-lists, they won't be found here, ensuring that they will
-        #have highest priority.
+        # Expression from right to left, searching for binary operators
+        # this means that binary operators have lesser priority than
+        # unary operators.
+        # It finds the operator with lesser priority, uses it as root of this
+        # (sub)tree using everything on its left as left parameter (so building
+        # a left subtree with the part of the list located on left) and doing
+        # the same on right.
+        # Since it searches for strings, and expressions into parenthesis are
+        # within sub-lists, they won't be found here, ensuring that they will
+        # have highest priority.
         for i in range(len(expression) - 1, -1, -1):
             if expression[i] in b_operators:  # Binary operator
                 self.kind = BINARY
@@ -318,7 +321,7 @@ def tokenize(expression):
 
     items = []  # List for the tokens
 
-    #This is a state machine. Initial status is determined by the starting of the
+    # This is a state machine. Initial status is determined by the starting of the
     # expression. There are the following statuses:
     #
     # relation: this is the status if the expressions begins with something else than an
@@ -327,7 +330,8 @@ def tokenize(expression):
     # unary operator: this status is more complex, since it will be followed by a parameter AND a
     #     sub-expression.
     # sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
-    #     means that the others open must be counted to determine which close is the right one.'''
+    # means that the others open must be counted to determine which close is
+    # the right one.
 
     expression = expression.strip()  # Removes initial and endind spaces
     state = 0

@@ -87,7 +87,10 @@ if __name__ == "__main__":
         try:
             from relational_gui import maingui, guihandler, about, surveyForm
         except:
-            print ("Module relational_gui is missing.\nPlease install relational package.",file=sys.stderr)
+            print (
+                "Module relational_gui is missing.\nPlease install relational package.",
+                file=sys.stderr
+            )
             sys.exit(3)
 
         about.version = version
@@ -103,7 +106,7 @@ if __name__ == "__main__":
         form = guihandler.relForm(ui)
         ui.setupUi(form)
         f = QtGui.QFont()
-        size = f.pointSize();
+        size = f.pointSize()
         if sys.platform.startswith('win'):
             winFont = 'Cambria'
             symbolFont = 'Segoe UI Symbol'
@@ -113,19 +116,21 @@ if __name__ == "__main__":
             symbolFont = f.family()
             increment = 2
 
-        ui.lstHistory.setFont(QtGui.QFont(winFont,size+increment))
-        ui.txtMultiQuery.setFont(QtGui.QFont(winFont,size+increment))
-        ui.txtQuery.setFont(QtGui.QFont(winFont,size+increment))
-        ui.groupOperators.setFont(QtGui.QFont(winFont,size+increment))
+        ui.lstHistory.setFont(QtGui.QFont(winFont, size + increment))
+        ui.txtMultiQuery.setFont(QtGui.QFont(winFont, size + increment))
+        ui.txtQuery.setFont(QtGui.QFont(winFont, size + increment))
+        ui.groupOperators.setFont(QtGui.QFont(winFont, size + increment))
         ui.cmdClearMultilineQuery.setFont(QtGui.QFont(symbolFont))
         ui.cmdClearQuery.setFont(QtGui.QFont(symbolFont))
 
         form.restore_settings()
 
         m = enumerate(map(os.path.isfile, files))
-        invalid = ' '.join((files[i[0]] for i in (filter(lambda x: not x[1], m))))
+        invalid = ' '.join(
+            (files[i[0]] for i in (filter(lambda x: not x[1], m)))
+        )
         if invalid:
-            print ("%s: not a file" % invalid,file=sys.stderr)
+            print ("%s: not a file" % invalid, file=sys.stderr)
             printhelp(12)
         if len(files):
             form.loadRelation(files)
@@ -137,7 +142,10 @@ if __name__ == "__main__":
         try:
             import relational_readline.linegui
         except:
-            print ("Module relational_readline is missing.\nPlease install relational-cli package.",file=sys.stderr)
+            print (
+                "Module relational_readline is missing.\nPlease install relational-cli package.",
+                file=sys.stderr
+            )
             sys.exit(3)
         relational_readline.linegui.version = version
         relational_readline.linegui.main(files)

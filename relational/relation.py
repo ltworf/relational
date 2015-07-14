@@ -101,8 +101,8 @@ class relation (object):
         elif self.header.sharedAttributes(other.header) == len(self.header):
             return other.projection(self.header)
         raise Exception('Relations differ: [%s] [%s]' % (
-            ','.join(self.header) , ','.join(other.header)
-            ))
+            ','.join(self.header), ','.join(other.header)
+        ))
 
     def selection(self, expr):
         '''Selection, expr must be a valid boolean expression, can contain field names,
@@ -111,7 +111,9 @@ class relation (object):
         newt.header = header(self.header)
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
-            attributes = {attr:i[j].autocast() for j, attr in enumerate(self.header)}
+            attributes = {attr: i[j].autocast()
+                          for j, attr in enumerate(self.header)
+            }
 
             try:
                 if eval(expr, attributes):
@@ -129,7 +131,8 @@ class relation (object):
 
         if (self.__class__ != other.__class__)or(self.header.sharedAttributes(other.header) != 0):
             raise Exception(
-                'Unable to perform product on relations with colliding attributes')
+                'Unable to perform product on relations with colliding attributes'
+            )
         newt = relation()
         newt.header = header(self.header + other.header)
 
@@ -277,7 +280,7 @@ class relation (object):
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = header(chain(self.header,h))
+        newt.header = header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -296,13 +299,13 @@ class relation (object):
                     match = match and (i[sid[k]] == j[oid[k]])
 
                 if match:
-                    item = chain(i,(j[l] for l in noid))
+                    item = chain(i, (j[l] for l in noid))
 
                     newt.content.add(tuple(item))
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i,repeat('---',len(noid)))
+                item = chain(i, repeat('---', len(noid)))
                 newt.content.add(tuple(item))
 
         return newt
@@ -319,7 +322,7 @@ class relation (object):
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = header(chain(self.header,h))
+        newt.header = header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -374,7 +377,7 @@ class relation (object):
                 col += 1
 
         res = ""
-        for f,attr in enumerate(self.header):
+        for f, attr in enumerate(self.header):
             res += "%s" % (attr.ljust(2 + m_len[f]))
 
         for r in self.content:
@@ -398,12 +401,11 @@ class relation (object):
         affected = 0
         attributes = {}
         keys = dic.keys()  # List of headers to modify
-        f_ids = self.header.getAttributesId(
-            keys)  # List of indexes corresponding to keys
+        f_ids = self.header.getAttributesId(keys)
 
         # new_content=[] #New content of the relation
         for i in self.content:
-            for j,attr in enumerate(self.header):
+            for j, attr in enumerate(self.header):
                 attributes[attr] = i[j].autocast()
 
             if eval(expr, attributes):  # If expr is true, changing the tuple
@@ -445,7 +447,7 @@ class relation (object):
         deleting all the tuples that make expr true.
         Returns the number of affected rows.'''
 
-        #Not necessary self._make_writable()
+        # Not necessary self._make_writable()
 
         l = len(self.content)
         self._readonly = False
@@ -459,7 +461,7 @@ class header(tuple):
     It is used within relations to know if requested operations are accepted'''
 
     # Since relations are mutalbe we explicitly block hashing them
-    def __new__ (cls, fields):
+    def __new__(cls, fields):
         return super(header, cls).__new__(cls, tuple(fields))
 
     def __init__(self, *args, **kwargs):
@@ -481,7 +483,7 @@ class header(tuple):
         params is a dictionary of {old:new} names
         '''
         attrs = list(self)
-        for old,new in params.items():
+        for old, new in params.items():
             if not is_valid_relation_name(new):
                 raise Exception('%s is not a valid attribute name' % new)
             try:

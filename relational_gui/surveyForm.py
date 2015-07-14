@@ -24,7 +24,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from relational import maintenance
 
 
-
 class surveyForm (QtWidgets.QWidget):
 
     '''This class is the form used for the survey, needed to intercept the events.
