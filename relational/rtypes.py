@@ -24,6 +24,7 @@
 import datetime
 import re
 
+RELATION_NAME_REGEXP = r'^[_a-zA-Z]+[_a-zA-Z0-9]*$'
 
 class rstring (str):
 
@@ -160,7 +161,4 @@ class rdate (object):
 def is_valid_relation_name(name):
     '''Checks if a name is valid for a relation.
     Returns boolean'''
-    if re.match(r'^[_a-zA-Z]+[_a-zA-Z0-9]*$', name) == None:
-        return False
-    else:
-        return True
+    return re.match(RELATION_NAME_REGEXP, name) != None
