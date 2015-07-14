@@ -80,6 +80,17 @@ class ParserException (Exception):
     pass
 
 class CallableString(str):
+    '''
+    This is a string. However it is also callable.
+
+    For example:
+    CallableString('1+1')()
+    returns 2
+
+    It is used to contain Python expressions and print
+    or execute them.
+    '''
+
     def __call__(self, context=None):
         '''
         context is a dictionary where to
@@ -89,15 +100,19 @@ class CallableString(str):
 
 class node (object):
 
-    '''This class is a node of a relational expression. Leaves are relations and internal nodes are operations.
+    '''This class is a node of a relational expression. Leaves are relations
+    and internal nodes are operations.
 
-    The kind property says if the node is a binary operator, unary operator or relation.
-    Since relations are leaves, a relation node will have no attribute for children.
+    The 'kind' property indicates whether the node is a binary operator, unary
+    operator or relation.
+    Since relations are leaves, a relation node will have no attribute for
+    children.
 
     If the node is a binary operator, it will have left and right properties.
 
-    If the node is a unary operator, it will have a child, pointing to the child node and a prop containing
-    the string with the props of the operation.
+    If the node is a unary operator, it will have a child, pointing to the
+    child node and a property containing the string with the props of the
+    operation.
 
     This class is used to convert an expression into python code.'''
     kind = None
@@ -123,16 +138,16 @@ class node (object):
                     u"'%s' is not a valid relation name" % self.name)
             return
 
-        '''Expression from right to left, searching for binary operators
-        this means that binary operators have lesser priority than
-        unary operators.
-        It finds the operator with lesser priority, uses it as root of this
-        (sub)tree using everything on its left as left parameter (so building
-        a left subtree with the part of the list located on left) and doing
-        the same on right.
-        Since it searches for strings, and expressions into parenthesis are
-        within sub-lists, they won't be found here, ensuring that they will
-        have highest priority.'''
+        #Expression from right to left, searching for binary operators
+        #this means that binary operators have lesser priority than
+        #unary operators.
+        #It finds the operator with lesser priority, uses it as root of this
+        #(sub)tree using everything on its left as left parameter (so building
+        #a left subtree with the part of the list located on left) and doing
+        #the same on right.
+        #Since it searches for strings, and expressions into parenthesis are
+        #within sub-lists, they won't be found here, ensuring that they will
+        #have highest priority.
         for i in range(len(expression) - 1, -1, -1):
             if expression[i] in b_operators:  # Binary operator
                 self.kind = BINARY
@@ -167,13 +182,16 @@ class node (object):
         pass
 
     def toCode(self):
-        '''This method converts the tree into a python code object'''
+        '''This method converts the AST into a python code object'''
         code = self.toPython()
         return compile(code, '<relational_expression>', 'eval')
 
     def toPython(self):
-        '''This method converts the expression into a python code string, which
-        will require the relation module to be executed.'''
+        '''This method converts the AST into a python code string, which
+        will require the relation module to be executed.
+
+        The return value is a CallableString, which means that it can be
+        directly called.'''
         if self.name in b_operators:
             return CallableString('%s.%s(%s)' % (self.left.toPython(), op_functions[self.name], self.right.toPython()))
         elif self.name in u_operators:
@@ -207,7 +225,7 @@ class node (object):
         return '\n' + r
 
     def get_left_leaf(self):
-        '''This function returns the leftmost leaf in the tree. It is needed by some optimizations.'''
+        '''This function returns the leftmost leaf in the tree.'''
         if self.kind == RELATION:
             return self
         elif self.kind == UNARY:
@@ -296,21 +314,22 @@ def _find_matching_parenthesis(expression, start=0, openpar=u'(', closepar=u')')
 
 
 def tokenize(expression):
-    '''This function converts an expression into a list where
+    '''This function converts a relational expression into a list where
     every token of the expression is an item of a list. Expressions into
     parenthesis will be converted into sublists.'''
+
     items = []  # List for the tokens
 
-    '''This is a state machine. Initial status is determined by the starting of the
-    expression. There are the following statuses:
-
-    relation: this is the status if the expressions begins with something else than an
-        operator or a parenthesis.
-    binary operator: this is the status when parsing a binary operator, nothing much to say
-    unary operator: this status is more complex, since it will be followed by a parameter AND a
-        sub-expression.
-    sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
-        means that the others open must be counted to determine which close is the right one.'''
+    #This is a state machine. Initial status is determined by the starting of the
+    # expression. There are the following statuses:
+    #
+    # relation: this is the status if the expressions begins with something else than an
+    #     operator or a parenthesis.
+    # binary operator: this is the status when parsing a binary operator, nothing much to say
+    # unary operator: this status is more complex, since it will be followed by a parameter AND a
+    #     sub-expression.
+    # sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
+    #     means that the others open must be counted to determine which close is the right one.'''
 
     expression = expression.strip()  # Removes initial and endind spaces
     state = 0
@@ -374,40 +393,19 @@ def tokenize(expression):
 
 
 def tree(expression):
-    '''This function parses a relational algebra expression into a tree and returns
-    the root node using the Node class defined in this module.'''
+    '''This function parses a relational algebra expression into a AST and returns
+    the root node using the Node class.'''
     return node(tokenize(expression))
 
 
 def parse(expr):
-    '''This function parses a relational algebra expression, converting it into python,
-    executable by eval function to get the result of the expression.
-    It has 2 class of operators:
-    without parameters
-    *, -, ᑌ, ᑎ, ᐅᐊ, ᐅLEFTᐊ, ᐅRIGHTᐊ, ᐅFULLᐊ
-    with parameters:
-    σ, π, ρ
+    '''This function parses a relational algebra expression, and returns a
+    CallableString (a string that can be called) whith the corresponding
+    Python expression.
 
-    Syntax for operators without parameters is:
-    relation operator relation
-
-    Syntax for operators with parameters is:
-    operator parameters (relation)
-
-    Since a*b is a relation itself, you can parse π a,b (a*b).
-    And since π a,b (A) is a relation, you can parse π a,b (A) ᑌ B.
-
-    You can use parenthesis to change priority: a ᐅᐊ (q ᑌ d).
-
-    IMPORTANT: all strings must be unicode
-
-    EXAMPLES
-    σage > 25 and rank == weight(A)
-    Q ᐅᐊ π a,b(A) ᐅᐊ B
-    ρid➡i,name➡n(A) - π a,b(π a,b(A)) ᑎ σage > 25 or rank = weight(A)
-    π a,b(π a,b(A))
-    ρid➡i,name➡n(π a,b(A))
-    A ᐅᐊ B
+    Check the online documentation for informations on the allowed
+    syntax
+    http://ltworf.github.io/relational/grammar.html
     '''
     return tree(expr).toPython()
 
