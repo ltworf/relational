@@ -18,7 +18,7 @@
 from PyQt5 import QtCore, QtWidgets, QtWidgets
 
 from relational import relation, parser, optimizer, rtypes
-from relational.maintenance import user_interface
+from relational.maintenance import UserInterface
 
 from relational_gui import about
 from relational_gui import survey
@@ -36,7 +36,7 @@ class relForm(QtWidgets.QMainWindow):
         self.selectedRelation = None
         self.ui = ui
         self.qcounter = 1  # Query counter
-        self.user_interface = user_interface()
+        self.user_interface = UserInterface()
 
         self.settings = QtCore.QSettings()
 

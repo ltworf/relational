@@ -60,7 +60,7 @@ def check_latest_version():
     return s.decode().strip()
 
 
-class user_interface (object):
+class UserInterface (object):
 
     '''It is used to provide services to the user interfaces, in order to
     reduce the amount of duplicated code present in different user interfaces.

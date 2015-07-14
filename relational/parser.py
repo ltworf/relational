@@ -99,7 +99,7 @@ class CallableString(str):
         return eval(self, context)
 
 
-class node (object):
+class Node (object):
 
     '''This class is a node of a relational expression. Leaves are relations
     and internal nodes are operations.
@@ -416,7 +416,5 @@ if __name__ == "__main__":
         e = input("Expression: ")
         print (parse(e))
 
-    # b=u"σ age>1 and skill=='C' (peopleᐅᐊskills)"
-    # print b[0]
-    # parse(b)
-    pass
+#Backwards compatibility
+node = Node

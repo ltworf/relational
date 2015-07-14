@@ -26,7 +26,7 @@ import re
 RELATION_NAME_REGEXP = r'^[_a-zA-Z]+[_a-zA-Z0-9]*$'
 
 
-class rstring (str):
+class Rstring (str):
 
     '''String subclass with some custom methods'''
 
@@ -112,7 +112,7 @@ class rstring (str):
             return self._date
 
 
-class rdate (object):
+class Rdate (object):
 
     '''Represents a date'''
 
@@ -158,8 +158,11 @@ class rdate (object):
     def __sub__(self, other):
         return (self.intdate - other.intdate).days
 
-
 def is_valid_relation_name(name):
     '''Checks if a name is valid for a relation.
     Returns boolean'''
     return re.match(RELATION_NAME_REGEXP, name) != None
+
+#Backwards compatibility
+rdate = Rdate
+rstring = Rstring

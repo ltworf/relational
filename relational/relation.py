@@ -26,7 +26,7 @@ from collections import deque
 from relational.rtypes import *
 
 
-class relation (object):
+class Relation (object):
 
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
@@ -57,11 +57,11 @@ class relation (object):
 
         if len(filename) == 0:  # Empty relation
             self.content = set()
-            self.header = header([])
+            self.header = Header([])
             return
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
-            self.header = header(next(reader))  # read 1st line
+            self.header = Header(next(reader))  # read 1st line
             self.content = set()
             attributes = len(self.header)
 
@@ -121,7 +121,7 @@ class relation (object):
         Selection, expr must be a valid Python expression; can contain field names.
         '''
         newt = relation()
-        newt.header = header(self.header)
+        newt.header = Header(self.header)
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
             attributes = {attr: i[j].autocast()
@@ -148,7 +148,7 @@ class relation (object):
                 'Unable to perform product on relations with colliding attributes'
             )
         newt = relation()
-        newt.header = header(self.header + other.header)
+        newt.header = Header(self.header + other.header)
 
         for i in self.content:
             for j in other.content:
@@ -178,7 +178,7 @@ class relation (object):
         newt = relation()
         # Create the header
         h = (self.header[i] for i in ids)
-        newt.header = header(h)
+        newt.header = Header(h)
 
         # Create the body
         for i in self.content:
@@ -213,7 +213,7 @@ class relation (object):
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
-        newt.header = header(self.header)
+        newt.header = Header(self.header)
 
         newt.content = self.content.intersection(other.content)
         return newt
@@ -224,7 +224,7 @@ class relation (object):
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
-        newt.header = header(self.header)
+        newt.header = Header(self.header)
 
         newt.content = self.content.difference(other.content)
         return newt
@@ -261,7 +261,7 @@ class relation (object):
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
         newt = relation()
-        newt.header = header(self.header)
+        newt.header = Header(self.header)
 
         newt.content = self.content.union(other.content)
         return newt
@@ -298,7 +298,7 @@ class relation (object):
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = header(chain(self.header, h))
+        newt.header = Header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -342,7 +342,7 @@ class relation (object):
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = header(chain(self.header, h))
+        newt.header = Header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -484,14 +484,14 @@ class relation (object):
         return len(self.content) - l
 
 
-class header(tuple):
+class Header(tuple):
 
     '''This class defines the header of a relation.
     It is used within relations to know if requested operations are accepted'''
 
     # Since relations are mutalbe we explicitly block hashing them
     def __new__(cls, fields):
-        return super(header, cls).__new__(cls, tuple(fields))
+        return super(Header, cls).__new__(cls, tuple(fields))
 
     def __init__(self, *args, **kwargs):
         '''Accepts a list with attributes' names. Names MUST be unique'''
@@ -504,7 +504,7 @@ class header(tuple):
             raise Exception('Attribute names must be unique')
 
     def __repr__(self):
-        return "header(%s)" % super(header, self).__repr__()
+        return "Header(%s)" % super(Header, self).__repr__()
 
     def rename(self, params):
         '''Returns a new header, with renamed fields.
@@ -520,7 +520,7 @@ class header(tuple):
                 attrs[id_] = new
             except:
                 raise Exception('Field not found: %s' % old)
-        return header(attrs)
+        return Header(attrs)
 
     def sharedAttributes(self, other):
         '''Returns how many attributes this header has in common with a given one'''
@@ -537,3 +537,7 @@ class header(tuple):
     def getAttributesId(self, param):
         '''Returns a list with numeric index corresponding to field's name'''
         return [self.index(i) for i in param]
+
+#Backwards compatibility
+relation = Relation
+header = Header
