@@ -94,7 +94,7 @@ class relation (object):
         It is not exactely related to relational algebra. Just a method used
         internally.
         Will raise an exception if they don't share the same attributes'''
-        if (self.__class__ != other.__class__):
+        if not isinstance(other, relation):
             raise Exception('Expected an instance of the same class')
         elif self.header == other.header:
             return other
@@ -113,7 +113,7 @@ class relation (object):
             # Fills the attributes dictionary with the values of the tuple
             attributes = {attr: i[j].autocast()
                           for j, attr in enumerate(self.header)
-            }
+                          }
 
             try:
                 if eval(expr, attributes):
@@ -129,7 +129,9 @@ class relation (object):
         cause an exception.
         It is possible to use rename on attributes and then use the product'''
 
-        if (self.__class__ != other.__class__)or(self.header.sharedAttributes(other.header) != 0):
+        if (not isinstance(other, relation)):
+            raise Exception('Operand must be a relation')
+        if self.header.sharedAttributes(other.header) != 0:
             raise Exception(
                 'Unable to perform product on relations with colliding attributes'
             )
@@ -347,7 +349,7 @@ class relation (object):
     def __eq__(self, other):
         '''Returns true if the relations are the same, ignoring order of items.
         This operation is rather heavy, since it requires sorting and comparing.'''
-        if self.__class__ != other.__class__:
+        if not isinstance(other, relation):
             return False
 
         if set(self.header) != set(other.header):
