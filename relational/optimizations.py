@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Relational
 # Copyright (C) 2009  Salvo "LtWorf" Tomaselli
 #

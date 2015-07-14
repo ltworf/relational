@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# coding=UTF-8
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 #
