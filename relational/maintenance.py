@@ -21,6 +21,7 @@
 import http.client
 import urllib.parse
 import os.path
+import pickle
 
 from relational.relation import relation
 from relational import parser
@@ -67,7 +68,7 @@ class UserInterface (object):
     '''
 
     def __init__(self):
-        self.relations = {}
+        self.session_reset()
 
     def load(self, filename, name):
         '''Loads a relation from file, and gives it a name to
@@ -82,6 +83,40 @@ class UserInterface (object):
     def store(self, filename, name):
         '''Stores a relation to file.'''
         pass
+
+    def session_dump(self, filename=None):
+        '''
+        Dumps the session.
+
+        If a filename is specified, the session is dumped
+        inside the file, and None is returned.
+
+        If no filename is specified, the session is returned
+        as bytes.
+        '''
+        if filename:
+            with open(filename,'w') as f:
+                pickle.dump(self.relations, f)
+                return None
+        return pickle.dumps(self.relations)
+
+    def session_restore(self, session=None, filename=None):
+        '''
+        Restores a session.
+
+        Either from bytes or from a file
+        '''
+        if session:
+            self.relations = pickle.loads(session)
+        elif filename:
+            with open(filename) as f:
+                self.relations = pickle.load(f)
+
+    def session_reset(self):
+        '''
+        Resets the session to a clean one
+        '''
+        self.relations = {}
 
     def get_relation(self, name):
         '''Returns the relation corresponding to name.'''
