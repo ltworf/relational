@@ -3,6 +3,7 @@
 - Fix bug in code to check for new version
 - Performance improvements
 - More Pythonic name for classes (API is compatible with version 2.0)
+- Introduced sessions; GUI loads the same relations of the previous time
 
 2.0
 - Fix bug in relational-cli that made it crash when an exception was raised
