@@ -255,9 +255,12 @@ class relForm(QtWidgets.QMainWindow):
     def save_settings(self):
         self.settings.setValue('maingui/geometry', self.saveGeometry())
         self.settings.setValue('maingui/windowState', self.saveState())
+        self.settings.setValue('maingui/relations', self.user_interface.session_dump())
 
     def restore_settings(self):
-        # self.settings.value('session_name','default').toString()
+        self.user_interface.session_restore(self.settings.value('maingui/relations'))
+        self.updateRelations()
+
         self.setMultiline(self.settings.value('multiline', 'false') == 'true')
         self.ui.txtMultiQuery.setPlainText(
             self.settings.value('multiline/query', ''))
