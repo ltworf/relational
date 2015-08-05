@@ -22,22 +22,8 @@
 # to convert expressions into python expressions and to get the parse-tree
 # of the expression.
 #
-# The input must be provided in UTF-8
-#
-#
-# Language definition:
-# Query := Ident
-# Query := Query BinaryOp Query
-# Query := (Query)
-# Query := σ PYExprWithoutParenthesis (Query) | σ (PYExpr) (Query)
-# Query := π FieldList (Query)
-# Query := ρ RenameList (Query)
-# FieldList := Ident | Ident , FieldList
-# RenameList := Ident ➡ Ident | Ident ➡ Ident , RenameList
-# BinaryOp := * | - | ᑌ | ᑎ | ÷ | ᐅᐊ | ᐅLEFTᐊ | ᐅRIGHTᐊ | ᐅFULLᐊ
-#
 # Language definition here:
-# https://github.com/ltworf/relational/wiki/Grammar-and-language
+# http://ltworf.github.io/relational/grammar.html
 import re
 
 from relational import rtypes
@@ -404,10 +390,6 @@ def parse(expr):
     '''This function parses a relational algebra expression, and returns a
     CallableString (a string that can be called) whith the corresponding
     Python expression.
-
-    Check the online documentation for informations on the allowed
-    syntax
-    http://ltworf.github.io/relational/grammar.html
     '''
     return tree(expr).toPython()
 
