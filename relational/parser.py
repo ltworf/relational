@@ -342,7 +342,7 @@ def tokenize(expression):
             # Removes the entire parentesis and content from the expression
             expression = expression[end + 1:].strip()
 
-        elif expression.startswith((SELECTION, RENAME, PROJECTION)):  # Unary 2 bytes
+        elif expression.startswith((SELECTION, RENAME, PROJECTION)):  # Unary operators
             items.append(expression[0:1])
                          # Adding operator in the top of the list
             expression = expression[
@@ -362,9 +362,6 @@ def tokenize(expression):
             items.append(expression[0])
             expression = expression[1:].strip()  # 1 char from the expression
             state = 4
-        elif re.match(rtypes.RELATION_NAME_REGEXP, expression[0]) == None:  # At this point we only have relation names, so we raise errors for anything else
-            raise TokenizerException(
-                "Unexpected '%c' in '%s'" % (expression[0], expression))
         else:  # Relation (hopefully)
             if state == 1:  # Previous was a relation, appending to the last token
                 i = items.pop()
