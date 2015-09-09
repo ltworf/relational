@@ -165,7 +165,7 @@ class Node (object):
                 self.child = node(expression[2 + i])
 
                 return
-        raise ParserException(u"Unable to parse tokens")
+        raise ParserException("Expected operator in '%s'" % ' '.join(expression))
         pass
 
     def toCode(self):
