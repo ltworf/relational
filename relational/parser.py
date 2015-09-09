@@ -319,7 +319,7 @@ def tokenize(expression):
     # means that the others open must be counted to determine which close is
     # the right one.
 
-    expression = expression.strip()  # Removes initial and endind spaces
+    expression = expression.strip()  # Removes initial and ending spaces
     state = 0
     '''
     0 initial and useless
