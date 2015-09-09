@@ -307,32 +307,11 @@ def tokenize(expression):
 
     items = []  # List for the tokens
 
-    # This is a state machine. Initial status is determined by the starting of the
-    # expression. There are the following statuses:
-    #
-    # relation: this is the status if the expressions begins with something else than an
-    #     operator or a parenthesis.
-    # binary operator: this is the status when parsing a binary operator, nothing much to say
-    # unary operator: this status is more complex, since it will be followed by a parameter AND a
-    #     sub-expression.
-    # sub-expression: this status is entered when finding a '(' and will be exited when finding a ')'.
-    # means that the others open must be counted to determine which close is
-    # the right one.
-
     expression = expression.strip()  # Removes initial and ending spaces
-    state = 0
-    '''
-    0 initial and useless
-    1 previous stuff was a relation
-    2 previous stuff was a sub-expression
-    3 previous stuff was a unary operator
-    4 previous stuff was a binary operator
-    '''
 
     while len(expression) > 0:
 
         if expression.startswith('('):  # Parenthesis state
-            state = 2
             end = _find_matching_parenthesis(expression)
             if end == None:
                 raise TokenizerException(
@@ -361,18 +340,15 @@ def tokenize(expression):
         elif expression.startswith((DIVISION, INTERSECTION, UNION, PRODUCT, DIFFERENCE, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)):
             items.append(expression[0])
             expression = expression[1:].strip()  # 1 char from the expression
-            state = 4
         else:  # Relation (hopefully)
-            if state == 1:  # Previous was a relation, appending to the last token
-                i = items.pop()
-                items.append(i + expression[0])
-                expression = expression[
-                    1:].strip()  # 1 char from the expression
-            else:
-                state = 1
-                items.append(expression[0])
-                expression = expression[
-                    1:].strip()  # 1 char from the expression
+            expression+=' ' #To avoid the special case of the ending
+
+            #Initial part is a relation, stop when the name of the relation is over
+            for r in range(1,len(expression)):
+                if rtypes.RELATION_NAME_REGEXP.match(expression[:r+1]) is None:
+                    break
+            items.append(expression[:r])
+            expression = expression[r:].strip()
 
     return items
 
