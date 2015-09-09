@@ -98,7 +98,8 @@ class relForm(QtWidgets.QMainWindow):
             result = self.user_interface.multi_execute(query)
         except Exception as e:
             return self.error(e)
-        self.updateRelations()  # update the list
+        finally:
+            self.updateRelations()
         self.selectedRelation = result
         self.showRelation(self.selectedRelation)
 
