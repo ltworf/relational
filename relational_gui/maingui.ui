@@ -43,135 +43,180 @@
       </item>
       <item>
        <widget class="QFrame" name="groupOperators">
-        <layout class="QVBoxLayout" name="verticalLayout_10">
-         <item>
-          <widget class="QPushButton" name="cmdProduct">
-           <property name="toolTip">
-            <string>Product</string>
-           </property>
-           <property name="text">
-            <string notr="true">*</string>
-           </property>
-          </widget>
-         </item>
-         <item>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="1" column="0">
           <widget class="QPushButton" name="cmdDifference">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string>Difference</string>
            </property>
            <property name="text">
             <string notr="true">-</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdUnion">
-           <property name="toolTip">
-            <string>Union</string>
-           </property>
-           <property name="text">
-            <string notr="true">∪</string>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QPushButton" name="cmdIntersection">
-           <property name="toolTip">
-            <string>Intersection</string>
-           </property>
-           <property name="text">
-            <string notr="true">∩</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdDivision">
-           <property name="toolTip">
-            <string>Division</string>
-           </property>
-           <property name="text">
-            <string notr="true">÷</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdJoin">
-           <property name="toolTip">
-            <string>Natural join</string>
-           </property>
-           <property name="text">
-            <string notr="true">⋈</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdOuterLeft">
-           <property name="toolTip">
-            <string>Left outer join</string>
-           </property>
-           <property name="text">
-            <string notr="true">⧑</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdOuterRight">
-           <property name="toolTip">
-            <string>Right outer join</string>
-           </property>
-           <property name="text">
-            <string notr="true">⧒</string>
-           </property>
-          </widget>
-         </item>
-         <item>
+         <item row="8" column="0">
           <widget class="QPushButton" name="cmdOuter">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string>Full outer join</string>
            </property>
            <property name="text">
             <string notr="true">⧓</string>
            </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
-         <item>
-          <widget class="QPushButton" name="cmdProjection">
+         <item row="4" column="0">
+          <widget class="QPushButton" name="cmdDivision">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="toolTip">
-            <string>Projection</string>
+            <string>Division</string>
            </property>
            <property name="text">
-            <string notr="true">π</string>
+            <string notr="true">÷</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="cmdProduct">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Product</string>
+           </property>
+           <property name="text">
+            <string notr="true">*</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
           <widget class="QPushButton" name="cmdSelection">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string>Selection</string>
            </property>
            <property name="text">
             <string notr="true">σ</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdRename">
-           <property name="toolTip">
-            <string>Rename</string>
-           </property>
-           <property name="text">
-            <string notr="true">ρ</string>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="12" column="0">
           <widget class="QPushButton" name="cmdArrow">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string notr="true">➡</string>
            </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
-         <item>
+         <item row="6" column="0">
+          <widget class="QPushButton" name="cmdOuterLeft">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Left outer join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⧑</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="0">
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -183,6 +228,156 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="cmdUnion">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Union</string>
+           </property>
+           <property name="text">
+            <string notr="true">∪</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="cmdIntersection">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Intersection</string>
+           </property>
+           <property name="text">
+            <string notr="true">∩</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QPushButton" name="cmdJoin">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Natural join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⋈</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QPushButton" name="cmdOuterRight">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Right outer join</string>
+           </property>
+           <property name="text">
+            <string notr="true">⧒</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QPushButton" name="cmdProjection">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Projection</string>
+           </property>
+           <property name="text">
+            <string notr="true">π</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QPushButton" name="cmdRename">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Rename</string>
+           </property>
+           <property name="text">
+            <string notr="true">ρ</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -420,7 +615,14 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0" colspan="2">
+             <item row="2" column="1">
+              <widget class="QPushButton" name="cmdNewSession">
+               <property name="text">
+                <string>Unload all</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
               <widget class="QPushButton" name="cmdUnload">
                <property name="text">
                 <string>Unload</string>
@@ -540,7 +742,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -675,16 +877,10 @@
   <tabstop>cmdSurvey</tabstop>
   <tabstop>cmdProduct</tabstop>
   <tabstop>cmdDifference</tabstop>
-  <tabstop>cmdUnion</tabstop>
-  <tabstop>cmdIntersection</tabstop>
   <tabstop>cmdDivision</tabstop>
-  <tabstop>cmdJoin</tabstop>
   <tabstop>cmdOuterLeft</tabstop>
-  <tabstop>cmdOuterRight</tabstop>
   <tabstop>cmdOuter</tabstop>
-  <tabstop>cmdProjection</tabstop>
   <tabstop>cmdSelection</tabstop>
-  <tabstop>cmdRename</tabstop>
   <tabstop>cmdArrow</tabstop>
   <tabstop>table</tabstop>
   <tabstop>lstHistory</tabstop>
@@ -696,7 +892,6 @@
   <tabstop>cmdExecuteMultiline</tabstop>
   <tabstop>lstRelations</tabstop>
   <tabstop>cmdEdit</tabstop>
-  <tabstop>cmdUnload</tabstop>
   <tabstop>lstAttributes</tabstop>
   <tabstop>txtResult</tabstop>
   <tabstop>txtQuery</tabstop>
@@ -728,8 +923,8 @@
    <slot>showSurvey()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>63</x>
-     <y>96</y>
+     <x>78</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
      <x>99</x>
@@ -744,8 +939,8 @@
    <slot>unloadRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>387</y>
+     <x>677</x>
+     <y>396</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -760,8 +955,8 @@
    <slot>saveRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>325</y>
+     <x>783</x>
+     <y>322</y>
     </hint>
     <hint type="destinationlabel">
      <x>760</x>
@@ -776,8 +971,8 @@
    <slot>loadRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>294</y>
+     <x>677</x>
+     <y>322</y>
     </hint>
     <hint type="destinationlabel">
      <x>753</x>
@@ -904,8 +1099,8 @@
    <slot>editRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>356</y>
+     <x>783</x>
+     <y>359</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -936,8 +1131,8 @@
    <slot>newRelation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>263</y>
+     <x>677</x>
+     <y>359</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1000,8 +1195,8 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>518</x>
-     <y>564</y>
+     <x>556</x>
+     <y>608</y>
     </hint>
     <hint type="destinationlabel">
      <x>432</x>
@@ -1016,8 +1211,8 @@
    <slot>execute()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>550</x>
-     <y>596</y>
+     <x>556</x>
+     <y>646</y>
     </hint>
     <hint type="destinationlabel">
      <x>795</x>
@@ -1032,12 +1227,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>674</x>
-     <y>639</y>
+     <x>696</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>590</x>
-     <y>644</y>
+     <x>606</x>
+     <y>699</y>
     </hint>
    </hints>
   </connection>
@@ -1048,8 +1243,8 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>492</x>
-     <y>511</y>
+     <x>556</x>
+     <y>556</y>
     </hint>
     <hint type="destinationlabel">
      <x>490</x>
@@ -1064,8 +1259,8 @@
    <slot>optimize()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>517</y>
+     <x>263</x>
+     <y>556</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
@@ -1080,8 +1275,8 @@
    <slot>undoOptimize()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>509</y>
+     <x>409</x>
+     <y>556</y>
     </hint>
     <hint type="destinationlabel">
      <x>544</x>
@@ -1096,8 +1291,8 @@
    <slot>execute()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>740</x>
-     <y>636</y>
+     <x>786</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -1112,8 +1307,8 @@
    <slot>execute()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>484</x>
-     <y>642</y>
+     <x>606</x>
+     <y>699</y>
     </hint>
     <hint type="destinationlabel">
      <x>796</x>
@@ -1144,8 +1339,8 @@
    <slot>addProduct()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>138</y>
+     <x>67</x>
+     <y>183</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1160,8 +1355,8 @@
    <slot>addDifference()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>169</y>
+     <x>67</x>
+     <y>220</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1176,8 +1371,8 @@
    <slot>addUnion()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>200</y>
+     <x>67</x>
+     <y>257</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1192,8 +1387,8 @@
    <slot>addIntersection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>231</y>
+     <x>67</x>
+     <y>294</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1208,8 +1403,8 @@
    <slot>addDivision()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>262</y>
+     <x>67</x>
+     <y>331</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1224,8 +1419,8 @@
    <slot>addOuter()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>386</y>
+     <x>67</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1240,8 +1435,8 @@
    <slot>addOLeft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>324</y>
+     <x>67</x>
+     <y>405</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1256,8 +1451,8 @@
    <slot>addORight()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>355</y>
+     <x>67</x>
+     <y>442</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1272,8 +1467,8 @@
    <slot>addJoin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>293</y>
+     <x>67</x>
+     <y>368</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1288,8 +1483,8 @@
    <slot>addProjection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>417</y>
+     <x>67</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1304,8 +1499,8 @@
    <slot>addSelection()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>448</y>
+     <x>67</x>
+     <y>553</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1320,8 +1515,8 @@
    <slot>addRename()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>479</y>
+     <x>67</x>
+     <y>590</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1336,12 +1531,28 @@
    <slot>addArrow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>54</x>
-     <y>510</y>
+     <x>67</x>
+     <y>627</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
      <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdNewSession</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>newSession()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>736</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>796</x>
+     <y>396</y>
     </hint>
    </hints>
   </connection>
