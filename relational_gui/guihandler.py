@@ -192,6 +192,10 @@ class relForm(QtWidgets.QMainWindow):
             del self.user_interface.relations[i.text()]
         self.updateRelations()
 
+    def newSession(self):
+        self.user_interface.session_reset()
+        self.updateRelations()
+
     def editRelation(self):
         from relational_gui import creator
         for i in self.ui.lstRelations.selectedItems():
