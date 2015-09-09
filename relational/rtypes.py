@@ -23,12 +23,16 @@
 import datetime
 import re
 
-RELATION_NAME_REGEXP = r'^[_a-zA-Z]+[_a-zA-Z0-9]*$'
+RELATION_NAME_REGEXP = re.compile(r'^[_a-z][_a-z0-9]*$', re.IGNORECASE)
 
 
 class Rstring (str):
 
     '''String subclass with some custom methods'''
+
+    int_regexp = re.compile(r'^[\+\-]{0,1}[0-9]+$')
+    float_regexp = re.compile(r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$')
+    date_regexp = re.compile(r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$')
 
     def autocast(self):
         '''
@@ -56,7 +60,7 @@ class Rstring (str):
         the following regexp:
         r'^[\+\-]{0,1}[0-9]+$'
         '''
-        if re.match(r'^[\+\-]{0,1}[0-9]+$', self) == None:
+        if Rstring.int_regexp.match(self) is None:
             return False
         else:
             return True
@@ -67,7 +71,7 @@ class Rstring (str):
         the following regexp:
             r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$'
         '''
-        if re.match(r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$', self) == None:
+        if Rstring.float_regexp.match(self) is None:
             return False
         else:
             return True
@@ -83,9 +87,8 @@ class Rstring (str):
         except:
             pass
 
-        r = re.match(
-            r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$', self)
-        if r == None:
+        r = Rstring.date_regexp.match(self)
+        if r is None:
             self._isdate = False
             self._date = None
             return False
