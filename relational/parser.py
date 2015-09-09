@@ -337,9 +337,6 @@ def tokenize(expression):
                          # Inserting parameter of the operator
             expression = expression[
                 par:].strip()  # Removing parameter from the expression
-        elif expression.startswith((DIVISION, INTERSECTION, UNION, PRODUCT, DIFFERENCE, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)):
-            items.append(expression[0])
-            expression = expression[1:].strip()  # 1 char from the expression
         else:  # Relation (hopefully)
             expression+=' ' #To avoid the special case of the ending
 
