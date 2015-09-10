@@ -165,8 +165,7 @@ class Node (object):
                 self.child = node(expression[2 + i])
 
                 return
-        raise ParserException("Expected operator in '%s'" % ' '.join(expression))
-        pass
+        raise ParserException("Expected operator in '%s'" % expression)
 
     def toCode(self):
         '''This method converts the AST into a python code object'''
