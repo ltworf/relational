@@ -323,7 +323,7 @@ class Relation (object):
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i, repeat('---', len(noid)))
+                item = chain(i, repeat(rstring('---'), len(noid)))
                 newt.content.add(tuple(item))
 
         return newt
