@@ -21,6 +21,7 @@ dist: clean
 	rm -f /tmp/relational/relational_gui/survey.py
 	rm -f /tmp/relational/relational_gui/maingui.py
 	rm -f /tmp/relational/relational_gui/rel_edit.py
+	rm -f /tmp/relational/relational_gui/resources.py
 	rm -rf /tmp/relational/relational_pyside/.svn/
 	rm -rf /tmp/relational/mac
 	rm -rf /tmp/relational/debian/
