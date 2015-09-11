@@ -4,6 +4,7 @@ pyqt:
 	pyuic5 relational_gui/survey.ui > relational_gui/survey.py
 	pyuic5 relational_gui/maingui.ui > relational_gui/maingui.py
 	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
+	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
 
 uninstall:
 	rm -rf /opt/relational

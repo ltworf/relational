@@ -85,7 +85,7 @@ if __name__ == "__main__":
         import sip  # needed on windows
         from PyQt5 import QtGui, QtWidgets
         try:
-            from relational_gui import maingui, guihandler, about, surveyForm
+            from relational_gui import maingui, guihandler, about, surveyForm, resources
         except:
             print (
                 "Module relational_gui is missing.\nPlease install relational package.",

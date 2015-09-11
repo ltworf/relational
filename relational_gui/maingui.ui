@@ -20,6 +20,10 @@
   <property name="windowTitle">
    <string>Relational</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/icon</normaloff>:/icon</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
