@@ -36,16 +36,32 @@ A ⋈ B
 
 Run from sources
 ================
+If it needs some dependencies:
+ * Qt5
+ * Python 3.4 or greater
+ * PyQt5
+ * pyuic5 and pyrcc5
+
+You will need to run
+```
+make
+```
+to generate some .py files.
 
 To launch the application, run
 
 ```
-make
 ./relational_gui.py
 ```
 
-If it needs some dependencies:
-Qt5, Python 3.4 or greater, PyQt5, pyuic5
+Running on osx
+==============
 
-It can run on osx but bugreports about that will be rejected.
+You can probably follow the instructions on running from sources to
+rut on osx.
+
+If you encounter problems, don't ask me for help.
+
+If you encounter problems and overcome them, please tell me how to update this
+README.
 
