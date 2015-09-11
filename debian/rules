@@ -2,6 +2,7 @@
 SHELL=sh -e
 
 %:
+	make
 	./driver.py
 	dh $@ --with python3
 
