@@ -40,11 +40,12 @@ Run from sources
 To launch the application, run
 
 ```
+make
 ./relational_gui.py
 ```
 
 If it needs some dependencies:
-Qt5, Python 3.4 or greater, PyQt5
+Qt5, Python 3.4 or greater, PyQt5, pyuic5
 
 It can run on osx but bugreports about that will be rejected.
 

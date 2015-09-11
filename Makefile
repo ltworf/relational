@@ -1,6 +1,3 @@
-default:
-	echo "sorry, no default action"
-
 gui: pyqt
 
 pyqt:
@@ -36,6 +33,9 @@ dist: clean
 	rm -rf /tmp/relational/mac/.svn/
 	rm -rf /tmp/relational/relational/.svn/
 	rm -rf /tmp/relational/relational_gui/.svn/
+	rm -f /tmp/relational/relational_gui/survey.py
+	rm -f /tmp/relational/relational_gui/maingui.py
+	rm -f /tmp/relational/relational_gui/rel_edit.py
 	rm -rf /tmp/relational/relational_pyside/.svn/
 	rm -rf /tmp/relational/mac
 	rm -rf /tmp/relational/debian/

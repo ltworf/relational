@@ -1,2 +1,6 @@
 *.pyc
 *~
+relational_gui/survey.py
+relational_gui/maingui.py
+relational_gui/rel_edit.py
+
