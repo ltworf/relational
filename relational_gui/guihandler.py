@@ -260,6 +260,7 @@ class relForm(QtWidgets.QMainWindow):
     def save_settings(self):
         self.settings.setValue('maingui/geometry', self.saveGeometry())
         self.settings.setValue('maingui/windowState', self.saveState())
+        self.settings.setValue('maingui/splitter', self.ui.splitter.saveState())
         self.settings.setValue('maingui/relations', self.user_interface.session_dump())
 
     def restore_settings(self):
@@ -272,6 +273,7 @@ class relForm(QtWidgets.QMainWindow):
         try:
             self.restoreGeometry(self.settings.value('maingui/geometry'))
             self.restoreState(self.settings.value('maingui/windowState'))
+            self.ui.splitter.restoreState(self.settings.value('maingui/splitter'))
         except:
             pass
 
