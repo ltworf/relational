@@ -1,12 +1,12 @@
 2.1
+- Introduced sessions; GUI loads the same relations of the previous time
+- redesigned GUI, to fit in smaller screens
+- Fix bug in tokenizer
+- Fixed bug where select on relations with '---' values would always fail
 - Improve error reporting
 - Fix bug in code to check for new version
 - Performance improvements
 - More Pythonic name for classes (API is compatible with version 2.0)
-- Introduced sessions; GUI loads the same relations of the previous time
-- GUI is modified, to be fit smaller screens
-- Fix bug in tokenizer
-- Fixed bug where select on relations with '---' values would always fail
 
 2.0
 - Fix bug in relational-cli that made it crash when an exception was raised
