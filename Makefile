@@ -6,22 +6,6 @@ pyqt:
 	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
 	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
 
-uninstall:
-	rm -rf /opt/relational
-	rm -f /usr/local/bin/relational
-	rm -f /usr/share/applications/relational.desktop
-
-install:
-	mkdir /opt/relational
-	cp -R relational relational_gui /opt/relational/
-	cp relational_gui.py /opt/relational
-	chmod -R 555 /opt/relational/
-	echo "#!/bin/bash" > /usr/local/bin/relational
-	echo "/opt/relational/relational_gui.py" >> /usr/local/bin/relational
-	chmod 555 /usr/local/bin/relational
-	cp relational.desktop /usr/share/applications/
-	chmod a+r /usr/share/applications/relational.desktop
-
 dist: clean
 	rm -rf /tmp/relational/
 	rm -rf /tmp/relational-*
