@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>422</height>
+    <width>637</width>
+    <height>495</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -373,8 +373,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>607</width>
-     <height>20</height>
+     <width>637</width>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1151,6 +1151,29 @@
   <tabstop>txtQuery</tabstop>
   <tabstop>cmdClearQuery</tabstop>
   <tabstop>cmdExecute</tabstop>
+  <tabstop>cmdProduct</tabstop>
+  <tabstop>cmdDifference</tabstop>
+  <tabstop>cmdUnion</tabstop>
+  <tabstop>cmdIntersection</tabstop>
+  <tabstop>cmdJoin</tabstop>
+  <tabstop>cmdOuter</tabstop>
+  <tabstop>cmdOuterLeft</tabstop>
+  <tabstop>cmdOuterRight</tabstop>
+  <tabstop>cmdDivision</tabstop>
+  <tabstop>cmdSelection</tabstop>
+  <tabstop>cmdProjection</tabstop>
+  <tabstop>cmdRename</tabstop>
+  <tabstop>cmdArrow</tabstop>
+  <tabstop>cmdAbout</tabstop>
+  <tabstop>cmdSurvey</tabstop>
+  <tabstop>lstAttributes</tabstop>
+  <tabstop>lstRelations</tabstop>
+  <tabstop>cmdLoad</tabstop>
+  <tabstop>cmdSave</tabstop>
+  <tabstop>cmdNew</tabstop>
+  <tabstop>cmdEdit</tabstop>
+  <tabstop>cmdUnload</tabstop>
+  <tabstop>cmdNewSession</tabstop>
  </tabstops>
  <resources/>
  <connections>
