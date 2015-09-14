@@ -57,7 +57,7 @@
 
 <script>
 var xmlhttp = new XMLHttpRequest();
-var url = "https://api.github.com/repos/ltworf/relational/releases";
+var url = "https://api.github.com/repos/ltworf/relational/releases/latest";
 
 xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -79,12 +79,12 @@ function get_size(bytes) {
         bytes = Math.floor(bytes/1024)
         size_unit = 'KiB'
     }
-    
+
     if (bytes > 1024) {
         bytes = Math.floor(bytes/1024)
         size_unit = 'MiB'
     }
-    
+
     return bytes + size_unit
 }
 
@@ -103,26 +103,26 @@ function myFunction(arr) {
     out += '<td>Date</td>'
     out += '<td>Download count</td>'
     out += '</tr>'
-    
-    assets = arr[arr.length-1]['assets']
-    
+
+    assets = arr['assets']
+
     for (i=0; i<assets.length;i++) {
         asset = assets[i]
-        
+
         if (asset['state'] != 'uploaded')
             continue;
-            
+
         out += '<tr>'
-        
+
         out += '<td><a href="' + asset['browser_download_url'] +'">' + get_name(asset['name']) + '</a></td>'
         out += '<td>' + get_size(asset['size']) + '</td>'
         out += '<td>' + asset['updated_at'].slice(0,10) + '</td>'
         out += '<td>' + asset['download_count'] + '</td>'
-        
+
         out += '</tr>'
-    
+
     }
-    
+
     document.getElementById("dtable").innerHTML = out;
     document.getElementById("nojs").innerHTML = '';
 
@@ -137,7 +137,7 @@ function myFunction(arr) {
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: September 15, 2015, 1:25 am</p>
+        <p>Last updated: September 15, 2015, 1:39 am</p>
       </footer>
     </div>
 
