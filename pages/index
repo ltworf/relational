@@ -4,6 +4,10 @@
 
 <p>Provides a standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them.</p>
 
+<h1>Version 2.1 released</h1>
+<p>The UI now implements sessions and remembers where you left off the previous time. It was also redesigned to be able to fit smaller screens.</p>
+<p>The release also fixes some bugs in the parser and in the outher join functions.</p>
+
 <h1>
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
 
