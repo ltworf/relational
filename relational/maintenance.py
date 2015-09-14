@@ -107,7 +107,10 @@ class UserInterface (object):
         Either from bytes or from a file
         '''
         if session:
-            self.relations = pickle.loads(session)
+            try:
+                self.relations = pickle.loads(session)
+            except:
+                pass
         elif filename:
             with open(filename) as f:
                 self.relations = pickle.load(f)
