@@ -12,8 +12,7 @@ It is necessary to have the: Microsoft Visual C++ 2010 Redistributable Package.
 - Execute "python input.py py2exe"
 
 At the end, there should be a directory named "dist" containing the exe file and the needed libs (excluding for the c++ one)
-
-- manually copy the platforms subdirectory of plugins from the PyQt5 folder into dist
+within the dist directory there should be a "platforms" directory with a dll the PyQt5 directory.
 
 	Create the setup with Inno Setup
 - Move windows/ss.iss to ../

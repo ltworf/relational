@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Relational
 # Copyright (C) 2008  Salvo "LtWorf" Tomaselli
 #
@@ -25,15 +24,34 @@ import py2exe
 #probable need to manually install it. Since to redistribute it
 #some dammit certificates are needed.
 
-setup(options = {
+includes = (
+    "sip",
+    "PyQt5",
+    "PyQt5.QtCore",
+    "PyQt5.QtGui",
+)
+
+datafiles = (
+    (
+        "platforms", ["C:\\Python34\\Lib\\site-packages\\PyQt5\\plugins" + "\\platforms\\qwindows.dll"]
+    ),
+)
+
+setup(
+    data_files=datafiles,
+    zipfile=None,
+    options={
         "py2exe": {
-            "dll_excludes": ["MSVCP90.dll"]
+            "includes": includes,
+            "dll_excludes": ["MSVCP90.dll"],
         }
     },
-      windows=
-      [
-          {"script": "relational_gui.py","icon_resources": [(0, "windows/favicon.ico")]}
-          ]
-      ,name="Relational",
-               version="2.1"
-      )
+    windows=[
+        {
+            "script": "relational_gui.py",
+            "icon_resources": [(0, "windows/favicon.ico")],
+        }
+    ],
+    name="Relational",
+    version="2.1",
+)
