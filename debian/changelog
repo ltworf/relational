@@ -2,6 +2,7 @@ relational (2.1-1) unstable; urgency=medium
 
   * New upstream release
   * Ships icon
+  * Dropped patch utf8_for_tests
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Fri, 11 Sep 2015 14:02:18 +0200
 
