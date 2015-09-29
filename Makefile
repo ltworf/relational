@@ -12,10 +12,6 @@ dist: clean
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
 	rm -rf /tmp/relational/windows
-	rm -f /tmp/relational/relational_gui/survey.py
-	rm -f /tmp/relational/relational_gui/maingui.py
-	rm -f /tmp/relational/relational_gui/rel_edit.py
-	rm -f /tmp/relational/relational_gui/resources.py
 	rm -rf /tmp/relational/debian/
 
 	#mv /tmp/relational /tmp/relational-`./relational_gui.py -v | grep Relational | cut -d" " -f2`
@@ -31,6 +27,10 @@ clean:
 	rm -rf data
 	rm -rf *tar.bz
 	rm -rf *.deb
+	rm -f relational_gui/survey.py
+	rm -f relational_gui/maingui.py
+	rm -f relational_gui/rel_edit.py
+	rm -f relational_gui/resources.py
 
 debian:
 	dpkg-buildpackage
