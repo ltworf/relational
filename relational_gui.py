@@ -81,14 +81,14 @@ if __name__ == "__main__":
             x11 = False
 
     if x11:
-
         import sip  # needed on windows
         from PyQt5 import QtGui, QtWidgets
         try:
-            from relational_gui import maingui, guihandler, about, surveyForm, resources
+            from relational_gui import guihandler, about, surveyForm
         except:
             print (
-                "Module relational_gui is missing.\nPlease install relational package.",
+                "Module relational_gui is missing.\n"
+                "Please install relational package.",
                 file=sys.stderr
             )
             sys.exit(3)
@@ -102,28 +102,7 @@ if __name__ == "__main__":
         app.setApplicationName('relational')
         app.setOrganizationDomain("None")
 
-        ui = maingui.Ui_MainWindow()
-        form = guihandler.relForm(ui)
-        ui.setupUi(form)
-        f = QtGui.QFont()
-        size = f.pointSize()
-        if sys.platform.startswith('win'):
-            winFont = 'Cambria'
-            symbolFont = 'Segoe UI Symbol'
-            increment = 4
-        else:
-            winFont = f.family()
-            symbolFont = f.family()
-            increment = 2
-
-        ui.lstHistory.setFont(QtGui.QFont(winFont, size + increment))
-        ui.txtMultiQuery.setFont(QtGui.QFont(winFont, size + increment))
-        ui.txtQuery.setFont(QtGui.QFont(winFont, size + increment))
-        ui.groupOperators.setFont(QtGui.QFont(winFont, size + increment))
-        ui.cmdClearMultilineQuery.setFont(QtGui.QFont(symbolFont))
-        ui.cmdClearQuery.setFont(QtGui.QFont(symbolFont))
-
-        form.restore_settings()
+        form = guihandler.relForm()
 
         m = enumerate(map(os.path.isfile, files))
         invalid = ' '.join(

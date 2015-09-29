@@ -15,7 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
-from PyQt5 import QtCore, QtWidgets, QtWidgets
+import sys
+
+from PyQt5 import QtCore, QtWidgets, QtWidgets, QtGui
 
 from relational import relation, parser, optimizer, rtypes
 from relational.maintenance import UserInterface
@@ -28,17 +30,42 @@ from relational_gui import maingui
 
 class relForm(QtWidgets.QMainWindow):
 
-    def __init__(self, ui):
+    def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         self.About = None
         self.Survey = None
         self.undo = None  # UndoQueue for queries
         self.selectedRelation = None
-        self.ui = ui
+        self.ui = maingui.Ui_MainWindow()
         self.qcounter = 1  # Query counter
         self.user_interface = UserInterface()
 
+        # Creates the UI
+        self.ui.setupUi(self)
+
+        #Setting fonts for symbols
+        f = QtGui.QFont()
+        size = f.pointSize()
+        if sys.platform.startswith('win'):
+            winFont = 'Cambria'
+            symbolFont = 'Segoe UI Symbol'
+            increment = 4
+        else:
+            winFont = f.family()
+            symbolFont = f.family()
+            increment = 2
+        font = QtGui.QFont(winFont, size + increment)
+        sfont = QtGui.QFont(symbolFont)
+        self.ui.lstHistory.setFont(font)
+        self.ui.txtMultiQuery.setFont(font)
+        self.ui.txtQuery.setFont(font)
+        self.ui.groupOperators.setFont(font)
+        self.ui.cmdClearMultilineQuery.setFont(sfont)
+        self.ui.cmdClearQuery.setFont(sfont)
+
         self.settings = QtCore.QSettings()
+        self._restore_settings()
+
 
     def checkVersion(self):
         from relational import maintenance
@@ -263,7 +290,7 @@ class relForm(QtWidgets.QMainWindow):
         self.settings.setValue('maingui/splitter', self.ui.splitter.saveState())
         self.settings.setValue('maingui/relations', self.user_interface.session_dump())
 
-    def restore_settings(self):
+    def _restore_settings(self):
         self.user_interface.session_restore(self.settings.value('maingui/relations'))
         self.updateRelations()
 
