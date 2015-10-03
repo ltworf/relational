@@ -1,3 +1,9 @@
+relational (2.2-1) UNRELEASED; urgency=medium
+
+  * Fixed debian/rules to run testsuite just once
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Sun, 04 Oct 2015 00:22:27 +0200
+
 relational (2.1-1) unstable; urgency=medium
 
   * New upstream release

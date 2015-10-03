@@ -32,5 +32,20 @@ clean:
 	rm -f relational_gui/rel_edit.py
 	rm -f relational_gui/resources.py
 
-debian:
-	dpkg-buildpackage
+install-relational-cli:
+	python3 setup/relational-cli.setup.py install --root=$${DESTDIR:-/};
+	rm -rf build;
+	install -D relational_gui.py $${DESTDIR:-/}/usr/bin/relational-cli
+
+install-python3-relational:
+	python3 setup/python3-relational.setup.py install --root=$${DESTDIR:-/};
+	rm -rf build;
+
+install-relational:
+	python3 setup/relational.setup.py install --root=$${DESTDIR:-/};
+	rm -rf build;
+	install -D relational_gui.py $${DESTDIR:-/}/usr/bin/relational
+	install -m0644 -D relational.desktop $${DESTDIR:-/}/usr/share/applications/relational.desktop
+	install -m0644 -D relational_gui/resources/relational.png $${DESTDIR:-/}/usr/share/pixmaps/relational.png
+
+install: install-relational-cli install_module_gui install-relational
