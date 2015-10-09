@@ -93,6 +93,14 @@ if __name__ == "__main__":
             )
             sys.exit(3)
 
+        m = zip(files, map(os.path.isfile, files))
+        invalid = ' '.join(
+            (i[0] for i in (filter(lambda x: not x[1], m)))
+        )
+        if invalid:
+            print ("%s: not a file" % invalid, file=sys.stderr)
+            printhelp(12)
+
         about.version = version
         surveyForm.version = version
         guihandler.version = version
@@ -104,13 +112,6 @@ if __name__ == "__main__":
 
         form = guihandler.relForm()
 
-        m = zip(files, map(os.path.isfile, files))
-        invalid = ' '.join(
-            (i[0] for i in (filter(lambda x: not x[1], m)))
-        )
-        if invalid:
-            print ("%s: not a file" % invalid, file=sys.stderr)
-            printhelp(12)
         if len(files):
             form.loadRelation(files)
 
