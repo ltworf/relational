@@ -81,6 +81,9 @@ if __name__ == "__main__":
             x11 = False
 
     if x11:
+        import signal
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
+
         import sip  # needed on windows
         from PyQt5 import QtGui, QtWidgets
         try:
