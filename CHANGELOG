@@ -1,4 +1,5 @@
 2.2
+- Added again make install target
 
 2.1
 - Introduced sessions; GUI loads the same relations of the previous time
