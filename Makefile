@@ -36,6 +36,7 @@ install-relational-cli:
 	python3 setup/relational-cli.setup.py install --root=$${DESTDIR:-/};
 	rm -rf build;
 	install -D relational_gui.py $${DESTDIR:-/}/usr/bin/relational-cli
+	install -D relational-cli.1 $${DESTDIR:-/}/usr/share/man/man1/relational-cli.1
 
 install-python3-relational:
 	python3 setup/python3-relational.setup.py install --root=$${DESTDIR:-/};
@@ -47,5 +48,6 @@ install-relational:
 	install -D relational_gui.py $${DESTDIR:-/}/usr/bin/relational
 	install -m0644 -D relational.desktop $${DESTDIR:-/}/usr/share/applications/relational.desktop
 	install -m0644 -D relational_gui/resources/relational.png $${DESTDIR:-/}/usr/share/pixmaps/relational.png
+	install -D relational.1 $${DESTDIR:-/}/usr/share/man/man1/relational.1
 
 install: install-relational-cli install_module_gui install-relational
