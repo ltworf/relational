@@ -104,9 +104,9 @@ if __name__ == "__main__":
 
         form = guihandler.relForm()
 
-        m = enumerate(map(os.path.isfile, files))
+        m = zip(files, map(os.path.isfile, files))
         invalid = ' '.join(
-            (files[i[0]] for i in (filter(lambda x: not x[1], m)))
+            (i[0] for i in (filter(lambda x: not x[1], m)))
         )
         if invalid:
             print ("%s: not a file" % invalid, file=sys.stderr)
