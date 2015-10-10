@@ -489,7 +489,6 @@ class Header(tuple):
     '''This class defines the header of a relation.
     It is used within relations to know if requested operations are accepted'''
 
-    # Since relations are mutalbe we explicitly block hashing them
     def __new__(cls, fields):
         return super(Header, cls).__new__(cls, tuple(fields))
 
