@@ -54,17 +54,14 @@ class Relation (object):
 
     def __init__(self, filename=""):
         self._readonly = False
+        self.content = set()
 
         if len(filename) == 0:  # Empty relation
-            self.content = set()
             self.header = Header([])
             return
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
             self.header = Header(next(reader))  # read 1st line
-            self.content = set()
-            attributes = len(self.header)
-
             iterator = ((self.insert(i) for i in reader))
             deque(iterator, maxlen=0)
 
@@ -88,17 +85,15 @@ class Relation (object):
         format as defined in RFC4180.
         '''
 
-        fp = open(filename, 'w')  # Opening file in write mode
+        with open(filename, 'w') as fp:
+            writer = csv.writer(fp)  # Creating csv writer
 
-        writer = csv.writer(fp)  # Creating csv writer
+            # It wants an iterable containing iterables
+            head = (self.header,)
+            writer.writerows(head)
 
-        # It wants an iterable containing iterables
-        head = (self.header,)
-        writer.writerows(head)
-
-        # Writing content, already in the correct format
-        writer.writerows(self.content)
-        fp.close()  # Closing file
+            # Writing content, already in the correct format
+            writer.writerows(self.content)
 
     def _rearrange(self, other):
         '''If two relations share the same attributes in a different order, this method
