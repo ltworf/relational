@@ -2,7 +2,13 @@ relational (2.2-1) UNRELEASED; urgency=medium
 
   * Fixed debian/rules to run testsuite just once
 
- -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Sun, 04 Oct 2015 00:22:27 +0200
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Fri, 23 Oct 2015 17:09:45 +0200
+
+relational (2.1-2) unstable; urgency=low
+
+  * Change X-Python3-Version to allow Python 3.5 (Closes: #802781)
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Fri, 23 Oct 2015 17:04:25 +0200
 
 relational (2.1-1) unstable; urgency=medium
 
