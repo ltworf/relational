@@ -30,6 +30,15 @@ from xtermcolor import colorize
 PROMPT_COLOR = 0xffff00
 ERROR_COLOR = 0xff0000
 
+TTY = os.isatty(0) and os.isatty(1)
+
+def printtty(*args, **kwargs):
+    '''
+    Prints only if stdout and stdin are a tty
+    '''
+    if TTY:
+        print(*args,**kwargs)
+
 
 class SimpleCompleter(object):
 
@@ -121,7 +130,7 @@ def load_relation(filename, defname=None):
         relations[defname] = relation.relation(filename)
 
         completer.add_completion(defname)
-        print (colorize("Loaded relation %s" % defname, 0x00ff00))
+        printtty(colorize("Loaded relation %s" % defname, 0x00ff00))
         return defname
     except Exception as e:
         print (colorize(e, ERROR_COLOR), file=sys.stderr)
@@ -287,7 +296,7 @@ def exec_query(command):
         pyquery = parser.parse(query)
         result = pyquery(relations)
 
-        print (colorize("-> query: %s" % pyquery, 0x00ff00))
+        printtty(colorize("-> query: %s" % pyquery, 0x00ff00))
 
         if printrel:
             print ()
@@ -301,8 +310,8 @@ def exec_query(command):
 
 
 def main(files=[]):
-    print (colorize('> ', PROMPT_COLOR) + "; Type HELP to get the HELP")
-    print (colorize('> ', PROMPT_COLOR) +
+    printtty(colorize('> ', PROMPT_COLOR) + "; Type HELP to get the HELP")
+    printtty(colorize('> ', PROMPT_COLOR) +
            "; Completion is activated using the tab (if supported by the terminal)")
 
     for i in files:
@@ -316,14 +325,18 @@ def main(files=[]):
 
     while True:
         try:
-            line = input(colorize('> ', PROMPT_COLOR))
+
+            line = input(colorize('> ' if TTY else '', PROMPT_COLOR))
             if isinstance(line, str) and len(line) > 0:
                 exec_line(line)
         except KeyboardInterrupt:
-            print ('^C\n')
-            continue
+            if TTY:
+                print ('^C\n')
+                continue
+            else:
+                break
         except EOFError:
-            print ()
+            printtty()
             sys.exit(0)
 
 

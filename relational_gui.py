@@ -121,9 +121,10 @@ if __name__ == "__main__":
         form.show()
         sys.exit(app.exec_())
     else:
-        printver(False)
         try:
             import relational_readline.linegui
+            if relational_readline.linegui.TTY:
+                printver(False)
         except:
             print (
                 "Module relational_readline is missing.\nPlease install relational-cli package.",
