@@ -60,10 +60,7 @@ class Rstring (str):
         the following regexp:
         r'^[\+\-]{0,1}[0-9]+$'
         '''
-        if Rstring.int_regexp.match(self) is None:
-            return False
-        else:
-            return True
+        return Rstring.int_regexp.match(self) is not None
 
     def isFloat(self):
         '''Returns true if the string represents a float number
@@ -71,10 +68,7 @@ class Rstring (str):
         the following regexp:
             r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$'
         '''
-        if Rstring.float_regexp.match(self) is None:
-            return False
-        else:
-            return True
+        return Rstring.float_regexp.match(self) is not None
 
     def isDate(self):
         '''Returns true if the string represents a date,
