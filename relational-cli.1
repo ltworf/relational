@@ -9,11 +9,21 @@ relational-cli \(em Implementation of Relational algebra.
 .PP
 This program provides a command line interface to execute relational algebra queries. It is meant to experiment with relational algebra queries.
 
+.SH "SCRIPTING"
+.PP
+The tool always runs in interactive mode, but it is possible to write a sequence of queries in a script and run it.
+
+relational-cli < script.txt
+
+The result of all the lines that do not terminate with a `;' are printed.
+
+Comments are lines beginning with `;'.
+
+Whenever stdin or stdout are not a terminal, silent mode will be used, which prints less debug information, to avoid cluttering.
+
 .SH "OPTIONS"
 .PP
-These programs follow the usual GNU command line syntax,
-with long options starting with two dashes (`\-').  A summary of
-options is included below. However, the ordering is very strict \-
+A summary of options is included below.
 .IP "\fB-v\fP
 Show version information and exit.
 
