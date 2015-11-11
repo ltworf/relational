@@ -190,8 +190,6 @@ class Relation (object):
         For example if you want to rename a to b, call
         rel.rename({'a':'b'})
         '''
-        result = []
-
         newt = relation()
         newt.header = self.header.rename(params)
 

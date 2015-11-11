@@ -19,7 +19,7 @@
 import platform
 import locale
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
 from relational import maintenance
 

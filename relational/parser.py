@@ -24,8 +24,6 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
-import re
-
 from relational import rtypes
 
 RELATION = 0

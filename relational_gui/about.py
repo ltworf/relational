@@ -16,7 +16,6 @@
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 try:  # If QtWebKit is available, uses it

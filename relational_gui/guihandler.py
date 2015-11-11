@@ -17,9 +17,9 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 import sys
 
-from PyQt5 import QtCore, QtWidgets, QtWidgets, QtGui
+from PyQt5 import QtCore, QtWidgets, QtGui
 
-from relational import relation, parser, optimizer, rtypes
+from relational import parser, optimizer, rtypes
 from relational.maintenance import UserInterface
 
 from relational_gui import about
