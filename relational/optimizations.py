@@ -478,7 +478,7 @@ def select_union_intersect_subtract(n):
     Removing a O(n²) operation like the union'''
     changes = 0
     if n.name in (UNION, INTERSECTION, DIFFERENCE) and n.left.name == SELECTION and n.right.name == SELECTION and n.left.child == n.right.child:
-        cahnges = 1
+        changes = 1
 
         d = {UNION: 'or', INTERSECTION: 'and', DIFFERENCE: 'and not'}
         op = d[n.name]
