@@ -22,7 +22,6 @@ import os
 import os.path
 import getopt
 
-from relational import relation, parser
 version = "2.2"
 
 
@@ -85,7 +84,7 @@ if __name__ == "__main__":
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
         import sip  # needed on windows
-        from PyQt5 import QtGui, QtWidgets
+        from PyQt5 import QtWidgets
         try:
             from relational_gui import guihandler, about, surveyForm
         except:
