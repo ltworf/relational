@@ -90,7 +90,7 @@ if __name__ == "__main__":
         except:
             print (
                 "Module relational_gui is missing.\n"
-                "Please install relational package.",
+                "Please install relational package or run make.",
                 file=sys.stderr
             )
             sys.exit(3)
