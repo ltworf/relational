@@ -54,6 +54,7 @@ class Relation (object):
 
     def __init__(self, filename=""):
         self._readonly = False
+        self._copy = None
         self.content = set()
 
         if len(filename) == 0:  # Empty relation
@@ -64,15 +65,29 @@ class Relation (object):
             self.header = Header(next(reader))  # read 1st line
             iterator = ((self.insert(i) for i in reader))
             deque(iterator, maxlen=0)
+    def _make_duplicate(self, copy):
+        '''Flag that the relation "copy" is pointing
+        to the same set as this relation.'''
+
+        self._readonly = True
+        copy._readonly = True
+        copy._copy = self
+        self._copy = copy
 
     def _make_writable(self, copy_content=True):
         '''If this relation is marked as readonly, this
-        method will copy the content to make it writable too'''
+        method will copy the content to make it writable too
+
+        if copy_content is set to false, the caller must
+        separately copy the content.'''
 
         if self._readonly:
+            self._readonly = False
+            self._copy._readonly = False
+            self._copy = None
+
             if copy_content:
                 self.content = set(self.content)
-            self._readonly = False
 
     def __iter__(self):
         return iter(self.content)
@@ -195,8 +210,7 @@ class Relation (object):
         newt.header = self.header.rename(params)
 
         newt.content = self.content
-        newt._readonly = True
-        self._readonly = True
+        self._make_duplicate(newt)
         return newt
 
     def intersection(self, other):
