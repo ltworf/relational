@@ -377,27 +377,21 @@ class Relation (object):
         return len(self.content)
 
     def __str__(self):
-        m_len = []  # Maximum lenght string
-        for f in self.header:
-            m_len.append(len(f))
+        m_len = [len(i) for i in self.header]  # Maximum lenght string
 
         for f in self.content:
-            col = 0
-            for i in f:
+            for col,i in enumerate(f):
                 if len(i) > m_len[col]:
                     m_len[col] = len(i)
-                col += 1
 
         res = ""
         for f, attr in enumerate(self.header):
             res += "%s" % (attr.ljust(2 + m_len[f]))
 
         for r in self.content:
-            col = 0
             res += "\n"
-            for i in r:
+            for col,i in enumerate(r):
                 res += "%s" % (i.ljust(2 + m_len[col]))
-                col += 1
 
         return res
 
