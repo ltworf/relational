@@ -65,12 +65,13 @@ class Relation (object):
             iterator = ((self.insert(i) for i in reader))
             deque(iterator, maxlen=0)
 
-    def _make_writable(self):
+    def _make_writable(self, copy_content=True):
         '''If this relation is marked as readonly, this
         method will copy the content to make it writable too'''
 
         if self._readonly:
-            self.content = set(self.content)
+            if copy_content:
+                self.content = set(self.content)
             self._readonly = False
 
     def __iter__(self):
@@ -409,28 +410,21 @@ class Relation (object):
 
         Returns the number of affected rows.
         '''
-        self._make_writable()
-        affected = 0
-        attributes = {}
-        keys = dic.keys()  # List of headers to modify
-        f_ids = self.header.getAttributesId(keys)
+        self._make_writable(copy_content=False)
+        affected = self.selection(expr)
+        not_affected = self.difference(affected)
 
-        # new_content=[] #New content of the relation
-        for i in set(self.content):
-            for j, attr in enumerate(self.header):
-                attributes[attr] = i[j].autocast()
+        new_values = tuple(zip(self.header.getAttributesId(dic.keys()), dic.values()))
 
-            if eval(expr, attributes):  # If expr is true, changing the tuple
-                affected += 1
-                new_tuple = list(i)
-                # Deleting the tuple, instead of changing it, so other
-                # relations can still point to the same list without
-                # being affected.
-                self.content.remove(i)
-                for k in range(len(keys)):
-                    new_tuple[f_ids[k]] = rstring(dic[keys[k]])
-                self.content.add(tuple(new_tuple))
-        return affected
+        for i in set(affected.content):
+            i = list(i)
+
+            for column,value in new_values:
+                i[column] = value
+            not_affected.insert(i)
+
+        self.content = not_affected.content
+        return len(affected)
 
     def insert(self, values):
         '''
