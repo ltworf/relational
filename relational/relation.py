@@ -460,7 +460,7 @@ class Relation (object):
         Returns the number of affected rows.'''
 
         l = len(self.content)
-        self._readonly = False
+        self._make_writable(copy_content=False)
         self.content = self.difference(self.selection(expr)).content
         return len(self.content) - l
 
