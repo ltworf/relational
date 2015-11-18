@@ -54,7 +54,6 @@ class Relation (object):
 
     def __init__(self, filename=""):
         self._readonly = False
-        self._copy = None
         self.content = set()
 
         if len(filename) == 0:  # Empty relation
@@ -71,8 +70,6 @@ class Relation (object):
 
         self._readonly = True
         copy._readonly = True
-        copy._copy = self
-        self._copy = copy
 
     def _make_writable(self, copy_content=True):
         '''If this relation is marked as readonly, this
@@ -83,8 +80,6 @@ class Relation (object):
 
         if self._readonly:
             self._readonly = False
-            self._copy._readonly = False
-            self._copy = None
 
             if copy_content:
                 self.content = set(self.content)
