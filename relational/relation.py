@@ -118,12 +118,12 @@ class Relation (object):
         internally.
         Will raise an exception if they don't share the same attributes'''
         if not isinstance(other, relation):
-            raise Exception('Expected an instance of the same class')
+            raise TypeError('Expected an instance of the same class')
         elif self.header == other.header:
             return other
         elif self.header.sharedAttributes(other.header) == len(self.header):
             return other.projection(self.header)
-        raise Exception('Relations differ: [%s] [%s]' % (
+        raise TypeError('Relations differ: [%s] [%s]' % (
             ','.join(self.header), ','.join(other.header)
         ))
 
