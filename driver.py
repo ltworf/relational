@@ -19,6 +19,8 @@
 
 import os
 from sys import exit
+import sys
+import traceback
 
 from relational import relation, parser, optimizer
 from xtermcolor import colorize
@@ -85,9 +87,9 @@ def execute_tests():
                 py_good += 1
             else:
                 py_bad += 1
-        elif i.endswith('.exec'):
+        elif i.endswith('.py'):
             ex_tot += 1
-            if run_exec_test(i[:-5]):
+            if run_exec_test(i[:-3]):
                 ex_good += 1
             else:
                 ex_bad += 1
@@ -128,34 +130,18 @@ def run_exec_test(testname):
     glob = rels.copy()
     exp_result = {}
 
+    expr = readfile('%s%s.py' % (tests_path, testname))
+
     try:
-        expr = readfile('%s%s.exec' % (tests_path, testname))
-        try:
-            exec(expr, glob)  # Evaluating the expression
-        except Exception as e:
-            print (e)
-            raise Exception("")
-
-        expr = readfile('%s%s.result' % (tests_path, testname))
-        exp_result = eval(expr, rels)  # Evaluating the expression
-
-        if isinstance(exp_result, dict):
-            fields_ok = True
-
-            for i in exp_result:
-                fields_ok = fields_ok and glob[i] == exp_result[i]
-
-            if fields_ok:
-                print (colorize('Test passed', COLOR_GREEN))
-                return True
-    except:
-        pass
-    print (colorize('ERROR', COLOR_RED))
-    print (colorize('=====================================', COLOR_RED))
-    print ("Expected %s" % exp_result)
-    # print ("Got %s" % glob)
-    print (colorize('=====================================', COLOR_RED))
-    return False
+        exec(expr, glob)  # Evaluating the expression
+        print (colorize('Test passed', COLOR_GREEN))
+        return True
+    except Exception as e:
+        print (colorize('ERROR', COLOR_RED))
+        print (colorize('=====================================', COLOR_RED))
+        traceback.print_exc(file=sys.stdout)
+        print (colorize('=====================================', COLOR_RED))
+        return False
 
 
 def run_py_test(testname):

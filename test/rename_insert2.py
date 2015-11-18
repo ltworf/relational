@@ -1,5 +1,4 @@
 p1=people.rename({"id":"ido"})
 p1.insert((123,"lala",0,31))
-
-retval=people==p1
+assert people!=p1
 people.delete("id==123")
