@@ -87,9 +87,11 @@ class relForm(QtWidgets.QMainWindow):
     def setMultiline(self, multiline):
         self.multiline = multiline
         self.settings.setValue('multiline', multiline)
-        self.ui.lineExpressionFrame.setVisible(not multiline)
-        self.ui.frmOptimizations.setVisible(not multiline)
-        self.ui.frmMultiLine.setVisible(multiline)
+        if multiline:
+            index = 0
+        else:
+            index = 1
+        self.ui.stackedWidget.setCurrentIndex(index)
         self.ui.actionMulti_line_mode.setChecked(multiline)
 
     def load_query(self, *index):
