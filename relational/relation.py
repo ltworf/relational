@@ -128,6 +128,9 @@ class Relation (object):
         '''
         newt = relation()
         newt.header = Header(self.header)
+
+        c_expr = compile(expr, 'selection', 'eval')
+
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
             attributes = {attr: i[j].autocast()
@@ -135,7 +138,7 @@ class Relation (object):
                           }
 
             try:
-                if eval(expr, attributes):
+                if eval(c_expr, attributes):
                     newt.content.add(i)
             except Exception as e:
                 raise Exception(
