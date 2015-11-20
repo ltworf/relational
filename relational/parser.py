@@ -167,7 +167,7 @@ class Node (object):
 
     def toCode(self):
         '''This method converts the AST into a python code object'''
-        code = self.toPython()
+        code = self._toPython()
         return compile(code, '<relational_expression>', 'eval')
 
     def toPython(self):
@@ -176,8 +176,14 @@ class Node (object):
 
         The return value is a CallableString, which means that it can be
         directly called.'''
+        return CallableString(self._toPython())
+
+    def _toPython(self):
+        '''
+        Same as toPython but returns a regular string
+        '''
         if self.name in b_operators:
-            return CallableString('%s.%s(%s)' % (self.left.toPython(), op_functions[self.name], self.right.toPython()))
+            return '%s.%s(%s)' % (self.left.toPython(), op_functions[self.name], self.right.toPython())
         elif self.name in u_operators:
             prop = self.prop
 
@@ -190,8 +196,8 @@ class Node (object):
             else:  # Selection
                 prop = '\"%s\"' % prop
 
-            return CallableString('%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop))
-        return CallableString(self.name)
+            return '%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop)
+        return self.name
 
     def printtree(self, level=0):
         '''returns a representation of the tree using indentation'''
