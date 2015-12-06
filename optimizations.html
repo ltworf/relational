@@ -233,7 +233,7 @@ hence using a single rename operation.<br />If j,k will contain things like <cod
 
 <p>
 <em>A ᑌ A=A ᑎ A=A</em>.<br />So this optimization tries to locate unions and intersections that share the same left and right operand, and replaces 
-them with the operand itself.<br />Also <em>A - A=∅</em>.<br />So it locates subtractions that share the same left and right operand and replaces them with <em>σ <sub>False</sub>(A)</em>. This is not as fast as replacing with an empty relation, but there is no such operator in relational algebra. Anyway Selection is O(n) and subtraction is O(n²), so we&#039;re saving time anyway.
+them with the operand itself.<br />Also <em>A - A=∅</em>.<br />So it locates subtractions that share the same left and right operand and replaces them with <em>σ <sub>False</sub>(A)</em>. This is not as fast as replacing with an empty relation, but there is no such operator in relational algebra. Anyway Selection is O(n) and subtraction is O(n<sup>2</sup>), so we&#039;re saving time anyway.
 </p>
 
 <p>This function locates things like:</p>
@@ -302,7 +302,7 @@ This will save the space taken by an extra relation needed to perform the 2nd re
 </table>
 
 <p>
-This will let rename work on a hopefully smaller set and more important, will hopefully allow further optimizations.<br />Will also eliminate fields in the rename that are cutted in the projection. So the memory needed to perform the task will be reduced.<br />
+This will let rename work on a hopefully smaller set and more important, will hopefully allow further optimizations.
 </p>
 
 
@@ -317,7 +317,7 @@ This will let rename work on a hopefully smaller set and more important, will ho
 	</tr>
 </table>
 
-<p>This will allow the removal of an O(n²) operation like the union.</p>
+<p>This will allow the removal of an O(n<sup>2</sup>) operation like the union.</p>
 
 <p>Both select must work on the same expression, the selects will be united into one, according to the following table:</p>
 
@@ -366,7 +366,7 @@ This class of optimizations requires to have knowledge of the specific relations
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: September 16, 2015, 2:01 pm</p>
+        <p>Last updated: December 6, 2015, 1:53 pm</p>
       </footer>
     </div>
 
