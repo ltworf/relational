@@ -279,8 +279,6 @@ class relForm(QtWidgets.QMainWindow):
             self.updateRelations()
         except Exception as e:
             self.error(e)
-        finally:
-            return
 
     def closeEvent(self, event):
         self.save_settings()
