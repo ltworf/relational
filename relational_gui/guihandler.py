@@ -133,34 +133,43 @@ class relForm(QtWidgets.QMainWindow):
         self.showRelation(self.selectedRelation)
 
     def execute(self):
-        '''Executes the query'''
-        if self.multiline:
-            return self._run_multiline()
 
-        # Single line query
-        query = self.ui.txtQuery.text()
-        res_rel = self.ui.txtResult.text()  # result relation's name
+        blur = QtWidgets.QGraphicsBlurEffect()
+        self.setGraphicsEffect(blur)
+        QtCore.QCoreApplication.processEvents()
 
         try:
-            self.selectedRelation = self.user_interface.execute(query, res_rel)
-            self.updateRelations()  # update the list
-            self.showRelation(self.selectedRelation)
-        except Exception as e:
-            return self.error(e)
+            '''Executes the query'''
+            if self.multiline:
+                return self._run_multiline()
 
-        # Adds to history
-        item = u'%s = %s' % (
-            self.ui.txtResult.text(),
-            self.ui.txtQuery.text()
-        )
-        hitem = QtWidgets.QListWidgetItem(None, 0)
-        hitem.setText(item)
-        self.ui.lstHistory.addItem(hitem)
-        self.ui.lstHistory.setCurrentItem(hitem)
+            # Single line query
+            query = self.ui.txtQuery.text()
+            res_rel = self.ui.txtResult.text()  # result relation's name
 
-        self.qcounter += 1
-        # Sets the result relation name to none
-        self.ui.txtResult.setText(u"_last%d" % self.qcounter)
+            try:
+                self.selectedRelation = self.user_interface.execute(query, res_rel)
+                self.updateRelations()  # update the list
+                self.showRelation(self.selectedRelation)
+            except Exception as e:
+                return self.error(e)
+
+            # Adds to history
+            item = u'%s = %s' % (
+                self.ui.txtResult.text(),
+                self.ui.txtQuery.text()
+            )
+            hitem = QtWidgets.QListWidgetItem(None, 0)
+            hitem.setText(item)
+            self.ui.lstHistory.addItem(hitem)
+            self.ui.lstHistory.setCurrentItem(hitem)
+
+            self.qcounter += 1
+            # Sets the result relation name to none
+            self.ui.txtResult.setText(u"_last%d" % self.qcounter)
+        finally:
+            blur.setBlurRadius(0)
+
 
     def showRelation(self, rel):
         '''Shows the selected relation into the table'''

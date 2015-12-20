@@ -1,6 +1,7 @@
 2.2
 - Added again make install target
 - Ctrl+C in the terminal will terminate the GUI
+- Blurs UI while processing
 
 2.1
 - Introduced sessions; GUI loads the same relations of the previous time
