@@ -67,6 +67,23 @@ class relForm(QtWidgets.QMainWindow):
         self._restore_settings()
 
 
+        # Shortcuts
+        shortcuts = (
+            (self.ui.lstRelations, QtGui.QKeySequence.Delete, self.unloadRelation),
+        )
+
+        self.add_shortcuts(shortcuts)
+
+    def add_shortcuts(self, shortcuts):
+        for widget,shortcut,slot in shortcuts:
+            action = QtWidgets.QAction(self)
+            action.triggered.connect(slot)
+            action.setShortcut(QtGui.QKeySequence(shortcut))
+            # I couldn't find the constant
+            action.setShortcutContext(0)
+            widget.addAction(action)
+
+
     def checkVersion(self):
         from relational import maintenance
         online = maintenance.check_latest_version()
