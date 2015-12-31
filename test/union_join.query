@@ -1,0 +1,1 @@
+people⋈σ skill == 'Perl' (skills) ∪ (people⋈σ skill == 'C' (skills))

@@ -508,6 +508,41 @@ def select_union_intersect_subtract(n):
 
     return changes + recoursive_scan(select_union_intersect_subtract, n)
 
+def union_and_product(n):
+    '''
+    A * B ∪ A * C = A * (B ∪ C)
+    Same thing with inner join
+    '''
+
+    changes = 0
+    if n.name == UNION and n.left.name in {PRODUCT, JOIN} and n.left.name == n.right.name:
+
+        newnode = parser.node()
+        newnode.kind = parser.BINARY
+        newnode.name = n.left.name
+
+        newchild = parser.node()
+        newchild.kind = parser.BINARY
+        newchild.name = UNION
+
+        if n.left.left == n.right.left or n.left.left == n.right.right:
+            newnode.left = n.left.left
+            newnode.right = newchild
+
+            newchild.left = n.left.right
+            newchild.right = n.right.left if n.left.left == n.right.right else n.right.right
+            replace_node(n, newnode)
+            changes = 1
+        elif n.left.right == n.right.left or n.left.left == n.right.right:
+            newnode.left = n.left.right
+            newnode.right = newchild
+
+            newchild.left = n.left.left
+            newchild.right = n.right.left if n.right.left == n.right.right else n.right.right
+            replace_node(n, newnode)
+            changes = 1
+    return changes + recoursive_scan(union_and_product, n)
+
 
 def selection_and_product(n, rels):
     '''This function locates things like σ k (R*Q) and converts them into
@@ -616,7 +651,8 @@ general_optimizations = [
     futile_union_intersection_subtraction,
     swap_union_renames,
     swap_rename_projection,
-    select_union_intersect_subtract
+    select_union_intersect_subtract,
+    union_and_product
 ]
 specific_optimizations = [selection_and_product]
 
