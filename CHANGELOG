@@ -175,5 +175,5 @@
 - Added left join
 - Added right join
 - Added capability of operation even if attributes aren't in the same order
-- Added full outher join
+- Added full outer join
 
