@@ -85,7 +85,7 @@
         <number>0</number>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="multiline">
         <layout class="QHBoxLayout" name="horizontalLayout">
@@ -336,7 +336,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>644</width>
+     <width>637</width>
      <height>27</height>
     </rect>
    </property>
@@ -349,9 +349,8 @@
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>&amp;Help</string>
+     <string>Help</string>
     </property>
-    <action name=""/>
     <addaction name="actionAbout"/>
     <addaction name="actionCheck_for_new_versions"/>
    </widget>
@@ -384,7 +383,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>&amp;Operators</string>
+    <string>Operators</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -465,6 +464,9 @@
           <property name="text">
            <string notr="true">⧑</string>
           </property>
+          <property name="shortcut">
+           <string>Alt+J, Alt+L</string>
+          </property>
           <property name="flat">
            <bool>true</bool>
           </property>
@@ -486,6 +488,9 @@
           </property>
           <property name="text">
            <string notr="true">➡</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+A</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -511,6 +516,9 @@
           </property>
           <property name="text">
            <string notr="true">∪</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+U</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -562,6 +570,9 @@
           <property name="text">
            <string notr="true">ρ</string>
           </property>
+          <property name="shortcut">
+           <string>Alt+R</string>
+          </property>
           <property name="flat">
            <bool>true</bool>
           </property>
@@ -586,6 +597,9 @@
           </property>
           <property name="text">
            <string notr="true">÷</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+D</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -612,6 +626,9 @@
           <property name="text">
            <string notr="true">⧓</string>
           </property>
+          <property name="shortcut">
+           <string>Alt+J, Alt+O</string>
+          </property>
           <property name="flat">
            <bool>true</bool>
           </property>
@@ -636,6 +653,9 @@
           </property>
           <property name="text">
            <string notr="true">∩</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+I</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -687,6 +707,9 @@
           <property name="text">
            <string notr="true">⧒</string>
           </property>
+          <property name="shortcut">
+           <string>Alt+J, Alt+R</string>
+          </property>
           <property name="flat">
            <bool>true</bool>
           </property>
@@ -711,6 +734,9 @@
           </property>
           <property name="text">
            <string notr="true">π</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+P</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -737,6 +763,9 @@
           <property name="text">
            <string notr="true">σ</string>
           </property>
+          <property name="shortcut">
+           <string>Alt+S</string>
+          </property>
           <property name="flat">
            <bool>true</bool>
           </property>
@@ -761,6 +790,9 @@
           </property>
           <property name="text">
            <string notr="true">⋈</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+J, Alt+J</string>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -897,7 +929,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QGridLayout" name="gridLayout_4" rowminimumheight="0,0,0">
+      <layout class="QGridLayout" name="gridLayout_4">
        <property name="leftMargin">
         <number>2</number>
        </property>
@@ -971,7 +1003,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>&amp;Menu</string>
+    <string>Menu</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -1064,24 +1096,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
-   </property>
-  </action>
-  <action name="actionNew_session">
-   <property name="text">
-    <string>New session</string>
-   </property>
-  </action>
-  <action name="actionSave_session_as">
-   <property name="text">
-    <string>Save session as</string>
-   </property>
-   <property name="toolTip">
-    <string>Save session as</string>
-   </property>
-  </action>
-  <action name="actionManage_sessions">
-   <property name="text">
-    <string>Manage sessions</string>
    </property>
   </action>
   <action name="actionUnload_relation">
