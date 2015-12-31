@@ -1,7 +1,7 @@
 2.2
 - Added again make install target
 - Ctrl+C in the terminal will terminate the GUI
-- Blurs UI while processing
+- UI indicates ongoing processing with a label
 - Added new optimization
 
 2.1

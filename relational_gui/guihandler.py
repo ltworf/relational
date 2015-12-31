@@ -151,8 +151,7 @@ class relForm(QtWidgets.QMainWindow):
 
     def execute(self):
 
-        blur = QtWidgets.QGraphicsBlurEffect()
-        self.setGraphicsEffect(blur)
+        self.ui.stackedWidget.setCurrentIndex(2)
         QtCore.QCoreApplication.processEvents()
 
         try:
@@ -185,7 +184,7 @@ class relForm(QtWidgets.QMainWindow):
             # Sets the result relation name to none
             self.ui.txtResult.setText(u"_last%d" % self.qcounter)
         finally:
-            blur.setBlurRadius(0)
+            self.setMultiline(self.multiline)
 
 
     def showRelation(self, rel):
