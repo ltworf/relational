@@ -1,8 +1,12 @@
 Relational an educational tool to provide a workspace for experimenting with *relational* *algebra*, an offshoot of first-order logic.
 
-It provides GUI that can be used for executing relational queries, and also provides a command line interface.
+It works on GNU/Linux, Windows and OS X.
 
-Provides a standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them.
+It provides:
+ * A GUI that can be used for executing relational queries
+ * A standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them
+ * A command line interface
+
 
 Official website
 ================
@@ -20,7 +24,6 @@ For Linux, check your distribution's packages, relational is available on Debian
 
 Syntax
 ======
-
 These are some valid queries
 
 ```
@@ -29,7 +32,7 @@ These are some valid queries
 Q ⋈ π a,b(A) ⋈ B
 ρid➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage > 25 or rank = weight(A)
 π a,b(π a,b(A))
-ρid➡i,name➡n(π a,b(A))
+ρ id➡i,name➡n(π a,b(A))
 A ⋈ B
 ```
 
@@ -54,13 +57,18 @@ To launch the application, run
 ./relational_gui.py
 ```
 
-Running on osx
-==============
+or 
 
-You can probably follow the instructions on running from sources to
-rut on osx.
+```
+python3 relational_gui.py
+```
 
-If you encounter problems, don't ask me for help.
+Running on OS X
+===============
+You can follow the instructions on running from sources to
+run on OS X.
+
+If you encounter problems, don't ask me for help. I don't have an Apple.
 
 If you encounter problems and overcome them, please tell me how to update this
 README.
