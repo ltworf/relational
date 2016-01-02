@@ -13,6 +13,8 @@
 <p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
 
 <script>
+document.getElementById("nojs").innerHTML = 'Loading downloads...';
+
 var xmlhttp = new XMLHttpRequest();
 var url = "https://api.github.com/repos/ltworf/relational/releases/latest";
 
