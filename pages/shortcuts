@@ -1,0 +1,27 @@
+<h2>Shortcuts</h2>
+
+<p>This documents the shortcuts within the Qt interface.</p>
+
+<table>
+
+<thead>
+<tr><td>Sequence</td><td>Action</td><td>Context</td></tr>
+</thead>
+
+<tbody>
+
+<tr><td>Alt+U</td><td>Union</td><td></td></tr>
+<tr><td>Alt+I</td><td>Intersection</td><td></td></tr>
+<tr><td>Alt+S</td><td>Selection</td><td></td></tr>
+<tr><td>Alt+P</td><td>Projection</td><td></td></tr>
+<tr><td>Alt+R</td><td>Rename</td><td></td></tr>
+<tr><td>Alt+A</td><td>Arrow</td><td></td></tr>
+<tr><td>Alt+D</td><td>Division</td><td></td></tr>
+<tr><td>Alt+J Alt+J</td><td>Join</td><td></td></tr>
+<tr><td>Alt+J Alt+O</td><td>Outer join</td><td></td></tr>
+<tr><td>Alt+J Alt+R</td><td>Right join</td><td></td></tr>
+<tr><td>Alt+J Alt+L</td><td>Left join</td><td></td></tr>
+<tr><td>Delete</td><td>Unload relation</td><td>Relations list</td></tr>
+
+</tbody>
+</table>
