@@ -3,6 +3,8 @@
 - Ctrl+C in the terminal will terminate the GUI
 - UI indicates ongoing processing with a label
 - Added new optimization
+- Added shortcuts within the UI
+- History can be navigated with up/down arrows
 
 2.1
 - Introduced sessions; GUI loads the same relations of the previous time
