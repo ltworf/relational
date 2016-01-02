@@ -88,6 +88,8 @@ class relForm(QtWidgets.QMainWindow):
         if self.history_current_line is None:
             self.history_current_line = self.ui.txtQuery.text()
 
+            if self.ui.lstHistory.currentItem() is None:
+                return
             if not self.ui.lstHistory.currentItem().text() != self.ui.txtQuery.text():
                 self.ui.lstHistory.setCurrentRow(self.ui.lstHistory.currentRow()-1)
         elif self.ui.lstHistory.currentRow() > 0:
