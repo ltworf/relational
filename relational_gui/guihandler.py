@@ -37,7 +37,6 @@ class relForm(QtWidgets.QMainWindow):
         self.undo = None  # UndoQueue for queries
         self.selectedRelation = None
         self.ui = maingui.Ui_MainWindow()
-        self.qcounter = 1  # Query counter
         self.user_interface = UserInterface()
         self.history_current_line = None
 
@@ -79,8 +78,7 @@ class relForm(QtWidgets.QMainWindow):
 
     def next_history(self):
         if self.ui.lstHistory.currentRow() + 1 == self.ui.lstHistory.count() and self.history_current_line:
-            self.ui.txtResult.setText(self.history_current_line[0])
-            self.ui.txtQuery.setText(self.history_current_line[1])
+            self.ui.txtQuery.setText(self.history_current_line)
             self.history_current_line = None
         elif self.history_current_line:
             self.ui.lstHistory.setCurrentRow(self.ui.lstHistory.currentRow()+1)
@@ -88,11 +86,13 @@ class relForm(QtWidgets.QMainWindow):
 
     def prev_history(self):
         if self.history_current_line is None:
-            self.history_current_line = (self.ui.txtResult.text(), self.ui.txtQuery.text())
-            self.resumeHistory(self.ui.lstHistory.currentItem())
+            self.history_current_line = self.ui.txtQuery.text()
+
+            if not self.ui.lstHistory.currentItem().text() != self.ui.txtQuery.text():
+                self.ui.lstHistory.setCurrentRow(self.ui.lstHistory.currentRow()-1)
         elif self.ui.lstHistory.currentRow() > 0:
             self.ui.lstHistory.setCurrentRow(self.ui.lstHistory.currentRow()-1)
-            self.resumeHistory(self.ui.lstHistory.currentItem())
+        self.resumeHistory(self.ui.lstHistory.currentItem())
 
     def add_shortcuts(self, shortcuts):
         for widget,shortcut,slot in shortcuts:
@@ -143,10 +143,12 @@ class relForm(QtWidgets.QMainWindow):
         '''Performs all the possible optimizations on the query'''
         self.undo = self.ui.txtQuery.text()  # Storing the query in undo list
 
-        query = self.ui.txtQuery.text()
+        res_rel,query = self.user_interface.split_query(self.ui.txtQuery.text(),None)
         try:
             result = optimizer.optimize_all(
                 query, self.user_interface.relations)
+            if res_rel:
+                result = '%s = %s' % (res_rel, result)
             self.ui.txtQuery.setText(result)
         except Exception as e:
             self.error(e)
@@ -154,9 +156,8 @@ class relForm(QtWidgets.QMainWindow):
     def resumeHistory(self, item):
         if item is None:
             return
-        itm = item.text().split(' = ', 1)
-        self.ui.txtResult.setText(itm[0])
-        self.ui.txtQuery.setText(itm[1])
+        itm = item.text()
+        self.ui.txtQuery.setText(itm)
 
     def _run_multiline(self):
         query = self.ui.txtMultiQuery.toPlainText()
@@ -182,8 +183,7 @@ class relForm(QtWidgets.QMainWindow):
                 return self._run_multiline()
 
             # Single line query
-            query = self.ui.txtQuery.text()
-            res_rel = self.ui.txtResult.text()  # result relation's name
+            res_rel,query = self.user_interface.split_query(self.ui.txtQuery.text())
 
             try:
                 self.selectedRelation = self.user_interface.execute(query, res_rel)
@@ -193,18 +193,10 @@ class relForm(QtWidgets.QMainWindow):
                 return self.error(e)
 
             # Adds to history
-            item = u'%s = %s' % (
-                self.ui.txtResult.text(),
-                self.ui.txtQuery.text()
-            )
             hitem = QtWidgets.QListWidgetItem(None, 0)
-            hitem.setText(item)
+            hitem.setText(self.ui.txtQuery.text())
             self.ui.lstHistory.addItem(hitem)
             self.ui.lstHistory.setCurrentItem(hitem)
-
-            self.qcounter += 1
-            # Sets the result relation name to none
-            self.ui.txtResult.setText(u"_last%d" % self.qcounter)
         finally:
             self.setMultiline(self.multiline)
 
