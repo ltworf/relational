@@ -151,12 +151,18 @@
              <property name="text">
               <string>⌫</string>
              </property>
+             <property name="shortcut">
+              <string>Ctrl+Shift+Backspace</string>
+             </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="cmdExecuteMultiline">
              <property name="text">
               <string>Execute</string>
+             </property>
+             <property name="shortcut">
+              <string>Ctrl+Return</string>
              </property>
              <property name="autoDefault">
               <bool>false</bool>
@@ -290,6 +296,9 @@
              <property name="text">
               <string>⌫</string>
              </property>
+             <property name="shortcut">
+              <string>Ctrl+Shift+Backspace</string>
+             </property>
              <property name="flat">
               <bool>true</bool>
              </property>
@@ -299,6 +308,9 @@
             <widget class="QPushButton" name="cmdExecute">
              <property name="text">
               <string>Execute</string>
+             </property>
+             <property name="shortcut">
+              <string>Ctrl+Return</string>
              </property>
              <property name="autoDefault">
               <bool>true</bool>
