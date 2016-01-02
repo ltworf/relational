@@ -238,6 +238,9 @@
              <property name="text">
               <string>Optimize</string>
              </property>
+             <property name="shortcut">
+              <string>Ctrl+Shift+O</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -245,12 +248,18 @@
              <property name="text">
               <string>Undo optimize</string>
              </property>
+             <property name="shortcut">
+              <string>Ctrl+Shift+U</string>
+             </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="cmdClearHistory">
              <property name="text">
               <string>Clear history</string>
+             </property>
+             <property name="shortcut">
+              <string>Ctrl+Shift+C</string>
              </property>
             </widget>
            </item>
