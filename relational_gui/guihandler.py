@@ -39,6 +39,7 @@ class relForm(QtWidgets.QMainWindow):
         self.ui = maingui.Ui_MainWindow()
         self.qcounter = 1  # Query counter
         self.user_interface = UserInterface()
+        self.history_current_line = None
 
         # Creates the UI
         self.ui.setupUi(self)
@@ -70,9 +71,28 @@ class relForm(QtWidgets.QMainWindow):
         # Shortcuts
         shortcuts = (
             (self.ui.lstRelations, QtGui.QKeySequence.Delete, self.unloadRelation),
+            (self.ui.txtQuery, QtGui.QKeySequence.MoveToNextLine, self.next_history),
+            (self.ui.txtQuery, QtGui.QKeySequence.MoveToPreviousLine, self.prev_history),
         )
 
         self.add_shortcuts(shortcuts)
+
+    def next_history(self):
+        if self.ui.lstHistory.currentRow() + 1 == self.ui.lstHistory.count() and self.history_current_line:
+            self.ui.txtResult.setText(self.history_current_line[0])
+            self.ui.txtQuery.setText(self.history_current_line[1])
+            self.history_current_line = None
+        elif self.history_current_line:
+            self.ui.lstHistory.setCurrentRow(self.ui.lstHistory.currentRow()+1)
+            self.resumeHistory(self.ui.lstHistory.currentItem())
+
+    def prev_history(self):
+        if self.history_current_line is None:
+            self.history_current_line = (self.ui.txtResult.text(), self.ui.txtQuery.text())
+            self.resumeHistory(self.ui.lstHistory.currentItem())
+        elif self.ui.lstHistory.currentRow() > 0:
+            self.ui.lstHistory.setCurrentRow(self.ui.lstHistory.currentRow()-1)
+            self.resumeHistory(self.ui.lstHistory.currentItem())
 
     def add_shortcuts(self, shortcuts):
         for widget,shortcut,slot in shortcuts:
@@ -132,6 +152,8 @@ class relForm(QtWidgets.QMainWindow):
             self.error(e)
 
     def resumeHistory(self, item):
+        if item is None:
+            return
         itm = item.text().split(' = ', 1)
         self.ui.txtResult.setText(itm[0])
         self.ui.txtQuery.setText(itm[1])
