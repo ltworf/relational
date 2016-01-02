@@ -1,5 +1,4 @@
 <h2>Query language</h2>
-<p>Since version 2.0 the language has been changed. If you have an older version of relational, check the <a href="allowed_expressions_old.html">old syntax</a>.</p>
 
 <p>This page explains the query language supported by relational.</p>
 
