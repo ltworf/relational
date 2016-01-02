@@ -1,8 +1,16 @@
-        <p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>, an offshoot of first-order logic.</p>
+<p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>, an offshoot of first-order logic.</p>
+
+<p>It works on GNU/Linux, Windows and OS X.</p>
 
 <p>It provides GUI that can be used for executing relational queries, and also provides a command line interface.</p>
 
-<p>Provides a standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them.</p>
+<p>Provides:
+<ul>
+<li>A GUI that can be used for executing relational queries</li>
+<li>A standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them</li>
+<li>A command line interface</li>
+</ul>
+</p>
 
 <h1>Version 2.1 released</h1>
 <p>The UI now implements sessions and remembers where you left off the previous time. It was also redesigned to be able to fit smaller screens.</p>
@@ -37,5 +45,4 @@ A ⋈ B
 <h1>Used by</h1>
 <ul>
 <li><a href="http://link.springer.com/chapter/10.1007%2F978-3-642-32498-7_1">Ontology-Based Identification of Research Gaps and Immature Research Areas</a></li>
-
 </ul>
