@@ -27,6 +27,7 @@
 <tr><td>Ctrl+Enter</td><td>Run query</td><td></td></tr>
 <tr><td>Ctrl+Shift+Enter</td><td>Clear query</td><td></td></tr>
 <tr><td>Delete</td><td>Unload relation</td><td>Relations list</td></tr>
+<tr><td>Space</td><td>Show relation</td><td>Relations list</td></tr>
 <tr><td>↑</td><td>Previous query in history</td><td>Single line query editor</td></tr>
 <tr><td>↓</td><td>Next query in history</td><td>Single line query editor</td></tr>
 
