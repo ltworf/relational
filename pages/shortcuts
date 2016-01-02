@@ -27,3 +27,9 @@
 
 </tbody>
 </table>
+
+<h3>Bugs</h3>
+<p><strong>KDE</strong> users might experience bugs, because of colliding shortcuts
+created by KDE.</p>
+<p>A workaround is to edit the file <em>~/.config/kdeglobals</em> and add the following:</p>
+<p>[Development]<br>AutoCheckAccelerators=false</p>
