@@ -70,6 +70,7 @@ class relForm(QtWidgets.QMainWindow):
         # Shortcuts
         shortcuts = (
             (self.ui.lstRelations, QtGui.QKeySequence.Delete, self.unloadRelation),
+            (self.ui.lstRelations, 'Space', lambda: self.printRelation(self.ui.lstRelations.currentItem())),
             (self.ui.txtQuery, QtGui.QKeySequence.MoveToNextLine, self.next_history),
             (self.ui.txtQuery, QtGui.QKeySequence.MoveToPreviousLine, self.prev_history),
         )
