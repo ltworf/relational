@@ -25,6 +25,7 @@ import os
 import sys
 
 from relational import relation, parser, rtypes
+from relational import maintenance
 from xtermcolor import colorize
 
 PROMPT_COLOR = 0xffff00
@@ -139,7 +140,6 @@ def load_relation(filename, defname=None):
 
 def survey():
     '''performs a survey'''
-    from relational import maintenance
 
     post = {'software': 'Relational algebra (cli)', 'version': version}
 
@@ -283,13 +283,7 @@ def exec_query(command):
 
     # Finds the name in where to save the query
     parts = command.split('=', 1)
-
-    if len(parts) > 1 and rtypes.is_valid_relation_name(parts[0]):
-        relname = parts[0]
-        query = parts[1]
-    else:
-        relname = 'last_'
-        query = command
+    relname,query = maintenance.UserInterface.split_query(command)
 
     # Execute query
     try:
