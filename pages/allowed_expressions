@@ -70,6 +70,8 @@ Operators with parameters work on a single relation, and the result will depend 
     </tr>
 </table>
 
+<p>The language is formally defined <a href="grammar.html">here</a>.</p>
+
 <h4>Complex queries</h4>
 <p>In any place where a relation is expected, a query can be used instead. For example, since a*b is a relation itself, you can evaluate π f1,f2 (a*b) ∪ R</p>
 
@@ -88,6 +90,8 @@ Q ⋈ π a,b(A) ⋈ B
 ρ id➡i,name➡n(π a,b(A))
 A ⋈ B
 </code></pre>
+
+<p>Relational uses <a href="types.html">automatic casting</a>, so it will try to use an appropriate type for the values.</p>
 
 <h3>Dates</h3>
 <p>When a field contains something like 2007-12-24, this will be considered as a date, and will have a particoular behaviour in selection operations.</p>
