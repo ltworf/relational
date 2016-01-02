@@ -378,6 +378,7 @@
      <string>Setti&amp;ngs</string>
     </property>
     <addaction name="actionMulti_line_mode"/>
+    <addaction name="actionShow_history"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRelations"/>
@@ -1123,6 +1124,14 @@
     <string>Ctrl+L</string>
    </property>
   </action>
+  <action name="actionShow_history">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show history</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>table</tabstop>
@@ -1808,6 +1817,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionShow_history</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setHistoryShown(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>318</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
@@ -1844,5 +1869,6 @@
   <slot>saveSessionAs()</slot>
   <slot>manageSessions()</slot>
   <slot>setMultiline(bool)</slot>
+  <slot>setHistoryShown(bool)</slot>
  </slots>
 </ui>

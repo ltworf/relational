@@ -123,6 +123,12 @@ class relForm(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.information(
             self, QtWidgets.QApplication.translate("Form", "Version"), r)
 
+    def setHistoryShown(self, history_shown):
+        self.history_shown = history_shown
+        self.settings.setValue('history_shown', history_shown)
+        self.ui.lstHistory.setVisible(history_shown)
+        self.ui.actionShow_history.setChecked(history_shown)
+
     def setMultiline(self, multiline):
         self.multiline = multiline
         self.settings.setValue('multiline', multiline)
@@ -336,6 +342,7 @@ class relForm(QtWidgets.QMainWindow):
         self.updateRelations()
 
         self.setMultiline(self.settings.value('multiline', 'false') == 'true')
+        self.setHistoryShown(self.settings.value('history_shown', 'true') == 'true')
         self.ui.txtMultiQuery.setPlainText(
             self.settings.value('multiline/query', ''))
         try:
