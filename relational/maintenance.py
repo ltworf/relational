@@ -162,6 +162,23 @@ class UserInterface (object):
         self.relations[relname] = result
         return result
 
+    @staticmethod
+    def split_query(query, default_name='last_'):
+        '''
+        Accepts a query which might have an initial value
+        assignment
+        a = query
+
+        Returns a tuple with
+
+        result_name, query
+        '''
+        sq = query.split('=', 1)
+        if len(sq) == 2 and is_valid_relation_name(sq[0].strip()):
+            default_name = sq[0].strip()
+            query = sq[1].strip()
+        return default_name, query
+
     def multi_execute(self, query):
         '''Executes multiple queries, separated by \n
 
@@ -174,12 +191,8 @@ class UserInterface (object):
         for query in queries:
             if query.strip() == '':
                 continue
-            parts = query.split('=', 1)
-            parts[0] = parts[0].strip()
-            if len(parts) > 1 and is_valid_relation_name(parts[0]):
-                relname, query = parts
-            else:
-                relname = 'last_'
+
+            relname, query = self.split_query(query)
 
             try:
                 r = self.execute(query, relname)
