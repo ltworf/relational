@@ -21,6 +21,9 @@
 <tr><td>Alt+J Alt+O</td><td>Outer join</td><td></td></tr>
 <tr><td>Alt+J Alt+R</td><td>Right join</td><td></td></tr>
 <tr><td>Alt+J Alt+L</td><td>Left join</td><td></td></tr>
+<tr><td>Ctrl+Shift+O</td><td>Optimize</td><td></td></tr>
+<tr><td>Ctrl+Shift+U</td><td>Undo optimize</td><td></td></tr>
+<tr><td>Ctrl+Shift+C</td><td>Clear history</td><td></td></tr>
 <tr><td>Delete</td><td>Unload relation</td><td>Relations list</td></tr>
 <tr><td>↑</td><td>Previous query in history</td><td>Single line query editor</td></tr>
 <tr><td>↓</td><td>Next query in history</td><td>Single line query editor</td></tr>
