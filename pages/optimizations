@@ -260,7 +260,15 @@ This will save the space taken by an extra relation needed to perform the 2nd re
 This will let rename work on a hopefully smaller set and more important, will hopefully allow further optimizations.
 </p>
 
-
+<h4>Union and product</h4>
+<table class="inline">
+	<tr class="row0">
+		<th class="col0"> Original </th><th class="col1"> Optimized </th>
+	</tr>
+	<tr class="row1">
+		<td class="col0"> <em>A * B ∪ A * C</em> </td><td class="col1 rightalign">  <em>A * (B ∪ C)</em> </td>
+	</tr>
+</table>
 
 <h4>Select union intersect subtract</h4>
 <table class="inline">
