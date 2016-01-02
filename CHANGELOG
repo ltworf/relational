@@ -5,6 +5,8 @@
 - Added new optimization
 - Added shortcuts within the UI
 - History can be navigated with up/down arrows
+- Single line edit mode allows for the resulting relation to be written
+  within the query textbox itself.
 
 2.1
 - Introduced sessions; GUI loads the same relations of the previous time
