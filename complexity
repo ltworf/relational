@@ -114,17 +114,17 @@ Notation
    This operation is the combination of a product and a selection. So it
    is O(|n|*|m|) too.
 
-2.6  Outher
+2.6  Outer
 
     This operation is the union of the outer left and the outer right
     join. Makes it O(|n|*|m|) too.
 
-2.7  Outher_left
+2.7  Outer_left
 
    O(|n|*|m|), very depending on the number of the fields, because they
    are compared.
 
-2.8  Outher_right
+2.8  Outer_right
 
    Mirror operation of outer_lef
 
