@@ -664,6 +664,19 @@ def selection_and_product(n, rels):
 
     return changes + recoursive_scan(selection_and_product, n, rels)
 
+
+def useless_projection(n, rels):
+    '''
+    Removes projections that are over all the fields
+    '''
+    changes = 0
+    if n.name == PROJECTION and \
+            set(n.child.result_format(rels)) == set(i.strip() for i in n.prop.split(',')):
+        changes = 1
+        replace_node(n, n.child)
+
+    return changes + recoursive_scan(useless_projection, n, rels)
+
 general_optimizations = [
     duplicated_select,
     down_to_unions_subtractions_intersections,
@@ -680,6 +693,7 @@ general_optimizations = [
 specific_optimizations = [
     selection_and_product,
     projection_and_union,
+    useless_projection,
 ]
 
 if __name__ == "__main__":
