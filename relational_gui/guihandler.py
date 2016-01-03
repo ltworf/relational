@@ -190,11 +190,15 @@ class relForm(QtWidgets.QMainWindow):
                 self.showRelation(self.selectedRelation)
 
             if not self.multiline:
-                # Adds to history
-                hitem = QtWidgets.QListWidgetItem(None, 0)
-                hitem.setText(query)
-                self.ui.lstHistory.addItem(hitem)
-                self.ui.lstHistory.setCurrentItem(hitem)
+                # Last in history
+                item = self.ui.lstHistory.item(self.ui.lstHistory.count() - 1)
+
+                if item is None or item.text() != query:
+                    # Adds to history if it is not already the last
+                    hitem = QtWidgets.QListWidgetItem(None, 0)
+                    hitem.setText(query)
+                    self.ui.lstHistory.addItem(hitem)
+                    self.ui.lstHistory.setCurrentItem(hitem)
         finally:
             # Restore the normal frame
             self.setMultiline(self.multiline)
