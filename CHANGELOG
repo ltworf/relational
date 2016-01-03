@@ -2,7 +2,7 @@
 - Added again make install target
 - Ctrl+C in the terminal will terminate the GUI
 - UI indicates ongoing processing with a label
-- Added new optimization
+- Added new optimizations
 - Added shortcuts within the UI
 - History can be navigated with up/down arrows
 - Single line edit mode allows for the resulting relation to be written

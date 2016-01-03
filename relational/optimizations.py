@@ -544,6 +544,39 @@ def union_and_product(n):
             changes = 1
     return changes + recoursive_scan(union_and_product, n)
 
+def projection_and_union(n, rels):
+    '''
+    Turns
+        π a,b,c(A) ∪ π a,b,c(B)
+
+    into
+        π a,b,c(A ∪ B)
+
+    if A and B are union compatible
+    '''
+    changes = 0
+    if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
+            n.left.name == PROJECTION and \
+            n.right.name == PROJECTION and \
+            set(n.left.result_format(rels)) == set(n.right.result_format(rels)) and \
+            set(n.left.child.result_format(rels)) == set(n.right.child.result_format(rels)):
+        newchild = parser.Node()
+
+        newchild.kind = parser.BINARY
+        newchild.name = n.name
+        newchild.left = n.left.child
+        newchild.right = n.right.child
+
+        newnode = parser.Node()
+        newnode.child = newchild
+        newnode.kind = parser.UNARY
+        newnode.name = PROJECTION
+        newnode.prop = n.right.prop
+        replace_node(n, newnode)
+        changes = 1
+    return changes + recoursive_scan(projection_and_union, n, rels)
+
+
 
 def selection_and_product(n, rels):
     '''This function locates things like σ k (R*Q) and converts them into
@@ -653,9 +686,12 @@ general_optimizations = [
     swap_union_renames,
     swap_rename_projection,
     select_union_intersect_subtract,
-    union_and_product
+    union_and_product,
 ]
-specific_optimizations = [selection_and_product]
+specific_optimizations = [
+    selection_and_product,
+    projection_and_union,
+]
 
 if __name__ == "__main__":
     print (tokenize_select("skill == 'C' and  id % 2 == 0"))
