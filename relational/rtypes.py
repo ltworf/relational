@@ -32,7 +32,9 @@ class Rstring (str):
 
     int_regexp = re.compile(r'^[\+\-]{0,1}[0-9]+$')
     float_regexp = re.compile(r'^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$')
-    date_regexp = re.compile(r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$')
+    date_regexp = re.compile(
+        r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$'
+    )
 
     def autocast(self):
         '''
@@ -155,11 +157,12 @@ class Rdate (object):
     def __sub__(self, other):
         return (self.intdate - other.intdate).days
 
+
 def is_valid_relation_name(name):
     '''Checks if a name is valid for a relation.
     Returns boolean'''
     return re.match(RELATION_NAME_REGEXP, name) != None
 
-#Backwards compatibility
+# Backwards compatibility
 rdate = Rdate
 rstring = Rstring

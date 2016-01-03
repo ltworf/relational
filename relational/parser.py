@@ -341,11 +341,12 @@ def tokenize(expression):
             expression = expression[
                 par:].strip()  # Removing parameter from the expression
         else:  # Relation (hopefully)
-            expression+=' ' #To avoid the special case of the ending
+            expression += ' '  # To avoid the special case of the ending
 
-            #Initial part is a relation, stop when the name of the relation is over
-            for r in range(1,len(expression)):
-                if rtypes.RELATION_NAME_REGEXP.match(expression[:r+1]) is None:
+            # Initial part is a relation, stop when the name of the relation is
+            # over
+            for r in range(1, len(expression)):
+                if rtypes.RELATION_NAME_REGEXP.match(expression[:r + 1]) is None:
                     break
             items.append(expression[:r])
             expression = expression[r:].strip()
@@ -371,5 +372,5 @@ if __name__ == "__main__":
         e = input("Expression: ")
         print (parse(e))
 
-#Backwards compatibility
+# Backwards compatibility
 node = Node

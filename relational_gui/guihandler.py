@@ -43,7 +43,7 @@ class relForm(QtWidgets.QMainWindow):
         # Creates the UI
         self.ui.setupUi(self)
 
-        #Setting fonts for symbols
+        # Setting fonts for symbols
         f = QtGui.QFont()
         size = f.pointSize()
         if sys.platform.startswith('win'):
@@ -105,7 +105,6 @@ class relForm(QtWidgets.QMainWindow):
             # I couldn't find the constant
             action.setShortcutContext(0)
             widget.addAction(action)
-
 
     def checkVersion(self):
         from relational import maintenance
@@ -250,8 +249,11 @@ class relForm(QtWidgets.QMainWindow):
                 self, QtWidgets.QApplication.translate("Form", "Error"), r
             )
             return
-        filename = QtWidgets.QFileDialog.getSaveFileName(self, QtWidgets.QApplication.translate(
-            "Form", "Save Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv)"))[0]
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            self, QtWidgets.QApplication.translate("Form", "Save Relation"),
+            "",
+            QtWidgets.QApplication.translate("Form", "Relations (*.csv)")
+        )[0]
         if (len(filename) == 0):  # Returns if no file was selected
             return
         self.selectedRelation.save(filename)
@@ -366,8 +368,15 @@ class relForm(QtWidgets.QMainWindow):
         It shouldn't be called giving filename but not giving name.'''
         # Asking for file to load
         if not filenames:
-            f = QtWidgets.QFileDialog.getOpenFileNames(self, QtWidgets.QApplication.translate(
-                "Form", "Load Relation"), "", QtWidgets.QApplication.translate("Form", "Relations (*.csv);;Text Files (*.txt);;All Files (*)"))
+            f = QtWidgets.QFileDialog.getOpenFileNames(
+                self,
+                QtWidgets.QApplication.translate("Form", "Load Relation"),
+                "",
+                QtWidgets.QApplication.translate(
+                    "Form",
+                    "Relations (*.csv);;Text Files (*.txt);;All Files (*)"
+                )
+            )
             filenames = f[0]
 
         for f in filenames:

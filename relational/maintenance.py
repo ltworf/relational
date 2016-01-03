@@ -95,7 +95,7 @@ class UserInterface (object):
         as bytes.
         '''
         if filename:
-            with open(filename,'w') as f:
+            with open(filename, 'w') as f:
                 pickle.dump(self.relations, f)
                 return None
         return pickle.dumps(self.relations)

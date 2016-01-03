@@ -64,6 +64,7 @@ class Relation (object):
             self.header = Header(next(reader))  # read 1st line
             iterator = ((self.insert(i) for i in reader))
             deque(iterator, maxlen=0)
+
     def _make_duplicate(self, copy):
         '''Flag that the relation "copy" is pointing
         to the same set as this relation.'''
@@ -393,7 +394,7 @@ class Relation (object):
         m_len = [len(i) for i in self.header]  # Maximum lenght string
 
         for f in self.content:
-            for col,i in enumerate(f):
+            for col, i in enumerate(f):
                 if len(i) > m_len[col]:
                     m_len[col] = len(i)
 
@@ -403,7 +404,7 @@ class Relation (object):
 
         for r in self.content:
             res += "\n"
-            for col,i in enumerate(r):
+            for col, i in enumerate(r):
                 res += "%s" % (i.ljust(2 + m_len[col]))
 
         return res
@@ -426,12 +427,14 @@ class Relation (object):
         affected = self.selection(expr)
         not_affected = self.difference(affected)
 
-        new_values = tuple(zip(self.header.getAttributesId(dic.keys()), dic.values()))
+        new_values = tuple(
+            zip(self.header.getAttributesId(dic.keys()), dic.values())
+        )
 
         for i in set(affected.content):
             i = list(i)
 
-            for column,value in new_values:
+            for column, value in new_values:
                 i[column] = value
             not_affected.insert(i)
 
@@ -530,6 +533,6 @@ class Header(tuple):
         '''Returns a list with numeric index corresponding to field's name'''
         return [self.index(i) for i in param]
 
-#Backwards compatibility
+# Backwards compatibility
 relation = Relation
 header = Header

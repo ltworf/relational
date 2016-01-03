@@ -508,6 +508,7 @@ def select_union_intersect_subtract(n):
 
     return changes + recoursive_scan(select_union_intersect_subtract, n)
 
+
 def union_and_product(n):
     '''
     A * B ∪ A * C = A * (B ∪ C)
