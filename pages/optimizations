@@ -307,6 +307,16 @@ This will let rename work on a hopefully smaller set and more important, will ho
 This class of optimizations requires to have knowledge of the specific relations used (meaning that it will need to have access to real instances of the relations to work).
 </p>
 
+<h4>Projection and union</h4>
+<table class="inline">
+	<tr class="row0">
+		<th class="col0"> Original </th><th class="col1"> Optimized </th>
+	</tr>
+	<tr class="row1">π a,b,c(A) ∪ π a,b,c(B)<td class="col0"><em></em></td><td class="col1 rightalign"><em>π a,b,c(A ∪ B)</em></td></tr>
+</table>
+
+<p>If A and B are union compatible.</p>
+<p>Works with union, intersection and difference.</p>
 
 
 <h4>Selection and product</h4>
