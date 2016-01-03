@@ -154,7 +154,9 @@ class relForm(QtWidgets.QMainWindow):
         res_rel,query = self.user_interface.split_query(self.ui.txtQuery.text(),None)
         try:
             result = optimizer.optimize_all(
-                query, self.user_interface.relations)
+                query,
+                self.user_interface.relations
+            )
             if res_rel:
                 result = '%s = %s' % (res_rel, result)
             self.ui.txtQuery.setText(result)
@@ -217,15 +219,14 @@ class relForm(QtWidgets.QMainWindow):
         # Set content
         for i in rel.content:
             item = QtWidgets.QTreeWidgetItem()
-            for j in range(len(i)):
-                item.setText(j, i[j])
+            for j,k in enumerate(i):
+                item.setText(j, k)
             self.ui.table.addTopLevelItem(item)
 
         # Sets columns
         for i, attr in enumerate(rel.header):
             self.ui.table.headerItem().setText(i, attr)
-            self.ui.table.resizeColumnToContents(
-                i)  # Must be done in order to avoid  too small columns
+            self.ui.table.resizeColumnToContents(i)
 
     def printRelation(self, item):
         self.selectedRelation = self.user_interface.relations[item.text()]

@@ -70,13 +70,13 @@ def optimize_all(expression, rels, specific=True, general=True, debug=None):
             for i in optimizations.specific_optimizations:
                 res = i(n, rels)  # Performs the optimization
                 if res != 0 and dbg:
-                    debug.append(n.__str__())
+                    debug.append(str(n))
                 total += res
         if general:
             for i in optimizations.general_optimizations:
                 res = i(n)  # Performs the optimization
                 if res != 0 and dbg:
-                    debug.append(n.__str__())
+                    debug.append(str(n))
                 total += res
     return n.__str__()
 
