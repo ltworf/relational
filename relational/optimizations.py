@@ -156,7 +156,9 @@ def futile_union_intersection_subtraction(n):
             replace_node(n, n.right)
 
     # Subtraction and selection of the same thing
-    elif (n.name == DIFFERENCE and (n.right.name == SELECTION and n.right.child == n.left)):  # Subtraction of two equal things, but one has a selection
+    elif n.name == DIFFERENCE and \
+            n.right.name == SELECTION and \
+            n.right.child == n.left:
         n.name = n.right.name
         n.kind = n.right.kind
         n.child = n.right.child
@@ -164,7 +166,7 @@ def futile_union_intersection_subtraction(n):
         n.left = n.right = None
 
     # Subtraction of the same thing or with selection on the left child
-    elif (n.name == DIFFERENCE and ((n.left == n.right) or (n.left.name == SELECTION and n.left.child == n.right))):  # Empty relation
+    elif n.name == DIFFERENCE and (n.left == n.right or (n.left.name == SELECTION and n.left.child == n.right)):
         changes = 1
         n.kind = parser.UNARY
         n.name = SELECTION
@@ -291,16 +293,11 @@ def futile_renames(n):
             value = _vars.get(key)
             if key == value:
                 _vars.pop(value)  # Removes the unused one
-        # Reset prop var
-        n.prop = ""
 
-        # Generates new prop var
-        for i in _vars.items():
-            n.prop += u"%s%s%s," % (i[0], ARROW, i[1])
-        n.prop = n.prop[:-1]  # Removing ending comma
-
-        if len(n.prop) == 0:  # Nothing to rename, removing the rename op
+        if len(_vars) == 0: # Nothing to rename, removing the rename op
             replace_node(n, n.child)
+        else:
+            n.prop = ','.join('%s%s%s' % (i[0], ARROW, i[1]) for i in _vars.items())
 
     return changes + recoursive_scan(futile_renames, n)
 
@@ -313,7 +310,7 @@ def subsequent_renames(n):
     futile_renames(n)
     changes = 0
 
-    if n.name == RENAME and n.child.name == n.name:
+    if n.name == RENAME and n.child.name == RENAME:
         # Located two nested renames.
         changes = 1
         # Joining the attribute into one
@@ -338,16 +335,10 @@ def subsequent_renames(n):
                     _vars.pop(value)  # Removes the unused one
                     _vars.pop(key)  # Removes the unused one
 
-        # Reset prop var
-        n.prop = ""
-
-        # Generates new prop var
-        for i in _vars.items():
-            n.prop += u"%s%s%s," % (i[0], ARROW, i[1])
-        n.prop = n.prop[:-1]  # Removing ending comma
-
-        if len(n.prop) == 0:  # Nothing to rename, removing the rename op
+        if len(_vars) == 0:  # Nothing to rename, removing the rename op
             replace_node(n, n.child)
+        else:
+            n.prop = ','.join('%s%s%s' % (i[0], ARROW, i[1]) for i in _vars.items())
 
     return changes + recoursive_scan(subsequent_renames, n)
 
@@ -419,10 +410,8 @@ def swap_rename_projection(n):
             if i not in _pr_reborn:
                 _vars.pop(i)
         n.name = n.child.name
-        n.prop = ''
-        for i in _vars.keys():
-            n.prop += u'%s%s%s,' % (_vars[i], ARROW, i)
-        n.prop = n.prop[:-1]
+
+        n.prop = ','.join('%s%s%s' % (i[1], ARROW, i[0]) for i in _vars.items())
 
         n.child.name = PROJECTION
         n.child.prop = ''
@@ -465,9 +454,7 @@ def swap_rename_select(n):
         n.child.name = SELECTION
 
         n.prop = n.child.prop
-        n.child.prop = ''
-        for i in _tokens:
-            n.child.prop += i + ' '
+        n.child.prop = ' '.join(_tokens)
 
     return changes + recoursive_scan(swap_rename_select, n)
 
@@ -477,7 +464,10 @@ def select_union_intersect_subtract(n):
     and replaces them with σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
     changes = 0
-    if n.name in (UNION, INTERSECTION, DIFFERENCE) and n.left.name == SELECTION and n.right.name == SELECTION and n.left.child == n.right.child:
+    if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
+                n.left.name == SELECTION and \
+                n.right.name == SELECTION and \
+                n.left.child == n.right.child:
         changes = 1
 
         d = {UNION: 'or', INTERSECTION: 'and', DIFFERENCE: 'and not'}
@@ -543,6 +533,7 @@ def union_and_product(n):
             replace_node(n, newnode)
             changes = 1
     return changes + recoursive_scan(union_and_product, n)
+
 
 def projection_and_union(n, rels):
     '''
