@@ -207,6 +207,7 @@ def run_test(testname):
             print (colorize('Test passed', COLOR_GREEN))
             return True
     except Exception as inst:
+        traceback.print_exc(file=sys.stdout)
         print (inst)
         pass
     print (colorize('ERROR', COLOR_RED))
