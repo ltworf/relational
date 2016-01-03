@@ -168,45 +168,36 @@ class relForm(QtWidgets.QMainWindow):
         itm = item.text()
         self.ui.txtQuery.setText(itm)
 
-    def _run_multiline(self):
-        query = self.ui.txtMultiQuery.toPlainText()
-        self.settings.setValue('multiline/query', query)
-
-        try:
-            result = self.user_interface.multi_execute(query)
-        except Exception as e:
-            return self.error(e)
-        finally:
-            self.updateRelations()
-        self.selectedRelation = result
-        self.showRelation(self.selectedRelation)
-
     def execute(self):
 
+        # Show the 'Processing' frame
         self.ui.stackedWidget.setCurrentIndex(2)
         QtCore.QCoreApplication.processEvents()
 
         try:
             '''Executes the query'''
             if self.multiline:
-                return self._run_multiline()
-
-            # Single line query
-            res_rel,query = self.user_interface.split_query(self.ui.txtQuery.text())
+                query = self.ui.txtMultiQuery.toPlainText()
+                self.settings.setValue('multiline/query', query)
+            else:
+                query = self.ui.txtQuery.text()
 
             try:
-                self.selectedRelation = self.user_interface.execute(query, res_rel)
-                self.updateRelations()  # update the list
-                self.showRelation(self.selectedRelation)
+                self.selectedRelation = self.user_interface.multi_execute(query)
             except Exception as e:
                 return self.error(e)
+            finally:
+                self.updateRelations()  # update the list
+                self.showRelation(self.selectedRelation)
 
-            # Adds to history
-            hitem = QtWidgets.QListWidgetItem(None, 0)
-            hitem.setText(self.ui.txtQuery.text())
-            self.ui.lstHistory.addItem(hitem)
-            self.ui.lstHistory.setCurrentItem(hitem)
+            if not self.multiline:
+                # Adds to history
+                hitem = QtWidgets.QListWidgetItem(None, 0)
+                hitem.setText(query)
+                self.ui.lstHistory.addItem(hitem)
+                self.ui.lstHistory.setCurrentItem(hitem)
         finally:
+            # Restore the normal frame
             self.setMultiline(self.multiline)
 
 
