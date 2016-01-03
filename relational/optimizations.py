@@ -558,7 +558,6 @@ def projection_and_union(n, rels):
     if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
             n.left.name == PROJECTION and \
             n.right.name == PROJECTION and \
-            set(n.left.result_format(rels)) == set(n.right.result_format(rels)) and \
             set(n.left.child.result_format(rels)) == set(n.right.child.result_format(rels)):
         newchild = parser.Node()
 
@@ -575,7 +574,6 @@ def projection_and_union(n, rels):
         replace_node(n, newnode)
         changes = 1
     return changes + recoursive_scan(projection_and_union, n, rels)
-
 
 
 def selection_and_product(n, rels):
