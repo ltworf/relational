@@ -331,3 +331,5 @@ This class of optimizations requires to have knowledge of the specific relations
 
 <p>Where j contains only attributes belonging to R, i contains attributes belonging to Q and l contains attributes belonging to both.</p>
 
+<h4>Useless projection</h4>
+<p>If a projection is done on all the attributes, it can be removed.</p>
