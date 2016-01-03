@@ -153,10 +153,17 @@ class relForm(QtWidgets.QMainWindow):
 
         res_rel,query = self.user_interface.split_query(self.ui.txtQuery.text(),None)
         try:
+            trace = []
             result = optimizer.optimize_all(
                 query,
-                self.user_interface.relations
+                self.user_interface.relations,
+                debug=trace
             )
+            print('==== Optimization steps ====')
+            print(query)
+            print('\n'.join(trace))
+            print('========')
+
             if res_rel:
                 result = '%s = %s' % (res_rel, result)
             self.ui.txtQuery.setText(result)
