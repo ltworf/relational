@@ -12,9 +12,9 @@
 </ul>
 </p>
 
-<h1>Version 2.1 released</h1>
-<p>The UI now implements sessions and remembers where you left off the previous time. It was also redesigned to be able to fit smaller screens.</p>
-<p>The release also fixes some bugs in the parser and in the outer join functions.</p>
+<h1>Version 2.2 released</h1>
+<p>The UI now implements shortcuts for the symbols and for some actions, so it is less necessary to use the mouse.</p>
+<p>The release also introduces some new optimizations.</p>
 
 <h1>
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
