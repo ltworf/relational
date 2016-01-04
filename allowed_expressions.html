@@ -32,9 +32,8 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
-              <a href="grammar.html">Grammar</a> |
-              <a href="types.html">Types</a> |
               <a href="optimizations.html">Optimizations</a> |
+              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -44,7 +43,6 @@
       <section id="main_content" class="inner">
 
 <h2>Query language</h2>
-<p>Since version 2.0 the language has been changed. If you have an older version of relational, check the <a href="allowed_expressions_old.html">old syntax</a>.</p>
 
 <p>This page explains the query language supported by relational.</p>
 
@@ -116,6 +114,8 @@ Operators with parameters work on a single relation, and the result will depend 
     </tr>
 </table>
 
+<p>The language is formally defined <a href="grammar.html">here</a>.</p>
+
 <h4>Complex queries</h4>
 <p>In any place where a relation is expected, a query can be used instead. For example, since a*b is a relation itself, you can evaluate π f1,f2 (a*b) ∪ R</p>
 
@@ -134,6 +134,8 @@ Q ⋈ π a,b(A) ⋈ B
 ρ id➡i,name➡n(π a,b(A))
 A ⋈ B
 </code></pre>
+
+<p>Relational uses <a href="types.html">automatic casting</a>, so it will try to use an appropriate type for the values.</p>
 
 <h3>Dates</h3>
 <p>When a field contains something like 2007-12-24, this will be considered as a date, and will have a particoular behaviour in selection operations.</p>
@@ -179,7 +181,7 @@ We rename the field and do the product, we add 2 days to d and see if it is grea
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: January 2, 2016, 10:36 am</p>
+        <p>Last updated: January 4, 2016, 6:44 pm</p>
       </footer>
     </div>
 

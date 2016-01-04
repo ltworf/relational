@@ -32,9 +32,8 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
-              <a href="grammar.html">Grammar</a> |
-              <a href="types.html">Types</a> |
               <a href="optimizations.html">Optimizations</a> |
+              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -58,6 +57,8 @@
 <p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
 
 <script>
+document.getElementById("nojs").innerHTML = 'Loading downloads...';
+
 var xmlhttp = new XMLHttpRequest();
 var url = "https://api.github.com/repos/ltworf/relational/releases/latest";
 
@@ -139,7 +140,7 @@ function myFunction(arr) {
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: January 2, 2016, 10:36 am</p>
+        <p>Last updated: January 4, 2016, 6:44 pm</p>
       </footer>
     </div>
 

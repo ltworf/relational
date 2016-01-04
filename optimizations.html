@@ -32,9 +32,8 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
-              <a href="grammar.html">Grammar</a> |
-              <a href="types.html">Types</a> |
               <a href="optimizations.html">Optimizations</a> |
+              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -305,7 +304,15 @@ This will save the space taken by an extra relation needed to perform the 2nd re
 This will let rename work on a hopefully smaller set and more important, will hopefully allow further optimizations.
 </p>
 
-
+<h4>Union and product</h4>
+<table class="inline">
+	<tr class="row0">
+		<th class="col0"> Original </th><th class="col1"> Optimized </th>
+	</tr>
+	<tr class="row1">
+		<td class="col0"> <em>A * B ∪ A * C</em> </td><td class="col1 rightalign">  <em>A * (B ∪ C)</em> </td>
+	</tr>
+</table>
 
 <h4>Select union intersect subtract</h4>
 <table class="inline">
@@ -344,6 +351,16 @@ This will let rename work on a hopefully smaller set and more important, will ho
 This class of optimizations requires to have knowledge of the specific relations used (meaning that it will need to have access to real instances of the relations to work).
 </p>
 
+<h4>Projection and union</h4>
+<table class="inline">
+	<tr class="row0">
+		<th class="col0"> Original </th><th class="col1"> Optimized </th>
+	</tr>
+	<tr class="row1">π a,b,c(A) ∪ π a,b,c(B)<td class="col0"><em></em></td><td class="col1 rightalign"><em>π a,b,c(A ∪ B)</em></td></tr>
+</table>
+
+<p>If A and B are union compatible.</p>
+<p>Works with union, intersection and difference.</p>
 
 
 <h4>Selection and product</h4>
@@ -358,6 +375,8 @@ This class of optimizations requires to have knowledge of the specific relations
 
 <p>Where j contains only attributes belonging to R, i contains attributes belonging to Q and l contains attributes belonging to both.</p>
 
+<h4>Useless projection</h4>
+<p>If a projection is done on all the attributes, it can be removed.</p>
       </section>
     </div>
 
@@ -366,7 +385,7 @@ This class of optimizations requires to have knowledge of the specific relations
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: January 2, 2016, 10:36 am</p>
+        <p>Last updated: January 4, 2016, 6:44 pm</p>
       </footer>
     </div>
 
