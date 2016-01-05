@@ -22,7 +22,7 @@ import os
 import os.path
 import getopt
 
-version = "2.2"
+version = "2.3"
 
 
 def printver(exit=True):
