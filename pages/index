@@ -23,8 +23,10 @@
 
 <p>For <em>Linux</em>, check your distribution's packages, relational is available on Debian and Ubuntu. If a package is not available for your distribution, you can <a href="download.html">download</a> the source and run it.</p>
 
-<h1>
-<a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Syntax</h1>
+<h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorial</h1>
+<a href="https://www.youtube.com/watch?v=B04rn-kp7aE&list=PLLqqzCxxkF91vkDPULyMwwh0cKTZxwsnw">Youtube tutorial</a>
+
+<h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Syntax</h1>
 
 <p>These are some valid queries</p>
 
