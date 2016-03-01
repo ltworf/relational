@@ -31,7 +31,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Run]
 ; add the Parameters, WorkingDir and StatusMsg as you wish, just keep here
 ; the conditional installation Check
-Filename: "{tmp}\vcredist_x86.exe";
+Filename: "{tmp}\vcredist_x86.exe"; Parameters: "/passive /norestart";
 
 [Files]
 Source: "dist\relational_gui.exe"; DestDir: "{app}"; Flags: ignoreversion
