@@ -1,4 +1,9 @@
 2.3
+- Very small release. The windows setup now installs the C++ library
+  automatically.
+- The setup was re-made on windows 10, so now it works properly on windows 10
+  and all the symbols are shown.
+- If you don't use windows, this release is identical to the previous.
 
 2.2
 - Added again make install target
