@@ -20,7 +20,7 @@ from distutils.core import setup
 
 def c_setup(name):
     setup(
-        version='2.3',
+        version='2.4',
         name=name,
         packages=(name,),
         author="Salvo 'LtWorf' Tomaselli",
