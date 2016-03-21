@@ -110,7 +110,9 @@ class relForm(QtWidgets.QMainWindow):
         from relational import maintenance
         online = maintenance.check_latest_version()
 
-        if online > version:
+        if online is None:
+            r = QtWidgets.QApplication.translate("Form", "Network error")
+        elif online > version:
             r = QtWidgets.QApplication.translate(
                 "Form", "New version available online: %s." % online)
         elif online == version:
