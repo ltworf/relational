@@ -51,8 +51,11 @@ def check_latest_version():
     Heavely dependent on server and server configurations
     not granted to work forever.'''
     connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
-    connection.request("GET", "/version/relational")
-    r = connection.getresponse()
+    try:
+        connection.request("GET", "/version/relational")
+        r = connection.getresponse()
+    except:
+        return None
 
     # html
     s = r.read()
