@@ -82,7 +82,7 @@ class surveyForm (QtWidgets.QWidget):
 
         response = maintenance.send_survey(post)
 
-        if response.status != 200:
+        if response != 200:
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
                 "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unable to send the data!"))
         else:

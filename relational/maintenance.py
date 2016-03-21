@@ -41,9 +41,11 @@ def send_survey(data):
     headers = {"Content-type":
                "application/x-www-form-urlencoded", "Accept": "text/plain"}
     connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
-    connection.request("POST", "/feedback/relational", params, headers)
-
-    return connection.getresponse()
+    try:
+        connection.request("POST", "/feedback/relational", params, headers)
+        return connection.getresponse().status
+    except:
+        return 0
 
 
 def check_latest_version():
