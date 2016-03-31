@@ -57,19 +57,8 @@ To launch the application, run
 ./relational_gui.py
 ```
 
-or 
+or
 
 ```
 python3 relational_gui.py
 ```
-
-Running on OS X
-===============
-You can follow the instructions on running from sources to
-run on OS X.
-
-If you encounter problems, don't ask me for help. I don't have an Apple.
-
-If you encounter problems and overcome them, please tell me how to update this
-README.
-
