@@ -19,11 +19,15 @@ dist: clean
 	(cd /tmp; tar -zcf relational.tar.gz relational/)
 	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
 
+release: dist
+	gpg --sign --armor --detach-sign ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
+
 clean:
 	rm -rf `find -name "*~"`
 	rm -rf `find -name "*pyc"`
 	rm -rf `find -name "*pyo"`
 	rm -rf relational*.tar.gz
+	rm -rf relational*.tar.gz.asc
 	rm -rf data
 	rm -rf *tar.bz
 	rm -rf *.deb
