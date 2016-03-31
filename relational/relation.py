@@ -130,7 +130,10 @@ class Relation (object):
         newt = relation()
         newt.header = Header(self.header)
 
-        c_expr = compile(expr, 'selection', 'eval')
+        try:
+            c_expr = compile(expr, 'selection', 'eval')
+        except:
+            raise Exception('Failed to compile expression: %s' % expr)
 
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
