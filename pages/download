@@ -12,8 +12,6 @@
 
 <p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
 
-<p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
-
 <script>
 document.getElementById("nojs").innerHTML = 'Loading downloads...';
 
