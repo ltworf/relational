@@ -6,8 +6,6 @@
 <table id="dtable"></table>
 <p id="nojs">Javascript is disabled. Please go to the <a href="https://github.com/ltworf/relational/tags">github download page</a>.</p>
 
-<p style="color: red">Help needed to create a .app bundle for osx. <a href="contribute">Contribute!</a></p>
-
 <p><a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xB3A7CF0C801886CF">PGP public key</a> to use to verify the signature.</p>
 
 <p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
