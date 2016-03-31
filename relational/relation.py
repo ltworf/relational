@@ -531,7 +531,10 @@ class Header(tuple):
 
     def getAttributesId(self, param):
         '''Returns a list with numeric index corresponding to field's name'''
-        return [self.index(i) for i in param]
+        try:
+            return [self.index(i) for i in param]
+        except ValueError as e:
+            raise Exception('One of the fields is not in the relation: %s' % ','.join(param))
 
 # Backwards compatibility
 relation = Relation
