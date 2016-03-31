@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Relational
-# Copyright (C) 2010  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2010-2016  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
