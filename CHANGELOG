@@ -1,4 +1,7 @@
 2.4
+- Improve error reporting
+- Release is now signed with PGP
+- Doesn't crash on network errors
 
 2.3
 - Very small release. The windows setup now installs the C++ library
