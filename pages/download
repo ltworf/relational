@@ -52,6 +52,8 @@ function get_name(name) {
         return 'Windows download'
     if (endsWith(name,'.tar.gz'))
         return 'Sources'
+    if (endsWith(name,'.tar.gz.asc'))
+        return 'PGP Signature'
     return name
 }
 
