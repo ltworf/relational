@@ -1,7 +1,8 @@
 relational (2.4-1) UNRELEASED; urgency=medium
 
-  * New upstream release
+  * New upstream release.
   * Bumped Standards-Version to 3.9.7.
+  * Added upstream public key.
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Thu, 31 Mar 2016 20:15:41 +0200
 
