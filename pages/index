@@ -1,21 +1,23 @@
-<p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>, an offshoot of first-order logic.</p>
+<p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>.</p>
 
-<p>It provides GUI that can be used for executing relational queries, and also provides a command line interface.</p>
-
-<p>Provides:
-<ul>
-<li>A GUI that can be used for executing relational queries</li>
-<li>A standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them</li>
-<li>A command line interface</li>
-</ul>
-</p>
+<p>It provides GUI that can be used for executing relational queries, and also a command line interface and a Python library.</p>
 
 <h1>
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
 
-<p><em>Windows</em> installer can be found in the <a href="download.html">download page</a></p>
+<table>
+    <tr>
+        <td><img src="images/debian-logo.png" /><img src="images/ubuntu-logo.png" /></td>
+        <td><img src="images/windows-logo.png" /></td>
+        <td><img src="images/linux-logo.png" /><img src="images/apple-logo.png" /></td>
+    </tr>
+    <tr>
+        <td><code>apt-get install relational</code></td>
+        <td><a href="download.html">Download setup</a></td>
+        <td><a href="download.html">Download sources</a></td>
 
-<p>For <em>Linux</em>, check your distribution's packages, relational is available on <strong>Debian</strong> and <strong>Ubuntu</strong>. If a package is not available for your distribution, you can <a href="download.html">download</a> the source and run it.</p>
+    </tr>
+</table>
 
 <h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorial</h1>
 <a href="https://www.youtube.com/watch?v=B04rn-kp7aE&list=PLLqqzCxxkF91vkDPULyMwwh0cKTZxwsnw">Youtube tutorial</a>
