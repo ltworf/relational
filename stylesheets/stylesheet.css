@@ -296,7 +296,7 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 50px 10px 30px 10px;
+  padding: 10px 10px 15px 10px;
 }
 
 #project_title {
@@ -358,10 +358,6 @@ Full-Width Styles
   background: #f2f2f2;
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
-}
-
-#main_content {
-  padding-top: 40px;
 }
 
 #footer_wrap {
