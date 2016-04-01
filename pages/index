@@ -13,9 +13,8 @@
     </tr>
     <tr>
         <td><code>apt-get install relational</code></td>
-        <td><a href="download.html">Download setup</a></td>
-        <td><a href="download.html">Download sources</a></td>
-
+        <td><a href="download.html?exe">Download setup</a></td>
+        <td><a href="download.html?tar.gz">Download sources</a></td>
     </tr>
 </table>
 
