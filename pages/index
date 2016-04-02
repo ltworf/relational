@@ -6,7 +6,7 @@
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
 
 <table>
-    <tr>
+    <tr align="center">
         <td><img src="images/debian-logo.png" /><img src="images/ubuntu-logo.png" /></td>
         <td><img src="images/windows-logo.png" /></td>
         <td><img src="images/linux-logo.png" /><img src="images/apple-logo.png" /></td>
