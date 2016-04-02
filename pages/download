@@ -8,7 +8,7 @@
 
 <p><a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xB3A7CF0C801886CF">PGP public key</a> to use to verify the signature.</p>
 
-<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
+<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of releases</a>.</p>
 
 <script>
 document.getElementById("nojs").innerHTML = 'Loading downloads...';
