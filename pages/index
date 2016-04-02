@@ -25,13 +25,13 @@
 
 <p>These are some valid queries</p>
 
-<pre><code>σage &gt; 25 and rank == weight(A)
-σ (name.upper().startswith('J') and age&gt;21 )(people)
-Q ⋈ π a,b(A) ⋈ B
-ρid➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage &gt; 25 or rank = weight(A)
-π a,b(π a,b(A))
-ρid➡i,name➡n(π a,b(A))
-A ⋈ B
+<pre><code>A ∪ B
+A ∩ B
+A ⋈ C
+σ (age==12) (A)
+π name,age (A)
+ρ age➡a,name➡n (A)
+A ∪ B ∪ σ id==3 (C)
 </code></pre>
 
 <p>Explaination of all the operators and their syntax can be <a href="allowed_expressions.html">found here</a>.</p>
