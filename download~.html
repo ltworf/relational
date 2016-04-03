@@ -32,9 +32,8 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
-              <a href="grammar.html">Grammar</a> |
-              <a href="types.html">Types</a> |
               <a href="optimizations.html">Optimizations</a> |
+              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -51,11 +50,13 @@
 <table id="dtable"></table>
 <p id="nojs">Javascript is disabled. Please go to the <a href="https://github.com/ltworf/relational/tags">github download page</a>.</p>
 
-<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
+<p><a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xB3A7CF0C801886CF">PGP public key</a> to use to verify the signature.</p>
 
-<p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
+<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of releases</a>.</p>
 
 <script>
+document.getElementById("nojs").innerHTML = 'Loading downloads...';
+
 var xmlhttp = new XMLHttpRequest();
 var url = "https://api.github.com/repos/ltworf/relational/releases/latest";
 
@@ -93,6 +94,8 @@ function get_name(name) {
         return 'Windows download'
     if (endsWith(name,'.tar.gz'))
         return 'Sources'
+    if (endsWith(name,'.tar.gz.asc'))
+        return 'PGP Signature'
     return name
 }
 
@@ -104,13 +107,26 @@ function myFunction(arr) {
     out += '<td>Download count</td>'
     out += '</tr>'
 
-    assets = arr[arr.length-1]['assets']
+    assets = arr['assets']
+
+    restrict = window.location.search
+    if (restrict.length) {
+        restrict = restrict.substring(1)
+    }
 
     for (i=0; i<assets.length;i++) {
         asset = assets[i]
 
         if (asset['state'] != 'uploaded')
             continue;
+
+        if (restrict.length) {
+            alert(restrict)
+            alert(asset['name'])
+            if (asset['name'].indexOf(restrict) == -1) {
+                continue
+            }
+        }
 
         out += '<tr>'
 
@@ -137,7 +153,7 @@ function myFunction(arr) {
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: September 16, 2015, 2:01 pm</p>
+        <p>Last updated: April 3, 2016, 1:07 pm</p>
       </footer>
     </div>
 

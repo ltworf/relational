@@ -42,24 +42,25 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
-<p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>, an offshoot of first-order logic.</p>
+<p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>.</p>
 
-<p>It provides GUI that can be used for executing relational queries, and also provides a command line interface.</p>
-
-<p>Provides:
-<ul>
-<li>A GUI that can be used for executing relational queries</li>
-<li>A standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them</li>
-<li>A command line interface</li>
-</ul>
-</p>
+<p>It provides GUI that can be used for executing relational queries, and also a command line interface and a Python library.</p>
 
 <h1>
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
 
-<p><em>Windows</em> installer can be found in the <a href="download.html">download page</a></p>
-
-<p>For <em>Linux</em>, check your distribution's packages, relational is available on <strong>Debian</strong> and <strong>Ubuntu</strong>. If a package is not available for your distribution, you can <a href="download.html">download</a> the source and run it.</p>
+<table>
+    <tr align="center">
+        <td><img src="images/debian-logo.png" /><img src="images/ubuntu-logo.png" /></td>
+        <td><img src="images/windows-logo.png" /></td>
+        <td><img src="images/linux-logo.png" /><img src="images/apple-logo.png" /></td>
+    </tr>
+    <tr>
+        <td><code>apt-get install relational</code></td>
+        <td><a href="download.html?exe">Download setup</a></td>
+        <td><a href="download.html?tar.gz">Download sources</a></td>
+    </tr>
+</table>
 
 <h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorial</h1>
 <a href="https://www.youtube.com/watch?v=B04rn-kp7aE&list=PLLqqzCxxkF91vkDPULyMwwh0cKTZxwsnw">Youtube tutorial</a>
@@ -68,13 +69,13 @@
 
 <p>These are some valid queries</p>
 
-<pre><code>σage &gt; 25 and rank == weight(A)
-σ (name.upper().startswith('J') and age&gt;21 )(people)
-Q ⋈ π a,b(A) ⋈ B
-ρid➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage &gt; 25 or rank = weight(A)
-π a,b(π a,b(A))
-ρid➡i,name➡n(π a,b(A))
-A ⋈ B
+<pre><code>A ∪ B
+A ∩ B
+A ⋈ C
+σ (age==12) (A)
+π name,age (A)
+ρ age➡a,name➡n (A)
+A ∪ B ∪ σ id==3 (C)
 </code></pre>
 
 <p>Explaination of all the operators and their syntax can be <a href="allowed_expressions.html">found here</a>.</p>
@@ -94,7 +95,7 @@ A ⋈ B
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: March 14, 2016, 1:44 pm</p>
+        <p>Last updated: April 3, 2016, 1:07 pm</p>
       </footer>
     </div>
 

@@ -42,44 +42,51 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
-<h2>Grammar definition</h2>
-<p>This page defines the <em>formal grammar</em> that is used by relational.</p>
+<p>Relational an educational tool to provide a workspace for experimenting with <em>relational</em> <em>algebra</em>.</p>
 
-<h3>Literals</h3>
+<p>It provides GUI that can be used for executing relational queries, and also a command line interface and a Python library.</p>
 
-<p><em>Ident</em> literals are recognized by the regular expression:</p>
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
 
-<pre><code>( letter | '_')( letter | digit | '_')*</pre></code>
+<table style="border-color:white;">
+    <tr align="center">
+        <td><img src="images/debian-logo.png" /><img src="images/ubuntu-logo.png" /></td>
+        <td><img src="images/windows-logo.png" /></td>
+        <td><img src="images/linux-logo.png" /><img src="images/apple-logo.png" /></td>
+    </tr>
+    <tr>
+        <td><code>apt-get install relational</code></td>
+        <td><a href="download.html?exe">Download setup</a></td>
+        <td><a href="download.html?tar.gz">Download sources</a></td>
+    </tr>
+</table>
 
-<p>String literals String have the form <code>'x'</code>, where x is any sequence of any characters except <code>"</code> and <code>'</code>.</p>
+<h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorial</h1>
+<a href="https://www.youtube.com/watch?v=B04rn-kp7aE&list=PLLqqzCxxkF91vkDPULyMwwh0cKTZxwsnw">Youtube tutorial</a>
 
-<p>Reserved words and symbols, separated by a space</p>
+<h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Syntax</h1>
 
-<p>For the query</p>
+<p>These are some valid queries</p>
 
-<pre><code>    * - ∪ ∩ ÷ ⋈ ⧑ ⧒ ⧓ π σ ρ ➡ ( ) , - *</pre></code>
+<pre><code>A ∪ B
+A ∩ B
+A ⋈ C
+σ (age==12) (A)
+π name,age (A)
+ρ age➡a,name➡n (A)
+A ∪ B ∪ σ id==3 (C)
+</code></pre>
 
+<p>Explaination of all the operators and their syntax can be <a href="allowed_expressions.html">found here</a>.</p>
 
-<p>For the expression in the select</p>
+<p>Formal language definition <a href="grammar.html">can be read here</a>.</p>
+<p>Documentation on how the <a href="types.html">automatic casting</a> is performed.</p>
 
-<pre><code>    + - * / > < >= <= == != and or not in **</pre></code>
-
-
-<h3>Grammar</h3>
-
-<pre><code>
-    Query := Ident
-    Query := Query BinaryOp Query
-    Query := (Query)
-    Query := σ PYExprWithoutParenthesis (Query) | σ (PYExpr) (Query)
-    Query := π FieldList (Query)
-    Query := ρ RenameList (Query)
-    FieldList := Ident | Ident , FieldList
-    RenameList := Ident ➡ Ident | Ident ➡ Ident , RenameList
-    BinaryOp := * | - | ∪ | ∩ | ÷ | ⋈ | ⧑ | ⧒ | ⧓
-</pre></code>
-
-<p>Note the double definition of the select. It means that if the selection expression contains parenthesis, then the entire expression must be enclosed in an extra set of parenthesis.</p>
+<h1>Used by</h1>
+<ul>
+<li><a href="http://link.springer.com/chapter/10.1007%2F978-3-642-32498-7_1">Ontology-Based Identification of Research Gaps and Immature Research Areas</a></li>
+</ul>
       </section>
     </div>
 

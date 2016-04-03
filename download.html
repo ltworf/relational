@@ -50,11 +50,9 @@
 <table id="dtable"></table>
 <p id="nojs">Javascript is disabled. Please go to the <a href="https://github.com/ltworf/relational/tags">github download page</a>.</p>
 
-<p style="color: red">Help needed to create a .app bundle for osx. <a href="contribute">Contribute!</a></p>
+<p><a href="http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xB3A7CF0C801886CF">PGP public key</a> to use to verify the signature.</p>
 
-<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of tags</a>.</p>
-
-<p>Since the project migrated from SVN, the full list of tags is not available; however the single commits are accessible.</p>
+<p>The previous versions of relational are accessible here: <a href="https://github.com/ltworf/relational/tags">list of releases</a>.</p>
 
 <script>
 document.getElementById("nojs").innerHTML = 'Loading downloads...';
@@ -96,6 +94,8 @@ function get_name(name) {
         return 'Windows download'
     if (endsWith(name,'.tar.gz'))
         return 'Sources'
+    if (endsWith(name,'.tar.gz.asc'))
+        return 'PGP Signature'
     return name
 }
 
@@ -109,11 +109,22 @@ function myFunction(arr) {
 
     assets = arr['assets']
 
+    restrict = window.location.search
+    if (restrict.length) {
+        restrict = restrict.substring(1)
+    }
+
     for (i=0; i<assets.length;i++) {
         asset = assets[i]
 
         if (asset['state'] != 'uploaded')
             continue;
+
+        if (restrict.length) {
+            if (asset['name'].indexOf(restrict) == -1) {
+                continue
+            }
+        }
 
         out += '<tr>'
 
@@ -140,7 +151,7 @@ function myFunction(arr) {
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/ltworf/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: March 14, 2016, 1:44 pm</p>
+        <p>Last updated: April 3, 2016, 1:07 pm</p>
       </footer>
     </div>
 
