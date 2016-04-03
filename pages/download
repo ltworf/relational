@@ -65,11 +65,22 @@ function myFunction(arr) {
 
     assets = arr['assets']
 
+    restrict = window.location.search
+    if (restrict.length) {
+        restrict = restrict.substring(1)
+    }
+
     for (i=0; i<assets.length;i++) {
         asset = assets[i]
 
         if (asset['state'] != 'uploaded')
             continue;
+
+        if (restrict.length) {
+            if (asset['name'].indexOf(restrict) == -1) {
+                continue
+            }
+        }
 
         out += '<tr>'
 
