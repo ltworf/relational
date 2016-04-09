@@ -3,7 +3,7 @@ Section: math
 Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
 Build-Depends: debhelper (>= 9), python3, dh-python, python3-xtermcolor, pyqt5-dev-tools
-Standards-Version: 3.9.7
+Standards-Version: 3.9.8
 X-Python3-Version: >= 3.4
 Homepage: http://ltworf.github.io/relational/
 

@@ -1,10 +1,9 @@
 relational (2.4-1) unstable; urgency=medium
 
   * New upstream release.
-  * Bumped Standards-Version to 3.9.7.
+  * Bumped Standards-Version to 3.9.8.
   * Added upstream public key.
   * Watch file can check for signature
-  * New upstream release
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Thu, 31 Mar 2016 20:15:41 +0200
 
