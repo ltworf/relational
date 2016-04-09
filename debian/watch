@@ -1,2 +1,5 @@
 version=3
-opts=filenamemangle=s/.+\/v?(\d\S*)\.tar\.gz/relational-$1\.tar\.gz/ https://github.com/ltworf/relational/tags .*/v?(\d\S*)\.tar\.gz
+
+opts="pgpsigurlmangle=s/$/.asc/" \
+https://github.com/ltworf/relational/releases \
+/download/(?:\d[\d.]*)/@PACKAGE@_(\d[\d.]*)(?:\.orig)?@ARCHIVE_EXT@
