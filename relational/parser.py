@@ -277,11 +277,8 @@ class Node (object):
         elif (self.kind == UNARY):
             return self.name + " " + self.prop + " (" + self.child.__str__() + ")"
         elif (self.kind == BINARY):
-            if self.left.kind == RELATION:
-                le = self.left.__str__()
-            else:
-                le = "(" + self.left.__str__() + ")"
-            if self.right.kind == RELATION:
+            le = self.left.__str__()
+            if self.right.kind != BINARY:
                 re = self.right.__str__()
             else:
                 re = "(" + self.right.__str__() + ")"
