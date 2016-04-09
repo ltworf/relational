@@ -546,14 +546,14 @@ def projection_and_union(n, rels):
     if A and B are union compatible
     '''
     changes = 0
-    if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
+    if n.name == UNION and \
             n.left.name == PROJECTION and \
             n.right.name == PROJECTION and \
             set(n.left.child.result_format(rels)) == set(n.right.child.result_format(rels)):
         newchild = parser.Node()
 
         newchild.kind = parser.BINARY
-        newchild.name = n.name
+        newchild.name = UNION
         newchild.left = n.left.child
         newchild.right = n.right.child
 
