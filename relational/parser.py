@@ -291,13 +291,51 @@ def _find_matching_parenthesis(expression, start=0, openpar=u'(', closepar=u')')
     close parenthesis to the 1st open parenthesis found
     starting from start (0 by default)'''
     par_count = 0  # Count of parenthesis
+
+    string = False
+    escape = False
+
     for i in range(start, len(expression)):
+        if expression[i] == '\'' and not escape:
+            string = not string
+        if expression[i] == '\\' and not escape:
+            escape = True
+        else:
+            escape = False
+        if string:
+            continue
+
+
         if expression[i] == openpar:
             par_count += 1
         elif expression[i] == closepar:
             par_count -= 1
             if par_count == 0:
                 return i  # Closing parenthesis of the parameter
+
+def _find_token(haystack, needle):
+    '''
+    Like the string function find, but
+    ignores tokens that are within a string
+    literal.
+    '''
+    r = -1
+    string = False
+    escape = False
+
+    for i in range(len(haystack)):
+        if haystack[i] == '\'' and not escape:
+            string = not string
+        if haystack[i] == '\\' and not escape:
+            escape = True
+        else:
+            escape = False
+        if string:
+            continue
+
+        if haystack[i:].startswith(needle):
+            return i
+    return r
 
 
 def tokenize(expression):
@@ -331,7 +369,7 @@ def tokenize(expression):
                 par = expression.find(
                     '(', _find_matching_parenthesis(expression))
             else:  # Expression without parenthesis, so adding what's between start and parenthesis as whole
-                par = expression.find('(')
+                par = _find_token(expression, '(')
 
             items.append(expression[:par].strip())
                          # Inserting parameter of the operator

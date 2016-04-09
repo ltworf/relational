@@ -2,8 +2,8 @@
 - Improve error reporting
 - Release is now signed with PGP
 - Doesn't crash on network errors
-- Fixed optimization introduced in 2.2
-  that did not hold in all cases.
+- Fixed optimization introduced in 2.2 that did not hold in all cases
+- Better handling of parenthesis inside string literals
 
 2.3
 - Very small release. The windows setup now installs the C++ library
