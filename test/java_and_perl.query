@@ -1,0 +1,2 @@
+πname (σ skill=='Perl' (people ⋈ skills)) ∪ π name (σ skill=='Java' (people ⋈ skills))
+

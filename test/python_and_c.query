@@ -1,0 +1,1 @@
+πname (σ skill=='C' (people ⋈ skills)) ∩ π name (σ skill=='Python' (people ⋈ skills))
