@@ -316,7 +316,6 @@ This class of optimizations requires to have knowledge of the specific relations
 </table>
 
 <p>If A and B are union compatible.</p>
-<p>Works with union, intersection and difference.</p>
 
 
 <h4>Selection and product</h4>
