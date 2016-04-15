@@ -231,7 +231,7 @@ hence using a single rename operation.<br />If j,k will contain things like <cod
 <h4>Futile union intersection subtraction</h4>
 
 <p>
-<em>A ⋈ A=A ⧑ A=A ⧒ A=A⧓A = A ᑌ A=A ᑎ A=A</em>.<br />So this optimization tries to locate unions, intersections and joins that share the same left and right operand, and replaces
+<em>A ⋈ A=A ⧑ A=A ⧒ A=A⧓A = A ᑌ A=A ᑎ A=A</em>.<br />So this optimization tries to locate unions an, intersections that share the same left and right operand, and replaces 
 them with the operand itself.<br />Also <em>A - A=∅</em>.<br />So it locates subtractions that share the same left and right operand and replaces them with <em>σ <sub>False</sub>(A)</em>. This is not as fast as replacing with an empty relation, but there is no such operator in relational algebra. Anyway Selection is O(n) and subtraction is O(n<sup>2</sup>), so we&#039;re saving time anyway.
 </p>
 
