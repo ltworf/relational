@@ -133,7 +133,7 @@ def futile_union_intersection_subtraction(n):
     changes = 0
 
     # Union and intersection of the same thing
-    if n.name in (UNION, INTERSECTION) and n.left == n.right:
+    if n.name in (UNION, INTERSECTION, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL) and n.left == n.right:
         changes = 1
         replace_node(n, n.left)
 
