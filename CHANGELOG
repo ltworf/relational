@@ -1,6 +1,7 @@
 2.5
 - Add new class of tests for queries that are supposed to fail
 - Changes to make failures in commutative operators commutative too
+- Added new optimization to remove useless joins
 
 2.4
 - Improve error reporting
