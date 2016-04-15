@@ -117,7 +117,7 @@ class Relation (object):
             raise TypeError('Expected an instance of the same class')
         elif self.header == other.header:
             return other
-        elif self.header.sharedAttributes(other.header) == len(self.header):
+        elif len(self.header) == len(other.header) and self.header.sharedAttributes(other.header) == len(self.header):
             return other.projection(self.header)
         raise TypeError('Relations differ: [%s] [%s]' % (
             ','.join(self.header), ','.join(other.header)
