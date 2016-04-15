@@ -73,6 +73,9 @@ def execute_tests():
     ex_bad = 0
     ex_good = 0
     ex_tot = 0
+    f_tot = 0
+    f_good = 0
+    f_bad = 0
 
     for i in os.listdir(tests_path):
         if i.endswith('.query'):
@@ -93,6 +96,13 @@ def execute_tests():
                 ex_good += 1
             else:
                 ex_bad += 1
+        elif i.endswith('.fail'):
+            f_tot += 1
+            if run_fail_test(i[:-5]):
+                f_good += 1
+            else:
+                f_bad += 1
+
     print (colorize("Resume of the results", COLOR_CYAN))
 
     print (colorize("Query tests", COLOR_MAGENTA))
@@ -113,13 +123,19 @@ def execute_tests():
     if ex_bad > 0:
         print (colorize("Failed tests count: %d" % ex_bad, COLOR_RED))
 
+    print (colorize("Execute fail tests", COLOR_MAGENTA))
+    print ("Total test count: %d" % f_tot)
+    print ("Passed tests: %d" % f_good)
+    if f_bad > 0:
+        print (colorize("Failed tests count: %d" % f_bad, COLOR_RED))
+
     print (colorize("Total results", COLOR_CYAN))
-    if q_bad + py_bad + ex_bad == 0:
+    if f_bad + q_bad + py_bad + ex_bad == 0:
         print (colorize("No failed tests", COLOR_GREEN))
         return 0
     else:
         print (colorize("There are %d failed tests" %
-               (py_bad + q_bad + ex_bad), COLOR_RED))
+               (f_bad + py_bad + q_bad + ex_bad), COLOR_RED))
         return 1
 
 
@@ -170,6 +186,42 @@ def run_py_test(testname):
     print (colorize('=====================================', COLOR_RED))
     return False
 
+def run_fail_test(testname):
+    '''Runs a test, which executes a query that is supposed to fail'''
+    print ("Running fail test: " + colorize(testname, COLOR_MAGENTA))
+
+    query = readfile('%s%s.fail' % (tests_path, testname)).strip()
+    o_query = optimizer.optimize_all(query, rels)
+
+    expr = parser.parse(query)
+    o_expr = parser.parse(o_query)
+
+    test_succeed = True
+
+    try:
+        expr(rels)
+        test_succeed = False
+    except:
+        pass
+
+    try:
+        o_expr(rels)
+        test_succeed = False
+    except:
+        pass
+
+    c_expr = parser.tree(query).toCode()
+    try:
+        eval(c_expr, rels)
+        test_succeed = False
+    except:
+        pass
+
+    if test_succeed:
+        print (colorize('Test passed', COLOR_GREEN))
+    else:
+        print (colorize('Test failed (by not raising any exception)', COLOR_RED))
+    return test_succeed
 
 def run_test(testname):
     '''Runs a specific test executing the file
