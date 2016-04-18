@@ -191,27 +191,25 @@ def run_fail_test(testname):
     print ("Running fail test: " + colorize(testname, COLOR_MAGENTA))
 
     query = readfile('%s%s.fail' % (tests_path, testname)).strip()
-    o_query = optimizer.optimize_all(query, rels)
-
-    expr = parser.parse(query)
-    o_expr = parser.parse(o_query)
-
     test_succeed = True
 
     try:
+        expr = parser.parse(query)
         expr(rels)
         test_succeed = False
     except:
         pass
 
     try:
+        o_query = optimizer.optimize_all(query, rels)
+        o_expr = parser.parse(o_query)
         o_expr(rels)
         test_succeed = False
     except:
         pass
 
-    c_expr = parser.tree(query).toCode()
     try:
+        c_expr = parser.tree(query).toCode()
         eval(c_expr, rels)
         test_succeed = False
     except:
