@@ -573,7 +573,7 @@ def selection_and_product(n, rels):
     i contains attributes belonging to Q and l contains attributes belonging to both'''
     changes = 0
 
-    if n.name == SELECTION and n.child.name in (PRODUCT, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL):
+    if n.name == SELECTION and n.child.name in (PRODUCT, JOIN):
         l_attr = n.child.left.result_format(rels)
         r_attr = n.child.right.result_format(rels)
 
