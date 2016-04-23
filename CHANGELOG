@@ -3,6 +3,7 @@
 - Changes to make failures in commutative operators commutative too
 - Added new optimization to remove useless joins
 - Correct optimization over selection and product
+- Fix Python code generator to correctly escape strings
 
 2.4
 - Improve error reporting

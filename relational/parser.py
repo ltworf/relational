@@ -194,7 +194,7 @@ class Node (object):
                 prop = '{\"%s\"}' % prop.replace(
                     ',', '\",\"').replace(ARROW, '\":\"').replace(' ', '')
             else:  # Selection
-                prop = '\"%s\"' % prop
+                prop = repr(prop)
 
             return '%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop)
         return self.name
