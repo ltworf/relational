@@ -54,4 +54,4 @@ install-relational:
 	install -m0644 -D relational_gui/resources/relational.png $${DESTDIR:-/}/usr/share/pixmaps/relational.png
 	install -D relational.1 $${DESTDIR:-/}/usr/share/man/man1/relational.1
 
-install: install-relational-cli install_module_gui install-relational
+install: install-relational-cli install-python3-relational install-relational
