@@ -53,6 +53,17 @@ RENAME = parser.RENAME
 ARROW = parser.ARROW
 
 
+def find_duplicates(node, dups=None):
+    '''
+    Finds repeated subtrees in a parse
+    tree.
+    '''
+    if dups is None:
+        dups = {}
+    dups[str(node)] = node
+
+
+
 def replace_leaves(node, context):
     '''
     Node is a parsed tree
@@ -64,7 +75,6 @@ def replace_leaves(node, context):
     modified to replace the node with the
     subtree found in context.
     '''
-    print(node, ' ' ,node.__class__)
     if node.kind == parser.UNARY:
         replace_leaves(node.child, context)
     elif node.kind == parser.BINARY:
