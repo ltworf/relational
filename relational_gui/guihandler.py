@@ -192,6 +192,9 @@ class relForm(QtWidgets.QMainWindow):
             else:
                 query = self.ui.txtQuery.text()
 
+            if not query.strip():
+                return
+
             try:
                 self.selectedRelation = self.user_interface.multi_execute(query)
             except Exception as e:
