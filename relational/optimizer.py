@@ -39,6 +39,7 @@ tokenize = parser.tokenize
 tree = parser.tree
 # End of the stuff
 
+
 def optimize_program(code, rels):
     '''
     Optimize an entire program, composed by multiple expressions
@@ -56,9 +57,11 @@ def optimize_program(code, rels):
         parsed = parser.tree(query)
         optimizations.replace_leaves(parsed, context)
         context[res] = parsed
-    return optimize_all(context[last_res], rels)
+    result = optimize_all(context[last_res], rels, tostr=False)
+    return result
 
-def optimize_all(expression, rels, specific=True, general=True, debug=None):
+
+def optimize_all(expression, rels, specific=True, general=True, debug=None,tostr=True):
     '''This function performs all the available optimizations.
 
     expression : see documentation of this module
@@ -97,7 +100,10 @@ def optimize_all(expression, rels, specific=True, general=True, debug=None):
                 if res != 0 and dbg:
                     debug.append(str(n))
                 total += res
-    return n.__str__()
+    if tostr:
+        return str(n)
+    else:
+        return n
 
 
 def specific_optimize(expression, rels):
