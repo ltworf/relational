@@ -53,6 +53,27 @@ RENAME = parser.RENAME
 ARROW = parser.ARROW
 
 
+def replace_leaves(node, context):
+    '''
+    Node is a parsed tree
+    context is a dictionary containing
+    parsed trees as values.
+
+    If a name appearing in node appears
+    also in context, the parse tree is
+    modified to replace the node with the
+    subtree found in context.
+    '''
+    print(node, ' ' ,node.__class__)
+    if node.kind == parser.UNARY:
+        replace_leaves(node.child, context)
+    elif node.kind == parser.BINARY:
+        replace_leaves(node.left, context)
+        replace_leaves(node.right, context)
+    elif node.name in context:
+        replace_node(node, context[node.name])
+
+
 def replace_node(replace, replacement):
     '''This function replaces "replace" node with the node "with",
     the father of the node will now point to the with node'''

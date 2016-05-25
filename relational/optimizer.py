@@ -25,6 +25,7 @@
 
 from relational import optimizations
 from relational import parser
+from relational.maintenance import UserInterface
 
 
 # Stuff that was here before, keeping it for compatibility
@@ -38,6 +39,24 @@ tokenize = parser.tokenize
 tree = parser.tree
 # End of the stuff
 
+def optimize_program(code, rels):
+    '''
+    Optimize an entire program, composed by multiple expressions
+    and assignments.
+    '''
+    lines = code.split('\n')
+    context = {}
+
+    for line in  lines:
+        line = line.strip()
+        if line.startswith(';') or not line:
+            continue
+        res, query = UserInterface.split_query(line)
+        last_res = res
+        parsed = parser.tree(query)
+        optimizations.replace_leaves(parsed, context)
+        context[res] = parsed
+    return optimize_all(context[last_res], rels)
 
 def optimize_all(expression, rels, specific=True, general=True, debug=None):
     '''This function performs all the available optimizations.
