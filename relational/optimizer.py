@@ -57,7 +57,7 @@ def optimize_program(code, rels):
         parsed = parser.tree(query)
         optimizations.replace_leaves(parsed, context)
         context[res] = parsed
-    result = optimize_all(context[last_res], rels, tostr=False)
+    result = optimize_all(context[last_res], rels)
     return result
 
 
