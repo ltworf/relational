@@ -20,13 +20,41 @@
 # relational operations on them.
 
 from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QTextEdit
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QTextCharFormat
 
 
 class Editor(QPlainTextEdit):
 
     def __init__(self, *args, **kwargs):
         super(Editor, self).__init__(*args, **kwargs)
+
+        self._cursor_moved()
+        self.cursorPositionChanged.connect(self._cursor_moved)
+
+    def _cursor_moved(self):
+        selections = []
+
+        # Current line
+        cur_line = QTextEdit.ExtraSelection()
+        bgcolor = QPalette().color(
+            QPalette.Normal,
+            QPalette.Window
+        ).lighter()
+        cur_line.format.setBackground(bgcolor)
+        cur_line.format.setProperty(
+            QTextCharFormat.FullWidthSelection,
+            True
+        )
+        cur_line.cursor = self.textCursor()
+        cur_line.cursor.clearSelection()
+        selections.append(cur_line)
+
+        # Apply the selections
+        self.setExtraSelections(selections)
 
     def wheelEvent(self, event):
         if event.modifiers() & Qt.ControlModifier:
