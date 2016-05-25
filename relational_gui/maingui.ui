@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>637</width>
-    <height>495</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -169,6 +169,20 @@
              </property>
              <property name="default">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdOptimizeProgram">
+             <property name="text">
+              <string>Optimize</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdUndoOptimizeProgram">
+             <property name="text">
+              <string>Undo optimize</string>
              </property>
             </widget>
            </item>
@@ -1174,6 +1188,18 @@
   <tabstop>cmdEdit</tabstop>
   <tabstop>cmdUnload</tabstop>
   <tabstop>cmdNewSession</tabstop>
+  <tabstop>txtMultiQuery</tabstop>
+  <tabstop>cmdClearMultilineQuery</tabstop>
+  <tabstop>cmdExecuteMultiline</tabstop>
+  <tabstop>cmdOptimizeProgram</tabstop>
+  <tabstop>cmdUndoOptimizeProgram</tabstop>
+  <tabstop>cmdUndoOptimize</tabstop>
+  <tabstop>cmdClearHistory</tabstop>
+  <tabstop>txtQuery</tabstop>
+  <tabstop>cmdClearQuery</tabstop>
+  <tabstop>cmdExecute</tabstop>
+  <tabstop>lstHistory</tabstop>
+  <tabstop>cmdOptimize</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -1189,7 +1215,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>79</x>
-     <y>597</y>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1205,7 +1231,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>99</x>
-     <y>605</y>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1217,11 +1243,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>516</x>
-     <y>490</y>
+     <y>491</y>
     </hint>
     <hint type="destinationlabel">
-     <x>773</x>
-     <y>599</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1233,11 +1259,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>631</x>
-     <y>422</y>
+     <y>423</y>
     </hint>
     <hint type="destinationlabel">
-     <x>760</x>
-     <y>610</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1249,11 +1275,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>516</x>
-     <y>422</y>
+     <y>423</y>
     </hint>
     <hint type="destinationlabel">
-     <x>753</x>
-     <y>594</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1268,8 +1294,8 @@
      <y>328</y>
     </hint>
     <hint type="destinationlabel">
-     <x>643</x>
-     <y>611</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1285,7 +1311,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>510</x>
-     <y>611</y>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1377,7 +1403,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>631</x>
-     <y>456</y>
+     <y>457</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1409,7 +1435,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>516</x>
-     <y>456</y>
+     <y>457</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -1472,8 +1498,8 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>256</y>
+     <x>394</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
      <x>221</x>
@@ -1488,12 +1514,12 @@
    <slot>execute()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>256</y>
+     <x>394</x>
+     <y>296</y>
     </hint>
     <hint type="destinationlabel">
-     <x>795</x>
-     <y>650</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1505,11 +1531,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>310</x>
-     <y>491</y>
+     <y>494</y>
     </hint>
     <hint type="destinationlabel">
      <x>260</x>
-     <y>490</y>
+     <y>493</y>
     </hint>
    </hints>
   </connection>
@@ -1521,7 +1547,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>394</x>
-     <y>453</y>
+     <y>459</y>
     </hint>
     <hint type="destinationlabel">
      <x>395</x>
@@ -1537,11 +1563,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>186</x>
-     <y>453</y>
+     <y>459</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
-     <y>623</y>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1553,11 +1579,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>296</x>
-     <y>453</y>
+     <y>459</y>
     </hint>
     <hint type="destinationlabel">
      <x>544</x>
-     <y>624</y>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1569,11 +1595,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>394</x>
-     <y>491</y>
+     <y>494</y>
     </hint>
     <hint type="destinationlabel">
-     <x>797</x>
-     <y>627</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1585,11 +1611,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>260</x>
-     <y>490</y>
+     <y>493</y>
     </hint>
     <hint type="destinationlabel">
-     <x>796</x>
-     <y>514</y>
+     <x>636</x>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1605,7 +1631,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>297</x>
-     <y>620</y>
+     <y>495</y>
     </hint>
    </hints>
   </connection>
@@ -1825,10 +1851,10 @@
    <hints>
     <hint type="sourcelabel">
      <x>631</x>
-     <y>490</y>
+     <y>491</y>
     </hint>
     <hint type="destinationlabel">
-     <x>796</x>
+     <x>636</x>
      <y>396</y>
     </hint>
    </hints>
@@ -1846,6 +1872,38 @@
     <hint type="destinationlabel">
      <x>318</x>
      <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdOptimizeProgram</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>optimizeProgram()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>357</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>360</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdUndoOptimizeProgram</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>undoOptimizeProgram()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>353</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>44</y>
     </hint>
    </hints>
   </connection>
@@ -1886,5 +1944,7 @@
   <slot>manageSessions()</slot>
   <slot>setMultiline(bool)</slot>
   <slot>setHistoryShown(bool)</slot>
+  <slot>optimizeProgram()</slot>
+  <slot>undoOptimizeProgram()</slot>
  </slots>
 </ui>

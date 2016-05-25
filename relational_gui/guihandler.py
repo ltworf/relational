@@ -35,6 +35,7 @@ class relForm(QtWidgets.QMainWindow):
         self.About = None
         self.Survey = None
         self.undo = None  # UndoQueue for queries
+        self.undo_program = None
         self.selectedRelation = None
         self.ui = maingui.Ui_MainWindow()
         self.user_interface = UserInterface()
@@ -148,6 +149,19 @@ class relForm(QtWidgets.QMainWindow):
         '''Undoes the optimization on the query, popping one item from the undo list'''
         if self.undo != None:
             self.ui.txtQuery.setText(self.undo)
+
+    def undoOptimizeProgram(self):
+        if self.undo_program:
+            self.ui.txtMultiQuery.setPlainText(self.undo_program)
+
+    def optimizeProgram(self):
+        self.undo_program = self.ui.txtMultiQuery.toPlainText()
+        result = optimizer.optimize_program(
+            self.ui.txtMultiQuery.toPlainText(),
+            self.user_interface.relations
+        )
+        self.ui.txtMultiQuery.setPlainText(result)
+
 
     def optimize(self):
         '''Performs all the possible optimizations on the query'''
