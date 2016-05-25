@@ -4,6 +4,8 @@
 - Added new optimization to remove useless joins
 - Correct optimization over selection and product
 - Fix Python code generator to correctly escape strings
+- Improved multi-line text editor
+- Multi-line mode has support for optimizations
 
 2.4
 - Improve error reporting
