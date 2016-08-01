@@ -175,10 +175,10 @@ class relForm(QtWidgets.QMainWindow):
                 self.user_interface.relations,
                 debug=trace
             )
-            print('==== Optimization steps ====')
-            print(query)
-            print('\n'.join(trace))
-            print('========')
+            #print('==== Optimization steps ====')
+            #print(query)
+            #print('\n'.join(trace))
+            #print('========')
 
             if res_rel:
                 result = '%s = %s' % (res_rel, result)
