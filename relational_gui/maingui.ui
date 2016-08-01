@@ -187,6 +187,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="cmdSaveQueryProgram">
+             <property name="text">
+              <string>Save query</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1194,6 +1201,7 @@
   <tabstop>cmdOptimizeProgram</tabstop>
   <tabstop>cmdUndoOptimizeProgram</tabstop>
   <tabstop>cmdUndoOptimize</tabstop>
+  <tabstop>cmdSaveQueryProgram</tabstop>
   <tabstop>cmdClearHistory</tabstop>
   <tabstop>txtQuery</tabstop>
   <tabstop>cmdClearQuery</tabstop>
@@ -1907,6 +1915,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmdSaveQueryProgram</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveQueryProgram()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>353</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>44</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>execute()</slot>
@@ -1946,5 +1970,6 @@
   <slot>setHistoryShown(bool)</slot>
   <slot>optimizeProgram()</slot>
   <slot>undoOptimizeProgram()</slot>
+  <slot>saveQueryProgram()</slot>
  </slots>
 </ui>

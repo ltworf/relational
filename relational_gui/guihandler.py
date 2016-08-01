@@ -186,6 +186,22 @@ class relForm(QtWidgets.QMainWindow):
         except Exception as e:
             self.error(e)
 
+    def saveQueryProgram(self):
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            self, QtWidgets.QApplication.translate("Form", "Save Query"),
+            "",
+            QtWidgets.QApplication.translate("Form", "Query (*.txt)")
+        )[0]
+
+        if (len(filename) == 0):  # Returns if no file was selected
+            return
+        
+        import codecs
+        f = codecs.open(filename,'w','utf-8')
+        query = self.ui.txtMultiQuery.toPlainText() # only multiline mode
+        f.write(query)
+        f.close()
+        
     def resumeHistory(self, item):
         if item is None:
             return
