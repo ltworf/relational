@@ -17,3 +17,26 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 #
 # This module splits a query into a program.
+
+
+def vargen(avoid, prefix=''):
+    '''
+    Generates temp variables.
+
+    Avoid contains variable names to skip.
+    '''
+    count = 0
+
+    while True:
+        r = ''
+        c = count
+        while True:
+            r = chr((c % 26) + 97) + r
+            if c < 26:
+                break
+            c //= 26
+
+        r = prefix + r
+        if r not in avoid:
+            yield r
+        count += 1
