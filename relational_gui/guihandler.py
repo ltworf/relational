@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
+import base64
 import sys
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -360,10 +361,13 @@ class relForm(QtWidgets.QMainWindow):
         self.settings.setValue('maingui/geometry', self.saveGeometry())
         self.settings.setValue('maingui/windowState', self.saveState())
         self.settings.setValue('maingui/splitter', self.ui.splitter.saveState())
-        self.settings.setValue('maingui/relations', self.user_interface.session_dump())
+        self.settings.setValue('maingui/relations', base64.b64encode(self.user_interface.session_dump()).decode())
 
     def _restore_settings(self):
-        self.user_interface.session_restore(self.settings.value('maingui/relations'))
+        try:
+            self.user_interface.session_restore(base64.b64decode(self.settings.value('maingui/relations')))
+        except:
+            pass
         self.updateRelations()
 
         self.setMultiline(self.settings.value('multiline', 'false') == 'true')
