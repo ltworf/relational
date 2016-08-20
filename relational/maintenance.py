@@ -22,6 +22,7 @@ import http.client
 import urllib.parse
 import os.path
 import pickle
+import base64
 
 from relational.relation import relation
 from relational import parser
@@ -103,7 +104,7 @@ class UserInterface (object):
             with open(filename, 'w') as f:
                 pickle.dump(self.relations, f)
                 return None
-        return pickle.dumps(self.relations)
+        return base64.b64encode(pickle.dumps(self.relations)).decode()
 
     def session_restore(self, session=None, filename=None):
         '''
@@ -113,7 +114,7 @@ class UserInterface (object):
         '''
         if session:
             try:
-                self.relations = pickle.loads(session)
+                self.relations = pickle.loads(base64.b64decode(session))
             except:
                 pass
         elif filename:
