@@ -25,7 +25,6 @@
 
 from relational import optimizations
 from relational import parser
-from relational import querysplit
 from relational.maintenance import UserInterface
 
 
@@ -58,8 +57,8 @@ def optimize_program(code, rels):
         parsed = parser.tree(query)
         optimizations.replace_leaves(parsed, context)
         context[res] = parsed
-    node = optimize_all(context[last_res], rels, tostr=False)
-    return querysplit.split(node, rels)
+    result = optimize_all(context[last_res], rels)
+    return result
 
 
 def optimize_all(expression, rels, specific=True, general=True, debug=None,tostr=True):

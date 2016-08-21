@@ -19,52 +19,6 @@
 # This module splits a query into a program.
 
 
-from relational import parser
-
-
-class Program:
-    def __init__(self, rels):
-        self.queries = []
-        self.dictionary = {} # Key is the query, value is the relation
-        self.vgen = vargen(rels, 'optm_')
-
-    def __str__(self):
-        r = ''
-        for q in self.queries:
-            r += '%s = %s' % (q[0], q[1]) + '\n'
-        return r.rstrip()
-
-    def append_query(self, node):
-        strnode = str(node)
-
-        rel = self.dictionary.get(strnode)
-        if rel:
-            return rel
-
-        qname = next(self.vgen)
-        self.queries.append((qname, node))
-        n = parser.Node()
-        n.kind = parser.RELATION
-        n.name = qname
-        self.dictionary[strnode] = n
-        return n
-
-def _separate(node, program):
-    if node.kind == parser.UNARY and node.child.kind != parser.RELATION:
-        _separate(node.child, program)
-        rel = program.append_query(node.child)
-        node.child = rel
-    elif node.kind == parser.BINARY:
-        if node.left.kind != parser.RELATION:
-            _separate(node.left, program)
-            rel = program.append_query(node.left)
-            node.left = rel
-        if node.right.kind != parser.RELATION:
-            _separate(node.right, program)
-            rel = program.append_query(node.right)
-            node.right = rel
-    program.append_query(node)
-
 def vargen(avoid, prefix=''):
     '''
     Generates temp variables.
@@ -86,14 +40,3 @@ def vargen(avoid, prefix=''):
         if r not in avoid:
             yield r
         count += 1
-
-def split(node, rels):
-    '''
-    Split a query into a program.
-
-    The idea is that if there are duplicated subdtrees they
-    get executed only once.
-    '''
-    p = Program(rels)
-    _separate(node, p)
-    return str(p)
