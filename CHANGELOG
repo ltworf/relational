@@ -7,6 +7,8 @@
 - Improved multi-line text editor
 - Multi-line mode has support for optimizations
 - Workaround a QSettings bug so that sessions work again
+- "Save" button works on the relation selected in the list, instead of the
+  one shown in the central table
 
 2.4
 - Improve error reporting

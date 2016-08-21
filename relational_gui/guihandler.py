@@ -273,7 +273,7 @@ class relForm(QtWidgets.QMainWindow):
                 self.ui.lstRelations.addItem(i)
 
     def saveRelation(self):
-        if self.selectedRelation is None:
+        if not self.ui.lstRelations.selectedItems():
             r = QtWidgets.QApplication.translate(
                 "Form", "Select a relation first."
             )
@@ -288,7 +288,9 @@ class relForm(QtWidgets.QMainWindow):
         )[0]
         if (len(filename) == 0):  # Returns if no file was selected
             return
-        self.selectedRelation.save(filename)
+
+        relname = self.ui.lstRelations.selectedItems()[0].text()
+        self.user_interface.relations[relname].save(filename)
 
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
