@@ -1,3 +1,9 @@
+relational (2.5-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Sun, 21 Aug 2016 11:49:38 +0200
+
 relational (2.4-1) unstable; urgency=medium
 
   * New upstream release.
