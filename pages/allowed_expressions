@@ -10,7 +10,7 @@ It has 2 class of operators:
 <li><a href="#param"  >With parameters</a></li>
 </ul>
 
-<h4><a id="noparam">Without parameters</a></h4>
+<h4><a id="noparam">Binary operators</a></h4>
 
 <p>
 Operators without parameters work on two relations. The syntax for those operators is: <code>relation operator relation</code>.
@@ -49,7 +49,7 @@ Operators without parameters work on two relations. The syntax for those operato
     </tr>
 </table>
 
-<h4><a id="param">With parameters</a></h4>
+<h4><a id="param">Unary operators</a></h4>
 
 <p>
 Operators with parameters work on a single relation, and the result will depend on the passed parameters. The syntax for those is: <code>operator parameters (relation)</code>
