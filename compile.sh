@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 for i in pages/*
 do
