@@ -45,7 +45,7 @@ If it needs some dependencies:
  * PyQt5
  * pyuic5 and pyrcc5
 
-You will need to run
+In Linux platforms you will need to run
 ```
 make
 ```
@@ -62,3 +62,9 @@ or
 ```
 python3 relational_gui.py
 ```
+
+In Windows platform you will need to run
+```
+relational-windows.bat
+```
+to generate some .py files and launch the application.
