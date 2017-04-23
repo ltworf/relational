@@ -237,10 +237,7 @@ class Node (object):
         elif self.kind == BINARY and self.name == DIVISION:
             return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
         elif self.name == PROJECTION:
-            l = []
-            for i in self.prop.split(','):
-                l.append(i.strip())
-            return l
+            return [i.strip() for i in self.prop.split(',')]
         elif self.name == PRODUCT:
             return self.left.result_format(rels) + self.right.result_format(rels)
         elif self.name == SELECTION:
