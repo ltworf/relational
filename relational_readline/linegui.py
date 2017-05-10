@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2010-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2010-2017  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -148,7 +148,9 @@ def survey():
     for i in fields:
         a = input('%s: ' % i)
         post[i] = a
-    maintenance.send_survey(post)
+    response = maintenance.send_survey(post)
+    if response == -1:
+        print('Yeah, not sending that.')
 
 
 def help(command):

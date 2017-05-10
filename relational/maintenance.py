@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
 #
 # Relation is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,13 +29,24 @@ from relational import parser
 from relational.rtypes import is_valid_relation_name
 
 
+SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
+
+
 def send_survey(data):
     '''Sends the survey. Data must be a dictionary.
-    returns the http response'''
+    returns the http response.
+
+    returns 0 in case of error
+    returns -1 in case of swearwords'''
 
     post = ''
     for i in data.keys():
         post += '%s: %s\n' % (i, data[i].strip())
+
+    lowpost = post.lower()
+    for i in SWEARWORDS:
+        if i in lowpost:
+            return -1
 
     # sends the string
     params = urllib.parse.urlencode({'survey': post})
