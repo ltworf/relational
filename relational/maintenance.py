@@ -35,7 +35,7 @@ def send_survey(data):
 
     post = ''
     for i in data.keys():
-        post += '%s: %s\n' % (i, data[i])
+        post += '%s: %s\n' % (i, data[i].strip())
 
     # sends the string
     params = urllib.parse.urlencode({'survey': post})
