@@ -1,5 +1,6 @@
 2.6
 - Improved survey sending
+- Prevent names from being reserved keywords
 
 2.5
 - Add new class of tests for queries that are supposed to fail

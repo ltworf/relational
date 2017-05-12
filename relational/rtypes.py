@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
 #
 # Relation is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 # implementing dates to use in selection.
 
 import datetime
+import keyword
 import re
 
 RELATION_NAME_REGEXP = re.compile(r'^[_a-z][_a-z0-9]*$', re.IGNORECASE)
@@ -161,7 +162,8 @@ class Rdate (object):
 def is_valid_relation_name(name):
     '''Checks if a name is valid for a relation.
     Returns boolean'''
-    return re.match(RELATION_NAME_REGEXP, name) != None
+    return re.match(RELATION_NAME_REGEXP, name) != None and not keyword.iskeyword(name)
+
 
 # Backwards compatibility
 rdate = Rdate
