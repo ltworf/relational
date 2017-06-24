@@ -40,10 +40,9 @@ tests_path = 'test/'
 
 def readfile(fname):
     '''Reads a file as string and returns its content'''
-    fd = open(fname, encoding='utf-8')
-    expr = fd.read()
-    fd.close()
-    return expr
+    with open(fname, encoding='utf-8') as fd:
+        expr = fd.read()
+        return expr
 
 
 def load_relations():
