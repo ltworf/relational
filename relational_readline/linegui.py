@@ -23,6 +23,7 @@ import logging
 import os.path
 import os
 import sys
+from typing import Optional
 
 from relational import relation, parser, rtypes
 from relational import maintenance
@@ -46,10 +47,9 @@ class SimpleCompleter:
 
     '''Handles completion'''
 
-    def __init__(self, options):
+    def __init__(self, options) -> None:
         '''Takes a list of valid completion options'''
         self.options = sorted(options)
-        return
 
     def add_completion(self, option):
         '''Adds one string to the list of the valid completion options'''
@@ -110,7 +110,14 @@ completer = SimpleCompleter(
      '_DIFFERENCE ', '_JOIN ', '_LJOIN ', '_RJOIN ', '_FJOIN ', '_PROJECTION ', '_RENAME_TO ', '_SELECTION ', '_RENAME ', '_DIVISION '])
 
 
-def load_relation(filename, defname=None):
+def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
+    '''
+    Loads a relation into the set. Defname is the given name
+    to the relation.
+
+    Returns the name to the relation, or None if it was
+    not loaded.
+    '''
     if not os.path.isfile(filename):
         print(colorize(
             "%s is not a file" % filename, ERROR_COLOR), file=sys.stderr)
@@ -137,7 +144,7 @@ def load_relation(filename, defname=None):
         return None
 
 
-def survey():
+def survey() -> None:
     '''performs a survey'''
     post = {'software': 'Relational algebra (cli)', 'version': version}
 
@@ -151,7 +158,7 @@ def survey():
         print('Yeah, not sending that.')
 
 
-def help(command):
+def help(command: str) -> None:
     '''Prints help on the various functions'''
     p = command.split(' ', 1)
     if len(p) == 1:
@@ -176,10 +183,15 @@ def help(command):
         'HELP': 'Prints the help on a command',
         'SURVEY': 'Fill and send a survey',
     }
-    print (cmdhelp.get(cmd, 'Unknown command: %s' % cmd))
+    print(cmdhelp.get(cmd, 'Unknown command: %s' % cmd))
 
 
-def exec_line(command):
+def exec_line(command: str) -> None:
+    '''
+    Executes a line.
+
+    If it's a command, runs it, if it's a query runs it too
+    '''
     command = command.strip()
 
     if command.startswith(';'):
@@ -217,7 +229,6 @@ def exec_line(command):
             completer.remove_completion(pars[1])
         else:
             print(colorize("No such relation %s" % pars[1], ERROR_COLOR))
-        pass
     elif command.startswith('SAVE '):
         pars = command.split(' ')
         if len(pars) != 3:
@@ -238,7 +249,7 @@ def exec_line(command):
         exec_query(command)
 
 
-def replacements(query):
+def replacements(query: str) -> str:
     '''This funcion replaces ascii easy operators with the correct ones'''
     rules = (
         ('_PRODUCT', parser.PRODUCT),
@@ -260,9 +271,12 @@ def replacements(query):
     return query
 
 
-def exec_query(command):
-    '''This function executes a query and prints the result on the screen
-    if the command terminates with ";" the result will not be printed
+def exec_query(command: str) -> None:
+    '''
+    Executes a query and prints the result on the screen
+    if the command terminates with ";" the result will not be printed.
+
+    Updates the set of relations.
     '''
 
     # If it terminates with ; doesn't print the result
