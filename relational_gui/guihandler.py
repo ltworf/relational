@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@ from relational_gui import about
 from relational_gui import survey
 from relational_gui import surveyForm
 from relational_gui import maingui
+
+
+version = ''
 
 
 class relForm(QtWidgets.QMainWindow):

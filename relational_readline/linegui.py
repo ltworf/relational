@@ -35,6 +35,9 @@ COLOR_GREEN = 0x00ff00
 
 TTY = os.isatty(0) and os.isatty(1)
 
+version = ''
+
+
 def printtty(*args, **kwargs):
     '''
     Prints only if stdout and stdin are a tty

@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
+from typing import Optional
+
 from relational import rtypes
 
 RELATION = 0
@@ -100,8 +102,8 @@ class Node (object):
     operation.
 
     This class is used to convert an expression into python code.'''
-    kind = None
-    __hash__ = None
+    kind = None #  type: Optional[int]
+    __hash__ = None #  type: None
 
     def __init__(self, expression=None):
         '''Generates the tree from the tokenized expression

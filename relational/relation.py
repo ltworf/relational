@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ class Relation (object):
     An empty relation needs a header, and can be filled using the insert()
     method.
     '''
-    __hash__ = None
+    __hash__ = None #  type: None
 
     def __init__(self, filename=""):
         self._readonly = False

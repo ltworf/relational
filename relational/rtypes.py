@@ -57,7 +57,7 @@ class Rstring (str):
                 self._autocast = rdate(self)
         return self._autocast
 
-    def isInt(self):
+    def isInt(self) -> bool:
         '''Returns true if the string represents an int number
         it only considers as int numbers the strings matching
         the following regexp:
@@ -65,7 +65,7 @@ class Rstring (str):
         '''
         return Rstring.int_regexp.match(self) is not None
 
-    def isFloat(self):
+    def isFloat(self) -> bool:
         '''Returns true if the string represents a float number
         it only considers as float numbers, the strings matching
         the following regexp:
@@ -73,7 +73,7 @@ class Rstring (str):
         '''
         return Rstring.float_regexp.match(self) is not None
 
-    def isDate(self):
+    def isDate(self) -> bool:
         '''Returns true if the string represents a date,
         in the format YYYY-MM-DD. as separators '-' , '\', '/' are allowed.
         As side-effect, the date object will be stored for future usage, so
@@ -159,7 +159,7 @@ class Rdate (object):
         return (self.intdate - other.intdate).days
 
 
-def is_valid_relation_name(name):
+def is_valid_relation_name(name: str) -> bool:
     '''Checks if a name is valid for a relation.
     Returns boolean'''
     return re.match(RELATION_NAME_REGEXP, name) != None and not keyword.iskeyword(name)
