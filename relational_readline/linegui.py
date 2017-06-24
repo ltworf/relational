@@ -30,6 +30,7 @@ from xtermcolor import colorize
 
 PROMPT_COLOR = 0xffff00
 ERROR_COLOR = 0xff0000
+COLOR_GREEN = 0x00ff00
 
 TTY = os.isatty(0) and os.isatty(1)
 
@@ -38,10 +39,10 @@ def printtty(*args, **kwargs):
     Prints only if stdout and stdin are a tty
     '''
     if TTY:
-        print(*args,**kwargs)
+        print(*args, **kwargs)
 
 
-class SimpleCompleter(object):
+class SimpleCompleter:
 
     '''Handles completion'''
 
@@ -60,14 +61,12 @@ class SimpleCompleter(object):
         '''Removes one completion from the list of the valid completion options'''
         if option in self.options:
             self.options.remove(option)
-        pass
 
     def complete(self, text, state):
         response = None
         if state == 0:
             # This is the first time for this text, so build a match list.
             if text:
-
                 self.matches = [s
                                 for s in self.options
                                 if s and s.startswith(text)]
@@ -113,34 +112,33 @@ completer = SimpleCompleter(
 
 def load_relation(filename, defname=None):
     if not os.path.isfile(filename):
-        print (colorize(
+        print(colorize(
             "%s is not a file" % filename, ERROR_COLOR), file=sys.stderr)
         return None
 
-    f = filename.split('/')
-    if defname == None:
-        defname = f[len(f) - 1].lower()
+    if defname is None:
+        f = filename.split('/')
+        defname = f[-1].lower()
         if defname.endswith(".csv"):  # removes the extension
             defname = defname[:-4]
 
     if not rtypes.is_valid_relation_name(defname):
-        print (colorize(
+        print(colorize(
             "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
-        return
+        return None
     try:
         relations[defname] = relation.relation(filename)
 
         completer.add_completion(defname)
-        printtty(colorize("Loaded relation %s" % defname, 0x00ff00))
+        printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
         return defname
     except Exception as e:
-        print (colorize(e, ERROR_COLOR), file=sys.stderr)
+        print(colorize(e, ERROR_COLOR), file=sys.stderr)
         return None
 
 
 def survey():
     '''performs a survey'''
-
     post = {'software': 'Relational algebra (cli)', 'version': version}
 
     fields = ('System', 'Country', 'School', 'Age', 'How did you find',
@@ -157,37 +155,28 @@ def help(command):
     '''Prints help on the various functions'''
     p = command.split(' ', 1)
     if len(p) == 1:
-        print ('HELP command')
-        print (
-            'To execute a query:\n[relation =] query\nIf the 1st part is omitted, the result will be stored in the relation last_.')
-        print (
-            'To prevent from printing the relation, append a ; to the end of the query.')
-        print (
-            'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.')
-        print (
-            'Rember: the tab key is enabled and can be very helpful if you can\'t remember something.')
+        print(
+            'HELP command\n'
+            'To execute a query:\n'
+            '[relation =] query\n'
+            'If the 1st part is omitted, the result will be stored in the relation last_.\n'
+            'To prevent from printing the relation, append a ; to the end of the query.\n'
+            'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.\n'
+            'Rember: completion is enabled and can be very helpful if you can\'t remember something.'
+        )
         return
     cmd = p[1]
 
-    if cmd == 'QUIT':
-        print ('Quits the program')
-    elif cmd == 'LIST':
-        print ('Lists the relations loaded')
-    elif cmd == 'LOAD':
-        print ('LOAD filename [relationame]')
-        print ('Loads a relation into memory')
-    elif cmd == 'UNLOAD':
-        print ('UNLOAD relationame')
-        print ('Unloads a relation from memory')
-    elif cmd == 'SAVE':
-        print ('SAVE filename relationame')
-        print ('Saves a relation in a file')
-    elif cmd == 'HELP':
-        print ('Prints the help on a command')
-    elif cmd == 'SURVEY':
-        print ('Fill and send a survey')
-    else:
-        print ('Unknown command: %s' % cmd)
+    cmdhelp = {
+        'QUIT': 'Quits the program',
+        'LIST': 'Lists the relations loaded',
+        'LOAD': 'LOAD filename [relationame]\nLoads a relation into memory',
+        'UNLOAD': 'UNLOAD relationame\nUnloads a relation from memory',
+        'SAVE': 'SAVE filename relationame\nSaves a relation in a file',
+        'HELP': 'Prints the help on a command',
+        'SURVEY': 'Fill and send a survey',
+    }
+    print (cmdhelp.get(cmd, 'Unknown command: %s' % cmd))
 
 
 def exec_line(command):
@@ -202,13 +191,13 @@ def exec_line(command):
     elif command == 'LIST':  # Lists all the loaded relations
         for i in relations:
             if not i.startswith('_'):
-                print (i)
+                print(i)
     elif command == 'SURVEY':
         survey()
     elif command.startswith('LOAD '):  # Loads a relation
         pars = command.split(' ')
         if len(pars) == 1:
-            print (colorize("Missing parameter", ERROR_COLOR))
+            print(colorize("Missing parameter", ERROR_COLOR))
             return
 
         filename = pars[1]
@@ -221,50 +210,53 @@ def exec_line(command):
     elif command.startswith('UNLOAD '):
         pars = command.split(' ')
         if len(pars) < 2:
-            print (colorize("Missing parameter", ERROR_COLOR))
+            print(colorize("Missing parameter", ERROR_COLOR))
             return
         if pars[1] in relations:
             del relations[pars[1]]
             completer.remove_completion(pars[1])
         else:
-            print (colorize("No such relation %s" % pars[1], ERROR_COLOR))
+            print(colorize("No such relation %s" % pars[1], ERROR_COLOR))
         pass
     elif command.startswith('SAVE '):
         pars = command.split(' ')
         if len(pars) != 3:
-            print (colorize("Missing parameter", ERROR_COLOR))
+            print(colorize("Missing parameter", ERROR_COLOR))
             return
 
         filename = pars[1]
         defname = pars[2]
 
         if defname not in relations:
-            print (colorize("No such relation %s" % defname, ERROR_COLOR))
+            print(colorize("No such relation %s" % defname, ERROR_COLOR))
             return
-
         try:
             relations[defname].save(filename)
         except Exception as e:
-            print (colorize(e, ERROR_COLOR))
+            print(colorize(e, ERROR_COLOR))
     else:
         exec_query(command)
 
 
 def replacements(query):
     '''This funcion replaces ascii easy operators with the correct ones'''
-    query = query.replace(u'_PRODUCT', parser.PRODUCT)
-    query = query.replace(u'_UNION', parser.UNION)
-    query = query.replace(u'_INTERSECTION', parser.INTERSECTION)
-    query = query.replace(u'_DIFFERENCE', parser.DIFFERENCE)
-    query = query.replace(u'_JOIN', parser.JOIN)
-    query = query.replace(u'_LJOIN', parser.JOIN_LEFT)
-    query = query.replace(u'_RJOIN', parser.JOIN_RIGHT)
-    query = query.replace(u'_FJOIN', parser.JOIN_FULL)
-    query = query.replace(u'_PROJECTION', parser.PROJECTION)
-    query = query.replace(u'_RENAME_TO', parser.ARROW)
-    query = query.replace(u'_SELECTION', parser.SELECTION)
-    query = query.replace(u'_RENAME', parser.RENAME)
-    query = query.replace(u'_DIVISION', parser.DIVISION)
+    rules = (
+        ('_PRODUCT', parser.PRODUCT),
+        ('_UNION', parser.UNION),
+        ('_INTERSECTION', parser.INTERSECTION),
+        ('_DIFFERENCE', parser.DIFFERENCE),
+        ('_JOIN', parser.JOIN),
+        ('_LJOIN', parser.JOIN_LEFT),
+        ('_RJOIN', parser.JOIN_RIGHT),
+        ('_FJOIN', parser.JOIN_FULL),
+        ('_PROJECTION', parser.PROJECTION),
+        ('_RENAME_TO', parser.ARROW),
+        ('_SELECTION', parser.SELECTION),
+        ('_RENAME', parser.RENAME),
+        ('_DIVISION', parser.DIVISION),
+    )
+    for asciiop, op in rules:
+        query = query.replace(asciiop, op)
     return query
 
 
@@ -292,17 +284,17 @@ def exec_query(command):
         pyquery = parser.parse(query)
         result = pyquery(relations)
 
-        printtty(colorize("-> query: %s" % pyquery, 0x00ff00))
+        printtty(colorize("-> query: %s" % pyquery, COLOR_GREEN))
 
         if printrel:
-            print ()
-            print (result)
+            print()
+            print(result)
 
         relations[relname] = result
 
         completer.add_completion(relname)
     except Exception as e:
-        print (colorize(str(e), ERROR_COLOR))
+        print(colorize(str(e), ERROR_COLOR))
 
 
 def main(files=[]):
@@ -321,13 +313,12 @@ def main(files=[]):
 
     while True:
         try:
-
             line = input(colorize('> ' if TTY else '', PROMPT_COLOR))
             if isinstance(line, str) and len(line) > 0:
                 exec_line(line)
         except KeyboardInterrupt:
             if TTY:
-                print ('^C\n')
+                print('^C\n')
                 continue
             else:
                 break
