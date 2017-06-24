@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ version = "2.6"
 
 def printver(exit=True):
     print ("Relational %s" % version)
-    print ("Copyright (C) 2008-2016 Salvo 'LtWorf' Tomaselli.")
+    print ("Copyright (C) 2008-2017 Salvo 'LtWorf' Tomaselli.")
     print ()
     print ("This program comes with ABSOLUTELY NO WARRANTY.")
     print ("This is free software, and you are welcome to redistribute it")
