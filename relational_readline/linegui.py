@@ -133,7 +133,7 @@ def load_relation(filename, defname=None):
         printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
         return defname
     except Exception as e:
-        print(colorize(e, ERROR_COLOR), file=sys.stderr)
+        print(colorize(str(e), ERROR_COLOR), file=sys.stderr)
         return None
 
 
