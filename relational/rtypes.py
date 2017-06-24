@@ -23,11 +23,12 @@
 import datetime
 import keyword
 import re
+from typing import Union
 
 RELATION_NAME_REGEXP = re.compile(r'^[_a-z][_a-z0-9]*$', re.IGNORECASE)
 
 
-class Rstring (str):
+class Rstring(str):
 
     '''String subclass with some custom methods'''
 
@@ -37,7 +38,7 @@ class Rstring (str):
         r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$'
     )
 
-    def autocast(self):
+    def autocast(self) -> Union[int, float, 'Rdate', 'Rstring']:
         '''
         Returns the automatic cast for this
         value.
@@ -47,7 +48,7 @@ class Rstring (str):
         except:
             pass
 
-        self._autocast = self
+        self._autocast = self #  type: Union[int, float, 'Rdate', 'Rstring']
         if len(self) > 0:
             if self.isInt():
                 self._autocast = int(self)
@@ -80,7 +81,7 @@ class Rstring (str):
         no more parsings are needed
         '''
         try:
-            return self._isdate
+            return self._isdate #  type: ignore
         except:
             pass
 

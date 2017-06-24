@@ -23,8 +23,9 @@ import urllib.parse
 import os.path
 import pickle
 import base64
+from typing import Optional, Tuple
 
-from relational.relation import relation
+from relational.relation import Relation
 from relational import parser
 from relational.rtypes import is_valid_relation_name
 
@@ -32,7 +33,7 @@ from relational.rtypes import is_valid_relation_name
 SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
 
 
-def send_survey(data):
+def send_survey(data) -> int:
     '''Sends the survey. Data must be a dictionary.
     returns the http response.
 
@@ -60,7 +61,7 @@ def send_survey(data):
         return 0
 
 
-def check_latest_version():
+def check_latest_version() -> Optional[str]:
     '''Returns the latest version available.
     Heavely dependent on server and server configurations
     not granted to work forever.'''
@@ -78,30 +79,30 @@ def check_latest_version():
     return s.decode().strip()
 
 
-class UserInterface (object):
+class UserInterface:
 
     '''It is used to provide services to the user interfaces, in order to
     reduce the amount of duplicated code present in different user interfaces.
     '''
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.session_reset()
 
-    def load(self, filename, name):
+    def load(self, filename: str, name: str) -> None:
         '''Loads a relation from file, and gives it a name to
         be used in subsequent queries.'''
-        rel = relation(filename)
+        rel = Relation(filename)
         self.set_relation(name, rel)
 
-    def unload(self, name):
+    def unload(self, name: str) -> None:
         '''Unloads an existing relation.'''
         del self.relations[name]
 
-    def store(self, filename, name):
+    def store(self, filename: str, name: str) -> None:
         '''Stores a relation to file.'''
-        pass
+        raise Exception('Not implemented')
 
-    def session_dump(self, filename=None):
+    def session_dump(self, filename: Optional[str] = None) -> Optional[str]:
         '''
         Dumps the session.
 
@@ -109,7 +110,7 @@ class UserInterface (object):
         inside the file, and None is returned.
 
         If no filename is specified, the session is returned
-        as bytes.
+        as string.
         '''
         if filename:
             with open(filename, 'w') as f:
@@ -117,11 +118,11 @@ class UserInterface (object):
                 return None
         return base64.b64encode(pickle.dumps(self.relations)).decode()
 
-    def session_restore(self, session=None, filename=None):
+    def session_restore(self, session: Optional[bytes] = None, filename: Optional[str] = None) -> None:
         '''
         Restores a session.
 
-        Either from bytes or from a file
+        Either from bytes or from a file.
         '''
         if session:
             try:
@@ -132,23 +133,23 @@ class UserInterface (object):
             with open(filename) as f:
                 self.relations = pickle.load(f)
 
-    def session_reset(self):
+    def session_reset(self) -> None:
         '''
         Resets the session to a clean one
         '''
         self.relations = {}
 
-    def get_relation(self, name):
+    def get_relation(self, name: str) -> Relation:
         '''Returns the relation corresponding to name.'''
         return self.relations[name]
 
-    def set_relation(self, name, rel):
+    def set_relation(self, name: str, rel: Relation) -> None:
         '''Sets the relation corresponding to name.'''
         if not is_valid_relation_name(name):
             raise Exception('Invalid name for destination relation')
         self.relations[name] = rel
 
-    def suggest_name(self, filename):
+    def suggest_name(self, filename: str) -> Optional[str]:
         '''
         Returns a possible name for a relation, given
         a filename.
@@ -167,7 +168,7 @@ class UserInterface (object):
             return None
         return name
 
-    def execute(self, query, relname='last_'):
+    def execute(self, query: str, relname: str = 'last_') -> Relation:
         '''Executes a query, returns the result and if
         relname is not None, adds the result to the
         dictionary, with the name given in relname.'''
@@ -180,7 +181,7 @@ class UserInterface (object):
         return result
 
     @staticmethod
-    def split_query(query, default_name='last_'):
+    def split_query(query: str, default_name='last_') -> Tuple[str, str]:
         '''
         Accepts a query which might have an initial value
         assignment
@@ -196,14 +197,14 @@ class UserInterface (object):
             query = sq[1].strip()
         return default_name, query
 
-    def multi_execute(self, query):
+    def multi_execute(self, query: str) -> Relation:
         '''Executes multiple queries, separated by \n
 
         They can have a syntax of
         [varname =] query
         to assign the result to a new relation
         '''
-        r = relation()
+        r = Relation()
         queries = query.split('\n')
         for query in queries:
             if query.strip() == '':

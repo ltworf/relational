@@ -24,7 +24,7 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
-from typing import Optional
+from typing import Optional, Union, List, Any
 
 from relational import rtypes
 
@@ -85,7 +85,7 @@ class CallableString(str):
         return eval(self, context)
 
 
-class Node (object):
+class Node:
 
     '''This class is a node of a relational expression. Leaves are relations
     and internal nodes are operations.
@@ -105,7 +105,7 @@ class Node (object):
     kind = None #  type: Optional[int]
     __hash__ = None #  type: None
 
-    def __init__(self, expression=None):
+    def __init__(self, expression: Optional[list] = None) -> None:
         '''Generates the tree from the tokenized expression
         If no expression is specified then it will create an empty node'''
         if expression == None or len(expression) == 0:
@@ -172,7 +172,7 @@ class Node (object):
         code = self._toPython()
         return compile(code, '<relational_expression>', 'eval')
 
-    def toPython(self):
+    def toPython(self) -> CallableString:
         '''This method converts the AST into a python code string, which
         will require the relation module to be executed.
 
@@ -180,7 +180,7 @@ class Node (object):
         directly called.'''
         return CallableString(self._toPython())
 
-    def _toPython(self):
+    def _toPython(self) -> str:
         '''
         Same as toPython but returns a regular string
         '''
@@ -201,7 +201,7 @@ class Node (object):
             return '%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop)
         return self.name
 
-    def printtree(self, level=0):
+    def printtree(self, level: int = 0) -> str:
         '''returns a representation of the tree using indentation'''
         r = ''
         for i in range(level):
@@ -213,10 +213,9 @@ class Node (object):
         elif self.name in u_operators:
             r += '\t%s\n' % self.prop
             r += self.child.printtree(level + 1)
-
         return '\n' + r
 
-    def get_left_leaf(self):
+    def get_left_leaf(self) -> 'Node':
         '''This function returns the leftmost leaf in the tree.'''
         if self.kind == RELATION:
             return self
@@ -225,12 +224,12 @@ class Node (object):
         elif self.kind == BINARY:
             return self.left.get_left_leaf()
 
-    def result_format(self, rels):
+    def result_format(self, rels: dict) -> list:
         '''This function returns a list containing the fields that the resulting relation will have.
         It requires a dictionary where keys are the names of the relations and the values are
         the relation objects.'''
-        if rels == None:
-            return
+        if not isinstance(rels, dict):
+            raise TypeError('Can\'t be of None type')
 
         if self.kind == RELATION:
             return list(rels[self.name].header)
@@ -285,7 +284,7 @@ class Node (object):
             return (le + self.name + re)
 
 
-def _find_matching_parenthesis(expression, start=0, openpar=u'(', closepar=u')'):
+def _find_matching_parenthesis(expression: str, start=0, openpar=u'(', closepar=u')') -> int:
     '''This function returns the position of the matching
     close parenthesis to the 1st open parenthesis found
     starting from start (0 by default)'''
@@ -304,7 +303,6 @@ def _find_matching_parenthesis(expression, start=0, openpar=u'(', closepar=u')')
         if string:
             continue
 
-
         if expression[i] == openpar:
             par_count += 1
         elif expression[i] == closepar:
@@ -312,7 +310,7 @@ def _find_matching_parenthesis(expression, start=0, openpar=u'(', closepar=u')')
             if par_count == 0:
                 return i  # Closing parenthesis of the parameter
 
-def _find_token(haystack, needle):
+def _find_token(haystack: str, needle: str) -> int:
     '''
     Like the string function find, but
     ignores tokens that are within a string
@@ -337,17 +335,17 @@ def _find_token(haystack, needle):
     return r
 
 
-def tokenize(expression):
+def tokenize(expression: str) -> list:
     '''This function converts a relational expression into a list where
     every token of the expression is an item of a list. Expressions into
     parenthesis will be converted into sublists.'''
 
-    items = []  # List for the tokens
+    # List for the tokens
+    items = [] #  type: List[Union[str,list]]
 
     expression = expression.strip()  # Removes initial and ending spaces
 
     while len(expression) > 0:
-
         if expression.startswith('('):  # Parenthesis state
             end = _find_matching_parenthesis(expression)
             if end == None:
@@ -384,17 +382,16 @@ def tokenize(expression):
                     break
             items.append(expression[:r])
             expression = expression[r:].strip()
-
     return items
 
 
-def tree(expression):
+def tree(expression: str) -> Node:
     '''This function parses a relational algebra expression into a AST and returns
     the root node using the Node class.'''
-    return node(tokenize(expression))
+    return Node(tokenize(expression))
 
 
-def parse(expr):
+def parse(expr: str) -> CallableString:
     '''This function parses a relational algebra expression, and returns a
     CallableString (a string that can be called) whith the corresponding
     Python expression.

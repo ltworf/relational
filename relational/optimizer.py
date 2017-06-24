@@ -22,32 +22,23 @@
 # relational query, or it can be a parse tree for a relational expression (ie: class parser.node).
 # The functions will always return a string with the optimized query, but if a parse tree was provided,
 # the parse tree itself will be modified accordingly.
+from typing import Union, Optional, Dict, Any
 
 from relational import optimizations
-from relational import parser
+from relational.parser import Node, RELATION, UNARY, BINARY, op_functions, tokenize, tree
 from relational import querysplit
 from relational.maintenance import UserInterface
 
-
-# Stuff that was here before, keeping it for compatibility
-RELATION = parser.RELATION
-UNARY = parser.UNARY
-BINARY = parser.BINARY
-
-op_functions = parser.op_functions
-node = parser.node
-tokenize = parser.tokenize
-tree = parser.tree
-# End of the stuff
+ContextDict = Dict[str,Any]
 
 
-def optimize_program(code, rels):
+def optimize_program(code, rels: ContextDict):
     '''
     Optimize an entire program, composed by multiple expressions
     and assignments.
     '''
     lines = code.split('\n')
-    context = {}
+    context = {} #  type: ContextDict
 
     for line in  lines:
         line = line.strip()
@@ -55,14 +46,14 @@ def optimize_program(code, rels):
             continue
         res, query = UserInterface.split_query(line)
         last_res = res
-        parsed = parser.tree(query)
+        parsed = tree(query)
         optimizations.replace_leaves(parsed, context)
         context[res] = parsed
     node = optimize_all(context[last_res], rels, tostr=False)
     return querysplit.split(node, rels)
 
 
-def optimize_all(expression, rels, specific=True, general=True, debug=None,tostr=True):
+def optimize_all(expression: Union[str, Node], rels: ContextDict, specific: bool = True, general: bool = True, debug: Optional[list] = None, tostr: bool = True) -> Union[str, Node]:
     '''This function performs all the available optimizations.
 
     expression : see documentation of this module
@@ -76,7 +67,7 @@ def optimize_all(expression, rels, specific=True, general=True, debug=None,tostr
     Return value: this will return an optimized version of the expression'''
     if isinstance(expression, str):
         n = tree(expression)  # Gets the tree
-    elif isinstance(expression, node):
+    elif isinstance(expression, Node):
         n = expression
     else:
         raise (TypeError("expression must be a string or a node"))
@@ -107,7 +98,7 @@ def optimize_all(expression, rels, specific=True, general=True, debug=None,tostr
         return n
 
 
-def specific_optimize(expression, rels):
+def specific_optimize(expression, rels: ContextDict):
     '''This function performs specific optimizations. Means that it will need to
     know the fields used by the relations.
 

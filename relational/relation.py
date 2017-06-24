@@ -22,6 +22,7 @@
 import csv
 from itertools import chain, repeat
 from collections import deque
+from typing import List, Union
 
 from relational.rtypes import *
 
@@ -52,9 +53,9 @@ class Relation (object):
     '''
     __hash__ = None #  type: None
 
-    def __init__(self, filename=""):
+    def __init__(self, filename : str = '') -> None:
         self._readonly = False
-        self.content = set()
+        self.content = set() #  type: Set[tuple]
 
         if len(filename) == 0:  # Empty relation
             self.header = Header([])
@@ -65,14 +66,14 @@ class Relation (object):
             iterator = ((self.insert(i) for i in reader))
             deque(iterator, maxlen=0)
 
-    def _make_duplicate(self, copy):
+    def _make_duplicate(self, copy: 'Relation') -> None:
         '''Flag that the relation "copy" is pointing
         to the same set as this relation.'''
 
         self._readonly = True
         copy._readonly = True
 
-    def _make_writable(self, copy_content=True):
+    def _make_writable(self, copy_content : bool = True) -> None:
         '''If this relation is marked as readonly, this
         method will copy the content to make it writable too
 
@@ -91,7 +92,7 @@ class Relation (object):
     def __contains__(self, key):
         return key in self.content
 
-    def save(self, filename):
+    def save(self, filename: str) -> None:
         '''
         Saves the relation in a file. Will save using the csv
         format as defined in RFC4180.
@@ -107,7 +108,7 @@ class Relation (object):
             # Writing content, already in the correct format
             writer.writerows(self.content)
 
-    def _rearrange(self, other):
+    def _rearrange(self, other: 'Relation') -> 'Relation':
         '''If two relations share the same attributes in a different order, this method
         will use projection to make them have the same attributes' order.
         It is not exactely related to relational algebra. Just a method used
@@ -123,7 +124,7 @@ class Relation (object):
             ','.join(self.header), ','.join(other.header)
         ))
 
-    def selection(self, expr):
+    def selection(self, expr: str) -> 'Relation':
         '''
         Selection, expr must be a valid Python expression; can contain field names.
         '''
@@ -149,7 +150,7 @@ class Relation (object):
                     "Failed to evaluate %s\n%s" % (expr, e.__str__()))
         return newt
 
-    def product(self, other):
+    def product(self, other: 'Relation') -> 'Relation':
         '''
         Cartesian product. Attributes of the relations must differ.
         '''
@@ -168,7 +169,7 @@ class Relation (object):
                 newt.content.add(i + j)
         return newt
 
-    def projection(self, * attributes):
+    def projection(self, * attributes) -> 'Relation':
         '''
         Can be called in two different ways:
         a.projection('field1','field2')
@@ -199,7 +200,7 @@ class Relation (object):
             newt.content.add(tuple(row))
         return newt
 
-    def rename(self, params):
+    def rename(self, params: 'Relation') -> 'Relation':
         '''
         Takes a dictionary.
 
@@ -215,7 +216,7 @@ class Relation (object):
         self._make_duplicate(newt)
         return newt
 
-    def intersection(self, other):
+    def intersection(self, other: 'Relation') -> 'Relation':
         '''
         Intersection operation. The result will contain items present in both
         operands.
@@ -228,7 +229,7 @@ class Relation (object):
         newt.content = self.content.intersection(other.content)
         return newt
 
-    def difference(self, other):
+    def difference(self, other: 'Relation') -> 'Relation':
         '''Difference operation. The result will contain items present in first
         operand but not in second one.
         '''
@@ -239,7 +240,7 @@ class Relation (object):
         newt.content = self.content.difference(other.content)
         return newt
 
-    def division(self, other):
+    def division(self, other: 'Relation') -> 'Relation':
         '''Division operator
         The division is a binary operation that is written as R ÷ S. The
         result consists of the restrictions of tuples in R to the
@@ -265,7 +266,7 @@ class Relation (object):
         t = self.projection(d_headers).product(other)
         return self.projection(d_headers).difference(t.difference(self).projection(d_headers))
 
-    def union(self, other):
+    def union(self, other: 'Relation') -> 'Relation':
         '''Union operation. The result will contain items present in first
         and second operands.
         '''
@@ -276,18 +277,18 @@ class Relation (object):
         newt.content = self.content.union(other.content)
         return newt
 
-    def thetajoin(self, other, expr):
+    def thetajoin(self, other: 'Relation', expr: str) -> 'Relation':
         '''Defined as product and then selection with the given expression.'''
         return self.product(other).selection(expr)
 
-    def outer(self, other):
+    def outer(self, other: 'Relation') -> 'Relation':
         '''Does a left and a right outer join and returns their union.'''
         a = self.outer_right(other)
         b = self.outer_left(other)
 
         return a.union(b)
 
-    def outer_right(self, other):
+    def outer_right(self, other: 'Relation') -> 'Relation':
         '''
         Outer right join. Considers self as left and param as right. If the
         tuple has no corrispondence, empy attributes are filled with a "---"
@@ -297,7 +298,7 @@ class Relation (object):
         '''
         return other.outer_left(self)
 
-    def outer_left(self, other, swap=False):
+    def outer_left(self, other: 'Relation', swap=False) -> 'Relation':
         '''
         See documentation for outer_right
         '''
@@ -338,7 +339,7 @@ class Relation (object):
 
         return newt
 
-    def join(self, other):
+    def join(self, other: 'Relation') -> 'Relation':
         '''
         Natural join, joins on shared attributes (one or more). If there are no
         shared attributes, it will behave as the cartesian product.
@@ -412,7 +413,7 @@ class Relation (object):
 
         return res
 
-    def update(self, expr, dic):
+    def update(self, expr: str, dic: dict) -> int:
         '''
         Updates certain values of a relation.
 
@@ -444,7 +445,7 @@ class Relation (object):
         self.content = not_affected.content
         return len(affected)
 
-    def insert(self, values):
+    def insert(self, values: Union[list,tuple]) -> int:
         '''
         Inserts a tuple in the relation.
         This function will not insert duplicate tuples.
@@ -468,7 +469,7 @@ class Relation (object):
         self.content.add(tuple(map(rstring, values)))
         return len(self.content) - prevlen
 
-    def delete(self, expr):
+    def delete(self, expr: str) -> int:
         '''
         Delete, expr must be a valid Python expression; can contain field names.
 
@@ -504,7 +505,7 @@ class Header(tuple):
     def __repr__(self):
         return "Header(%s)" % super(Header, self).__repr__()
 
-    def rename(self, params):
+    def rename(self, params) -> 'Header':
         '''Returns a new header, with renamed fields.
 
         params is a dictionary of {old:new} names
@@ -520,19 +521,19 @@ class Header(tuple):
                 raise Exception('Field not found: %s' % old)
         return Header(attrs)
 
-    def sharedAttributes(self, other):
+    def sharedAttributes(self, other: 'Header') -> int:
         '''Returns how many attributes this header has in common with a given one'''
         return len(set(self).intersection(set(other)))
 
-    def union(self, other):
+    def union(self, other) -> set:
         '''Returns the union of the sets of attributes with another header.'''
         return set(self).union(set(other))
 
-    def intersection(self, other):
+    def intersection(self, other) -> set:
         '''Returns the set of common attributes with another header.'''
         return set(self).intersection(set(other))
 
-    def getAttributesId(self, param):
+    def getAttributesId(self, param) -> List[int]:
         '''Returns a list with numeric index corresponding to field's name'''
         try:
             return [self.index(i) for i in param]
