@@ -8,6 +8,9 @@ pyqt:
 	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
 	echo 'from . import editor' >> relational_gui/maingui.py
 
+test:
+	./driver.py
+
 dist: clean
 	rm -rf /tmp/relational/
 	rm -rf /tmp/relational-*
