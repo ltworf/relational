@@ -35,7 +35,7 @@ class creatorForm(QtWidgets.QDialog):
         self.ui = ui
         self.table = self.ui.table
 
-        if self.rel == None:
+        if self.rel is None:
             self.setup_empty()
         else:
             self.setup_relation(self.rel)

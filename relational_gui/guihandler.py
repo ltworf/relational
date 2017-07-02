@@ -239,7 +239,7 @@ class relForm(QtWidgets.QMainWindow):
         '''Shows the selected relation into the table'''
         self.ui.table.clear()
 
-        if rel == None:  # No relation to show
+        if rel is None:  # No relation to show
             self.ui.table.setColumnCount(1)
             self.ui.table.headerItem().setText(0, "Empty relation")
             return
@@ -347,7 +347,7 @@ class relForm(QtWidgets.QMainWindow):
         from relational_gui import creator
         result = creator.edit_relation()
 
-        if result == None:
+        if result is None:
             return
         name = self.promptRelationName()
 
@@ -383,7 +383,7 @@ class relForm(QtWidgets.QMainWindow):
             pass
 
     def showSurvey(self):
-        if self.Survey == None:
+        if self.Survey is None:
             self.Survey = surveyForm.surveyForm()
             ui = survey.Ui_Form()
             self.Survey.setUi(ui)
@@ -392,7 +392,7 @@ class relForm(QtWidgets.QMainWindow):
         self.Survey.show()
 
     def showAbout(self):
-        if self.About == None:
+        if self.About is None:
             self.About = QtWidgets.QDialog()
             ui = about.Ui_Dialog()
             ui.setupUi(self.About)

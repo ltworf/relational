@@ -108,7 +108,7 @@ class Node:
     def __init__(self, expression: Optional[list] = None) -> None:
         '''Generates the tree from the tokenized expression
         If no expression is specified then it will create an empty node'''
-        if expression == None or len(expression) == 0:
+        if expression is None or len(expression) == 0:
             return
 
         # If the list contains only a list, it will consider the lower level list.
@@ -351,7 +351,7 @@ def tokenize(expression: str) -> list:
     while len(expression) > 0:
         if expression.startswith('('):  # Parenthesis state
             end = _find_matching_parenthesis(expression)
-            if end == None:
+            if end is None:
                 raise TokenizerException(
                     "Missing matching ')' in '%s'" % expression)
             # Appends the tokenization of the content of the parenthesis
