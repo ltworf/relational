@@ -223,6 +223,7 @@ class Node:
             return self.child.get_left_leaf()
         elif self.kind == BINARY:
             return self.left.get_left_leaf()
+        raise ValueError('What kind of alien object is this?')
 
     def result_format(self, rels: dict) -> list:
         '''This function returns a list containing the fields that the resulting relation will have.
@@ -256,6 +257,7 @@ class Node:
             return _fields
         elif self.name in (JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL):
             return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
+        raise ValueError('What kind of alien object is this?')
 
     def __eq__(self, other):
         if not (isinstance(other, node) and self.name == other.name and self.kind == other.kind):
@@ -280,11 +282,11 @@ class Node:
                 re = self.right.__str__()
             else:
                 re = "(" + self.right.__str__() + ")"
-
             return (le + self.name + re)
+        raise ValueError('What kind of alien object is this?')
 
 
-def _find_matching_parenthesis(expression: str, start=0, openpar=u'(', closepar=u')') -> int:
+def _find_matching_parenthesis(expression: str, start=0, openpar=u'(', closepar=u')') -> Optional[int]:
     '''This function returns the position of the matching
     close parenthesis to the 1st open parenthesis found
     starting from start (0 by default)'''
@@ -309,6 +311,7 @@ def _find_matching_parenthesis(expression: str, start=0, openpar=u'(', closepar=
             par_count -= 1
             if par_count == 0:
                 return i  # Closing parenthesis of the parameter
+    return None
 
 def _find_token(haystack: str, needle: str) -> int:
     '''
