@@ -22,7 +22,7 @@
 import csv
 from itertools import chain, repeat
 from collections import deque
-from typing import List, Union
+from typing import List, Union, Set
 
 from relational.rtypes import *
 
@@ -436,11 +436,11 @@ class Relation (object):
         )
 
         for i in set(affected.content):
-            i = list(i)
+            li = list(i)
 
             for column, value in new_values:
-                i[column] = value
-            not_affected.insert(i)
+                li[column] = value
+            not_affected.insert(li)
 
         self.content = not_affected.content
         return len(affected)
