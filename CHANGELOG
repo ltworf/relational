@@ -1,6 +1,8 @@
 2.6
 - Improved survey sending
-- Prevent names from being reserved keywords
+- Prevent relation/field names from being reserved keywords
+- Fixed issue in cli where loading an invalid file would lead to a crash
+- Added typing hints throughout the code
 
 2.5
 - Add new class of tests for queries that are supposed to fail
