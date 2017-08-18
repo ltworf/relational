@@ -113,7 +113,7 @@ class UserInterface:
         as string.
         '''
         if filename:
-            with open(filename, 'w') as f:
+            with open(filename, 'wb') as f:
                 pickle.dump(self.relations, f)
                 return None
         return base64.b64encode(pickle.dumps(self.relations)).decode()
@@ -130,7 +130,7 @@ class UserInterface:
             except:
                 pass
         elif filename:
-            with open(filename) as f:
+            with open(filename, 'rb') as f:
                 self.relations = pickle.load(f)
 
     def session_reset(self) -> None:
