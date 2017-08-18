@@ -4,9 +4,6 @@ SHELL=sh -e
 %:
 	dh $@ --with python3
 
-override_dh_auto_test:
-	./driver.py
-
 clean:
 	rm -rf build *.egg-info
 	dh $@
