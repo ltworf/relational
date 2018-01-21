@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2018  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ class Relation (object):
         It is not exactely related to relational algebra. Just a method used
         internally.
         Will raise an exception if they don't share the same attributes'''
-        if not isinstance(other, relation):
+        if not isinstance(other, Relation):
             raise TypeError('Expected an instance of the same class')
         elif self.header == other.header:
             return other
@@ -128,7 +128,7 @@ class Relation (object):
         '''
         Selection, expr must be a valid Python expression; can contain field names.
         '''
-        newt = relation()
+        newt = Relation()
         newt.header = Header(self.header)
 
         try:
@@ -155,13 +155,13 @@ class Relation (object):
         Cartesian product. Attributes of the relations must differ.
         '''
 
-        if (not isinstance(other, relation)):
+        if (not isinstance(other, Relation)):
             raise Exception('Operand must be a relation')
         if self.header.sharedAttributes(other.header) != 0:
             raise Exception(
                 'Unable to perform product on relations with colliding attributes'
             )
-        newt = relation()
+        newt = Relation()
         newt.header = Header(self.header + other.header)
 
         for i in self.content:
@@ -189,7 +189,7 @@ class Relation (object):
 
         if len(ids) == 0:
             raise Exception('Invalid attributes for projection')
-        newt = relation()
+        newt = Relation()
         # Create the header
         h = (self.header[i] for i in ids)
         newt.header = Header(h)
@@ -209,7 +209,7 @@ class Relation (object):
         For example if you want to rename a to b, call
         rel.rename({'a':'b'})
         '''
-        newt = relation()
+        newt = Relation()
         newt.header = self.header.rename(params)
 
         newt.content = self.content
@@ -223,7 +223,7 @@ class Relation (object):
         Will return an empty one if there are no common items.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = relation()
+        newt = Relation()
         newt.header = Header(self.header)
 
         newt.content = self.content.intersection(other.content)
@@ -234,7 +234,7 @@ class Relation (object):
         operand but not in second one.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = relation()
+        newt = Relation()
         newt.header = Header(self.header)
 
         newt.content = self.content.difference(other.content)
@@ -271,7 +271,7 @@ class Relation (object):
         and second operands.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = relation()
+        newt = Relation()
         newt.header = Header(self.header)
 
         newt.content = self.content.union(other.content)
@@ -305,7 +305,7 @@ class Relation (object):
 
         shared = self.header.intersection(other.header)
 
-        newt = relation()  # Creates the new relation
+        newt = Relation()  # Creates the new relation
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
@@ -348,7 +348,7 @@ class Relation (object):
         # List of attributes in common between the relations
         shared = self.header.intersection(other.header)
 
-        newt = relation()  # Creates the new relation
+        newt = Relation()  # Creates the new relation
 
         # Creating the header with all the fields, done like that because order is
         # needed
@@ -376,7 +376,7 @@ class Relation (object):
         return newt
 
     def __eq__(self, other):
-        if not isinstance(other, relation):
+        if not isinstance(other, Relation):
             return False
 
         if len(self.content) != len(other.content):
