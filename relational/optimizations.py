@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2009-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2009-2018  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -127,7 +127,7 @@ def recoursive_scan(function, node, rels=None):
     return changes
 
 
-def duplicated_select(n):
+def duplicated_select(n: parser.Node) -> int:
     '''This function locates and deletes things like
     σ a ( σ a(C)) and the ones like σ a ( σ b(C))
     replacing the 1st one with a single select and
@@ -150,7 +150,7 @@ def duplicated_select(n):
     return changes + recoursive_scan(duplicated_select, n)
 
 
-def futile_union_intersection_subtraction(n):
+def futile_union_intersection_subtraction(n: parser.Node) -> int:
     '''This function locates things like r ᑌ r, and replaces them with r.
     R ᑌ R  --> R
     R ᑎ R --> R
@@ -208,7 +208,7 @@ def futile_union_intersection_subtraction(n):
     return changes + recoursive_scan(futile_union_intersection_subtraction, n)
 
 
-def down_to_unions_subtractions_intersections(n):
+def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
     '''This funcion locates things like σ i==2 (c ᑌ d), where the union
     can be a subtraction and an intersection and replaces them with
     σ i==2 (c) ᑌ σ i==2(d).
@@ -239,7 +239,7 @@ def down_to_unions_subtractions_intersections(n):
     return changes + recoursive_scan(down_to_unions_subtractions_intersections, n)
 
 
-def duplicated_projection(n):
+def duplicated_projection(n: parser.Node) -> int:
     '''This function locates thing like π i ( π j (R)) and replaces
     them with π i (R)'''
     changes = 0
@@ -251,7 +251,7 @@ def duplicated_projection(n):
     return changes + recoursive_scan(duplicated_projection, n)
 
 
-def selection_inside_projection(n):
+def selection_inside_projection(n: parser.Node) -> int:
     '''This function locates things like  σ j (π k(R)) and
     converts them into π k(σ j (R))'''
     changes = 0
@@ -267,7 +267,7 @@ def selection_inside_projection(n):
     return changes + recoursive_scan(selection_inside_projection, n)
 
 
-def swap_union_renames(n):
+def swap_union_renames(n: parser.Node) -> int:
     '''This function locates things like
     ρ a➡b(R) ᑌ ρ a➡b(Q)
     and replaces them with
@@ -305,7 +305,7 @@ def swap_union_renames(n):
     return changes + recoursive_scan(swap_union_renames, n)
 
 
-def futile_renames(n):
+def futile_renames(n: parser.Node) -> int:
     '''This function purges renames like id->id'''
     changes = 0
 
@@ -333,7 +333,7 @@ def futile_renames(n):
     return changes + recoursive_scan(futile_renames, n)
 
 
-def subsequent_renames(n):
+def subsequent_renames(n: parser.Node) -> int:
     '''This function removes redoundant subsequent renames joining them into one'''
 
     '''Purges renames like id->id Since it's needed to be performed BEFORE this one
@@ -411,7 +411,7 @@ def tokenize_select(expression):
     return l
 
 
-def swap_rename_projection(n):
+def swap_rename_projection(n: parser.Node) -> int:
     '''This function locates things like π k(ρ j(R))
     and replaces them with ρ j(π k(R)).
     This will let rename work on a hopefully smaller set
@@ -453,7 +453,7 @@ def swap_rename_projection(n):
     return changes + recoursive_scan(swap_rename_projection, n)
 
 
-def swap_rename_select(n):
+def swap_rename_select(n: parser.Node) -> int:
     '''This function locates things like σ k(ρ j(R)) and replaces
     them with ρ j(σ k(R)). Renaming the attributes used in the
     selection, so the operation is still valid.'''
@@ -490,7 +490,7 @@ def swap_rename_select(n):
     return changes + recoursive_scan(swap_rename_select, n)
 
 
-def select_union_intersect_subtract(n):
+def select_union_intersect_subtract(n: parser.Node) -> int:
     '''This function locates things like σ i(a) ᑌ σ q(a)
     and replaces them with σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
@@ -530,7 +530,7 @@ def select_union_intersect_subtract(n):
     return changes + recoursive_scan(select_union_intersect_subtract, n)
 
 
-def union_and_product(n):
+def union_and_product(n: parser.Node) -> int:
     '''
     A * B ∪ A * C = A * (B ∪ C)
     Same thing with inner join
@@ -696,7 +696,7 @@ def selection_and_product(n, rels):
     return changes + recoursive_scan(selection_and_product, n, rels)
 
 
-def useless_projection(n, rels):
+def useless_projection(n, rels) -> int:
     '''
     Removes projections that are over all the fields
     '''
