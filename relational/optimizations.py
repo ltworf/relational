@@ -217,12 +217,12 @@ def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
     _o = (UNION, DIFFERENCE, INTERSECTION)
     if n.name == SELECTION and n.child.name in _o:
 
-        left = parser.node()
+        left = parser.Node()
         left.prop = n.prop
         left.name = n.name
         left.child = n.child.left
         left.kind = parser.UNARY
-        right = parser.node()
+        right = parser.Node()
         right.prop = n.prop
         right.name = n.name
         right.child = n.child.right
@@ -290,7 +290,7 @@ def swap_union_renames(n: parser.Node) -> int:
             changes = 1
 
             # Copying self, but child will be child of renames
-            q = parser.node()
+            q = parser.Node()
             q.name = n.name
             q.kind = parser.BINARY
             q.left = n.left.child
@@ -504,7 +504,7 @@ def select_union_intersect_subtract(n: parser.Node) -> int:
         d = {UNION: 'or', INTERSECTION: 'and', DIFFERENCE: 'and not'}
         op = d[n.name]
 
-        newnode = parser.node()
+        newnode = parser.Node()
 
         if n.left.prop.startswith('(') or n.right.prop.startswith('('):
             t_str = '('
@@ -539,11 +539,11 @@ def union_and_product(n: parser.Node) -> int:
     changes = 0
     if n.name == UNION and n.left.name in {PRODUCT, JOIN} and n.left.name == n.right.name:
 
-        newnode = parser.node()
+        newnode = parser.Node()
         newnode.kind = parser.BINARY
         newnode.name = n.left.name
 
-        newchild = parser.node()
+        newchild = parser.Node()
         newchild.kind = parser.BINARY
         newchild.name = UNION
 
@@ -649,7 +649,7 @@ def selection_and_product(n, rels):
         # Preparing left selection
         if len(left) > 0:
             changes = 1
-            l_node = parser.node()
+            l_node = parser.Node()
             l_node.name = SELECTION
             l_node.kind = parser.UNARY
             l_node.child = n.child.left
@@ -667,7 +667,7 @@ def selection_and_product(n, rels):
         # Preparing right selection
         if len(right) > 0:
             changes = 1
-            r_node = parser.node()
+            r_node = parser.Node()
             r_node.name = SELECTION
             r_node.prop = ''
             r_node.kind = parser.UNARY
