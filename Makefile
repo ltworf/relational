@@ -5,7 +5,7 @@ pyqt:
 	pyuic5 relational_gui/maingui.ui > relational_gui/maingui.py
 	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
 	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
-	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
+	sed -i '' 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
 	echo 'from . import editor' >> relational_gui/maingui.py
 
 test:

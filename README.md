@@ -62,3 +62,18 @@ or
 ```
 python3 relational_gui.py
 ```
+note: for MacOS you need to make a few changes
+
+1. in file Makefile change the following to make the sed command to work.
+```
+sed -i '' 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
+```
+2. comment the following on the rational_gui.py file `import sip  # needed on windows`
+```
+   if x11:
+        import signal
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+        #import sip  # needed on windows
+
+ ```

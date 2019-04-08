@@ -83,7 +83,7 @@ if __name__ == "__main__":
         import signal
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-        import sip  # needed on windows
+        #import sip  # needed on windows
         from PyQt5 import QtWidgets
         try:
             from relational_gui import guihandler, about, surveyForm
