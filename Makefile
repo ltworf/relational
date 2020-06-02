@@ -1,3 +1,4 @@
+.PHONY: gui
 gui: pyqt
 
 pyqt:
@@ -8,9 +9,11 @@ pyqt:
 	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
 	echo 'from . import editor' >> relational_gui/maingui.py
 
+.PHONY: test
 test:
 	./driver.py
 
+.PHONY: dist
 dist: clean
 	rm -rf /tmp/relational/
 	rm -rf /tmp/relational-*
@@ -23,10 +26,9 @@ dist: clean
 	#(cd /tmp; tar -zcf relational.tar.gz relational-*/)
 	(cd /tmp; tar -zcf relational.tar.gz relational/)
 	mv /tmp/relational.tar.gz ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
-
-release: dist
 	gpg --sign --armor --detach-sign ./relational_`./relational_gui.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
 
+.PHONY: clean
 clean:
 	rm -rf `find -name "*~"`
 	rm -rf `find -name "*pyc"`
@@ -41,16 +43,19 @@ clean:
 	rm -f relational_gui/rel_edit.py
 	rm -f relational_gui/resources.py
 
+.PHONY: install-relational-cli
 install-relational-cli:
 	python3 setup/relational-cli.setup.py install --root=$${DESTDIR:-/};
 	rm -rf build;
 	install -D relational_gui.py $${DESTDIR:-/}/usr/bin/relational-cli
 	install -D relational-cli.1 $${DESTDIR:-/}/usr/share/man/man1/relational-cli.1
 
+.PHONY: install-python3-relational
 install-python3-relational:
 	python3 setup/python3-relational.setup.py install --root=$${DESTDIR:-/};
 	rm -rf build;
 
+.PHONY: install-relational
 install-relational:
 	python3 setup/relational.setup.py install --root=$${DESTDIR:-/};
 	rm -rf build;
@@ -59,4 +64,5 @@ install-relational:
 	install -m0644 -D relational_gui/resources/relational.png $${DESTDIR:-/}/usr/share/pixmaps/relational.png
 	install -D relational.1 $${DESTDIR:-/}/usr/share/man/man1/relational.1
 
+.PHONY: install
 install: install-relational-cli install-python3-relational install-relational
