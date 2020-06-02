@@ -27,7 +27,7 @@ from typing import List, Union, Set
 from relational.rtypes import *
 
 
-class Relation (object):
+class Relation:
 
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
@@ -53,9 +53,9 @@ class Relation (object):
     '''
     __hash__ = None #  type: None
 
-    def __init__(self, filename : str = '') -> None:
+    def __init__(self, filename: str = '') -> None:
         self._readonly = False
-        self.content = set() #  type: Set[tuple]
+        self.content: Set[tuple] = set()
 
         if len(filename) == 0:  # Empty relation
             self.header = Header([])
