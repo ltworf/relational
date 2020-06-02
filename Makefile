@@ -1,13 +1,20 @@
 .PHONY: gui
-gui: pyqt
+gui: relational_gui/survey.py relational_gui/maingui.py relational_gui/rel_edit.py relational_gui/resources.py
 
-pyqt:
+relational_gui/survey.py:
 	pyuic5 relational_gui/survey.ui > relational_gui/survey.py
+
+relational_gui/maingui.py:
 	pyuic5 relational_gui/maingui.ui > relational_gui/maingui.py
-	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
-	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
 	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
 	echo 'from . import editor' >> relational_gui/maingui.py
+
+relational_gui/rel_edit.py:
+	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
+
+relational_gui/resources.py:
+	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
+
 
 .PHONY: test
 test:
