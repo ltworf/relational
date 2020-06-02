@@ -5,6 +5,7 @@ python:
 
 install:
   - pip install mypy
+  - pip install xtermcolor
 
 script:
   - make test
