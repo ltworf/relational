@@ -15,6 +15,9 @@ relational_gui/rel_edit.py:
 relational_gui/resources.py:
 	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
 
+.PHONY: mypy
+mypy:
+	mypy relational
 
 .PHONY: test
 test:
