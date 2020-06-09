@@ -414,11 +414,3 @@ def parse(expr: str) -> CallableString:
     Python expression.
     '''
     return tree(expr).toPython()
-
-if __name__ == "__main__":
-    while True:
-        e = input("Expression: ")
-        print (parse(e))
-
-# Backwards compatibility
-node = Node
