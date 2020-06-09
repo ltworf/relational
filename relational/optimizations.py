@@ -30,6 +30,7 @@
 
 from io import StringIO
 from tokenize import generate_tokens
+from typing import Tuple
 
 
 from relational import parser
@@ -98,36 +99,7 @@ def replace_node(replace, replacement):
         replace.left = replacement.left
 
 
-def recoursive_scan(function, node, rels=None):
-    '''Does a recoursive optimization on the tree.
-
-    This function will recoursively execute the function given
-    as "function" parameter starting from node to all the tree.
-    if rels is provided it will be passed as argument to the function.
-    Otherwise the function will be called just on the node.
-
-    Result value: function is supposed to return the amount of changes
-    it has performed on the tree.
-    The various result will be added up and this final value will be the
-    returned value.'''
-    changes = 0
-    # recoursive scan
-    if node.kind == parser.UNARY:
-        if rels != None:
-            changes += function(node.child, rels)
-        else:
-            changes += function(node.child)
-    elif node.kind == parser.BINARY:
-        if rels != None:
-            changes += function(node.right, rels)
-            changes += function(node.left, rels)
-        else:
-            changes += function(node.right)
-            changes += function(node.left)
-    return changes
-
-
-def duplicated_select(n: parser.Node) -> int:
+def duplicated_select(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates and deletes things like
     σ a ( σ a(C)) and the ones like σ a ( σ b(C))
     replacing the 1st one with a single select and
@@ -135,19 +107,22 @@ def duplicated_select(n: parser.Node) -> int:
     in and
     '''
     changes = 0
-    if n.name == SELECTION and n.child.name == SELECTION:
+    while n.name == SELECTION and n.child.name == SELECTION:
+        changes += 1
+        prop = n.prop
+
         if n.prop != n.child.prop:  # Nested but different, joining them
-            n.prop = n.prop + " and " + n.child.prop
+            prop = n.prop + " and " + n.child.prop
 
             # This adds parenthesis if they are needed
             if n.child.prop.startswith('(') or n.prop.startswith('('):
-                n.prop = '(%s)' % n.prop
-
-        n.child = n.child.child
-        changes = 1
-        changes += duplicated_select(n)
-
-    return changes + recoursive_scan(duplicated_select, n)
+                prop = '(%s)' % prop
+        n = parser.Unary(
+            SELECTION,
+            prop,
+            n.child.child,
+        )
+    return n, changes
 
 
 def futile_union_intersection_subtraction(n: parser.Node) -> int:
@@ -706,10 +681,10 @@ def useless_projection(n, rels) -> int:
         changes = 1
         replace_node(n, n.child)
 
-    return changes + recoursive_scan(useless_projection, n, rels)
+    return changes + recursive_scan(useless_projection, n, rels)
 
 general_optimizations = [
-    #duplicated_select,
+    duplicated_select,
     #down_to_unions_subtractions_intersections,
     #duplicated_projection,
     #selection_inside_projection,

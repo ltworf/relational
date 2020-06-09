@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@
 # relational query, or it can be a parse tree for a relational expression (ie: class parser.node).
 # The functions will always return a string with the optimized query, but if a parse tree was provided,
 # the parse tree itself will be modified accordingly.
-from typing import Union, Optional, Dict, Any
+from typing import Union, Optional, Dict, Any, Tuple
 
 from relational import optimizations
-from relational.parser import Node, RELATION, UNARY, BINARY, op_functions, tokenize, tree
+from relational.parser import Node, Variable, Unary, Binary, op_functions, tokenize, tree
 from relational import querysplit
 from relational.maintenance import UserInterface
 
@@ -88,10 +88,10 @@ def optimize_all(expression: Union[str, Node], rels: ContextDict, specific: bool
                 total += res
         if general:
             for i in optimizations.general_optimizations:
-                res = i(n)  # Performs the optimization
-                if res != 0 and dbg:
+                n, c = recursive_scan(i, n, None)
+                if c != 0 and dbg:
                     debug.append(str(n))
-                total += res
+                total += c
     if tostr:
         return str(n)
     else:
@@ -117,3 +117,35 @@ def general_optimize(expression):
 
     Return value: this will return an optimized version of the expression'''
     return optimize_all(expression, None, specific=False, general=True)
+
+
+def recursive_scan(function, node, rels) -> Tuple[Node, int]:
+    '''Does a recursive optimization on the tree.
+
+    This function will recursively execute the function given
+    as "function" parameter starting from node to all the tree.
+    if rels is provided it will be passed as argument to the function.
+    Otherwise the function will be called just on the node.
+
+    Result value: function is supposed to return the amount of changes
+    it has performed on the tree.
+    The various result will be added up and this final value will be the
+    returned value.'''
+
+    args = []
+    if rels:
+        args.append(rels)
+
+    changes = 0
+    node, c = function(node, *args)
+    changes += c
+
+    if isinstance(node, Unary):
+        node.child, c = recursive_scan(function, node.child, rels)
+        changes += c
+    elif isinstance(node, Binary):
+        node.left, c = recursive_scan(function, node.left, rels)
+        changes += c
+        node.right, c = recursive_scan(function, node.right, rels)
+        changes += c
+    return node, changes
