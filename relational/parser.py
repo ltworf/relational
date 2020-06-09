@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020 Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,13 +24,10 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
-from typing import Optional, Union, List, Any
+from typing import Optional, Union, List, Any, Dict
+from dataclasses import dataclass
 
 from relational import rtypes
-
-RELATION = 0
-UNARY = 1
-BINARY = 2
 
 PRODUCT = '*'
 DIFFERENCE = '-'
@@ -84,9 +81,8 @@ class CallableString(str):
         '''
         return eval(self, context)
 
-
+@dataclass
 class Node:
-
     '''This class is a node of a relational expression. Leaves are relations
     and internal nodes are operations.
 
@@ -102,72 +98,12 @@ class Node:
     operation.
 
     This class is used to convert an expression into python code.'''
-    kind = None #  type: Optional[int]
-    __hash__ = None #  type: None
+    name: str
 
-    def __init__(self, expression: Optional[list] = None) -> None:
-        '''Generates the tree from the tokenized expression
-        If no expression is specified then it will create an empty node'''
-        if expression is None or len(expression) == 0:
-            return
+    def __init__(self, name: str) -> None:
+        raise NotImplementedError('This is supposed to be an abstract class')
 
-        # If the list contains only a list, it will consider the lower level list.
-        # This will allow things like ((((((a))))) to work
-        while len(expression) == 1 and isinstance(expression[0], list):
-            expression = expression[0]
-
-        # The list contains only 1 string. Means it is the name of a relation
-        if len(expression) == 1:
-            self.kind = RELATION
-            self.name = expression[0]
-            if not rtypes.is_valid_relation_name(self.name):
-                raise ParserException(
-                    u"'%s' is not a valid relation name" % self.name)
-            return
-
-        # Expression from right to left, searching for binary operators
-        # this means that binary operators have lesser priority than
-        # unary operators.
-        # It finds the operator with lesser priority, uses it as root of this
-        # (sub)tree using everything on its left as left parameter (so building
-        # a left subtree with the part of the list located on left) and doing
-        # the same on right.
-        # Since it searches for strings, and expressions into parenthesis are
-        # within sub-lists, they won't be found here, ensuring that they will
-        # have highest priority.
-        for i in range(len(expression) - 1, -1, -1):
-            if expression[i] in b_operators:  # Binary operator
-                self.kind = BINARY
-                self.name = expression[i]
-
-                if len(expression[:i]) == 0:
-                    raise ParserException(
-                        u"Expected left operand for '%s'" % self.name)
-
-                if len(expression[i + 1:]) == 0:
-                    raise ParserException(
-                        u"Expected right operand for '%s'" % self.name)
-
-                self.left = node(expression[:i])
-                self.right = node(expression[i + 1:])
-                return
-        '''Searches for unary operators, parsing from right to left'''
-        for i in range(len(expression) - 1, -1, -1):
-            if expression[i] in u_operators:  # Unary operator
-                self.kind = UNARY
-                self.name = expression[i]
-
-                if len(expression) <= i + 2:
-                    raise ParserException(
-                        u"Expected more tokens in '%s'" % self.name)
-
-                self.prop = expression[1 + i].strip()
-                self.child = node(expression[2 + i])
-
-                return
-        raise ParserException("Expected operator in '%s'" % expression)
-
-    def toCode(self):
+    def toCode(self): #FIXME return type
         '''This method converts the AST into a python code object'''
         code = self._toPython()
         return compile(code, '<relational_expression>', 'eval')
@@ -181,25 +117,7 @@ class Node:
         return CallableString(self._toPython())
 
     def _toPython(self) -> str:
-        '''
-        Same as toPython but returns a regular string
-        '''
-        if self.name in b_operators:
-            return '%s.%s(%s)' % (self.left.toPython(), op_functions[self.name], self.right.toPython())
-        elif self.name in u_operators:
-            prop = self.prop
-
-            # Converting parameters
-            if self.name == PROJECTION:
-                prop = '\"%s\"' % prop.replace(' ', '').replace(',', '\",\"')
-            elif self.name == RENAME:
-                prop = '{\"%s\"}' % prop.replace(
-                    ',', '\",\"').replace(ARROW, '\":\"').replace(' ', '')
-            else:  # Selection
-                prop = repr(prop)
-
-            return '%s.%s(%s)' % (self.child.toPython(), op_functions[self.name], prop)
-        return self.name
+        raise NotImplementedError()
 
     def printtree(self, level: int = 0) -> str:
         '''returns a representation of the tree using indentation'''
@@ -216,27 +134,20 @@ class Node:
         return '\n' + r
 
     def get_left_leaf(self) -> 'Node':
-        '''This function returns the leftmost leaf in the tree.'''
-        if self.kind == RELATION:
-            return self
-        elif self.kind == UNARY:
-            return self.child.get_left_leaf()
-        elif self.kind == BINARY:
-            return self.left.get_left_leaf()
-        raise ValueError('What kind of alien object is this?')
+        raise NotImplementedError()
 
-    def result_format(self, rels: dict) -> list:
+    def result_format(self, rels: dict) -> list: #FIXME types
         '''This function returns a list containing the fields that the resulting relation will have.
         It requires a dictionary where keys are the names of the relations and the values are
         the relation objects.'''
         if not isinstance(rels, dict):
             raise TypeError('Can\'t be of None type')
 
-        if self.kind == RELATION:
+        if isinstance(self, Variable):  #FIXME this is ugly
             return list(rels[self.name].header)
-        elif self.kind == BINARY and self.name in (DIFFERENCE, UNION, INTERSECTION):
+        elif isinstance(self, Binary) and self.name in (DIFFERENCE, UNION, INTERSECTION):
             return self.left.result_format(rels)
-        elif self.kind == BINARY and self.name == DIVISION:
+        elif isinstance(self, Binary) and self.name == DIVISION:
             return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
         elif self.name == PROJECTION:
             return [i.strip() for i in self.prop.split(',')]
@@ -259,7 +170,7 @@ class Node:
             return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
         raise ValueError('What kind of alien object is this?')
 
-    def __eq__(self, other):
+    def __eq__(self, other): #FIXME
         if not (isinstance(other, node) and self.name == other.name and self.kind == other.kind):
             return False
 
@@ -271,22 +182,151 @@ class Node:
             return self.left == other.left and self.right == other.right
         return True
 
+
+@dataclass
+class Variable(Node):
+    def _toPython(self) -> str:
+        return self.name
+
     def __str__(self):
-        if (self.kind == RELATION):
-            return self.name
-        elif (self.kind == UNARY):
-            return self.name + " " + self.prop + " (" + self.child.__str__() + ")"
-        elif (self.kind == BINARY):
-            le = self.left.__str__()
-            if self.right.kind != BINARY:
-                re = self.right.__str__()
-            else:
-                re = "(" + self.right.__str__() + ")"
-            return (le + self.name + re)
-        raise ValueError('What kind of alien object is this?')
+        return self.name
+
+    def get_left_leaf(self) -> Node:
+        return self
 
 
-def _find_matching_parenthesis(expression: str, start=0, openpar=u'(', closepar=u')') -> Optional[int]:
+@dataclass
+class Binary(Node):
+    left: Node
+    right: Node
+
+    def get_left_leaf(self) -> Node:
+        return self.left.get_left_leaf()
+
+    def _toPython(self) -> str:
+        return '%s.%s(%s)' % (self.left._toPython(), op_functions[self.name], self.right._toPython())
+
+    def __str__(self):
+        le = self.left.__str__()
+        if isinstance(self.right, Binary):
+            re = "(" + self.right.__str__() + ")"
+        else:
+            re = self.right.__str__()
+        return (le + self.name + re) #TODO use fstrings
+
+
+@dataclass
+class Unary(Node):
+    prop: str
+    child: Node
+
+    def get_left_leaf(self) -> Node:
+        return self.child.get_left_leaf()
+
+    def __str__(self):
+        return self.name + " " + self.prop + " (" + self.child.__str__() + ")" #TODO use fstrings
+
+    def _toPython(self) -> str:
+        prop = self.prop
+
+        # Converting parameters
+        if self.name == PROJECTION:
+            prop = '\"%s\"' % prop.replace(' ', '').replace(',', '\",\"')
+        elif self.name == RENAME:
+            prop = repr(self.get_rename_prop())
+        else:  # Selection
+            prop = repr(prop)
+
+        return '%s.%s(%s)' % (self.child._toPython(), op_functions[self.name], prop)
+
+    def get_projection_prop(self) -> List[str]:
+        if self.name != PROJECTION:
+            raise ValueError('This is only supported on projection nodes')
+        return [i.strip() for i in self.prop.split(',')]
+
+    def set_projection_prop(self, p: List[str]) -> None:
+        if self.name != PROJECTION:
+            raise ValueError('This is only supported on projection nodes')
+        self.prop = ','.join(p)
+
+    def get_rename_prop(self) -> Dict[str, str]:
+        '''
+        Returns the dictionary that the rename operation wants
+        '''
+        if self.name != RENAME:
+            raise ValueError('This is only supported on rename nodes')
+        r = {}
+        for i in self.prop.split(','):
+            q = i.split(ARROW)
+            r[q[0].strip()] = q[1].strip()
+        return r
+
+    def set_rename_prop(self, renames: Dict[str, str]) -> None:
+        '''
+        Sets the prop field based on the dictionary for renames
+        '''
+        if self.name != RENAME:
+            raise ValueError('This is only supported on rename nodes')
+        self.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
+
+
+
+
+def parse_tokens(expression: List[Union[list, str]]) -> Node:
+    '''Generates the tree from the tokenized expression
+    If no expression is specified then it will create an empty node'''
+
+    # If the list contains only a list, it will consider the lower level list.
+    # This will allow things like ((((((a))))) to work
+    while len(expression) == 1 and isinstance(expression[0], list):
+        expression = expression[0]
+
+    # The list contains only 1 string. Means it is the name of a relation
+    if len(expression) == 1:
+
+        if not rtypes.is_valid_relation_name(expression[0]):
+            raise ParserException(
+                u"'%s' is not a valid relation name" % expression[0])
+        return Variable(expression[0]) #FIXME Move validation in the object
+
+    # Expression from right to left, searching for binary operators
+    # this means that binary operators have lesser priority than
+    # unary operators.
+    # It finds the operator with lesser priority, uses it as root of this
+    # (sub)tree using everything on its left as left parameter (so building
+    # a left subtree with the part of the list located on left) and doing
+    # the same on right.
+    # Since it searches for strings, and expressions into parenthesis are
+    # within sub-lists, they won't be found here, ensuring that they will
+    # have highest priority.
+    for i in range(len(expression) - 1, -1, -1):
+        if expression[i] in b_operators:  # Binary operator
+
+
+            if len(expression[:i]) == 0:
+                raise ParserException(
+                    u"Expected left operand for '%s'" % self.name)
+
+            if len(expression[i + 1:]) == 0:
+                raise ParserException(
+                    u"Expected right operand for '%s'" % self.name)
+            return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))
+    '''Searches for unary operators, parsing from right to left'''
+    for i in range(len(expression) - 1, -1, -1):
+        if expression[i] in u_operators:  # Unary operator
+            if len(expression) <= i + 2:
+                raise ParserException(
+                    u"Expected more tokens in '%s'" % self.name)
+
+            return Unary(
+                expression[i],
+                prop=expression[1 + i].strip(),
+                child=parse_tokens(expression[2 + i])
+            )
+    raise ParserException('Parse error') #FIXME more details
+
+
+def _find_matching_parenthesis(expression: str, start=0, openpar='(', closepar=')') -> Optional[int]:
     '''This function returns the position of the matching
     close parenthesis to the 1st open parenthesis found
     starting from start (0 by default)'''
@@ -391,7 +431,7 @@ def tokenize(expression: str) -> list:
 def tree(expression: str) -> Node:
     '''This function parses a relational algebra expression into a AST and returns
     the root node using the Node class.'''
-    return Node(tokenize(expression))
+    return parse_tokens(tokenize(expression))
 
 
 def parse(expr: str) -> CallableString:
@@ -400,11 +440,3 @@ def parse(expr: str) -> CallableString:
     Python expression.
     '''
     return tree(expr).toPython()
-
-if __name__ == "__main__":
-    while True:
-        e = input("Expression: ")
-        print (parse(e))
-
-# Backwards compatibility
-node = Node

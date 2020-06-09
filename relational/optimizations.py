@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2009-2018  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2009-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,8 +30,9 @@
 
 from io import StringIO
 from tokenize import generate_tokens
+from typing import Tuple, Dict
 
-
+from relational.relation import Relation
 from relational import parser
 
 sel_op = (
@@ -98,36 +99,7 @@ def replace_node(replace, replacement):
         replace.left = replacement.left
 
 
-def recoursive_scan(function, node, rels=None):
-    '''Does a recoursive optimization on the tree.
-
-    This function will recoursively execute the function given
-    as "function" parameter starting from node to all the tree.
-    if rels is provided it will be passed as argument to the function.
-    Otherwise the function will be called just on the node.
-
-    Result value: function is supposed to return the amount of changes
-    it has performed on the tree.
-    The various result will be added up and this final value will be the
-    returned value.'''
-    changes = 0
-    # recoursive scan
-    if node.kind == parser.UNARY:
-        if rels != None:
-            changes += function(node.child, rels)
-        else:
-            changes += function(node.child)
-    elif node.kind == parser.BINARY:
-        if rels != None:
-            changes += function(node.right, rels)
-            changes += function(node.left, rels)
-        else:
-            changes += function(node.right)
-            changes += function(node.left)
-    return changes
-
-
-def duplicated_select(n: parser.Node) -> int:
+def duplicated_select(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates and deletes things like
     σ a ( σ a(C)) and the ones like σ a ( σ b(C))
     replacing the 1st one with a single select and
@@ -135,243 +107,189 @@ def duplicated_select(n: parser.Node) -> int:
     in and
     '''
     changes = 0
-    if n.name == SELECTION and n.child.name == SELECTION:
+    while n.name == SELECTION and n.child.name == SELECTION:
+        changes += 1
+        prop = n.prop
+
         if n.prop != n.child.prop:  # Nested but different, joining them
-            n.prop = n.prop + " and " + n.child.prop
+            prop = n.prop + " and " + n.child.prop
 
             # This adds parenthesis if they are needed
             if n.child.prop.startswith('(') or n.prop.startswith('('):
-                n.prop = '(%s)' % n.prop
+                prop = '(%s)' % prop
+        n = parser.Unary(
+            SELECTION,
+            prop,
+            n.child.child,
+        )
+    return n, changes
 
-        n.child = n.child.child
-        changes = 1
-        changes += duplicated_select(n)
 
-    return changes + recoursive_scan(duplicated_select, n)
-
-
-def futile_union_intersection_subtraction(n: parser.Node) -> int:
-    '''This function locates things like r ᑌ r, and replaces them with r.
-    R ᑌ R  --> R
-    R ᑎ R --> R
+def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function locates things like r ∪ r, and replaces them with r.
+    R ∪ R  --> R
+    R ∩ R --> R
     R - R --> σ False (R)
     σ k (R) - R --> σ False (R)
     R - σ k (R) --> σ not k (R)
-    σ k (R) ᑌ R --> R
-    σ k (R) ᑎ R --> σ k (R)
+    σ k (R) ∪ R --> R
+    σ k (R) ∩ R --> σ k (R)
     '''
 
     changes = 0
 
     # Union and intersection of the same thing
     if n.name in (UNION, INTERSECTION, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL) and n.left == n.right:
-        changes = 1
-        replace_node(n, n.left)
+        return n.left, 1
 
     # selection and union of the same thing
     elif (n.name == UNION):
         if n.left.name == SELECTION and n.left.child == n.right:
-            changes = 1
-            replace_node(n, n.right)
+            return n.right, 1
         elif n.right.name == SELECTION and n.right.child == n.left:
-            changes = 1
-            replace_node(n, n.left)
+            return n.left, 1
 
     # selection and intersection of the same thing
     elif n.name == INTERSECTION:
         if n.left.name == SELECTION and n.left.child == n.right:
-            changes = 1
-            replace_node(n, n.left)
+            return n.left, 1
         elif n.right.name == SELECTION and n.right.child == n.left:
-            changes = 1
-            replace_node(n, n.right)
+            return n.right, 1
 
     # Subtraction and selection of the same thing
     elif n.name == DIFFERENCE and \
             n.right.name == SELECTION and \
             n.right.child == n.left:
-        n.name = n.right.name
-        n.kind = n.right.kind
-        n.child = n.right.child
-        n.prop = '(not (%s))' % n.right.prop
-        n.left = n.right = None
+        return parser.Unary(
+            SELECTION,
+            '(not (%s))' % n.right.prop,
+            n.right.child), 1
 
     # Subtraction of the same thing or with selection on the left child
     elif n.name == DIFFERENCE and (n.left == n.right or (n.left.name == SELECTION and n.left.child == n.right)):
-        changes = 1
-        n.kind = parser.UNARY
-        n.name = SELECTION
-        n.prop = 'False'
-        n.child = n.left.get_left_leaf()
-        # n.left=n.right=None
-
-    return changes + recoursive_scan(futile_union_intersection_subtraction, n)
+        return parser.Unary(
+            SELECTION,
+            'False',
+            n.get_left_leaf()
+        ), 1
+    return n, 0
 
 
-def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
-    '''This funcion locates things like σ i==2 (c ᑌ d), where the union
+def down_to_unions_subtractions_intersections(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This funcion locates things like σ i==2 (c ∪ d), where the union
     can be a subtraction and an intersection and replaces them with
-    σ i==2 (c) ᑌ σ i==2(d).
+    σ i==2 (c) ∪ σ i==2(d).
     '''
     changes = 0
     _o = (UNION, DIFFERENCE, INTERSECTION)
     if n.name == SELECTION and n.child.name in _o:
+        l = parser.Unary(SELECTION, n.prop, n.child.left)
+        r = parser.Unary(SELECTION, n.prop, n.child.right)
 
-        left = parser.Node()
-        left.prop = n.prop
-        left.name = n.name
-        left.child = n.child.left
-        left.kind = parser.UNARY
-        right = parser.Node()
-        right.prop = n.prop
-        right.name = n.name
-        right.child = n.child.right
-        right.kind = parser.UNARY
-
-        n.name = n.child.name
-        n.left = left
-        n.right = right
-        n.child = None
-        n.prop = None
-        n.kind = parser.BINARY
-        changes += 1
-
-    return changes + recoursive_scan(down_to_unions_subtractions_intersections, n)
+        return parser.Binary(n.child.name, l, r), 1
+    return n, 0
 
 
-def duplicated_projection(n: parser.Node) -> int:
+def duplicated_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates thing like π i ( π j (R)) and replaces
     them with π i (R)'''
-    changes = 0
 
     if n.name == PROJECTION and n.child.name == PROJECTION:
-        n.child = n.child.child
-        changes += 1
+        return parser.Unary(
+            PROJECTION,
+            n.prop,
+            n.child.child), 1
+    return n, 0
 
-    return changes + recoursive_scan(duplicated_projection, n)
 
-
-def selection_inside_projection(n: parser.Node) -> int:
+def selection_inside_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like  σ j (π k(R)) and
     converts them into π k(σ j (R))'''
-    changes = 0
-
     if n.name == SELECTION and n.child.name == PROJECTION:
-        changes = 1
-        temp = n.prop
-        n.prop = n.child.prop
-        n.child.prop = temp
-        n.name = PROJECTION
-        n.child.name = SELECTION
+        child = parser.Unary(
+            SELECTION,
+            n.prop,
+            n.child.child
+        )
 
-    return changes + recoursive_scan(selection_inside_projection, n)
+        return parser.Unary(PROJECTION, n.child.prop, child), 0
+    return n, 0
 
 
-def swap_union_renames(n: parser.Node) -> int:
+def swap_union_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like
-    ρ a➡b(R) ᑌ ρ a➡b(Q)
+    ρ a➡b(R) ∪ ρ a➡b(Q)
     and replaces them with
-    ρ a➡b(R ᑌ Q).
+    ρ a➡b(R ∪ Q).
     Does the same with subtraction and intersection'''
-    changes = 0
-
-    if n.name in (DIFFERENCE, UNION, INTERSECTION) and n.left.name == n.right.name and n.left.name == RENAME:
-        l_vars = {}
-        for i in n.left.prop.split(','):
-            q = i.split(ARROW)
-            l_vars[q[0].strip()] = q[1].strip()
-
-        r_vars = {}
-        for i in n.right.prop.split(','):
-            q = i.split(ARROW)
-            r_vars[q[0].strip()] = q[1].strip()
-
+    if n.name in (DIFFERENCE, UNION, INTERSECTION) and n.left.name == RENAME and n.right.name == RENAME:
+        l_vars = n.left.get_rename_prop()
+        r_vars = n.right.get_rename_prop()
         if r_vars == l_vars:
-            changes = 1
-
-            # Copying self, but child will be child of renames
-            q = parser.Node()
-            q.name = n.name
-            q.kind = parser.BINARY
-            q.left = n.left.child
-            q.right = n.right.child
-
-            n.name = RENAME
-            n.kind = parser.UNARY
-            n.child = q
-            n.prop = n.left.prop
-            n.left = n.right = None
-
-    return changes + recoursive_scan(swap_union_renames, n)
+            child = parser.Binary(n.name, n.left.child, n.right.child)
+            return parser.Unary(RENAME, n.left.prop, child), 1
+    return n, 0
 
 
-def futile_renames(n: parser.Node) -> int:
-    '''This function purges renames like id->id'''
-    changes = 0
+def futile_renames(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function purges renames like
+    ρ id->id,a->q (A)
+    into
+    ρ a->q (A)
 
+    or removes the operation entirely if they all get removed
+    '''
     if n.name == RENAME:
-        # Located two nested renames.
-        changes = 1
+        renames = n.get_rename_prop()
+        changes = False
+        for k, v in renames.items():
+            if k == v:
+                changes = True
+                del renames[k]
+        if len(renames) == 0: # Nothing to rename, removing the rename
+            return n.child, 1
+        elif changes:
+            # Changing the node in place, no need to return to cause a recursive step
+            n.set_rename_prop(renames)
 
-        # Creating a dictionary with the attributes
-        _vars = {}
-        for i in n.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[0].strip()] = q[1].strip()
-        # Scans dictionary to locate things like "a->b,b->c" and replace them
-        # with "a->c"
-        for key in list(_vars.keys()):
-            value = _vars.get(key)
-            if key == value:
-                _vars.pop(value)  # Removes the unused one
-
-        if len(_vars) == 0: # Nothing to rename, removing the rename op
-            replace_node(n, n.child)
-        else:
-            n.prop = ','.join('%s%s%s' % (i[0], ARROW, i[1]) for i in _vars.items())
-
-    return changes + recoursive_scan(futile_renames, n)
+    return n, 0
 
 
-def subsequent_renames(n: parser.Node) -> int:
-    '''This function removes redoundant subsequent renames joining them into one'''
-
-    '''Purges renames like id->id Since it's needed to be performed BEFORE this one
-    so it is not in the list with the other optimizations'''
-    futile_renames(n)
-    changes = 0
-
+def subsequent_renames(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function removes redundant subsequent renames joining them into one
+    ρ .. ρ .. (A)
+    into
+    ρ ... (A)
+    '''
     if n.name == RENAME and n.child.name == RENAME:
         # Located two nested renames.
-        changes = 1
-        # Joining the attribute into one
-        n.prop += ',' + n.child.prop
-        n.child = n.child.child
+        prop = n.prop + ',' + n.child.prop
+        child = n.child.child
+        n = parser.Unary(RENAME, prop, child)
 
         # Creating a dictionary with the attributes
-        _vars = {}
-        for i in n.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[0].strip()] = q[1].strip()
+        renames = n.get_rename_prop()
+
         # Scans dictionary to locate things like "a->b,b->c" and replace them
         # with "a->c"
-        for key in list(_vars.keys()):
-            value = _vars.get(key)
-            if value in _vars.keys():
-                if _vars[value] != key:
+        for key, value in tuple(renames.items()):
+
+            if value in renames:
+                if renames[value] != key:
                     # Double rename on attribute
-                    _vars[key] = _vars[_vars[key]]  # Sets value
-                    _vars.pop(value)  # Removes the unused one
+                    renames[key] = renames[renames[key]]  # Sets value
+                    del renames[value]  # Removes the unused one
                 else:  # Cycle rename a->b,b->a
-                    _vars.pop(value)  # Removes the unused one
-                    _vars.pop(key)  # Removes the unused one
+                    del renames[value] # Removes the unused one
+                    del renames[key] # Removes the unused one
 
-        if len(_vars) == 0:  # Nothing to rename, removing the rename op
-            replace_node(n, n.child)
+        if len(renames) == 0:  # Nothing to rename, removing the rename op
+            return n.child, 1
         else:
-            n.prop = ','.join('%s%s%s' % (i[0], ARROW, i[1]) for i in _vars.items())
+            n.set_rename_prop(renames)
+            return n, 1
 
-    return changes + recoursive_scan(subsequent_renames, n)
+    return n, 0
 
 
 class level_string(str):
@@ -411,100 +329,83 @@ def tokenize_select(expression):
     return l
 
 
-def swap_rename_projection(n: parser.Node) -> int:
-    '''This function locates things like π k(ρ j(R))
-    and replaces them with ρ j(π k(R)).
+def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function locates things like
+    π k(ρ j(R))
+    and replaces them with
+    ρ j(π k(R)).
     This will let rename work on a hopefully smaller set
     and more important, will hopefully allow further optimizations.
-    Will also eliminate fields in the rename that are cutted in the projection.
+
+    Will also eliminate fields in the rename that are cut in the projection.
     '''
-    changes = 0
 
     if n.name == PROJECTION and n.child.name == RENAME:
-        changes = 1
-
         # π index,name(ρ id➡index(R))
-        _vars = {}
-        for i in n.child.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[1].strip()] = q[0].strip()
+        renames = n.child.get_rename_prop()
+        projections = set(n.get_projection_prop())
 
-        _pr = n.prop.split(',')
-        for i in range(len(_pr)):
-            try:
-                _pr[i] = _vars[_pr[i].strip()]
-            except:
-                pass
+        # Use pre-rename names in the projection
+        for k, v in renames.items():
+            if v in projections:
+                projections.remove(v)
+                projections.add(k)
 
-        _pr_reborn = n.prop.split(',')
-        for i in list(_vars.keys()):
-            if i not in _pr_reborn:
-                _vars.pop(i)
-        n.name = n.child.name
+        # Eliminate fields
+        for i in list(renames.keys()):
+            if i not in projections:
+                del renames[i]
 
-        n.prop = ','.join('%s%s%s' % (i[1], ARROW, i[0]) for i in _vars.items())
+        child = parser.Unary(PROJECTION,'' , n.child.child)
+        child.set_projection_prop(projections)
+        n = parser.Unary(RENAME, '', child)
+        n.set_rename_prop(renames)
+        return n, 1
 
-        n.child.name = PROJECTION
-        n.child.prop = ''
-        for i in _pr:
-            n.child.prop += i + ','
-        n.child.prop = n.child.prop[:-1]
-
-    return changes + recoursive_scan(swap_rename_projection, n)
+    return n, 0
 
 
 def swap_rename_select(n: parser.Node) -> int:
-    '''This function locates things like σ k(ρ j(R)) and replaces
-    them with ρ j(σ k(R)). Renaming the attributes used in the
+    '''This function locates things like
+    σ k(ρ j(R))
+    and replaces them with
+    ρ j(σ k(R)).
+    Renaming the attributes used in the
     selection, so the operation is still valid.'''
-    changes = 0
 
     if n.name == SELECTION and n.child.name == RENAME:
-        changes = 1
-        # Dictionary containing attributes of rename
-        _vars = {}
-        for i in n.child.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[1].strip()] = q[0].strip()
+        # This is an inverse mapping for the rename
+        renames = {v: k for k, v in n.child.get_rename_prop().items()}
 
         # tokenizes expression in select
-        _tokens = tokenize_select(n.prop)
+        tokens = tokenize_select(n.prop)
 
-        # Renaming stuff
-        for i in range(len(_tokens)):
-            splitted = _tokens[i].split('.', 1)
-            if splitted[0] in _vars:
-                if len(splitted) == 1:
-                    _tokens[i] = _vars[_tokens[i].split('.')[0]]
-                else:
-                    _tokens[i] = _vars[
-                        _tokens[i].split('.')[0]] + '.' + splitted[1]
+        # Renaming stuff, no enum because I edit the tokens
+        for i in range(len(tokens)):
+            splitted = tokens[i].split('.', 1)
+            if splitted[0] in renames:
+                tokens[i] = renames[splitted[0]]
+                if len(splitted) > 1:
+                    tokens[i] += '.' + splitted[1]
 
-        # Swapping operators
-        n.name = RENAME
-        n.child.name = SELECTION
-
-        n.prop = n.child.prop
-        n.child.prop = ' '.join(_tokens)
-
-    return changes + recoursive_scan(swap_rename_select, n)
+        child = parser.Unary(SELECTION, ' '.join(tokens), n.child.child)
+        return parser.Unary(RENAME, n.child.prop, child), 1
+    return n, 0
 
 
 def select_union_intersect_subtract(n: parser.Node) -> int:
-    '''This function locates things like σ i(a) ᑌ σ q(a)
-    and replaces them with σ (i OR q) (a)
+    '''This function locates things like
+    σ i(a) ∪ σ q(a)
+    and replaces them with
+    σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
-    changes = 0
     if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
                 n.left.name == SELECTION and \
                 n.right.name == SELECTION and \
                 n.left.child == n.right.child:
-        changes = 1
 
         d = {UNION: 'or', INTERSECTION: 'and', DIFFERENCE: 'and not'}
         op = d[n.name]
-
-        newnode = parser.Node()
 
         if n.left.prop.startswith('(') or n.right.prop.startswith('('):
             t_str = '('
@@ -519,54 +420,34 @@ def select_union_intersect_subtract(n: parser.Node) -> int:
                 t_str += '%s'
             t_str += ')'
 
-            newnode.prop = t_str % (n.left.prop, op, n.right.prop)
+            prop = t_str % (n.left.prop, op, n.right.prop)
         else:
-            newnode.prop = '%s %s %s' % (n.left.prop, op, n.right.prop)
-        newnode.name = SELECTION
-        newnode.child = n.left.child
-        newnode.kind = parser.UNARY
-        replace_node(n, newnode)
-
-    return changes + recoursive_scan(select_union_intersect_subtract, n)
+            prop = '%s %s %s' % (n.left.prop, op, n.right.prop)
+        return parser.Unary(SELECTION, prop, n.left.child), 1
+    return n, 0
 
 
-def union_and_product(n: parser.Node) -> int:
+def union_and_product(n: parser.Node) -> Tuple[parser.Node, int]:
     '''
     A * B ∪ A * C = A * (B ∪ C)
     Same thing with inner join
     '''
-
-    changes = 0
     if n.name == UNION and n.left.name in {PRODUCT, JOIN} and n.left.name == n.right.name:
 
-        newnode = parser.Node()
-        newnode.kind = parser.BINARY
-        newnode.name = n.left.name
-
-        newchild = parser.Node()
-        newchild.kind = parser.BINARY
-        newchild.name = UNION
-
         if n.left.left == n.right.left or n.left.left == n.right.right:
-            newnode.left = n.left.left
-            newnode.right = newchild
-
-            newchild.left = n.left.right
-            newchild.right = n.right.left if n.left.left == n.right.right else n.right.right
-            replace_node(n, newnode)
-            changes = 1
+            l = n.left.right
+            r = n.right.left if n.left.left == n.right.right else n.right.right
+            newchild = parser.Binary(UNION, l, r)
+            return parser.Binary(n.left.name, n.left.left, newchild), 1
         elif n.left.right == n.right.left or n.left.left == n.right.right:
-            newnode.left = n.left.right
-            newnode.right = newchild
-
-            newchild.left = n.left.left
-            newchild.right = n.right.left if n.right.left == n.right.right else n.right.right
-            replace_node(n, newnode)
-            changes = 1
-    return changes + recoursive_scan(union_and_product, n)
+            l = n.left.left
+            r = n.right.left if n.right.left == n.right.right else n.right.right
+            newchild = parser.Binary(UNION, l, r)
+            return parser.Binary(n.left.name, n.left.right, newchild), 1
+    return n, 0
 
 
-def projection_and_union(n, rels):
+def projection_and_union(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parser.Node, int]:
     '''
     Turns
         π a,b,c(A) ∪ π a,b,c(B)
@@ -581,28 +462,16 @@ def projection_and_union(n, rels):
             n.left.name == PROJECTION and \
             n.right.name == PROJECTION and \
             set(n.left.child.result_format(rels)) == set(n.right.child.result_format(rels)):
-        newchild = parser.Node()
 
-        newchild.kind = parser.BINARY
-        newchild.name = UNION
-        newchild.left = n.left.child
-        newchild.right = n.right.child
-
-        newnode = parser.Node()
-        newnode.child = newchild
-        newnode.kind = parser.UNARY
-        newnode.name = PROJECTION
-        newnode.prop = n.right.prop
-        replace_node(n, newnode)
-        changes = 1
-    return changes + recoursive_scan(projection_and_union, n, rels)
+        child = parser.Binary(UNION, n.left.child, n.right.child)
+        return parser.Unary(PROJECTION, n.right.prop, child), 0
+    return n, 0
 
 
-def selection_and_product(n, rels):
+def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.Node:
     '''This function locates things like σ k (R*Q) and converts them into
     σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
     i contains attributes belonging to Q and l contains attributes belonging to both'''
-    changes = 0
 
     if n.name == SELECTION and n.child.name in (PRODUCT, JOIN):
         l_attr = n.child.left.result_format(rels)
@@ -637,76 +506,71 @@ def selection_and_product(n, rels):
                 if j in r_attr:  # Field in right
                     r_fields = True
 
-            if l_fields and r_fields:  # Fields in both
-                both.append(i)
-            elif l_fields:
+            if l_fields and not r_fields:
                 left.append(i)
-            elif r_fields:
+            elif r_fields and not l_fields:
                 right.append(i)
             else:  # Unknown.. adding in both
                 both.append(i)
 
         # Preparing left selection
-        if len(left) > 0:
-            changes = 1
-            l_node = parser.Node()
-            l_node.name = SELECTION
-            l_node.kind = parser.UNARY
-            l_node.child = n.child.left
-            l_node.prop = ''
-            n.child.left = l_node
+        if left:
+            l_prop = ''
             while len(left) > 0:
                 c = left.pop(0)
                 for i in c:
-                    l_node.prop += i + ' '
+                    l_prop += i + ' '
                 if len(left) > 0:
-                    l_node.prop += ' and '
-            if '(' in l_node.prop:
-                l_node.prop = '(%s)' % l_node.prop
+                    l_prop += ' and '
+            if '(' in l_prop:
+                l_prop = '(%s)' % l_prop
+            l_node = parser.Unary(SELECTION, l_prop, n.child.left)
+        else:
+            l_node = n.child.left
 
         # Preparing right selection
-        if len(right) > 0:
-            changes = 1
-            r_node = parser.Node()
-            r_node.name = SELECTION
-            r_node.prop = ''
-            r_node.kind = parser.UNARY
-            r_node.child = n.child.right
-            n.child.right = r_node
+        if right:
+            r_prop = ''
             while len(right) > 0:
                 c = right.pop(0)
-                r_node.prop += ' '.join(c)
+                r_prop += ' '.join(c)
                 if len(right) > 0:
-                    r_node.prop += ' and '
-            if '(' in r_node.prop:
-                r_node.prop = '(%s)' % r_node.prop
+                    r_prop += ' and '
+            if '(' in r_prop:
+                r_prop = '(%s)' % r_prop
+            r_node = parser.Unary(SELECTION, r_prop, n.child.right)
+        else:
+            r_node = n.child.right
+
+        b_node = parser.Binary(n.child.name, l_node, r_node)
+
         # Changing main selection
-        n.prop = ''
-        if len(both) != 0:
+        if both:
+            both_prop = ''
             while len(both) > 0:
                 c = both.pop(0)
-                n.prop += ' '.join(c)
+                both_prop += ' '.join(c)
                 if len(both) > 0:
-                    n.prop += ' and '
-            if '(' in n.prop:
-                n.prop = '(%s)' % n.prop
+                    both_prop += ' and '
+            if '(' in both_prop:
+                both_prop = '(%s)' % both_prop
+            r = parser.Unary(SELECTION, both_prop, b_node)
+            return r, len(left) + len(right)
         else:  # No need for general select
-            replace_node(n, n.child)
+            return b_node, 1
 
-    return changes + recoursive_scan(selection_and_product, n, rels)
+    return n, 0
 
 
-def useless_projection(n, rels) -> int:
+def useless_projection(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parser.Node, int]:
     '''
     Removes projections that are over all the fields
     '''
-    changes = 0
     if n.name == PROJECTION and \
             set(n.child.result_format(rels)) == set(i.strip() for i in n.prop.split(',')):
-        changes = 1
-        replace_node(n, n.child)
+        return n.child, 1
 
-    return changes + recoursive_scan(useless_projection, n, rels)
+    return n, 0
 
 general_optimizations = [
     duplicated_select,
@@ -714,6 +578,7 @@ general_optimizations = [
     duplicated_projection,
     selection_inside_projection,
     subsequent_renames,
+    futile_renames,
     swap_rename_select,
     futile_union_intersection_subtraction,
     swap_union_renames,
@@ -726,6 +591,3 @@ specific_optimizations = [
     projection_and_union,
     useless_projection,
 ]
-
-if __name__ == "__main__":
-    print (tokenize_select("skill == 'C' and  id % 2 == 0"))
