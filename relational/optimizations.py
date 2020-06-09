@@ -366,40 +366,31 @@ def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
 
 
 def swap_rename_select(n: parser.Node) -> int:
-    '''This function locates things like σ k(ρ j(R)) and replaces
-    them with ρ j(σ k(R)). Renaming the attributes used in the
+    '''This function locates things like
+    σ k(ρ j(R))
+    and replaces them with
+    ρ j(σ k(R)).
+    Renaming the attributes used in the
     selection, so the operation is still valid.'''
-    changes = 0
 
     if n.name == SELECTION and n.child.name == RENAME:
-        changes = 1
-        # Dictionary containing attributes of rename
-        _vars = {}
-        for i in n.child.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[1].strip()] = q[0].strip()
+        # This is an inverse mapping for the rename
+        renames = {v: k for k, v in n.child.get_rename_prop().items()}
 
         # tokenizes expression in select
-        _tokens = tokenize_select(n.prop)
+        tokens = tokenize_select(n.prop)
 
-        # Renaming stuff
-        for i in range(len(_tokens)):
-            splitted = _tokens[i].split('.', 1)
-            if splitted[0] in _vars:
-                if len(splitted) == 1:
-                    _tokens[i] = _vars[_tokens[i].split('.')[0]]
-                else:
-                    _tokens[i] = _vars[
-                        _tokens[i].split('.')[0]] + '.' + splitted[1]
+        # Renaming stuff, no enum because I edit the tokens
+        for i in range(len(tokens)):
+            splitted = tokens[i].split('.', 1)
+            if splitted[0] in renames:
+                tokens[i] = renames[splitted[0]]
+                if len(splitted) > 1:
+                    tokens[i] += '.' + splitted[1]
 
-        # Swapping operators
-        n.name = RENAME
-        n.child.name = SELECTION
-
-        n.prop = n.child.prop
-        n.child.prop = ' '.join(_tokens)
-
-    return changes + recoursive_scan(swap_rename_select, n)
+        child = parser.Unary(SELECTION, ' '.join(tokens), n.child.child)
+        return parser.Unary(RENAME, n.child.prop, child), 1
+    return n, 0
 
 
 def select_union_intersect_subtract(n: parser.Node) -> int:
@@ -627,7 +618,7 @@ general_optimizations = [
     selection_inside_projection,
     subsequent_renames,
     futile_renames,
-    #swap_rename_select,
+    swap_rename_select,
     futile_union_intersection_subtraction,
     swap_union_renames,
     swap_rename_projection,
