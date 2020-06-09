@@ -175,7 +175,7 @@ def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, 
     return n, 0
 
 
-def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
+def down_to_unions_subtractions_intersections(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This funcion locates things like σ i==2 (c ᑌ d), where the union
     can be a subtraction and an intersection and replaces them with
     σ i==2 (c) ᑌ σ i==2(d).
@@ -183,27 +183,11 @@ def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
     changes = 0
     _o = (UNION, DIFFERENCE, INTERSECTION)
     if n.name == SELECTION and n.child.name in _o:
+        l = parser.Unary(SELECTION, n.prop, n.child.left)
+        r = parser.Unary(SELECTION, n.prop, n.child.right)
 
-        left = parser.Node()
-        left.prop = n.prop
-        left.name = n.name
-        left.child = n.child.left
-        left.kind = parser.UNARY
-        right = parser.Node()
-        right.prop = n.prop
-        right.name = n.name
-        right.child = n.child.right
-        right.kind = parser.UNARY
-
-        n.name = n.child.name
-        n.left = left
-        n.right = right
-        n.child = None
-        n.prop = None
-        n.kind = parser.BINARY
-        changes += 1
-
-    return changes + recoursive_scan(down_to_unions_subtractions_intersections, n)
+        return parser.Binary(n.child.name, l, r), 1
+    return n, 0
 
 
 def duplicated_projection(n: parser.Node) -> Tuple[parser.Node, int]:
@@ -677,7 +661,7 @@ def useless_projection(n, rels) -> int:
 
 general_optimizations = [
     duplicated_select,
-    #down_to_unions_subtractions_intersections,
+    down_to_unions_subtractions_intersections,
     duplicated_projection,
     #selection_inside_projection,
     #subsequent_renames,
