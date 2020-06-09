@@ -223,8 +223,8 @@ def swap_union_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     ρ a➡b(R ∪ Q).
     Does the same with subtraction and intersection'''
     if n.name in (DIFFERENCE, UNION, INTERSECTION) and n.left.name == RENAME and n.right.name == RENAME:
-        l_vars = n.left.rename_dict()
-        r_vars = n.right.rename_dict()
+        l_vars = n.left.get_rename_prop()
+        r_vars = n.right.get_rename_prop()
         if r_vars == l_vars:
             child = parser.Binary(n.name, n.left.child, n.right.child)
             return parser.Unary(RENAME, n.left.prop, child), 1
@@ -240,7 +240,7 @@ def futile_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     or removes the operation entirely if they all get removed
     '''
     if n.name == RENAME:
-        renames = n.rename_dict()
+        renames = n.get_rename_prop()
         changes = False
         for k, v in renames.items():
             if k == v:
@@ -250,7 +250,7 @@ def futile_renames(n: parser.Node) -> Tuple[parser.Node, int]:
             return n.child, 1
         elif changes:
             # Changing the node in place, no need to return to cause a recursive step
-            n.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
+            n.set_rename_prop(renames)
 
     return n, 0
 
@@ -286,8 +286,8 @@ def subsequent_renames(n: parser.Node) -> Tuple[parser.Node, int]:
 
         if len(renames) == 0:  # Nothing to rename, removing the rename op
             return n, 1
-        elif changes:
-            n.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
+        else:
+            n.set_rename_prop(renames)
             return n, 1
 
     return n, 0

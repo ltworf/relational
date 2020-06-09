@@ -233,13 +233,23 @@ class Unary(Node):
         if self.name == PROJECTION:
             prop = '\"%s\"' % prop.replace(' ', '').replace(',', '\",\"')
         elif self.name == RENAME:
-            prop = repr(self.rename_dict())
+            prop = repr(self.get_rename_prop())
         else:  # Selection
             prop = repr(prop)
 
         return '%s.%s(%s)' % (self.child._toPython(), op_functions[self.name], prop)
 
-    def rename_dict(self) -> Dict[str, str]:
+    def get_projection_prop(self) -> List[str]:
+        if self.name != PROJECTION:
+            raise ValueError('This is only supported on projection nodes')
+        return [i.strip() for i in self.prop.split(',')]
+
+    def set_projection_prop(self, p: List[str]) -> None:
+        if self.name != PROJECTION:
+            raise ValueError('This is only supported on projection nodes')
+        self.prop = ','.join(p)
+
+    def get_rename_prop(self) -> Dict[str, str]:
         '''
         Returns the dictionary that the rename operation wants
         '''
@@ -250,6 +260,15 @@ class Unary(Node):
             q = i.split(ARROW)
             r[q[0].strip()] = q[1].strip()
         return r
+
+    def set_rename_prop(self, renames: Dict[str, str]) -> None:
+        '''
+        Sets the prop field based on the dictionary for renames
+        '''
+        if self.name != RENAME:
+            raise ValueError('This is only supported on rename nodes')
+        self.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
+
 
 
 
