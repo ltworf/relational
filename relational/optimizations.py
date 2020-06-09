@@ -206,16 +206,16 @@ def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
     return changes + recoursive_scan(down_to_unions_subtractions_intersections, n)
 
 
-def duplicated_projection(n: parser.Node) -> int:
+def duplicated_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates thing like π i ( π j (R)) and replaces
     them with π i (R)'''
-    changes = 0
 
     if n.name == PROJECTION and n.child.name == PROJECTION:
-        n.child = n.child.child
-        changes += 1
-
-    return changes + recoursive_scan(duplicated_projection, n)
+        return parser.Unary(
+            PROJECTION,
+            n.prop,
+            n.child.child), 1
+    return n, 0
 
 
 def selection_inside_projection(n: parser.Node) -> int:
@@ -678,7 +678,7 @@ def useless_projection(n, rels) -> int:
 general_optimizations = [
     duplicated_select,
     #down_to_unions_subtractions_intersections,
-    #duplicated_projection,
+    duplicated_projection,
     #selection_inside_projection,
     #subsequent_renames,
     #swap_rename_select,
