@@ -506,17 +506,15 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
                 if j in r_attr:  # Field in right
                     r_fields = True
 
-            if l_fields and r_fields:  # Fields in both
-                both.append(i)
-            elif l_fields:
+            if l_fields and not r_fields:
                 left.append(i)
-            elif r_fields:
+            elif r_fields and not l_fields:
                 right.append(i)
             else:  # Unknown.. adding in both
                 both.append(i)
 
         # Preparing left selection
-        if len(left) > 0:
+        if left:
             l_prop = ''
             while len(left) > 0:
                 c = left.pop(0)
@@ -531,8 +529,7 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
             l_node = n.child.left
 
         # Preparing right selection
-        if len(right) > 0:
-
+        if right:
             r_prop = ''
             while len(right) > 0:
                 c = right.pop(0)
@@ -548,8 +545,8 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
         b_node = parser.Binary(n.child.name, l_node, r_node)
 
         # Changing main selection
-        both_prop = ''
-        if len(both) != 0:
+        if both:
+            both_prop = ''
             while len(both) > 0:
                 c = both.pop(0)
                 both_prop += ' '.join(c)
@@ -557,7 +554,8 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
                     both_prop += ' and '
             if '(' in both_prop:
                 both_prop = '(%s)' % both_prop
-            return parser.Unary(SELECTION, both_prop, b_node), 1
+            r = parser.Unary(SELECTION, both_prop, b_node)
+            return r, len(left) + len(right)
         else:  # No need for general select
             return b_node, 1
 
