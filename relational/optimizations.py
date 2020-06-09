@@ -329,46 +329,40 @@ def tokenize_select(expression):
     return l
 
 
-def swap_rename_projection(n: parser.Node) -> int:
-    '''This function locates things like π k(ρ j(R))
-    and replaces them with ρ j(π k(R)).
+def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function locates things like
+    π k(ρ j(R))
+    and replaces them with
+    ρ j(π k(R)).
     This will let rename work on a hopefully smaller set
     and more important, will hopefully allow further optimizations.
-    Will also eliminate fields in the rename that are cutted in the projection.
+
+    Will also eliminate fields in the rename that are cut in the projection.
     '''
-    changes = 0
 
     if n.name == PROJECTION and n.child.name == RENAME:
-        changes = 1
-
         # π index,name(ρ id➡index(R))
-        _vars = {}
-        for i in n.child.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[1].strip()] = q[0].strip()
+        renames = n.child.get_rename_prop()
+        projections = set(n.get_projection_prop())
 
-        _pr = n.prop.split(',')
-        for i in range(len(_pr)):
-            try:
-                _pr[i] = _vars[_pr[i].strip()]
-            except:
-                pass
+        # Use pre-rename names in the projection
+        for k, v in renames.items():
+            if v in projections:
+                projections.remove(v)
+                projections.add(k)
 
-        _pr_reborn = n.prop.split(',')
-        for i in list(_vars.keys()):
-            if i not in _pr_reborn:
-                _vars.pop(i)
-        n.name = n.child.name
+        # Eliminate fields
+        for i in list(renames.keys()):
+            if i not in projections:
+                del renames[i]
 
-        n.prop = ','.join('%s%s%s' % (i[1], ARROW, i[0]) for i in _vars.items())
+        child = parser.Unary(PROJECTION,'' , n.child.child)
+        child.set_projection_prop(projections)
+        n = parser.Unary(RENAME, '', child)
+        n.set_rename_prop(renames)
+        return n, 1
 
-        n.child.name = PROJECTION
-        n.child.prop = ''
-        for i in _pr:
-            n.child.prop += i + ','
-        n.child.prop = n.child.prop[:-1]
-
-    return changes + recoursive_scan(swap_rename_projection, n)
+    return n, 0
 
 
 def swap_rename_select(n: parser.Node) -> int:
@@ -636,7 +630,7 @@ general_optimizations = [
     #swap_rename_select,
     futile_union_intersection_subtraction,
     swap_union_renames,
-    #swap_rename_projection,
+    swap_rename_projection,
     #select_union_intersect_subtract,
     #union_and_product,
 ]
