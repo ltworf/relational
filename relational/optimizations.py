@@ -515,13 +515,7 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
 
         # Preparing left selection
         if left:
-            l_prop = ''
-            while len(left) > 0:
-                c = left.pop(0)
-                for i in c:
-                    l_prop += i + ' '
-                if len(left) > 0:
-                    l_prop += ' and '
+            l_prop = ' and '.join((' '.join(i) for i in left))
             if '(' in l_prop:
                 l_prop = '(%s)' % l_prop
             l_node = parser.Unary(SELECTION, l_prop, n.child.left)
@@ -530,12 +524,7 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
 
         # Preparing right selection
         if right:
-            r_prop = ''
-            while len(right) > 0:
-                c = right.pop(0)
-                r_prop += ' '.join(c)
-                if len(right) > 0:
-                    r_prop += ' and '
+            r_prop = ' and '.join((' '.join(i) for i in right))
             if '(' in r_prop:
                 r_prop = '(%s)' % r_prop
             r_node = parser.Unary(SELECTION, r_prop, n.child.right)
@@ -546,12 +535,7 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
 
         # Changing main selection
         if both:
-            both_prop = ''
-            while len(both) > 0:
-                c = both.pop(0)
-                both_prop += ' '.join(c)
-                if len(both) > 0:
-                    both_prop += ' and '
+            both_prop = ' and '.join((' '.join(i) for i in both))
             if '(' in both_prop:
                 both_prop = '(%s)' % both_prop
             r = parser.Unary(SELECTION, both_prop, b_node)
