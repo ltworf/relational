@@ -24,21 +24,20 @@
 # the parse tree itself will be modified accordingly.
 from typing import Union, Optional, Dict, Any, Tuple
 
+from relational.relation import Relation
 from relational import optimizations
 from relational.parser import Node, Variable, Unary, Binary, op_functions, tokenize, tree
 from relational import querysplit
 from relational.maintenance import UserInterface
 
-ContextDict = Dict[str,Any]
 
-
-def optimize_program(code, rels: ContextDict):
+def optimize_program(code, rels: Dict[str, Relation]):
     '''
     Optimize an entire program, composed by multiple expressions
     and assignments.
     '''
     lines = code.split('\n')
-    context = {} #  type: ContextDict
+    context = {}
 
     for line in  lines:
         line = line.strip()
@@ -53,7 +52,7 @@ def optimize_program(code, rels: ContextDict):
     return querysplit.split(node, rels)
 
 
-def optimize_all(expression: Union[str, Node], rels: ContextDict, specific: bool = True, general: bool = True, debug: Optional[list] = None, tostr: bool = True) -> Union[str, Node]:
+def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specific: bool = True, general: bool = True, debug: Optional[list] = None, tostr: bool = True) -> Union[str, Node]:
     '''This function performs all the available optimizations.
 
     expression : see documentation of this module
@@ -98,7 +97,7 @@ def optimize_all(expression: Union[str, Node], rels: ContextDict, specific: bool
         return n
 
 
-def specific_optimize(expression, rels: ContextDict):
+def specific_optimize(expression, rels: Dict[str, Relation]):
     '''This function performs specific optimizations. Means that it will need to
     know the fields used by the relations.
 
