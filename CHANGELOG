@@ -1,3 +1,6 @@
+3.0
+- Refactored parser to use better typing
+
 2.6
 - Improved survey sending
 - Prevent relation/field names from being reserved keywords

@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2009-2018  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2009-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -709,22 +709,22 @@ def useless_projection(n, rels) -> int:
     return changes + recoursive_scan(useless_projection, n, rels)
 
 general_optimizations = [
-    duplicated_select,
-    down_to_unions_subtractions_intersections,
-    duplicated_projection,
-    selection_inside_projection,
-    subsequent_renames,
-    swap_rename_select,
-    futile_union_intersection_subtraction,
-    swap_union_renames,
-    swap_rename_projection,
-    select_union_intersect_subtract,
-    union_and_product,
+    #duplicated_select,
+    #down_to_unions_subtractions_intersections,
+    #duplicated_projection,
+    #selection_inside_projection,
+    #subsequent_renames,
+    #swap_rename_select,
+    #futile_union_intersection_subtraction,
+    #swap_union_renames,
+    #swap_rename_projection,
+    #select_union_intersect_subtract,
+    #union_and_product,
 ]
 specific_optimizations = [
-    selection_and_product,
-    projection_and_union,
-    useless_projection,
+    #selection_and_product,
+    #projection_and_union,
+    #useless_projection,
 ]
 
 if __name__ == "__main__":
