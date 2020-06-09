@@ -1,7 +1,7 @@
 3.0
 - Refactored parser to use better typing
-
-2.6
+- Refactored and fixed some optimizations
+- Added more test cases
 - Improved survey sending
 - Prevent relation/field names from being reserved keywords
 - Fixed issue in cli where loading an invalid file would lead to a crash
