@@ -268,24 +268,23 @@ def subsequent_renames(n: parser.Node) -> Tuple[parser.Node, int]:
         n = parser.Unary(RENAME, prop, child)
 
         # Creating a dictionary with the attributes
-        renames = n.rename_dict()
+        renames = n.get_rename_prop()
 
         # Scans dictionary to locate things like "a->b,b->c" and replace them
         # with "a->c"
-        changes = False
         for key, value in tuple(renames.items()):
+
             if value in renames:
-                changes = True
                 if renames[value] != key:
                     # Double rename on attribute
                     renames[key] = renames[renames[key]]  # Sets value
-                    renames.pop(value)  # Removes the unused one
+                    del renames[value]  # Removes the unused one
                 else:  # Cycle rename a->b,b->a
-                    renames.pop(value)  # Removes the unused one
-                    renames.pop(key)  # Removes the unused one
+                    del renames[value] # Removes the unused one
+                    del renames[key] # Removes the unused one
 
         if len(renames) == 0:  # Nothing to rename, removing the rename op
-            return n, 1
+            return n.child, 1
         else:
             n.set_rename_prop(renames)
             return n, 1
