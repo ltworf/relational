@@ -614,6 +614,3 @@ specific_optimizations = [
     #projection_and_union,
     #useless_projection,
 ]
-
-if __name__ == "__main__":
-    print (tokenize_select("skill == 'C' and  id % 2 == 0"))
