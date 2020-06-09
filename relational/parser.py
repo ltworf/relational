@@ -29,10 +29,6 @@ from dataclasses import dataclass
 
 from relational import rtypes
 
-RELATION = 0
-UNARY = 1
-BINARY = 2
-
 PRODUCT = '*'
 DIFFERENCE = '-'
 UNION = '∪'
