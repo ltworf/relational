@@ -394,20 +394,18 @@ def swap_rename_select(n: parser.Node) -> int:
 
 
 def select_union_intersect_subtract(n: parser.Node) -> int:
-    '''This function locates things like σ i(a) ∪ σ q(a)
-    and replaces them with σ (i OR q) (a)
+    '''This function locates things like
+    σ i(a) ∪ σ q(a)
+    and replaces them with
+    σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
-    changes = 0
     if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
                 n.left.name == SELECTION and \
                 n.right.name == SELECTION and \
                 n.left.child == n.right.child:
-        changes = 1
 
         d = {UNION: 'or', INTERSECTION: 'and', DIFFERENCE: 'and not'}
         op = d[n.name]
-
-        newnode = parser.Node()
 
         if n.left.prop.startswith('(') or n.right.prop.startswith('('):
             t_str = '('
@@ -422,15 +420,11 @@ def select_union_intersect_subtract(n: parser.Node) -> int:
                 t_str += '%s'
             t_str += ')'
 
-            newnode.prop = t_str % (n.left.prop, op, n.right.prop)
+            prop = t_str % (n.left.prop, op, n.right.prop)
         else:
-            newnode.prop = '%s %s %s' % (n.left.prop, op, n.right.prop)
-        newnode.name = SELECTION
-        newnode.child = n.left.child
-        newnode.kind = parser.UNARY
-        replace_node(n, newnode)
-
-    return changes + recoursive_scan(select_union_intersect_subtract, n)
+            prop = '%s %s %s' % (n.left.prop, op, n.right.prop)
+        return parser.Unary(SELECTION, prop, n.left.child), 1
+    return n, 0
 
 
 def union_and_product(n: parser.Node) -> Tuple[parser.Node, int]:
@@ -606,7 +600,7 @@ general_optimizations = [
     futile_union_intersection_subtraction,
     swap_union_renames,
     swap_rename_projection,
-    #select_union_intersect_subtract,
+    select_union_intersect_subtract,
     union_and_product,
 ]
 specific_optimizations = [
