@@ -30,9 +30,9 @@
 
 from io import StringIO
 from tokenize import generate_tokens
-from typing import Tuple
+from typing import Tuple, Dict
 
-
+from relational.relation import Relation
 from relational import parser
 
 sel_op = (
@@ -577,17 +577,15 @@ def selection_and_product(n, rels):
     return changes + recoursive_scan(selection_and_product, n, rels)
 
 
-def useless_projection(n, rels) -> int:
+def useless_projection(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parser.Node, int]:
     '''
     Removes projections that are over all the fields
     '''
-    changes = 0
     if n.name == PROJECTION and \
             set(n.child.result_format(rels)) == set(i.strip() for i in n.prop.split(',')):
-        changes = 1
-        replace_node(n, n.child)
+        return n.child, 1
 
-    return changes + recursive_scan(useless_projection, n, rels)
+    return n, 0
 
 general_optimizations = [
     duplicated_select,
@@ -606,5 +604,5 @@ general_optimizations = [
 specific_optimizations = [
     #selection_and_product,
     #projection_and_union,
-    #useless_projection,
+    useless_projection,
 ]
