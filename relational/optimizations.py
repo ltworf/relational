@@ -447,7 +447,7 @@ def union_and_product(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, 0
 
 
-def projection_and_union(n, rels):
+def projection_and_union(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parser.Node, int]:
     '''
     Turns
         π a,b,c(A) ∪ π a,b,c(B)
@@ -462,20 +462,9 @@ def projection_and_union(n, rels):
             n.left.name == PROJECTION and \
             n.right.name == PROJECTION and \
             set(n.left.child.result_format(rels)) == set(n.right.child.result_format(rels)):
-        newchild = parser.Node()
 
-        newchild.kind = parser.BINARY
-        newchild.name = UNION
-        newchild.left = n.left.child
-        newchild.right = n.right.child
-
-        newnode = parser.Node()
-        newnode.child = newchild
-        newnode.kind = parser.UNARY
-        newnode.name = PROJECTION
-        newnode.prop = n.right.prop
-        replace_node(n, newnode)
-        changes = 1
+        child = parser.Binary(UNION, n.left.child, n.right.child)
+        return parser.Unary(PROJECTION, n.right.prop, child), 0
     return n, 0
 
 
@@ -603,6 +592,6 @@ general_optimizations = [
 ]
 specific_optimizations = [
     #selection_and_product,
-    #projection_and_union,
+    projection_and_union,
     useless_projection,
 ]
