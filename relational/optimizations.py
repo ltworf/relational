@@ -126,14 +126,14 @@ def duplicated_select(n: parser.Node) -> Tuple[parser.Node, int]:
 
 
 def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, int]:
-    '''This function locates things like r ᑌ r, and replaces them with r.
-    R ᑌ R  --> R
-    R ᑎ R --> R
+    '''This function locates things like r ∪ r, and replaces them with r.
+    R ∪ R  --> R
+    R ∩ R --> R
     R - R --> σ False (R)
     σ k (R) - R --> σ False (R)
     R - σ k (R) --> σ not k (R)
-    σ k (R) ᑌ R --> R
-    σ k (R) ᑎ R --> σ k (R)
+    σ k (R) ∪ R --> R
+    σ k (R) ∩ R --> σ k (R)
     '''
 
     changes = 0
@@ -176,9 +176,9 @@ def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, 
 
 
 def down_to_unions_subtractions_intersections(n: parser.Node) -> Tuple[parser.Node, int]:
-    '''This funcion locates things like σ i==2 (c ᑌ d), where the union
+    '''This funcion locates things like σ i==2 (c ∪ d), where the union
     can be a subtraction and an intersection and replaces them with
-    σ i==2 (c) ᑌ σ i==2(d).
+    σ i==2 (c) ∪ σ i==2(d).
     '''
     changes = 0
     _o = (UNION, DIFFERENCE, INTERSECTION)
@@ -440,7 +440,7 @@ def swap_rename_select(n: parser.Node) -> int:
 
 
 def select_union_intersect_subtract(n: parser.Node) -> int:
-    '''This function locates things like σ i(a) ᑌ σ q(a)
+    '''This function locates things like σ i(a) ∪ σ q(a)
     and replaces them with σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
     changes = 0
