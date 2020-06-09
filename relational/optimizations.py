@@ -202,20 +202,18 @@ def duplicated_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, 0
 
 
-def selection_inside_projection(n: parser.Node) -> int:
+def selection_inside_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like  σ j (π k(R)) and
     converts them into π k(σ j (R))'''
-    changes = 0
-
     if n.name == SELECTION and n.child.name == PROJECTION:
-        changes = 1
-        temp = n.prop
-        n.prop = n.child.prop
-        n.child.prop = temp
-        n.name = PROJECTION
-        n.child.name = SELECTION
+        child = parser.Unary(
+            SELECTION,
+            n.prop,
+            n.child.child
+        )
 
-    return changes + recoursive_scan(selection_inside_projection, n)
+        return parser.Unary(PROJECTION, n.child.prop, child), 0
+    return n, 0
 
 
 def swap_union_renames(n: parser.Node) -> int:
@@ -663,7 +661,7 @@ general_optimizations = [
     duplicated_select,
     down_to_unions_subtractions_intersections,
     duplicated_projection,
-    #selection_inside_projection,
+    selection_inside_projection,
     #subsequent_renames,
     #swap_rename_select,
     futile_union_intersection_subtraction,
