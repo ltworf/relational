@@ -216,42 +216,19 @@ def selection_inside_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, 0
 
 
-def swap_union_renames(n: parser.Node) -> int:
+def swap_union_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like
-    ρ a➡b(R) ᑌ ρ a➡b(Q)
+    ρ a➡b(R) ∪ ρ a➡b(Q)
     and replaces them with
-    ρ a➡b(R ᑌ Q).
+    ρ a➡b(R ∪ Q).
     Does the same with subtraction and intersection'''
-    changes = 0
-
-    if n.name in (DIFFERENCE, UNION, INTERSECTION) and n.left.name == n.right.name and n.left.name == RENAME:
-        l_vars = {}
-        for i in n.left.prop.split(','):
-            q = i.split(ARROW)
-            l_vars[q[0].strip()] = q[1].strip()
-
-        r_vars = {}
-        for i in n.right.prop.split(','):
-            q = i.split(ARROW)
-            r_vars[q[0].strip()] = q[1].strip()
-
+    if n.name in (DIFFERENCE, UNION, INTERSECTION) and n.left.name == RENAME and n.right.name == RENAME:
+        l_vars = n.left.rename_dict()
+        r_vars = n.right.rename_dict()
         if r_vars == l_vars:
-            changes = 1
-
-            # Copying self, but child will be child of renames
-            q = parser.Node()
-            q.name = n.name
-            q.kind = parser.BINARY
-            q.left = n.left.child
-            q.right = n.right.child
-
-            n.name = RENAME
-            n.kind = parser.UNARY
-            n.child = q
-            n.prop = n.left.prop
-            n.left = n.right = None
-
-    return changes + recoursive_scan(swap_union_renames, n)
+            child = parser.Binary(n.name, n.left.child, n.right.child)
+            return parser.Unary(RENAME, n.left.prop, child), 1
+    return n, 0
 
 
 def futile_renames(n: parser.Node) -> int:
@@ -665,7 +642,7 @@ general_optimizations = [
     #subsequent_renames,
     #swap_rename_select,
     futile_union_intersection_subtraction,
-    #swap_union_renames,
+    swap_union_renames,
     #swap_rename_projection,
     #select_union_intersect_subtract,
     #union_and_product,
