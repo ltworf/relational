@@ -468,11 +468,10 @@ def projection_and_union(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[par
     return n, 0
 
 
-def selection_and_product(n, rels):
+def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.Node:
     '''This function locates things like σ k (R*Q) and converts them into
     σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
     i contains attributes belonging to Q and l contains attributes belonging to both'''
-    changes = 0
 
     if n.name == SELECTION and n.child.name in (PRODUCT, JOIN):
         l_attr = n.child.left.result_format(rels)
@@ -518,52 +517,51 @@ def selection_and_product(n, rels):
 
         # Preparing left selection
         if len(left) > 0:
-            changes = 1
-            l_node = parser.Node()
-            l_node.name = SELECTION
-            l_node.kind = parser.UNARY
-            l_node.child = n.child.left
-            l_node.prop = ''
-            n.child.left = l_node
+            l_prop = ''
             while len(left) > 0:
                 c = left.pop(0)
                 for i in c:
-                    l_node.prop += i + ' '
+                    l_prop += i + ' '
                 if len(left) > 0:
-                    l_node.prop += ' and '
-            if '(' in l_node.prop:
-                l_node.prop = '(%s)' % l_node.prop
+                    l_prop += ' and '
+            if '(' in l_prop:
+                l_prop = '(%s)' % l_prop
+            l_node = parser.Unary(SELECTION, l_prop, n.child.left)
+        else:
+            l_node = n.child.left
 
         # Preparing right selection
         if len(right) > 0:
-            changes = 1
-            r_node = parser.Node()
-            r_node.name = SELECTION
-            r_node.prop = ''
-            r_node.kind = parser.UNARY
-            r_node.child = n.child.right
-            n.child.right = r_node
+
+            r_prop = ''
             while len(right) > 0:
                 c = right.pop(0)
-                r_node.prop += ' '.join(c)
+                r_prop += ' '.join(c)
                 if len(right) > 0:
-                    r_node.prop += ' and '
-            if '(' in r_node.prop:
-                r_node.prop = '(%s)' % r_node.prop
+                    r_prop += ' and '
+            if '(' in r_prop:
+                r_prop = '(%s)' % r_prop
+            r_node = parser.Unary(SELECTION, r_prop, n.child.right)
+        else:
+            r_node = n.child.right
+
+        b_node = parser.Binary(n.child.name, l_node, r_node)
+
         # Changing main selection
-        n.prop = ''
+        both_prop = ''
         if len(both) != 0:
             while len(both) > 0:
                 c = both.pop(0)
-                n.prop += ' '.join(c)
+                both_prop += ' '.join(c)
                 if len(both) > 0:
-                    n.prop += ' and '
-            if '(' in n.prop:
-                n.prop = '(%s)' % n.prop
+                    both_prop += ' and '
+            if '(' in both_prop:
+                both_prop = '(%s)' % both_prop
+            return parser.Unary(SELECTION, both_prop, b_node), 1
         else:  # No need for general select
-            replace_node(n, n.child)
+            return b_node, 1
 
-    return changes + recoursive_scan(selection_and_product, n, rels)
+    return n, 0
 
 
 def useless_projection(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parser.Node, int]:
@@ -591,7 +589,7 @@ general_optimizations = [
     union_and_product,
 ]
 specific_optimizations = [
-    #selection_and_product,
+    selection_and_product,
     projection_and_union,
     useless_projection,
 ]
