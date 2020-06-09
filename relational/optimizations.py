@@ -231,73 +231,66 @@ def swap_union_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, 0
 
 
-def futile_renames(n: parser.Node) -> int:
-    '''This function purges renames like id->id'''
-    changes = 0
+def futile_renames(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function purges renames like
+    ρ id->id,a->q (A)
+    into
+    ρ a->q (A)
 
+    or removes the operation entirely if they all get removed
+    '''
     if n.name == RENAME:
-        # Located two nested renames.
-        changes = 1
+        renames = n.rename_dict()
+        changes = False
+        for k, v in renames.items():
+            if k == v:
+                changes = True
+                del renames[k]
+        if len(renames) == 0: # Nothing to rename, removing the rename
+            return n.child, 1
+        elif changes:
+            # Changing the node in place, no need to return to cause a recursive step
+            n.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
 
-        # Creating a dictionary with the attributes
-        _vars = {}
-        for i in n.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[0].strip()] = q[1].strip()
-        # Scans dictionary to locate things like "a->b,b->c" and replace them
-        # with "a->c"
-        for key in list(_vars.keys()):
-            value = _vars.get(key)
-            if key == value:
-                _vars.pop(value)  # Removes the unused one
-
-        if len(_vars) == 0: # Nothing to rename, removing the rename op
-            replace_node(n, n.child)
-        else:
-            n.prop = ','.join('%s%s%s' % (i[0], ARROW, i[1]) for i in _vars.items())
-
-    return changes + recoursive_scan(futile_renames, n)
+    return n, 0
 
 
-def subsequent_renames(n: parser.Node) -> int:
-    '''This function removes redoundant subsequent renames joining them into one'''
-
-    '''Purges renames like id->id Since it's needed to be performed BEFORE this one
-    so it is not in the list with the other optimizations'''
-    futile_renames(n)
-    changes = 0
-
+def subsequent_renames(n: parser.Node) -> Tuple[parser.Node, int]:
+    '''This function removes redundant subsequent renames joining them into one
+    ρ .. ρ .. (A)
+    into
+    ρ ... (A)
+    '''
     if n.name == RENAME and n.child.name == RENAME:
         # Located two nested renames.
-        changes = 1
-        # Joining the attribute into one
-        n.prop += ',' + n.child.prop
-        n.child = n.child.child
+        prop = n.prop + ',' + n.child.prop
+        child = n.child.child
+        n = parser.Unary(RENAME, prop, child)
 
         # Creating a dictionary with the attributes
-        _vars = {}
-        for i in n.prop.split(','):
-            q = i.split(ARROW)
-            _vars[q[0].strip()] = q[1].strip()
+        renames = n.rename_dict()
+
         # Scans dictionary to locate things like "a->b,b->c" and replace them
         # with "a->c"
-        for key in list(_vars.keys()):
-            value = _vars.get(key)
-            if value in _vars.keys():
-                if _vars[value] != key:
+        changes = False
+        for key, value in tuple(renames.items()):
+            if value in renames:
+                changes = True
+                if renames[value] != key:
                     # Double rename on attribute
-                    _vars[key] = _vars[_vars[key]]  # Sets value
-                    _vars.pop(value)  # Removes the unused one
+                    renames[key] = renames[renames[key]]  # Sets value
+                    renames.pop(value)  # Removes the unused one
                 else:  # Cycle rename a->b,b->a
-                    _vars.pop(value)  # Removes the unused one
-                    _vars.pop(key)  # Removes the unused one
+                    renames.pop(value)  # Removes the unused one
+                    renames.pop(key)  # Removes the unused one
 
-        if len(_vars) == 0:  # Nothing to rename, removing the rename op
-            replace_node(n, n.child)
-        else:
-            n.prop = ','.join('%s%s%s' % (i[0], ARROW, i[1]) for i in _vars.items())
+        if len(renames) == 0:  # Nothing to rename, removing the rename op
+            return n, 1
+        elif changes:
+            n.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
+            return n, 1
 
-    return changes + recoursive_scan(subsequent_renames, n)
+    return n, 0
 
 
 class level_string(str):
@@ -639,7 +632,8 @@ general_optimizations = [
     down_to_unions_subtractions_intersections,
     duplicated_projection,
     selection_inside_projection,
-    #subsequent_renames,
+    subsequent_renames,
+    futile_renames,
     #swap_rename_select,
     futile_union_intersection_subtraction,
     swap_union_renames,
