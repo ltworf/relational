@@ -82,10 +82,10 @@ def optimize_all(expression: Union[str, Node], rels: ContextDict, specific: bool
         total = 0
         if specific:
             for i in optimizations.specific_optimizations:
-                res = i(n, rels)  # Performs the optimization
-                if res != 0 and dbg:
+                n, c = recursive_scan(i, n, rels)
+                if c != 0 and dbg:
                     debug.append(str(n))
-                total += res
+                total += c
         if general:
             for i in optimizations.general_optimizations:
                 n, c = recursive_scan(i, n, None)
