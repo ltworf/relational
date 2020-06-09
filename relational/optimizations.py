@@ -125,7 +125,7 @@ def duplicated_select(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, changes
 
 
-def futile_union_intersection_subtraction(n: parser.Node) -> int:
+def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like r ᑌ r, and replaces them with r.
     R ᑌ R  --> R
     R ᑎ R --> R
@@ -140,47 +140,39 @@ def futile_union_intersection_subtraction(n: parser.Node) -> int:
 
     # Union and intersection of the same thing
     if n.name in (UNION, INTERSECTION, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL) and n.left == n.right:
-        changes = 1
-        replace_node(n, n.left)
+        return n.left, 1
 
     # selection and union of the same thing
     elif (n.name == UNION):
         if n.left.name == SELECTION and n.left.child == n.right:
-            changes = 1
-            replace_node(n, n.right)
+            return n.right, 1
         elif n.right.name == SELECTION and n.right.child == n.left:
-            changes = 1
-            replace_node(n, n.left)
+            return n.left, 1
 
     # selection and intersection of the same thing
     elif n.name == INTERSECTION:
         if n.left.name == SELECTION and n.left.child == n.right:
-            changes = 1
-            replace_node(n, n.left)
+            return n.left, 1
         elif n.right.name == SELECTION and n.right.child == n.left:
-            changes = 1
-            replace_node(n, n.right)
+            return n.right, 1
 
     # Subtraction and selection of the same thing
     elif n.name == DIFFERENCE and \
             n.right.name == SELECTION and \
             n.right.child == n.left:
-        n.name = n.right.name
-        n.kind = n.right.kind
-        n.child = n.right.child
-        n.prop = '(not (%s))' % n.right.prop
-        n.left = n.right = None
+        return parser.Unary(
+            SELECTION,
+            '(not (%s))' % n.right.prop,
+            n.right.child), 1
 
     # Subtraction of the same thing or with selection on the left child
     elif n.name == DIFFERENCE and (n.left == n.right or (n.left.name == SELECTION and n.left.child == n.right)):
-        changes = 1
-        n.kind = parser.UNARY
-        n.name = SELECTION
-        n.prop = 'False'
-        n.child = n.left.get_left_leaf()
-        # n.left=n.right=None
-
-    return changes + recoursive_scan(futile_union_intersection_subtraction, n)
+        return parser.Unary(
+            SELECTION,
+            'False',
+            n.get_left_leaf()
+        ), 1
+    return n, 0
 
 
 def down_to_unions_subtractions_intersections(n: parser.Node) -> int:
@@ -690,7 +682,7 @@ general_optimizations = [
     #selection_inside_projection,
     #subsequent_renames,
     #swap_rename_select,
-    #futile_union_intersection_subtraction,
+    futile_union_intersection_subtraction,
     #swap_union_renames,
     #swap_rename_projection,
     #select_union_intersect_subtract,
