@@ -24,7 +24,7 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
-from typing import Optional, Union, List, Any
+from typing import Optional, Union, List, Any, Dict
 from dataclasses import dataclass
 
 from relational import rtypes
@@ -233,12 +233,23 @@ class Unary(Node):
         if self.name == PROJECTION:
             prop = '\"%s\"' % prop.replace(' ', '').replace(',', '\",\"')
         elif self.name == RENAME:
-            prop = '{\"%s\"}' % prop.replace(
-                ',', '\",\"').replace(ARROW, '\":\"').replace(' ', '')
+            prop = repr(self.rename_dict())
         else:  # Selection
             prop = repr(prop)
 
         return '%s.%s(%s)' % (self.child._toPython(), op_functions[self.name], prop)
+
+    def rename_dict(self) -> Dict[str, str]:
+        '''
+        Returns the dictionary that the rename operation wants
+        '''
+        if self.name != RENAME:
+            raise ValueError('This is only supported on rename nodes')
+        r = {}
+        for i in self.prop.split(','):
+            q = i.split(ARROW)
+            r[q[0].strip()] = q[1].strip()
+        return r
 
 
 
