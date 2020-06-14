@@ -64,41 +64,6 @@ def find_duplicates(node, dups=None):
     dups[str(node)] = node
 
 
-
-def replace_leaves(node, context):
-    '''
-    Node is a parsed tree
-    context is a dictionary containing
-    parsed trees as values.
-
-    If a name appearing in node appears
-    also in context, the parse tree is
-    modified to replace the node with the
-    subtree found in context.
-    '''
-    if node.kind == parser.UNARY:
-        replace_leaves(node.child, context)
-    elif node.kind == parser.BINARY:
-        replace_leaves(node.left, context)
-        replace_leaves(node.right, context)
-    elif node.name in context:
-        replace_node(node, context[node.name])
-
-
-def replace_node(replace, replacement):
-    '''This function replaces "replace" node with the node "with",
-    the father of the node will now point to the with node'''
-    replace.name = replacement.name
-    replace.kind = replacement.kind
-
-    if replace.kind == parser.UNARY:
-        replace.child = replacement.child
-        replace.prop = replacement.prop
-    elif replace.kind == parser.BINARY:
-        replace.right = replacement.right
-        replace.left = replacement.left
-
-
 def duplicated_select(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates and deletes things like
     σ a ( σ a(C)) and the ones like σ a ( σ b(C))

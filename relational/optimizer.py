@@ -36,6 +36,7 @@ def optimize_program(code, rels: Dict[str, Relation]):
     Optimize an entire program, composed by multiple expressions
     and assignments.
     '''
+    raise NotImplementedError()
     lines = code.split('\n')
     context = {}
 
