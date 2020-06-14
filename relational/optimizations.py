@@ -148,6 +148,7 @@ def down_to_unions_subtractions_intersections(n: parser.Node) -> Tuple[parser.No
     changes = 0
     _o = (UNION, DIFFERENCE, INTERSECTION)
     if isinstance(n, parser.Unary) and n.name == SELECTION and n.child.name in _o:
+        assert isinstance(n.child, parser.Binary)
         l = parser.Unary(SELECTION, n.prop, n.child.left)
         r = parser.Unary(SELECTION, n.prop, n.child.right)
 
@@ -159,7 +160,7 @@ def duplicated_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates thing like π i ( π j (R)) and replaces
     them with π i (R)'''
 
-    if n.name == PROJECTION and n.child.name == PROJECTION:
+    if isinstance(n, parser.Unary) and n.name == PROJECTION and isinstance(n.child, parser.Unary) and n.child.name == PROJECTION:
         return parser.Unary(
             PROJECTION,
             n.prop,
@@ -170,7 +171,7 @@ def duplicated_projection(n: parser.Node) -> Tuple[parser.Node, int]:
 def selection_inside_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like  σ j (π k(R)) and
     converts them into π k(σ j (R))'''
-    if isinstance(n, parser.Unary) and n.name == SELECTION and n.child.name == PROJECTION:
+    if isinstance(n, parser.Unary) and n.name == SELECTION and isinstance(n.child, parser.Unary) and n.child.name == PROJECTION:
         child = parser.Unary(
             SELECTION,
             n.prop,
@@ -305,7 +306,7 @@ def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     Will also eliminate fields in the rename that are cut in the projection.
     '''
 
-    if n.name == PROJECTION and n.child.name == RENAME:
+    if isinstance(n, parser.Unary) and n.name == PROJECTION and n.child.name == RENAME:
         # π index,name(ρ id➡index(R))
         renames = n.child.get_rename_prop()
         projections = set(n.get_projection_prop())
@@ -515,7 +516,7 @@ def useless_projection(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parse
     '''
     Removes projections that are over all the fields
     '''
-    if n.name == PROJECTION and \
+    if isinstance(n, parser.Unary) and n.name == PROJECTION and \
             set(n.child.result_format(rels)) == set(i.strip() for i in n.prop.split(',')):
         return n.child, 1
 
