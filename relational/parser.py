@@ -24,7 +24,7 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
-from typing import Optional, Union, List, Any, Dict
+from typing import Optional, Union, List, Any, Dict, Literal
 from dataclasses import dataclass
 
 from relational import rtypes
@@ -42,6 +42,11 @@ PROJECTION = 'π'
 SELECTION = 'σ'
 RENAME = 'ρ'
 ARROW = '➡'
+
+BINARY_LITERALS_T = Literal['*', '-', '∪', '∩', '÷', '⋈', '⧑', '⧒', '⧓']
+
+UNARY_LITERALS_T = Literal['π', 'σ', 'ρ']
+
 
 b_operators = (PRODUCT, DIFFERENCE, UNION, INTERSECTION, DIVISION,
                JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)  # List of binary operators
@@ -194,6 +199,7 @@ class Variable(Node):
 
 @dataclass
 class Binary(Node):
+    name: BINARY_LITERALS_T
     left: Node
     right: Node
 
@@ -214,6 +220,7 @@ class Binary(Node):
 
 @dataclass
 class Unary(Node):
+    name: UNARY_LITERALS_T
     prop: str
     child: Node
 
