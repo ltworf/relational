@@ -195,7 +195,7 @@ def futile_renames(n: parser.Node) -> Tuple[parser.Node, int]:
 
     or removes the operation entirely if they all get removed
     '''
-    if n.name == RENAME:
+    if isinstance(n, Unary) and n.name == RENAME:
         renames = n.get_rename_prop()
         changes = False
         for k, v in renames.items():
@@ -217,7 +217,10 @@ def subsequent_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     into
     ρ ... (A)
     '''
-    if n.name == RENAME and n.child.name == RENAME:
+    if isinstance(n, Unary) and \
+            n.name == RENAME and \
+            isinstance(n.child, Unary) and \
+            n.child.name == RENAME:
         # Located two nested renames.
         prop = n.prop + ',' + n.child.prop
         child = n.child.child
@@ -296,7 +299,10 @@ def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     Will also eliminate fields in the rename that are cut in the projection.
     '''
 
-    if isinstance(n, Unary) and n.name == PROJECTION and n.child.name == RENAME:
+    if isinstance(n, Unary) and \
+            n.name == PROJECTION and \
+            isinstance(n.child, Unary) and \
+            n.child.name == RENAME:
         # π index,name(ρ id➡index(R))
         renames = n.child.get_rename_prop()
         projections = set(n.get_projection_prop())
@@ -329,7 +335,10 @@ def swap_rename_select(n: parser.Node) -> int:
     Renaming the attributes used in the
     selection, so the operation is still valid.'''
 
-    if isinstance(n, Unary) and n.name == SELECTION and n.child.name == RENAME:
+    if isinstance(n, Unary) and \
+            n.name == SELECTION and \
+            isinstance(n.child, Unary) and \
+            n.child.name == RENAME:
         # This is an inverse mapping for the rename
         renames = {v: k for k, v in n.child.get_rename_prop().items()}
 
@@ -355,8 +364,11 @@ def select_union_intersect_subtract(n: parser.Node) -> int:
     and replaces them with
     σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
-    if n.name in {UNION, INTERSECTION, DIFFERENCE} and \
+    if isinstance(n, Binary) and \
+                n.name in {UNION, INTERSECTION, DIFFERENCE} and \
+                isinstance(n.left, Unary) and \
                 n.left.name == SELECTION and \
+                isinstance(n.right, Unary) and \
                 n.right.name == SELECTION and \
                 n.left.child == n.right.child:
 
@@ -388,7 +400,12 @@ def union_and_product(n: parser.Node) -> Tuple[parser.Node, int]:
     A * B ∪ A * C = A * (B ∪ C)
     Same thing with inner join
     '''
-    if n.name == UNION and n.left.name in {PRODUCT, JOIN} and n.left.name == n.right.name:
+    if isinstance(n, Binary) and \
+            n.name == UNION and \
+            isinstance(n.left, Binary) and \
+            n.left.name in {PRODUCT, JOIN} and \
+            isinstance(n.right, Binary) and \
+            n.left.name == n.right.name:
 
         if n.left.left == n.right.left or n.left.left == n.right.right:
             l = n.left.right
@@ -429,7 +446,9 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.N
     σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
     i contains attributes belonging to Q and l contains attributes belonging to both'''
 
-    if isinstance(n, Unary) and n.name == SELECTION and n.child.name in (PRODUCT, JOIN):
+    if isinstance(n, Unary) and n.name == SELECTION and \
+            isinstance(n.child, Binary) and \
+            n.child.name in (PRODUCT, JOIN):
         l_attr = n.child.left.result_format(rels)
         r_attr = n.child.right.result_format(rels)
 
