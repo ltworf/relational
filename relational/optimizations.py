@@ -91,29 +91,34 @@ def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, 
     σ k (R) ∩ R --> σ k (R)
     '''
 
-    changes = 0
+    if not isinstance(n, Binary):
+        return n, 0
 
     # Union and intersection of the same thing
     if n.name in (UNION, INTERSECTION, JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL) and n.left == n.right:
         return n.left, 1
 
     # selection and union of the same thing
-    elif (n.name == UNION):
-        if n.left.name == SELECTION and n.left.child == n.right:
+    elif n.name == UNION:
+        if n.left.name == SELECTION and isinstance(n.left, Unary) and n.left.child == n.right:
             return n.right, 1
-        elif n.right.name == SELECTION and n.right.child == n.left:
+        elif n.right.name == SELECTION and isinstance(n.right, Unary) and n.right.child == n.left:
             return n.left, 1
 
     # selection and intersection of the same thing
     elif n.name == INTERSECTION:
         if n.left.name == SELECTION and n.left.child == n.right:
             return n.left, 1
-        elif n.right.name == SELECTION and n.right.child == n.left:
+        elif n.right.name == SELECTION and \
+                isinstance(n.right, Unary) and \
+                n.right.child == n.left:
             return n.right, 1
 
     # Subtraction and selection of the same thing
     elif n.name == DIFFERENCE and \
+            isinstance(n, Binary) and \
             n.right.name == SELECTION and \
+            isinstance(n.right, Unary) and \
             n.right.child == n.left:
         return Unary(
             SELECTION,
@@ -178,7 +183,12 @@ def swap_union_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     and replaces them with
     ρ a➡b(R ∪ Q).
     Does the same with subtraction and intersection'''
-    if n.name in (DIFFERENCE, UNION, INTERSECTION) and n.left.name == RENAME and n.right.name == RENAME:
+    if n.name in (DIFFERENCE, UNION, INTERSECTION) and \
+            isinstance(n, Binary) and \
+            n.left.name == RENAME and \
+            isinstance(n.left, Unary) and\
+            n.right.name == RENAME and \
+            isinstance(n.right, Unary):
         l_vars = n.left.get_rename_prop()
         r_vars = n.right.get_rename_prop()
         if r_vars == l_vars:
@@ -327,7 +337,7 @@ def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, 0
 
 
-def swap_rename_select(n: parser.Node) -> int:
+def swap_rename_select(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like
     σ k(ρ j(R))
     and replaces them with
@@ -358,20 +368,19 @@ def swap_rename_select(n: parser.Node) -> int:
     return n, 0
 
 
-def select_union_intersect_subtract(n: parser.Node) -> int:
+def select_union_intersect_subtract(n: parser.Node) -> Tuple[parser.Node, int]:
     '''This function locates things like
     σ i(a) ∪ σ q(a)
     and replaces them with
     σ (i OR q) (a)
     Removing a O(n²) operation like the union'''
     if isinstance(n, Binary) and \
-                n.name in {UNION, INTERSECTION, DIFFERENCE} and \
-                isinstance(n.left, Unary) and \
-                n.left.name == SELECTION and \
-                isinstance(n.right, Unary) and \
-                n.right.name == SELECTION and \
-                n.left.child == n.right.child:
-
+            n.name in {UNION, INTERSECTION, DIFFERENCE} and \
+            isinstance(n.left, Unary) and \
+            n.left.name == SELECTION and \
+            isinstance(n.right, Unary) and \
+            n.right.name == SELECTION and \
+            n.left.child == n.right.child:
         d = {UNION: 'or', INTERSECTION: 'and', DIFFERENCE: 'and not'}
         op = d[n.name]
 
@@ -432,16 +441,18 @@ def projection_and_union(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[par
     '''
     changes = 0
     if n.name == UNION and \
+            isinstance(n, Binary) and \
             n.left.name == PROJECTION and \
+            isinstance(n.left, Unary) and \
             n.right.name == PROJECTION and \
+            isinstance(n.right, Unary) and \
             set(n.left.child.result_format(rels)) == set(n.right.child.result_format(rels)):
-
         child = Binary(UNION, n.left.child, n.right.child)
         return Unary(PROJECTION, n.right.prop, child), 0
     return n, 0
 
 
-def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> parser.Node:
+def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[parser.Node, int]:
     '''This function locates things like σ k (R*Q) and converts them into
     σ l (σ j (R) * σ i (Q)). Where j contains only attributes belonging to R,
     i contains attributes belonging to Q and l contains attributes belonging to both'''
