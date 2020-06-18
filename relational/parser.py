@@ -150,7 +150,7 @@ class Node:
         elif isinstance(self, Binary) and self.name == DIVISION:
             return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
         elif self.name == PROJECTION:
-            return [i.strip() for i in self.prop.split(',')]
+            return self.get_projection_prop()
         elif self.name == PRODUCT:
             return self.left.result_format(rels) + self.right.result_format(rels)
         elif self.name == SELECTION:
@@ -268,8 +268,6 @@ class Unary(Node):
         if self.name != RENAME:
             raise ValueError('This is only supported on rename nodes')
         self.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
-
-
 
 
 def parse_tokens(expression: List[Union[list, str]]) -> Node:
