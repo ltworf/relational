@@ -121,10 +121,7 @@ class Node:
 
     def printtree(self, level: int = 0) -> str:
         '''returns a representation of the tree using indentation'''
-        r = ''
-        for i in range(level):
-            r += '  '
-        r += self.name
+        r = '  ' * level + self.name
         if self.name in b_operators and isinstance(self, Binary):
             r += self.left.printtree(level + 1)
             r += self.right.printtree(level + 1)
