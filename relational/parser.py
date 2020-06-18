@@ -125,10 +125,10 @@ class Node:
         for i in range(level):
             r += '  '
         r += self.name
-        if self.name in b_operators:
+        if self.name in b_operators and isinstance(self, Binary):
             r += self.left.printtree(level + 1)
             r += self.right.printtree(level + 1)
-        elif self.name in u_operators:
+        elif self.name in u_operators and isinstance(self, Unary):
             r += '\t%s\n' % self.prop
             r += self.child.printtree(level + 1)
         return '\n' + r
