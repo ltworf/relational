@@ -150,7 +150,7 @@ class Node:
         elif isinstance(self, Binary) and self.name == DIVISION:
             return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
         elif self.name == PROJECTION:
-            return [i.strip() for i in self.prop.split(',')]
+            return self.get_projection_prop()
         elif self.name == PRODUCT:
             return self.left.result_format(rels) + self.right.result_format(rels)
         elif self.name == SELECTION:
@@ -231,7 +231,7 @@ class Unary(Node):
 
         # Converting parameters
         if self.name == PROJECTION:
-            prop = '\"%s\"' % prop.replace(' ', '').replace(',', '\",\"')
+            prop = repr(self.get_projection_prop())
         elif self.name == RENAME:
             prop = repr(self.get_rename_prop())
         else:  # Selection
@@ -270,8 +270,6 @@ class Unary(Node):
         self.prop = ','.join(f'{k}{ARROW}{v}' for k, v in renames.items())
 
 
-
-
 def parse_tokens(expression: List[Union[list, str]]) -> Node:
     '''Generates the tree from the tokenized expression
     If no expression is specified then it will create an empty node'''
@@ -281,12 +279,14 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
     while len(expression) == 1 and isinstance(expression[0], list):
         expression = expression[0]
 
+    if len(expression) == 0:
+        raise ParserException('Failed to parse empty expression')
+
     # The list contains only 1 string. Means it is the name of a relation
     if len(expression) == 1:
-
         if not rtypes.is_valid_relation_name(expression[0]):
             raise ParserException(
-                u"'%s' is not a valid relation name" % expression[0])
+                f'{expression[0]!r} is not a valid relation name')
         return Variable(expression[0]) #FIXME Move validation in the object
 
     # Expression from right to left, searching for binary operators
@@ -302,28 +302,27 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
     for i in range(len(expression) - 1, -1, -1):
         if expression[i] in b_operators:  # Binary operator
 
-
             if len(expression[:i]) == 0:
                 raise ParserException(
-                    u"Expected left operand for '%s'" % self.name)
+                    f'Expected left operand for {expression[i]!r}')
 
             if len(expression[i + 1:]) == 0:
                 raise ParserException(
-                    u"Expected right operand for '%s'" % self.name)
+                    f'Expected right operand for {expression[i]!r}')
             return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))
     '''Searches for unary operators, parsing from right to left'''
     for i in range(len(expression) - 1, -1, -1):
         if expression[i] in u_operators:  # Unary operator
             if len(expression) <= i + 2:
                 raise ParserException(
-                    u"Expected more tokens in '%s'" % self.name)
+                    f'Expected more tokens in {expression[i]!r}')
 
             return Unary(
                 expression[i],
                 prop=expression[1 + i].strip(),
                 child=parse_tokens(expression[2 + i])
             )
-    raise ParserException('Parse error') #FIXME more details
+    raise ParserException(f'Parse error on {expression!r}')
 
 
 def _find_matching_parenthesis(expression: str, start=0, openpar='(', closepar=')') -> Optional[int]:
