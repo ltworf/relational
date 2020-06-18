@@ -273,6 +273,8 @@ class Unary(Node):
 def parse_tokens(expression: List[Union[list, str]]) -> Node:
     '''Generates the tree from the tokenized expression
     If no expression is specified then it will create an empty node'''
+    if len(expression) == 0:
+        raise ParserException('Failed to parse empty expression')
 
     # If the list contains only a list, it will consider the lower level list.
     # This will allow things like ((((((a))))) to work
