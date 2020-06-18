@@ -273,17 +273,17 @@ class Unary(Node):
 def parse_tokens(expression: List[Union[list, str]]) -> Node:
     '''Generates the tree from the tokenized expression
     If no expression is specified then it will create an empty node'''
-    if len(expression) == 0:
-        raise ParserException('Failed to parse empty expression')
 
     # If the list contains only a list, it will consider the lower level list.
     # This will allow things like ((((((a))))) to work
     while len(expression) == 1 and isinstance(expression[0], list):
         expression = expression[0]
 
+    if len(expression) == 0:
+        raise ParserException('Failed to parse empty expression')
+
     # The list contains only 1 string. Means it is the name of a relation
     if len(expression) == 1:
-
         if not rtypes.is_valid_relation_name(expression[0]):
             raise ParserException(
                 u"'%s' is not a valid relation name" % expression[0])
