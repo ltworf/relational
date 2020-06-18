@@ -286,7 +286,7 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
     if len(expression) == 1:
         if not rtypes.is_valid_relation_name(expression[0]):
             raise ParserException(
-                u"'%s' is not a valid relation name" % expression[0])
+                f'{expression[0]!r} is not a valid relation name')
         return Variable(expression[0]) #FIXME Move validation in the object
 
     # Expression from right to left, searching for binary operators
@@ -302,21 +302,20 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
     for i in range(len(expression) - 1, -1, -1):
         if expression[i] in b_operators:  # Binary operator
 
-
             if len(expression[:i]) == 0:
                 raise ParserException(
-                    u"Expected left operand for '%s'" % self.name)
+                    f'Expected left operand for {expression[i]!r}')
 
             if len(expression[i + 1:]) == 0:
                 raise ParserException(
-                    u"Expected right operand for '%s'" % self.name)
+                    f'Expected right operand for {expression[i]!r}')
             return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))
     '''Searches for unary operators, parsing from right to left'''
     for i in range(len(expression) - 1, -1, -1):
         if expression[i] in u_operators:  # Unary operator
             if len(expression) <= i + 2:
                 raise ParserException(
-                    u"Expected more tokens in '%s'" % self.name)
+                    f'Expected more tokens in {expression[i]!r}')
 
             return Unary(
                 expression[i],
