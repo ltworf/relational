@@ -126,7 +126,9 @@ def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, 
             n.right.child), 1
 
     # Subtraction of the same thing or with selection on the left child
-    elif n.name == DIFFERENCE and (n.left == n.right or (n.left.name == SELECTION and n.left.child == n.right)):
+    elif n.name == DIFFERENCE and \
+            isinstance(n, Binary) and \
+            (n.left == n.right or (n.left.name == SELECTION and n.left.child == n.right)):
         return Unary(
             SELECTION,
             'False',
@@ -329,7 +331,7 @@ def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
                 del renames[i]
 
         child = Unary(PROJECTION,'' , n.child.child)
-        child.set_projection_prop(projections)
+        child.set_projection_prop(list(projections))
         n = Unary(RENAME, '', child)
         n.set_rename_prop(renames)
         return n, 1
