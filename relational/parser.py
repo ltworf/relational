@@ -321,7 +321,7 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
                 prop=expression[1 + i].strip(),
                 child=parse_tokens(expression[2 + i])
             )
-    raise ParserException('Parse error') #FIXME more details
+    raise ParserException(f'Parse error on {expression!r}')
 
 
 def _find_matching_parenthesis(expression: str, start=0, openpar='(', closepar=')') -> Optional[int]:
