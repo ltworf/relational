@@ -231,7 +231,7 @@ class Unary(Node):
 
         # Converting parameters
         if self.name == PROJECTION:
-            prop = '\"%s\"' % prop.replace(' ', '').replace(',', '\",\"')
+            prop = repr(self.get_projection_prop())
         elif self.name == RENAME:
             prop = repr(self.get_rename_prop())
         else:  # Selection
