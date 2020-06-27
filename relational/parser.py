@@ -162,11 +162,7 @@ class Node:
             elif self.name == SELECTION:
                 return self.child.result_format(rels)
             elif self.name == RENAME:
-                _vars = {}
-                for i in self.prop.split(','):
-                    q = i.split(ARROW)
-                    _vars[q[0].strip()] = q[1].strip()
-
+                _vars = self.get_rename_prop()
                 _fields = self.child.result_format(rels)
                 for i in range(len(_fields)):
                     if _fields[i] in _vars:
