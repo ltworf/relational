@@ -287,6 +287,7 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
 
     # The list contains only 1 string. Means it is the name of a relation
     if len(expression) == 1:
+        assert isinstance(expression[0], str)
         if not rtypes.is_valid_relation_name(expression[0]):
             raise ParserException(
                 f'{expression[0]!r} is not a valid relation name')
