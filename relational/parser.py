@@ -147,29 +147,32 @@ class Node:
 
         if isinstance(self, Variable):  #FIXME this is ugly
             return list(rels[self.name].header)
-        elif isinstance(self, Binary) and self.name in (DIFFERENCE, UNION, INTERSECTION):
-            return self.left.result_format(rels)
-        elif isinstance(self, Binary) and self.name == DIVISION:
-            return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
-        elif self.name == PROJECTION:
-            return self.get_projection_prop()
-        elif self.name == PRODUCT:
-            return self.left.result_format(rels) + self.right.result_format(rels)
-        elif self.name == SELECTION:
-            return self.child.result_format(rels)
-        elif self.name == RENAME:
-            _vars = {}
-            for i in self.prop.split(','):
-                q = i.split(ARROW)
-                _vars[q[0].strip()] = q[1].strip()
+        elif isinstance(self, Binary):
+            if self.name in (DIFFERENCE, UNION, INTERSECTION):
+                return self.left.result_format(rels)
+            elif self.name == DIVISION:
+                return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
+            elif self.name == PRODUCT:
+                return self.left.result_format(rels) + self.right.result_format(rels)
+            elif self.name in (JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL):
+                return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
+        elif isinstance(self, Unary):
+            if self.name == PROJECTION:
+                return self.get_projection_prop()
+            elif self.name == SELECTION:
+                return self.child.result_format(rels)
+            elif self.name == RENAME:
+                _vars = {}
+                for i in self.prop.split(','):
+                    q = i.split(ARROW)
+                    _vars[q[0].strip()] = q[1].strip()
 
-            _fields = self.child.result_format(rels)
-            for i in range(len(_fields)):
-                if _fields[i] in _vars:
-                    _fields[i] = _vars[_fields[i]]
-            return _fields
-        elif self.name in (JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL):
-            return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
+                _fields = self.child.result_format(rels)
+                for i in range(len(_fields)):
+                    if _fields[i] in _vars:
+                        _fields[i] = _vars[_fields[i]]
+                return _fields
+
         raise ValueError('What kind of alien object is this?')
 
     def __eq__(self, other): #FIXME
