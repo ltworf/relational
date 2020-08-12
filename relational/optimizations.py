@@ -34,7 +34,7 @@ from typing import Tuple, Dict, List
 
 from relational.relation import Relation
 from relational import parser
-from relational.parser import Binary, Unary, PRODUCT, \
+from relational.parser import Binary, Unary, Node, PRODUCT, \
     DIFFERENCE, UNION, INTERSECTION, DIVISION, JOIN, \
     JOIN_LEFT, JOIN_RIGHT, JOIN_FULL, PROJECTION, \
     SELECTION, RENAME, ARROW
@@ -468,8 +468,8 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[pa
         r_attr = n.child.right.result_format(rels)
 
         tokens = tokenize_select(n.prop)
-        groups = []
-        temp = []
+        groups: List[List[LevelString]] = []
+        temp: List[LevelString] = []
 
         for i in tokens:
             if i == 'and' and i.level == 0:
@@ -477,9 +477,9 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[pa
                 temp = []
             else:
                 temp.append(i)
-        if len(temp) != 0:
+        if len(temp):
             groups.append(temp)
-            temp = []
+            del temp
 
         left = []
         right = []
@@ -508,7 +508,7 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[pa
             l_prop = ' and '.join((' '.join(i) for i in left))
             if '(' in l_prop:
                 l_prop = '(%s)' % l_prop
-            l_node = Unary(SELECTION, l_prop, n.child.left)
+            l_node: Node = Unary(SELECTION, l_prop, n.child.left)
         else:
             l_node = n.child.left
 
@@ -517,7 +517,7 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[pa
             r_prop = ' and '.join((' '.join(i) for i in right))
             if '(' in r_prop:
                 r_prop = '(%s)' % r_prop
-            r_node = Unary(SELECTION, r_prop, n.child.right)
+            r_node: Node = Unary(SELECTION, r_prop, n.child.right)
         else:
             r_node = n.child.right
 
