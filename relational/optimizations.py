@@ -363,9 +363,9 @@ def swap_rename_select(n: parser.Node) -> Tuple[parser.Node, int]:
         for i in range(len(tokens)):
             splitted = tokens[i].split('.', 1)
             if splitted[0] in renames:
-                tokens[i] = renames[splitted[0]]
+                tokens[i] = LevelString(renames[splitted[0]])
                 if len(splitted) > 1:
-                    tokens[i] += '.' + splitted[1]
+                    tokens[i] = LevelString(tokens[i] + '.' + splitted[1])
 
         child = Unary(SELECTION, ' '.join(tokens), n.child.child)
         return Unary(RENAME, n.child.prop, child), 1
