@@ -5,7 +5,7 @@ Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
 Build-Depends: debhelper (>= 10), python3, dh-python, python3-xtermcolor, pyqt5-dev-tools,
  python3-distutils
 Standards-Version: 4.0.1
-X-Python3-Version: >= 3.4
+X-Python3-Version: >= 3.8
 Homepage: http://ltworf.github.io/relational/
 Rules-Requires-Root: no
 

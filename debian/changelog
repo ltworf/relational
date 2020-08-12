@@ -4,6 +4,7 @@ relational (2.6-1) UNRELEASED; urgency=low
   * New upstream release
   * Bump Standards-Version to 4.0.1
   * Rules-Requires-Root: no
+  * Bump X-Python3-Version to 3.8
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 02 May 2018 22:09:48 +0200
 
