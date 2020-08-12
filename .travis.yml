@@ -8,4 +8,5 @@ install:
   - pip install xtermcolor
 
 script:
+  - make mypy
   - make test

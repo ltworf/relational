@@ -22,12 +22,13 @@
 import csv
 from itertools import chain, repeat
 from collections import deque
-from typing import List, Union, Set
+from typing import *
+from pathlib import Path
 
 from relational.rtypes import *
 
 
-class Relation (object):
+class Relation:
 
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
@@ -51,13 +52,14 @@ class Relation (object):
     An empty relation needs a header, and can be filled using the insert()
     method.
     '''
-    __hash__ = None #  type: None
+    def __hash__(self):
+        raise NotImplementedError()
 
-    def __init__(self, filename : str = '') -> None:
+    def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
         self._readonly = False
-        self.content = set() #  type: Set[tuple]
+        self.content: Set[tuple] = set()
 
-        if len(filename) == 0:  # Empty relation
+        if filename is None:  # Empty relation
             self.header = Header([])
             return
         with open(filename) as fp:
@@ -73,7 +75,7 @@ class Relation (object):
         self._readonly = True
         copy._readonly = True
 
-    def _make_writable(self, copy_content : bool = True) -> None:
+    def _make_writable(self, copy_content: bool = True) -> None:
         '''If this relation is marked as readonly, this
         method will copy the content to make it writable too
 
@@ -92,7 +94,7 @@ class Relation (object):
     def __contains__(self, key):
         return key in self.content
 
-    def save(self, filename: str) -> None:
+    def save(self, filename: Union[Path, str]) -> None:
         '''
         Saves the relation in a file. Will save using the csv
         format as defined in RFC4180.
@@ -169,7 +171,7 @@ class Relation (object):
                 newt.content.add(i + j)
         return newt
 
-    def projection(self, * attributes) -> 'Relation':
+    def projection(self, *attributes) -> 'Relation':
         '''
         Can be called in two different ways:
         a.projection('field1','field2')
@@ -200,7 +202,7 @@ class Relation (object):
             newt.content.add(tuple(row))
         return newt
 
-    def rename(self, params: 'Relation') -> 'Relation':
+    def rename(self, params: Dict[str, str]) -> 'Relation':
         '''
         Takes a dictionary.
 
@@ -505,7 +507,7 @@ class Header(tuple):
     def __repr__(self):
         return "Header(%s)" % super(Header, self).__repr__()
 
-    def rename(self, params) -> 'Header':
+    def rename(self, params: Dict[str, str]) -> 'Header':
         '''Returns a new header, with renamed fields.
 
         params is a dictionary of {old:new} names
@@ -525,15 +527,15 @@ class Header(tuple):
         '''Returns how many attributes this header has in common with a given one'''
         return len(set(self).intersection(set(other)))
 
-    def union(self, other) -> set:
+    def union(self, other: 'Header') -> Set[str]:
         '''Returns the union of the sets of attributes with another header.'''
         return set(self).union(set(other))
 
-    def intersection(self, other) -> set:
+    def intersection(self, other: 'Header') -> Set[str]:
         '''Returns the set of common attributes with another header.'''
         return set(self).intersection(set(other))
 
-    def getAttributesId(self, param) -> List[int]:
+    def getAttributesId(self, param: Iterable[str]) -> List[int]:
         '''Returns a list with numeric index corresponding to field's name'''
         try:
             return [self.index(i) for i in param]

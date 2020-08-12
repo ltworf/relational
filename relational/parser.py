@@ -24,7 +24,7 @@
 #
 # Language definition here:
 # http://ltworf.github.io/relational/grammar.html
-from typing import Optional, Union, List, Any, Dict
+from typing import Optional, Union, List, Any, Dict, Literal
 from dataclasses import dataclass
 
 from relational import rtypes
@@ -42,6 +42,7 @@ PROJECTION = 'π'
 SELECTION = 'σ'
 RENAME = 'ρ'
 ARROW = '➡'
+
 
 b_operators = (PRODUCT, DIFFERENCE, UNION, INTERSECTION, DIVISION,
                JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)  # List of binary operators
@@ -142,29 +143,28 @@ class Node:
 
         if isinstance(self, Variable):  #FIXME this is ugly
             return list(rels[self.name].header)
-        elif isinstance(self, Binary) and self.name in (DIFFERENCE, UNION, INTERSECTION):
-            return self.left.result_format(rels)
-        elif isinstance(self, Binary) and self.name == DIVISION:
-            return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
-        elif self.name == PROJECTION:
-            return self.get_projection_prop()
-        elif self.name == PRODUCT:
-            return self.left.result_format(rels) + self.right.result_format(rels)
-        elif self.name == SELECTION:
-            return self.child.result_format(rels)
-        elif self.name == RENAME:
-            _vars = {}
-            for i in self.prop.split(','):
-                q = i.split(ARROW)
-                _vars[q[0].strip()] = q[1].strip()
+        elif isinstance(self, Binary):
+            if self.name in (DIFFERENCE, UNION, INTERSECTION):
+                return self.left.result_format(rels)
+            elif self.name == DIVISION:
+                return list(set(self.left.result_format(rels)) - set(self.right.result_format(rels)))
+            elif self.name == PRODUCT:
+                return self.left.result_format(rels) + self.right.result_format(rels)
+            elif self.name in (JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL):
+                return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
+        elif isinstance(self, Unary):
+            if self.name == PROJECTION:
+                return self.get_projection_prop()
+            elif self.name == SELECTION:
+                return self.child.result_format(rels)
+            elif self.name == RENAME:
+                _vars = self.get_rename_prop()
+                _fields = self.child.result_format(rels)
+                for i in range(len(_fields)):
+                    if _fields[i] in _vars:
+                        _fields[i] = _vars[_fields[i]]
+                return _fields
 
-            _fields = self.child.result_format(rels)
-            for i in range(len(_fields)):
-                if _fields[i] in _vars:
-                    _fields[i] = _vars[_fields[i]]
-            return _fields
-        elif self.name in (JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL):
-            return list(set(self.left.result_format(rels)).union(set(self.right.result_format(rels))))
         raise ValueError('What kind of alien object is this?')
 
     def __eq__(self, other): #FIXME
@@ -194,6 +194,7 @@ class Variable(Node):
 
 @dataclass
 class Binary(Node):
+    name: str
     left: Node
     right: Node
 
@@ -214,6 +215,7 @@ class Binary(Node):
 
 @dataclass
 class Unary(Node):
+    name: str
     prop: str
     child: Node
 
@@ -281,6 +283,7 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
 
     # The list contains only 1 string. Means it is the name of a relation
     if len(expression) == 1:
+        assert isinstance(expression[0], str)
         if not rtypes.is_valid_relation_name(expression[0]):
             raise ParserException(
                 f'{expression[0]!r} is not a valid relation name')
@@ -306,7 +309,7 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
             if len(expression[i + 1:]) == 0:
                 raise ParserException(
                     f'Expected right operand for {expression[i]!r}')
-            return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))
+            return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))  # type: ignore
     '''Searches for unary operators, parsing from right to left'''
     for i in range(len(expression) - 1, -1, -1):
         if expression[i] in u_operators:  # Unary operator
@@ -315,9 +318,9 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
                     f'Expected more tokens in {expression[i]!r}')
 
             return Unary(
-                expression[i],
-                prop=expression[1 + i].strip(),
-                child=parse_tokens(expression[2 + i])
+                expression[i],  # type: ignore
+                prop=expression[1 + i].strip(),  # type: ignore
+                child=parse_tokens(expression[2 + i])  # type: ignore
             )
     raise ParserException(f'Parse error on {expression!r}')
 
