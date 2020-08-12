@@ -311,11 +311,14 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
                     f'Expected right operand for {expression[i]!r}')
             return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))  # type: ignore
     '''Searches for unary operators, parsing from right to left'''
-    for i in range(len(expression) - 1, -1, -1):
+    for i in range(len(expression)):
         if expression[i] in u_operators:  # Unary operator
             if len(expression) <= i + 2:
                 raise ParserException(
                     f'Expected more tokens in {expression[i]!r}')
+            elif len(expression) > i + 3:
+                raise ParserException(
+                    f'Too many tokens in {expression[i]!r}')
 
             return Unary(
                 expression[i],  # type: ignore
