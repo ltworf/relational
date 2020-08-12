@@ -52,7 +52,8 @@ class Relation:
     An empty relation needs a header, and can be filled using the insert()
     method.
     '''
-    __hash__ = None #  type: None
+    def __hash__(self):
+        raise NotImplementedError()
 
     def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
         self._readonly = False
