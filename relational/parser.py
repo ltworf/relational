@@ -43,10 +43,6 @@ SELECTION = 'σ'
 RENAME = 'ρ'
 ARROW = '➡'
 
-BINARY_LITERALS_T = Literal['*', '-', '∪', '∩', '÷', '⋈', '⧑', '⧒', '⧓']
-
-UNARY_LITERALS_T = Literal['π', 'σ', 'ρ']
-
 
 b_operators = (PRODUCT, DIFFERENCE, UNION, INTERSECTION, DIVISION,
                JOIN, JOIN_LEFT, JOIN_RIGHT, JOIN_FULL)  # List of binary operators
@@ -198,7 +194,7 @@ class Variable(Node):
 
 @dataclass
 class Binary(Node):
-    name: BINARY_LITERALS_T
+    name: str
     left: Node
     right: Node
 
@@ -219,7 +215,7 @@ class Binary(Node):
 
 @dataclass
 class Unary(Node):
-    name: UNARY_LITERALS_T
+    name: str
     prop: str
     child: Node
 
