@@ -107,7 +107,7 @@ def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, 
 
     # selection and intersection of the same thing
     elif n.name == INTERSECTION:
-        if n.left.name == SELECTION and n.left.child == n.right:
+        if n.left.name == SELECTION and isinstance(n.left, Unary) and n.left.child == n.right:
             return n.left, 1
         elif n.right.name == SELECTION and \
                 isinstance(n.right, Unary) and \
@@ -128,7 +128,7 @@ def futile_union_intersection_subtraction(n: parser.Node) -> Tuple[parser.Node, 
     # Subtraction of the same thing or with selection on the left child
     elif n.name == DIFFERENCE and \
             isinstance(n, Binary) and \
-            (n.left == n.right or (n.left.name == SELECTION and n.left.child == n.right)):
+            (n.left == n.right or (n.left.name == SELECTION and isinstance(n.left, Unary) and n.left.child == n.right)):
         return Unary(
             SELECTION,
             'False',
