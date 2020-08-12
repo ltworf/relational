@@ -72,24 +72,19 @@ def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specif
     else:
         raise (TypeError("expression must be a string or a node"))
 
-    if isinstance(debug, list):
-        dbg = True
-    else:
-        dbg = False
-
     total = 1
     while total != 0:
         total = 0
         if specific:
             for i in optimizations.specific_optimizations:
                 n, c = recursive_scan(i, n, rels)
-                if c != 0 and dbg:
+                if c != 0 and isinstance(debug, list):
                     debug.append(str(n))
                 total += c
         if general:
             for i in optimizations.general_optimizations:
                 n, c = recursive_scan(i, n, None)
-                if c != 0 and dbg:
+                if c != 0 and isinstance(debug, list):
                     debug.append(str(n))
                 total += c
     if tostr:
