@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Relational
-# Copyright (C) 2010-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2010-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ def load_relations():
 
             print ("Loading relation %s with name %s..." % (i, relname))
 
-            rels[relname] = relation.relation('%s%s' % (examples_path, i))
+            rels[relname] = relation.Relation('%s%s' % (examples_path, i))
             print('done')
 
 
@@ -238,7 +238,7 @@ def run_test(testname):
     o_result = None
 
     try:
-        result_rel = relation.relation('%s%s.result' % (tests_path, testname))
+        result_rel = relation.Relation('%s%s.result' % (tests_path, testname))
 
         query = readfile('%s%s.query' % (tests_path, testname)).strip()
         o_query = optimizer.optimize_all(query, rels)

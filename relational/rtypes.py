@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relation is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ class Rstring(str):
             elif self.isFloat():
                 self._autocast = float(self)
             elif self.isDate():
-                self._autocast = rdate(self)
+                self._autocast = Rdate(self)
         return self._autocast
 
     def isInt(self) -> bool:
@@ -119,8 +119,8 @@ class Rdate (object):
 
     def __init__(self, date):
         '''date: A string representing a date'''
-        if not isinstance(date, rstring):
-            date = rstring(date)
+        if not isinstance(date, Rstring):
+            date = Rstring(date)
 
         self.intdate = date.getDate()
         self.day = self.intdate.day
@@ -136,7 +136,7 @@ class Rdate (object):
 
     def __add__(self, days):
         res = self.intdate + datetime.timedelta(days)
-        return rdate(res.__str__())
+        return Rdate(res.__str__())
 
     def __eq__(self, other):
         return self.intdate == other.intdate
@@ -164,8 +164,3 @@ def is_valid_relation_name(name: str) -> bool:
     '''Checks if a name is valid for a relation.
     Returns boolean'''
     return re.match(RELATION_NAME_REGEXP, name) != None and not keyword.iskeyword(name)
-
-
-# Backwards compatibility
-rdate = Rdate
-rstring = Rstring

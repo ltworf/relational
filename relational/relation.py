@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2018  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,12 @@ from typing import *
 from pathlib import Path
 
 from relational.rtypes import *
+
+
+__all__ = [
+    'Relation',
+    'Header',
+]
 
 
 class Relation:
@@ -336,7 +342,7 @@ class Relation:
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i, repeat(rstring('---'), len(noid)))
+                item = chain(i, repeat(Rstring('---'), len(noid)))
                 newt.content.add(tuple(item))
 
         return newt
@@ -468,7 +474,7 @@ class Relation:
         self._make_writable()
 
         prevlen = len(self.content)
-        self.content.add(tuple(map(rstring, values)))
+        self.content.add(tuple(map(Rstring, values)))
         return len(self.content) - prevlen
 
     def delete(self, expr: str) -> int:
@@ -541,7 +547,3 @@ class Header(tuple):
             return [self.index(i) for i in param]
         except ValueError as e:
             raise Exception('One of the fields is not in the relation: %s' % ','.join(param))
-
-# Backwards compatibility
-relation = Relation
-header = Header
