@@ -5,6 +5,7 @@ relational (2.6-1) UNRELEASED; urgency=low
   * Bump Standards-Version to 4.0.1
   * Rules-Requires-Root: no
   * Bump X-Python3-Version to 3.8
+  * Use https for URLs
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 02 May 2018 22:09:48 +0200
 
