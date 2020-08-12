@@ -30,7 +30,7 @@
 
 from io import StringIO
 from tokenize import generate_tokens
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 
 from relational.relation import Relation
 from relational import parser
@@ -263,19 +263,17 @@ def subsequent_renames(n: parser.Node) -> Tuple[parser.Node, int]:
     return n, 0
 
 
-class level_string(str):
+class LevelString(str):
     level = 0
 
 
-def tokenize_select(expression):
+def tokenize_select(expression: str) -> List[LevelString]:
     '''This function returns the list of tokens present in a
     selection. The expression can contain parenthesis.
     It will use a subclass of str with the attribute level, which
     will specify the nesting level of the token into parenthesis.'''
     g = generate_tokens(StringIO(str(expression)).readline)
     l = list(token[1] for token in g)
-
-    l.remove('')
 
     # Changes the 'a','.','method' token group into a single 'a.method' token
     try:
@@ -287,17 +285,21 @@ def tokenize_select(expression):
     except:
         pass
 
+    r = []
     level = 0
-    for i in range(len(l)):
-        l[i] = level_string(l[i])
-        l[i].level = level
+    for i in l:
+        if not i:
+            continue
+        value = LevelString(i)
+        value.level = level
 
-        if l[i] == '(':
+        if value == '(':
             level += 1
-        elif l[i] == ')':
+        elif value == ')':
             level -= 1
+        r.append(value)
 
-    return l
+    return r
 
 
 def swap_rename_projection(n: parser.Node) -> Tuple[parser.Node, int]:
