@@ -23,6 +23,15 @@ mypy:
 test:
 	./driver.py
 
+deb-pkg: dist
+	mv relational_*.orig.tar.gz* /tmp
+	cd /tmp; tar -xf relational_*.orig.tar.gz
+	cp -r debian /tmp/relational/
+	cd /tmp/relational/; dpkg-buildpackage --changes-option=-S
+	mkdir deb-pkg
+	mv /tmp/relational_* /tmp/python3-relational_*.deb deb-pkg
+	$(RM) -r /tmp/relational
+
 .PHONY: dist
 dist: clean
 	rm -rf /tmp/relational/

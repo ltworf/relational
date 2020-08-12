@@ -6,3 +6,4 @@ relational_gui/rel_edit.py
 relational_gui/resources.py
 *.kdev4
 .mypy_cache/
+deb-pkg/
