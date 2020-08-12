@@ -471,12 +471,12 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[pa
         groups: List[List[LevelString]] = []
         temp: List[LevelString] = []
 
-        for i in tokens:
-            if i == 'and' and i.level == 0:
+        for k in tokens:
+            if k == 'and' and k.level == 0:
                 groups.append(temp)
                 temp = []
             else:
-                temp.append(i)
+                temp.append(k)
         if len(temp):
             groups.append(temp)
             del temp
