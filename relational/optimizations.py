@@ -490,10 +490,10 @@ def selection_and_product(n: parser.Node, rels: Dict[str, Relation]) -> Tuple[pa
             r_fields = False  # has fields in left?
 
             for j in set(i).difference(sel_op):
-                j = j.split('.')[0]
-                if j in l_attr:  # Field in left
+                t = j.split('.')[0]
+                if t in l_attr:  # Field in left
                     l_fields = True
-                if j in r_attr:  # Field in right
+                if t in r_attr:  # Field in right
                     r_fields = True
 
             if l_fields and not r_fields:
