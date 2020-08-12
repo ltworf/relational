@@ -82,8 +82,8 @@ def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specif
                     debug.append(str(n))
                 total += c
         if general:
-            for i in optimizations.general_optimizations:
-                n, c = recursive_scan(i, n, None)
+            for j in optimizations.general_optimizations:
+                n, c = recursive_scan(j, n, None)
                 if c != 0 and isinstance(debug, list):
                     debug.append(str(n))
                 total += c
