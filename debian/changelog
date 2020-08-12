@@ -7,6 +7,7 @@ relational (2.6-1) UNRELEASED; urgency=low
   * Bump X-Python3-Version to 3.8
   * Use https for URLs
   * Require library and client versions to match exactly
+  * Standards-Version: 4.5.0
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 02 May 2018 22:09:48 +0200
 
