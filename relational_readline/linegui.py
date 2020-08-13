@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2010-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2010-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -137,7 +137,7 @@ def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
             "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
         return None
     try:
-        relations[defname] = relation.relation(filename)
+        relations[defname] = relation.Relation(filename)
 
         completer.add_completion(defname)
         printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
