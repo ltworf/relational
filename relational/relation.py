@@ -34,8 +34,7 @@ __all__ = [
 ]
 
 
-class Relation:
-
+class Relation(NamedTuple):
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
 
@@ -58,41 +57,17 @@ class Relation:
     An empty relation needs a header, and can be filled using the insert()
     method.
     '''
-    def __hash__(self):
-        raise NotImplementedError()
+    header: 'Header'
+    content: FrozenSet[tuple]
 
-    def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
-        self._readonly = False
-        self.content: Set[tuple] = set()
-
-        if filename is None:  # Empty relation
-            self.header = Header([])
-            return
+    @staticmethod
+    def load(filename: Union[str, Path]) -> 'Relation':
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
-            self.header = Header(next(reader))  # read 1st line
-            iterator = ((self.insert(i) for i in reader))
-            deque(iterator, maxlen=0)
-
-    def _make_duplicate(self, copy: 'Relation') -> None:
-        '''Flag that the relation "copy" is pointing
-        to the same set as this relation.'''
-
-        self._readonly = True
-        copy._readonly = True
-
-    def _make_writable(self, copy_content: bool = True) -> None:
-        '''If this relation is marked as readonly, this
-        method will copy the content to make it writable too
-
-        if copy_content is set to false, the caller must
-        separately copy the content.'''
-
-        if self._readonly:
-            self._readonly = False
-
-            if copy_content:
-                self.content = set(self.content)
+            header = Header(next(reader))  # read 1st line
+            #FIXME load properly
+            content = frozenset((tuple(i) for i in reader))
+            return Relation(header, content)
 
     def __iter__(self):
         return iter(self.content)
