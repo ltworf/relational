@@ -29,6 +29,32 @@ from dataclasses import dataclass
 
 from relational import rtypes
 
+
+__all__ = [
+    'PRODUCT',
+    'DIFFERENCE',
+    'UNION',
+    'INTERSECTION',
+    'DIVISION',
+    'JOIN',
+    'JOIN_LEFT',
+    'JOIN_RIGHT',
+    'JOIN_FULL',
+    'PROJECTION',
+    'SELECTION',
+    'RENAME',
+    'ARROW',
+    'TokenizerException',
+    'ParserException',
+    'CallableString',
+    'Node',
+    'Unary',
+    'Binary',
+    'Variable',
+    'tree',
+    'parse',
+]
+
 PRODUCT = '*'
 DIFFERENCE = '-'
 UNION = '∪'
