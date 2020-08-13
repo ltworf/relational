@@ -58,7 +58,7 @@ class Relation(NamedTuple):
     method.
     '''
     header: 'Header'
-    content: FrozenSet[tuple]
+    content: FrozenSet[Tuple[Rstring, ...]]
 
     @staticmethod
     def load(filename: Union[str, Path]) -> 'Relation':
