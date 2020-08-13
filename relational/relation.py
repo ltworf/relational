@@ -20,7 +20,7 @@
 # relational operations on them.
 
 import csv
-from itertools import chain, repeat
+from itertools import chain, repeat, product as iproduct
 from collections import deque
 from typing import *
 from pathlib import Path
@@ -66,7 +66,7 @@ class Relation(NamedTuple):
             reader = csv.reader(fp)  # Creating a csv reader
             header = Header(next(reader))  # read 1st line
             #FIXME load properly
-            content = frozenset((tuple(i) for i in reader))
+            content = frozenset((tuple(Rstring(s) for s in i) for i in reader))
             return Relation(header, content)
 
     def __iter__(self):
@@ -111,14 +111,14 @@ class Relation(NamedTuple):
         '''
         Selection, expr must be a valid Python expression; can contain field names.
         '''
-        newt = Relation()
-        newt.header = Header(self.header)
+        header = Header(self.header)
 
         try:
             c_expr = compile(expr, 'selection', 'eval')
         except:
             raise Exception('Failed to compile expression: %s' % expr)
 
+        content = set()
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
             attributes = {attr: i[j].autocast()
@@ -127,11 +127,11 @@ class Relation(NamedTuple):
 
             try:
                 if eval(c_expr, attributes):
-                    newt.content.add(i)
+                    content.add(i)
             except Exception as e:
                 raise Exception(
                     "Failed to evaluate %s\n%s" % (expr, e.__str__()))
-        return newt
+        return Relation(header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
         '''
@@ -144,13 +144,10 @@ class Relation(NamedTuple):
             raise Exception(
                 'Unable to perform product on relations with colliding attributes'
             )
-        newt = Relation()
-        newt.header = Header(self.header + other.header)
+        header = Header(self.header + other.header)
 
-        for i in self.content:
-            for j in other.content:
-                newt.content.add(i + j)
-        return newt
+        content = frozenset(i+j for i, j in iproduct(self.content, other.content))
+        return Relation(header, content)
 
     def projection(self, *attributes) -> 'Relation':
         '''
@@ -172,16 +169,11 @@ class Relation(NamedTuple):
 
         if len(ids) == 0:
             raise Exception('Invalid attributes for projection')
-        newt = Relation()
-        # Create the header
-        h = (self.header[i] for i in ids)
-        newt.header = Header(h)
+        header = Header((self.header[i] for i in ids))
 
-        # Create the body
-        for i in self.content:
-            row = (i[j] for j in ids)
-            newt.content.add(tuple(row))
-        return newt
+        content = frozenset(tuple((i[j] for j in ids)) for i in self.content)
+
+        return Relation(header, content)
 
     def rename(self, params: Dict[str, str]) -> 'Relation':
         '''
@@ -192,12 +184,8 @@ class Relation(NamedTuple):
         For example if you want to rename a to b, call
         rel.rename({'a':'b'})
         '''
-        newt = Relation()
-        newt.header = self.header.rename(params)
-
-        newt.content = self.content
-        self._make_duplicate(newt)
-        return newt
+        header = self.header.rename(params)
+        return Relation(header, self.content)
 
     def intersection(self, other: 'Relation') -> 'Relation':
         '''
@@ -206,22 +194,14 @@ class Relation(NamedTuple):
         Will return an empty one if there are no common items.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = Relation()
-        newt.header = Header(self.header)
-
-        newt.content = self.content.intersection(other.content)
-        return newt
+        return Relation(self.header, self.content.intersection(other.content))
 
     def difference(self, other: 'Relation') -> 'Relation':
         '''Difference operation. The result will contain items present in first
         operand but not in second one.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = Relation()
-        newt.header = Header(self.header)
-
-        newt.content = self.content.difference(other.content)
-        return newt
+        return Relation(self.header, self.content.difference(other.content))
 
     def division(self, other: 'Relation') -> 'Relation':
         '''Division operator
@@ -254,11 +234,7 @@ class Relation(NamedTuple):
         and second operands.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = Relation()
-        newt.header = Header(self.header)
-
-        newt.content = self.content.union(other.content)
-        return newt
+        return Relation(self.header, self.content.union(other.content))
 
     def thetajoin(self, other: 'Relation', expr: str) -> 'Relation':
         '''Defined as product and then selection with the given expression.'''
@@ -288,11 +264,10 @@ class Relation(NamedTuple):
 
         shared = self.header.intersection(other.header)
 
-        newt = Relation()  # Creates the new relation
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = Header(chain(self.header, h))
+        header = Header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -302,6 +277,7 @@ class Relation(NamedTuple):
         # Non shared ids of the other relation
         noid = [i for i in range(len(other.header)) if i not in oid]
 
+        content = set()
         for i in self.content:
             # Tuple partecipated to the join?
             added = False
@@ -313,14 +289,14 @@ class Relation(NamedTuple):
                 if match:
                     item = chain(i, (j[l] for l in noid))
 
-                    newt.content.add(tuple(item))
+                    content.add(tuple(item))
                     added = True
             # If it didn't partecipate, adds it
             if not added:
                 item = chain(i, repeat(Rstring('---'), len(noid)))
-                newt.content.add(tuple(item))
+                content.add(tuple(item))
 
-        return newt
+        return Relation(header, frozenset(content))
 
     def join(self, other: 'Relation') -> 'Relation':
         '''
@@ -331,12 +307,10 @@ class Relation(NamedTuple):
         # List of attributes in common between the relations
         shared = self.header.intersection(other.header)
 
-        newt = Relation()  # Creates the new relation
-
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = Header(chain(self.header, h))
+        header = Header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -346,6 +320,7 @@ class Relation(NamedTuple):
         # Non shared ids of the other relation
         noid = [i for i in range(len(other.header)) if i not in oid]
 
+        content = set()
         for i in self.content:
             for j in other.content:
                 match = True
@@ -354,9 +329,9 @@ class Relation(NamedTuple):
 
                 if match:
                     item = chain(i, (j[l] for l in noid))
-                    newt.content.add(tuple(item))
+                    content.add(tuple(item))
 
-        return newt
+        return Relation(header, frozenset(content))
 
     def __eq__(self, other):
         if not isinstance(other, Relation):
@@ -410,7 +385,6 @@ class Relation(NamedTuple):
 
         Returns the number of affected rows.
         '''
-        self._make_writable(copy_content=False)
         affected = self.selection(expr)
         not_affected = self.difference(affected)
 
@@ -446,8 +420,6 @@ class Relation(NamedTuple):
                 )
             )
 
-        self._make_writable()
-
         prevlen = len(self.content)
         self.content.add(tuple(map(Rstring, values)))
         return len(self.content) - prevlen
@@ -462,7 +434,6 @@ class Relation(NamedTuple):
         Returns the number of affected rows.'''
 
         l = len(self.content)
-        self._make_writable(copy_content=False)
         self.content = self.difference(self.selection(expr)).content
         return len(self.content) - l
 
