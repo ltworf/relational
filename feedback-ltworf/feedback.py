@@ -12,7 +12,7 @@ def m(request, *args, **kwargs):
 @application.route("/version/<id>")
 def show_version(request, *args, **kwargs):
     if kwargs["id"] == "relational":
-        return "2.6"
+        return "3.0"
     return "No version"
 
 @application.route('/feedback/<id>')

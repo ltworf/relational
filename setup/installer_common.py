@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@ from distutils.core import setup
 
 def c_setup(name):
     setup(
-        version='2.6',
+        version='3.0',
         name=name,
         packages=(name,),
         author="Salvo 'LtWorf' Tomaselli",
         author_email='tiposchi@tiscali.it',
         maintainer="Salvo 'LtWorf' Tomaselli",
         maintainer_email='tiposchi@tiscali.it',
-        url='http://ltworf.github.io/relational/',
+        url='https://ltworf.github.io/relational/',
         license='GPL3',
     )

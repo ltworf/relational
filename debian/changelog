@@ -1,4 +1,4 @@
-relational (2.6-1) UNRELEASED; urgency=low
+relational (3.0-1) UNRELEASED; urgency=low
 
   * New upstream release
   * Bump compat to 13

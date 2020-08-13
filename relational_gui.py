@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Relational
-# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import os
 import os.path
 import getopt
 
-version = "2.6"
+version = "3.0"
 
 
 def printver(exit=True):
@@ -36,7 +36,7 @@ def printver(exit=True):
     print ()
     print ("Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>")
     print ()
-    print ("http://ltworf.github.io/relational/")
+    print ("https://ltworf.github.io/relational/")
     if exit:
         sys.exit(0)
 
