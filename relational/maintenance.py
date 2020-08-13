@@ -91,7 +91,7 @@ class UserInterface:
     def load(self, filename: str, name: str) -> None:
         '''Loads a relation from file, and gives it a name to
         be used in subsequent queries.'''
-        rel = Relation(filename)
+        rel = Relation.load(filename)
         self.set_relation(name, rel)
 
     def unload(self, name: str) -> None:
@@ -204,7 +204,7 @@ class UserInterface:
         [varname =] query
         to assign the result to a new relation
         '''
-        r = Relation()
+        r = None
         queries = query.split('\n')
         for query in queries:
             if query.strip() == '':
@@ -219,4 +219,6 @@ class UserInterface:
                     query,
                     str(e)
                 ))
+        if r is None:
+            raise Exception('No query executed')
         return r
