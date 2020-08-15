@@ -27,7 +27,7 @@ from typing import Optional
 
 from relational import relation, parser, rtypes
 from relational import maintenance
-from xtermcolor import colorize
+from xtermcolor import colorize  # type: ignore
 
 PROMPT_COLOR = 0xffff00
 ERROR_COLOR = 0xff0000
