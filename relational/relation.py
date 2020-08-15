@@ -134,7 +134,7 @@ class Relation(NamedTuple):
         try:
             c_expr = compile(expr, 'selection', 'eval')
         except:
-            raise Exception('Failed to compile expression: %s' % expr)
+            raise Exception(f'Failed to compile expression: {expr}')
 
         content = []
         for i in self.content:
@@ -147,8 +147,7 @@ class Relation(NamedTuple):
                 if eval(c_expr, attributes):
                     content.append(i)
             except Exception as e:
-                raise Exception(
-                    "Failed to evaluate %s\n%s" % (expr, e.__str__()))
+                raise Exception(f'Failed to evaluate {expr}\n{e}')
         return Relation(header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
@@ -403,7 +402,7 @@ class Header(tuple):
 
         for i in self:
             if not is_valid_relation_name(i):
-                raise Exception('"%s" is not a valid attribute name' % i)
+                raise Exception(f'"{i}" is not a valid attribute name')
 
         if len(self) != len(set(self)):
             raise Exception('Attribute names must be unique')
@@ -419,12 +418,12 @@ class Header(tuple):
         attrs = list(self)
         for old, new in params.items():
             if not is_valid_relation_name(new):
-                raise Exception('%s is not a valid attribute name' % new)
+                raise Exception(f'{new} is not a valid attribute name')
             try:
                 id_ = attrs.index(old)
                 attrs[id_] = new
             except:
-                raise Exception('Field not found: %s' % old)
+                raise Exception(f'Field not found: {old}')
         return Header(attrs)
 
     def sharedAttributes(self, other: 'Header') -> int:

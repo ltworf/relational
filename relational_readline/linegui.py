@@ -27,7 +27,7 @@ from typing import Optional
 
 from relational import relation, parser, rtypes
 from relational import maintenance
-from xtermcolor import colorize
+from xtermcolor import colorize  # type: ignore
 
 PROMPT_COLOR = 0xffff00
 ERROR_COLOR = 0xff0000
@@ -113,7 +113,7 @@ completer = SimpleCompleter(
      '_DIFFERENCE ', '_JOIN ', '_LJOIN ', '_RJOIN ', '_FJOIN ', '_PROJECTION ', '_RENAME_TO ', '_SELECTION ', '_RENAME ', '_DIVISION '])
 
 
-def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
+def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
     '''
     Loads a relation into the set. Defname is the given name
     to the relation.
@@ -123,7 +123,7 @@ def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
     '''
     if not os.path.isfile(filename):
         print(colorize(
-            "%s is not a file" % filename, ERROR_COLOR), file=sys.stderr)
+            f'{filename} is not a file', ERROR_COLOR), file=sys.stderr)
         return None
 
     if defname is None:
@@ -137,7 +137,7 @@ def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
             "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
         return None
     try:
-        relations[defname] = relation.Relation(filename)
+        relations[defname] = relation.Relation.load(filename)
 
         completer.add_completion(defname)
         printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
@@ -216,10 +216,9 @@ def exec_line(command: str) -> None:
             return
 
         filename = pars[1]
+        defname = None
         if len(pars) > 2:
             defname = pars[2]
-        else:
-            defname = None
         load_relation(filename, defname)
 
     elif command.startswith('UNLOAD '):
@@ -320,7 +319,7 @@ def main(files=[]):
            "; Completion is activated using the tab (if supported by the terminal)")
 
     for i in files:
-        load_relation(i)
+        load_relation(i, None)
 
     readline.set_completer(completer.complete)
 
