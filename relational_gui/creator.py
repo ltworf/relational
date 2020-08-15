@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2015  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -142,11 +142,3 @@ def edit_relation(rel=None):
 
     Form.exec_()
     return Form.result_relation
-
-
-if __name__ == '__main__':
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    r = relation.relation(
-        "/home/salvo/dev/relational/trunk/samples/people.csv")
-    print (edit_relation(r))
