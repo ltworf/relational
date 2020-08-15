@@ -137,7 +137,7 @@ def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
             "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
         return None
     try:
-        relations[defname] = relation.Relation(filename)
+        relations[defname] = relation.Relation.load(filename)
 
         completer.add_completion(defname)
         printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
