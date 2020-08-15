@@ -84,14 +84,13 @@ class creatorForm(QtWidgets.QDialog):
              for i in range(self.table.columnCount()))
 
         try:
-            header = relation.header(h)
+            header = relation.Header(h)
         except Exception as e:
             QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" % (
                 QtWidgets.QApplication.translate("Form", "Header error!"), e.__str__()))
             return None
-        r = relation.relation()
-        r.header = header
 
+        content = []
         for i in range(1, self.table.rowCount()):
             hlist = []
             for j in range(self.table.columnCount()):
@@ -101,11 +100,10 @@ class creatorForm(QtWidgets.QDialog):
                     QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
                         "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))
                     return None
-            r.insert(hlist)
-        return r
+            content.append(hlist)
+        return relation.Relation.create_from(header, content)
 
     def accept(self):
-
         self.result_relation = self.create_relation()
 
         # Doesn't close the window in case of errors
