@@ -113,7 +113,7 @@ completer = SimpleCompleter(
      '_DIFFERENCE ', '_JOIN ', '_LJOIN ', '_RJOIN ', '_FJOIN ', '_PROJECTION ', '_RENAME_TO ', '_SELECTION ', '_RENAME ', '_DIVISION '])
 
 
-def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
+def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
     '''
     Loads a relation into the set. Defname is the given name
     to the relation.
@@ -123,7 +123,7 @@ def load_relation(filename: str, defname:Optional[str]=None) -> Optional[str]:
     '''
     if not os.path.isfile(filename):
         print(colorize(
-            "%s is not a file" % filename, ERROR_COLOR), file=sys.stderr)
+            f'{filename} is not a file', ERROR_COLOR), file=sys.stderr)
         return None
 
     if defname is None:
@@ -216,10 +216,9 @@ def exec_line(command: str) -> None:
             return
 
         filename = pars[1]
+        defname = None
         if len(pars) > 2:
             defname = pars[2]
-        else:
-            defname = None
         load_relation(filename, defname)
 
     elif command.startswith('UNLOAD '):
@@ -320,7 +319,7 @@ def main(files=[]):
            "; Completion is activated using the tab (if supported by the terminal)")
 
     for i in files:
-        load_relation(i)
+        load_relation(i, None)
 
     readline.set_completer(completer.complete)
 
