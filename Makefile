@@ -17,7 +17,7 @@ relational_gui/resources.py:
 
 .PHONY: mypy
 mypy:
-	mypy relational
+	mypy relational relational_readline
 
 .PHONY: test
 test:
