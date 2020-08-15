@@ -62,12 +62,30 @@ class Relation(NamedTuple):
 
     @staticmethod
     def load(filename: Union[str, Path]) -> 'Relation':
+        '''
+        Load a relation object from a csv file.
+
+        The 1st row is the header and the other rows are the content.
+        '''
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
             header = Header(next(reader))  # read 1st line
-            #FIXME load properly
-            content = frozenset((tuple(Rstring(s) for s in i) for i in reader))
-            return Relation(header, content)
+            return Relation.create_from(header, reader)
+
+    @staticmethod
+    def create_from(header: Iterable[str], content: Iterable[Iterable[str]]) -> 'Relation':
+        '''
+        Iterator for the header, and iterator for the content.
+        '''
+        header = Header(header)
+        r_content: List[Tuple[Rstring, ...]] = []
+        for row in content:
+            content_row: Tuple[Rstring, ...] = tuple(Rstring(i) for i in row)
+            if len(content_row) != len(header):
+                raise ValueError(f'Line {row} contains an incorrect amount of values')
+            r_content.append(content_row)
+        return Relation(header, frozenset(r_content))
+
 
     def __iter__(self):
         return iter(self.content)
