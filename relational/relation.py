@@ -118,7 +118,7 @@ class Relation(NamedTuple):
         except:
             raise Exception('Failed to compile expression: %s' % expr)
 
-        content = set()
+        content = []
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
             attributes = {attr: i[j].autocast()
@@ -127,7 +127,7 @@ class Relation(NamedTuple):
 
             try:
                 if eval(c_expr, attributes):
-                    content.add(i)
+                    content.append(i)
             except Exception as e:
                 raise Exception(
                     "Failed to evaluate %s\n%s" % (expr, e.__str__()))
@@ -277,7 +277,7 @@ class Relation(NamedTuple):
         # Non shared ids of the other relation
         noid = [i for i in range(len(other.header)) if i not in oid]
 
-        content = set()
+        content = []
         for i in self.content:
             # Tuple partecipated to the join?
             added = False
@@ -289,12 +289,12 @@ class Relation(NamedTuple):
                 if match:
                     item = chain(i, (j[l] for l in noid))
 
-                    content.add(tuple(item))
+                    content.append(tuple(item))
                     added = True
             # If it didn't partecipate, adds it
             if not added:
                 item = chain(i, repeat(Rstring('---'), len(noid)))
-                content.add(tuple(item))
+                content.append(tuple(item))
 
         return Relation(header, frozenset(content))
 
@@ -320,7 +320,7 @@ class Relation(NamedTuple):
         # Non shared ids of the other relation
         noid = [i for i in range(len(other.header)) if i not in oid]
 
-        content = set()
+        content = []
         for i in self.content:
             for j in other.content:
                 match = True
@@ -329,7 +329,7 @@ class Relation(NamedTuple):
 
                 if match:
                     item = chain(i, (j[l] for l in noid))
-                    content.add(tuple(item))
+                    content.append(tuple(item))
 
         return Relation(header, frozenset(content))
 
