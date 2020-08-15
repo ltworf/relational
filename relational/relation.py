@@ -20,7 +20,7 @@
 # relational operations on them.
 
 import csv
-from itertools import chain, repeat
+from itertools import chain, repeat, product as iproduct
 from collections import deque
 from typing import *
 from pathlib import Path
@@ -34,8 +34,7 @@ __all__ = [
 ]
 
 
-class Relation:
-
+class Relation(NamedTuple):
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
 
@@ -58,41 +57,35 @@ class Relation:
     An empty relation needs a header, and can be filled using the insert()
     method.
     '''
-    def __hash__(self):
-        raise NotImplementedError()
+    header: 'Header'
+    content: FrozenSet[Tuple[Rstring, ...]]
 
-    def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
-        self._readonly = False
-        self.content: Set[tuple] = set()
+    @staticmethod
+    def load(filename: Union[str, Path]) -> 'Relation':
+        '''
+        Load a relation object from a csv file.
 
-        if filename is None:  # Empty relation
-            self.header = Header([])
-            return
+        The 1st row is the header and the other rows are the content.
+        '''
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
-            self.header = Header(next(reader))  # read 1st line
-            iterator = ((self.insert(i) for i in reader))
-            deque(iterator, maxlen=0)
+            header = Header(next(reader))  # read 1st line
+            return Relation.create_from(header, reader)
 
-    def _make_duplicate(self, copy: 'Relation') -> None:
-        '''Flag that the relation "copy" is pointing
-        to the same set as this relation.'''
+    @staticmethod
+    def create_from(header: Iterable[str], content: Iterable[Iterable[str]]) -> 'Relation':
+        '''
+        Iterator for the header, and iterator for the content.
+        '''
+        header = Header(header)
+        r_content: List[Tuple[Rstring, ...]] = []
+        for row in content:
+            content_row: Tuple[Rstring, ...] = tuple(Rstring(i) for i in row)
+            if len(content_row) != len(header):
+                raise ValueError(f'Line {row} contains an incorrect amount of values')
+            r_content.append(content_row)
+        return Relation(header, frozenset(r_content))
 
-        self._readonly = True
-        copy._readonly = True
-
-    def _make_writable(self, copy_content: bool = True) -> None:
-        '''If this relation is marked as readonly, this
-        method will copy the content to make it writable too
-
-        if copy_content is set to false, the caller must
-        separately copy the content.'''
-
-        if self._readonly:
-            self._readonly = False
-
-            if copy_content:
-                self.content = set(self.content)
 
     def __iter__(self):
         return iter(self.content)
@@ -136,14 +129,14 @@ class Relation:
         '''
         Selection, expr must be a valid Python expression; can contain field names.
         '''
-        newt = Relation()
-        newt.header = Header(self.header)
+        header = Header(self.header)
 
         try:
             c_expr = compile(expr, 'selection', 'eval')
         except:
             raise Exception('Failed to compile expression: %s' % expr)
 
+        content = []
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
             attributes = {attr: i[j].autocast()
@@ -152,11 +145,11 @@ class Relation:
 
             try:
                 if eval(c_expr, attributes):
-                    newt.content.add(i)
+                    content.append(i)
             except Exception as e:
                 raise Exception(
                     "Failed to evaluate %s\n%s" % (expr, e.__str__()))
-        return newt
+        return Relation(header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
         '''
@@ -169,13 +162,10 @@ class Relation:
             raise Exception(
                 'Unable to perform product on relations with colliding attributes'
             )
-        newt = Relation()
-        newt.header = Header(self.header + other.header)
+        header = Header(self.header + other.header)
 
-        for i in self.content:
-            for j in other.content:
-                newt.content.add(i + j)
-        return newt
+        content = frozenset(i+j for i, j in iproduct(self.content, other.content))
+        return Relation(header, content)
 
     def projection(self, *attributes) -> 'Relation':
         '''
@@ -197,16 +187,11 @@ class Relation:
 
         if len(ids) == 0:
             raise Exception('Invalid attributes for projection')
-        newt = Relation()
-        # Create the header
-        h = (self.header[i] for i in ids)
-        newt.header = Header(h)
+        header = Header((self.header[i] for i in ids))
 
-        # Create the body
-        for i in self.content:
-            row = (i[j] for j in ids)
-            newt.content.add(tuple(row))
-        return newt
+        content = frozenset(tuple((i[j] for j in ids)) for i in self.content)
+
+        return Relation(header, content)
 
     def rename(self, params: Dict[str, str]) -> 'Relation':
         '''
@@ -217,12 +202,8 @@ class Relation:
         For example if you want to rename a to b, call
         rel.rename({'a':'b'})
         '''
-        newt = Relation()
-        newt.header = self.header.rename(params)
-
-        newt.content = self.content
-        self._make_duplicate(newt)
-        return newt
+        header = self.header.rename(params)
+        return Relation(header, self.content)
 
     def intersection(self, other: 'Relation') -> 'Relation':
         '''
@@ -231,22 +212,14 @@ class Relation:
         Will return an empty one if there are no common items.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = Relation()
-        newt.header = Header(self.header)
-
-        newt.content = self.content.intersection(other.content)
-        return newt
+        return Relation(self.header, self.content.intersection(other.content))
 
     def difference(self, other: 'Relation') -> 'Relation':
         '''Difference operation. The result will contain items present in first
         operand but not in second one.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = Relation()
-        newt.header = Header(self.header)
-
-        newt.content = self.content.difference(other.content)
-        return newt
+        return Relation(self.header, self.content.difference(other.content))
 
     def division(self, other: 'Relation') -> 'Relation':
         '''Division operator
@@ -279,11 +252,7 @@ class Relation:
         and second operands.
         '''
         other = self._rearrange(other)  # Rearranges attributes' order
-        newt = Relation()
-        newt.header = Header(self.header)
-
-        newt.content = self.content.union(other.content)
-        return newt
+        return Relation(self.header, self.content.union(other.content))
 
     def thetajoin(self, other: 'Relation', expr: str) -> 'Relation':
         '''Defined as product and then selection with the given expression.'''
@@ -313,11 +282,10 @@ class Relation:
 
         shared = self.header.intersection(other.header)
 
-        newt = Relation()  # Creates the new relation
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = Header(chain(self.header, h))
+        header = Header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -327,6 +295,7 @@ class Relation:
         # Non shared ids of the other relation
         noid = [i for i in range(len(other.header)) if i not in oid]
 
+        content = []
         for i in self.content:
             # Tuple partecipated to the join?
             added = False
@@ -338,14 +307,14 @@ class Relation:
                 if match:
                     item = chain(i, (j[l] for l in noid))
 
-                    newt.content.add(tuple(item))
+                    content.append(tuple(item))
                     added = True
             # If it didn't partecipate, adds it
             if not added:
                 item = chain(i, repeat(Rstring('---'), len(noid)))
-                newt.content.add(tuple(item))
+                content.append(tuple(item))
 
-        return newt
+        return Relation(header, frozenset(content))
 
     def join(self, other: 'Relation') -> 'Relation':
         '''
@@ -356,12 +325,10 @@ class Relation:
         # List of attributes in common between the relations
         shared = self.header.intersection(other.header)
 
-        newt = Relation()  # Creates the new relation
-
         # Creating the header with all the fields, done like that because order is
         # needed
         h = (i for i in other.header if i not in shared)
-        newt.header = Header(chain(self.header, h))
+        header = Header(chain(self.header, h))
 
         # Shared ids of self
         sid = self.header.getAttributesId(shared)
@@ -371,6 +338,7 @@ class Relation:
         # Non shared ids of the other relation
         noid = [i for i in range(len(other.header)) if i not in oid]
 
+        content = []
         for i in self.content:
             for j in other.content:
                 match = True
@@ -379,9 +347,9 @@ class Relation:
 
                 if match:
                     item = chain(i, (j[l] for l in noid))
-                    newt.content.add(tuple(item))
+                    content.append(tuple(item))
 
-        return newt
+        return Relation(header, frozenset(content))
 
     def __eq__(self, other):
         if not isinstance(other, Relation):
@@ -420,76 +388,6 @@ class Relation:
                 res += "%s" % (i.ljust(2 + m_len[col]))
 
         return res
-
-    def update(self, expr: str, dic: dict) -> int:
-        '''
-        Updates certain values of a relation.
-
-        expr must be a valid Python expression that can contain field names.
-
-        This operation will change the relation itself instead of generating a new one,
-        updating all the tuples where expr evaluates as True.
-
-        Dic must be a dictionary that has the form "field name":"new value". Every kind of value
-        will be converted into a string.
-
-        Returns the number of affected rows.
-        '''
-        self._make_writable(copy_content=False)
-        affected = self.selection(expr)
-        not_affected = self.difference(affected)
-
-        new_values = tuple(
-            zip(self.header.getAttributesId(dic.keys()), dic.values())
-        )
-
-        for i in set(affected.content):
-            li = list(i)
-
-            for column, value in new_values:
-                li[column] = value
-            not_affected.insert(li)
-
-        self.content = not_affected.content
-        return len(affected)
-
-    def insert(self, values: Union[list,tuple]) -> int:
-        '''
-        Inserts a tuple in the relation.
-        This function will not insert duplicate tuples.
-        All the values will be converted in string.
-        Will return the number of inserted rows.
-
-        Will fail if the tuple has the wrong amount of items.
-        '''
-
-        if len(self.header) != len(values):
-            raise Exception(
-                'Tuple has the wrong size. Expected %d, got %d' % (
-                    len(self.header),
-                    len(values)
-                )
-            )
-
-        self._make_writable()
-
-        prevlen = len(self.content)
-        self.content.add(tuple(map(Rstring, values)))
-        return len(self.content) - prevlen
-
-    def delete(self, expr: str) -> int:
-        '''
-        Delete, expr must be a valid Python expression; can contain field names.
-
-        This operation will change the relation itself instead of generating a new one,
-        deleting all the tuples where expr evaluates as True.
-
-        Returns the number of affected rows.'''
-
-        l = len(self.content)
-        self._make_writable(copy_content=False)
-        self.content = self.difference(self.selection(expr)).content
-        return len(self.content) - l
 
 
 class Header(tuple):
