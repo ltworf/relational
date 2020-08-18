@@ -129,8 +129,6 @@ class Relation(NamedTuple):
         '''
         Selection, expr must be a valid Python expression; can contain field names.
         '''
-        header = Header(self.header)
-
         try:
             c_expr = compile(expr, 'selection', 'eval')
         except:
@@ -148,7 +146,7 @@ class Relation(NamedTuple):
                     content.append(i)
             except Exception as e:
                 raise Exception(f'Failed to evaluate {expr}\n{e}')
-        return Relation(header, frozenset(content))
+        return Relation(self.header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
         '''
