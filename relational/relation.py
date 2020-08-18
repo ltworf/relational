@@ -379,12 +379,12 @@ class Relation(NamedTuple):
 
         res = ""
         for f, attr in enumerate(self.header):
-            res += "%s" % (attr.ljust(2 + m_len[f]))
+            res += attr.ljust(2 + m_len[f])
 
         for r in self.content:
             res += "\n"
             for col, i in enumerate(r):
-                res += "%s" % (i.ljust(2 + m_len[col]))
+                res += i.ljust(2 + m_len[col])
 
         return res
 
