@@ -58,7 +58,7 @@ class Relation(NamedTuple):
     method.
     '''
     header: 'Header'
-    content: FrozenSet[Tuple[Rstring, ...]]
+    content: FrozenSet[Tuple[CastValue, ...]]
 
     @staticmethod
     def load(filename: Union[str, Path]) -> 'Relation':
@@ -78,13 +78,24 @@ class Relation(NamedTuple):
         Iterator for the header, and iterator for the content.
         '''
         header = Header(header)
-        r_content: List[Tuple[Rstring, ...]] = []
+        r_content: List[Tuple[CastValue, ...]] = []
+        guessed_types = list(repeat({Rdate, float, int, str}, len(header)))
+
         for row in content:
-            content_row: Tuple[Rstring, ...] = tuple(Rstring(i) for i in row)
-            if len(content_row) != len(header):
+            if len(row) != len(header):
                 raise ValueError(f'Line {row} contains an incorrect amount of values')
-            r_content.append(content_row)
-        return Relation(header, frozenset(r_content))
+            r_content.append(row)
+
+            # Guess types
+            for i, value in enumerate(row):
+                guessed_types[i] = guessed_types[i].intersection(guess_type(value))
+
+        typed_content = []
+        for r in r_content:
+            t = tuple(cast(v, guessed_types[i]) for i, v in enumerate(r))
+            typed_content.append(t)
+
+        return Relation(header, frozenset(typed_content))
 
 
     def __iter__(self):
