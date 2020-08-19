@@ -319,7 +319,7 @@ class Relation(NamedTuple):
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i, repeat(Rstring('---'), len(noid)))
+                item = chain(i, repeat('---', len(noid))) #FIXME
                 content.append(tuple(item))
 
         return Relation(header, frozenset(content))
