@@ -109,9 +109,6 @@ class Rdate:
     def __lt__(self, other):
         return self.intdate < other.intdate
 
-    def __ne__(self, other):
-        return self.intdate != other.intdate
-
     def __sub__(self, other):
         return (self.intdate - other.intdate).days
 
