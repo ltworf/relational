@@ -382,7 +382,7 @@ class Relation(NamedTuple):
         m_len = [len(i) for i in self.header]  # Maximum lenght string
 
         for f in self.content:
-            for col, i in enumerate(f):
+            for col, i in enumerate(str(val) for val in f):
                 if len(i) > m_len[col]:
                     m_len[col] = len(i)
 
@@ -392,7 +392,7 @@ class Relation(NamedTuple):
 
         for r in self.content:
             res += "\n"
-            for col, i in enumerate(r):
+            for col, i in enumerate(str(val) for val in r):
                 res += i.ljust(2 + m_len[col])
 
         return res
