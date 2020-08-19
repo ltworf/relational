@@ -56,7 +56,6 @@ def cast(value: str, guesses: Set) -> CastValue:
     if int in guesses:
         return int(value)
     if Rdate in guesses:
-        print(repr(value), guesses)
         return Rdate(value)
     if float in guesses:
         return float(value)
