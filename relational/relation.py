@@ -148,7 +148,7 @@ class Relation(NamedTuple):
         content = []
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
-            attributes = {attr: i[j].autocast()
+            attributes = {attr: i[j]
                           for j, attr in enumerate(self.header)
                           }
 
