@@ -93,6 +93,8 @@ class Rdate:
         return Rdate(res.__str__())
 
     def __eq__(self, other):
+        if not isinstance(other, Rdate):
+            return False
         return self.intdate == other.intdate
 
     def __ge__(self, other):
