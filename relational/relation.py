@@ -22,7 +22,7 @@
 import csv
 from itertools import chain, repeat, product as iproduct
 from collections import deque
-from typing import *
+from typing import NamedTuple, FrozenSet, Iterable, List, Dict, Tuple
 from pathlib import Path
 
 from relational.rtypes import *
