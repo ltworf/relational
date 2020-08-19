@@ -1,4 +1,5 @@
 3.0
+- Dates can no longer be added or subtracted
 - Types are now inferred by column, no longer by cell
 - Relations now use frozenset internally and are immutable
 - Refactored parser to use better typing

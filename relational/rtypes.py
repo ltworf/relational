@@ -88,10 +88,6 @@ class Rdate:
     def __str__(self):
         return self.intdate.__str__()
 
-    def __add__(self, days):
-        res = self.intdate + datetime.timedelta(days)
-        return Rdate(res.__str__())
-
     def __eq__(self, other):
         if not isinstance(other, Rdate):
             return False
@@ -108,9 +104,6 @@ class Rdate:
 
     def __lt__(self, other):
         return self.intdate < other.intdate
-
-    def __sub__(self, other):
-        return (self.intdate - other.intdate).days
 
 
 def is_valid_relation_name(name: str) -> bool:
