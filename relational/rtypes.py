@@ -63,19 +63,25 @@ def cast(value: str, guesses: Set) -> CastValue:
     return value
 
 
-class Rdate(datetime.date):
+class Rdate:
     '''Represents a date'''
 
     def __init__(self, date):
         '''date: A string representing a date'''
-        if not isinstance(date, Rstring):
-            date = Rstring(date)
+        r = _date_regexp.match(date)
+        if not r:
+            raise ValueError(f'{date} is not a valid date')
 
-        self.intdate = date.getDate()
-        self.day = self.intdate.day
-        self.month = self.intdate.month
-        self.weekday = self.intdate.weekday()
-        self.year = self.intdate.year
+        year = int(r.group(1))
+        month = int(r.group(3))
+        day = int(r.group(5))
+        d = datetime.date(year, month, day)
+
+        self.intdate = d
+        self.day = d.day
+        self.month = d.month
+        self.weekday = d.weekday()
+        self.year = d.year
 
     def __hash__(self):
         return self.intdate.__hash__()
