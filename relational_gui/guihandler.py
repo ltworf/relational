@@ -312,9 +312,15 @@ class relForm(QtWidgets.QMainWindow):
     def editRelation(self):
         from relational_gui import creator
         for i in self.ui.lstRelations.selectedItems():
-            result = creator.edit_relation(
-                self.user_interface.get_relation(i.text())
-            )
+            try:
+                result = creator.edit_relation(
+                    self.user_interface.get_relation(i.text())
+                )
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(
+                    self, QtWidgets.QApplication.translate("Form", "Error"), str(e)
+                )
+                return
             if result != None:
                 self.user_interface.set_relation(i.text(), result)
         self.updateRelations()

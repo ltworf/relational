@@ -52,12 +52,12 @@ class creatorForm(QtWidgets.QDialog):
 
         for i in rel.content:
             self.table.insertRow(self.table.rowCount())
-            for j in range(len(i)):
+            for j, value in enumerate(i):
+                if value is None:
+                    raise Exception('Relation contains a None value and cannot be edited from the GUI')
                 item = QtWidgets.QTableWidgetItem()
-                item.setText(i[j])
+                item.setText(str(value))
                 self.table.setItem(self.table.rowCount() - 1, j, item)
-
-        pass
 
     def setup_empty(self):
         self.table.insertColumn(0)
