@@ -276,9 +276,7 @@ class Relation(NamedTuple):
     def outer_right(self, other: 'Relation') -> 'Relation':
         '''
         Outer right join. Considers self as left and param as right. If the
-        tuple has no corrispondence, empy attributes are filled with a "---"
-        string. This is due to the fact that the None token would cause
-        problems when saving and reloading the relation.
+        tuple has no corrispondence, empy attributes are filled with a None.
         Just like natural join, it works considering shared attributes.
         '''
         return other.outer_left(self)
@@ -287,7 +285,6 @@ class Relation(NamedTuple):
         '''
         See documentation for outer_right
         '''
-
         shared = self.header.intersection(other.header)
 
         # Creating the header with all the fields, done like that because order is
@@ -319,7 +316,7 @@ class Relation(NamedTuple):
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i, repeat('---', len(noid))) #FIXME
+                item = chain(i, repeat(None, len(noid))) #FIXME
                 content.append(tuple(item))
 
         return Relation(header, frozenset(content))
