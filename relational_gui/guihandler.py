@@ -249,7 +249,13 @@ class relForm(QtWidgets.QMainWindow):
         for i in rel.content:
             item = QtWidgets.QTreeWidgetItem()
             for j,k in enumerate(i):
-                item.setText(j, k)
+                if k is None:
+                    item.setBackground(j, QtGui.QBrush(QtCore.Qt.darkRed, QtCore.Qt.Dense4Pattern))
+                elif isinstance(k, (int, float)):
+                    item.setForeground(j, QtGui.QPalette().link())
+                elif not isinstance(k, str):
+                    item.setForeground(j, QtGui.QPalette().brightText())
+                item.setText(j, str(k))
             self.ui.table.addTopLevelItem(item)
 
         # Sets columns
