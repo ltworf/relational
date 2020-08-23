@@ -73,12 +73,12 @@ class Relation(NamedTuple):
             return Relation.create_from(header, reader)
 
     @staticmethod
-    def create_from(header: Iterable[str], content: Iterable[Iterable[str]]) -> 'Relation':
+    def create_from(header: Iterable[str], content: Iterable[List[str]]) -> 'Relation':
         '''
         Iterator for the header, and iterator for the content.
         '''
         header = Header(header)
-        r_content: List[Tuple[CastValue, ...]] = []
+        r_content = []
         guessed_types = list(repeat({Rdate, float, int, str}, len(header)))
 
         for row in content:
