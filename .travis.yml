@@ -6,6 +6,7 @@ python:
 install:
   - pip install mypy
   - pip install xtermcolor
+  - pip install typedload
 
 script:
   - make mypy
