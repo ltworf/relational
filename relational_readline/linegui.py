@@ -165,12 +165,19 @@ def help(command: str) -> None:
     p = command.split(' ', 1)
     if len(p) == 1:
         print(
-            'HELP command\n'
+            'HELP [command]\n'
+            '\n'
+            'Comments are obtained starting with a ;\n'
+            '\n'
             'To execute a query:\n'
             '[relation =] query\n'
+            '\n'
             'If the 1st part is omitted, the result will be stored in the relation last_.\n'
+            '\n'
             'To prevent from printing the relation, append a ; to the end of the query.\n'
+            '\n'
             'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.\n'
+            '\n'
             'Rember: completion is enabled and can be very helpful if you can\'t remember something.'
         )
         return
