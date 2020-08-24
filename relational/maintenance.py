@@ -90,8 +90,15 @@ class UserInterface:
 
     def load(self, filename: str, name: str) -> None:
         '''Loads a relation from file, and gives it a name to
-        be used in subsequent queries.'''
-        rel = Relation.load(filename)
+        be used in subsequent queries.
+
+        Files ending with .csv are loaded as csv, the others are
+        loaded as json.
+        '''
+        if filename.endswith('.csv'):
+            rel = Relation.load_csv(filename)
+        else:
+            rel = Relation.load(filename)
         self.set_relation(name, rel)
 
     def unload(self, name: str) -> None:
@@ -161,8 +168,12 @@ class UserInterface:
         if len(name) == 0:
             return None
 
-        if (name.endswith(".csv")):  # removes the extension
-            name = name[:-4]
+        # Removing the extension
+        try:
+            pos = name.rindex('.')
+        except ValueError:
+            return None
+        name = name[:pos]
 
         if not is_valid_relation_name(name):
             return None

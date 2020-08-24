@@ -57,7 +57,7 @@ def load_relations():
 
             print ("Loading relation %s with name %s..." % (i, relname))
 
-            rels[relname] = relation.Relation.load('%s%s' % (examples_path, i))
+            rels[relname] = relation.Relation.load_csv('%s%s' % (examples_path, i))
             print('done')
 
 
@@ -239,7 +239,7 @@ def run_test(testname):
     o_result = None
 
     try:
-        result_rel = relation.Relation.load('%s%s.result' % (tests_path, testname))
+        result_rel = relation.Relation.load_csv('%s%s.result' % (tests_path, testname))
 
         query = readfile('%s%s.query' % (tests_path, testname)).strip()
         o_query = optimizer.optimize_all(query, rels)

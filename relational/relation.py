@@ -19,7 +19,6 @@
 # This module provides a classes to represent relations and to perform
 # relational operations on them.
 
-import csv
 from itertools import chain, repeat, product as iproduct
 from collections import deque
 from typing import FrozenSet, Iterable, List, Dict, Tuple
@@ -62,21 +61,62 @@ class Relation:
     content: FrozenSet[Tuple[CastValue, ...]]
 
     @staticmethod
-    def load(filename: Union[str, Path]) -> 'Relation':
+    def load_csv(filename: Union[str, Path]) -> 'Relation':
         '''
         Load a relation object from a csv file.
 
         The 1st row is the header and the other rows are the content.
+
+        Types will be inferred automatically
         '''
+        import csv
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
             header = Header(next(reader))  # read 1st line
             return Relation.create_from(header, reader)
 
     @staticmethod
+    def load(filename: Union[str, Path]) -> 'Relation':
+        '''
+        Load a relation object from a json file.
+        '''
+        with open(filename) as fp:
+            from json import load as jload
+            from typedload import load
+            return load(jload(fp), Relation)
+
+    def save(self, filename: Union[Path, str]) -> None:
+        '''
+        Saves the relation in a file.
+        Will save using the json format
+        '''
+        with open(filename, 'w') as fp:
+            from json import dump as jdump
+            from typedload import dump
+            jdump(dump(self), fp)
+
+    def save_csv(self, filename: Union[Path, str]) -> None:
+        '''
+        Saves the relation in a file. Will save using the csv
+        format as defined in RFC4180.
+        '''
+        import csv
+        with open(filename, 'w') as fp:
+            writer = csv.writer(fp)  # Creating csv writer
+
+            # It wants an iterable containing iterables
+            head = (self.header,)
+            writer.writerows(head)
+
+            # Writing content, already in the correct format
+            writer.writerows(self.content)
+
+    @staticmethod
     def create_from(header: Iterable[str], content: Iterable[List[str]]) -> 'Relation':
         '''
         Iterator for the header, and iterator for the content.
+
+        This will infer types.
         '''
         header = Header(header)
         r_content = []
@@ -104,22 +144,6 @@ class Relation:
 
     def __contains__(self, key):
         return key in self.content
-
-    def save(self, filename: Union[Path, str]) -> None:
-        '''
-        Saves the relation in a file. Will save using the csv
-        format as defined in RFC4180.
-        '''
-
-        with open(filename, 'w') as fp:
-            writer = csv.writer(fp)  # Creating csv writer
-
-            # It wants an iterable containing iterables
-            head = (self.header,)
-            writer.writerows(head)
-
-            # Writing content, already in the correct format
-            writer.writerows(self.content)
 
     def _rearrange(self, other: 'Relation') -> 'Relation':
         '''If two relations share the same attributes in a different order, this method
@@ -317,7 +341,7 @@ class Relation:
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i, repeat(None, len(noid))) #FIXME
+                item = chain(i, repeat(None, len(noid)))
                 content.append(tuple(item))
 
         return Relation(header, frozenset(content))
