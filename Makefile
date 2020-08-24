@@ -49,6 +49,7 @@ dist: clean
 
 .PHONY: clean
 clean:
+	$(RM) -r deb-pkg
 	rm -rf `find -name "*~"`
 	rm -rf `find -name "*pyc"`
 	rm -rf `find -name "*pyo"`
