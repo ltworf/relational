@@ -48,7 +48,7 @@ setup(
     },
     windows=[
         {
-            "script": "relational_gui.py",
+            "script": "relational.py",
             "icon_resources": [(0, "windows/favicon.ico")],
         }
     ],

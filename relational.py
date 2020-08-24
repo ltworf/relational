@@ -27,7 +27,7 @@ version = "3.0"
 
 def printver(exit=True):
     print ("Relational %s" % version)
-    print ("Copyright (C) 2008-2017 Salvo 'LtWorf' Tomaselli.")
+    print ("Copyright (C) 2008-2020 Salvo 'LtWorf' Tomaselli.")
     print ()
     print ("This program comes with ABSOLUTELY NO WARRANTY.")
     print ("This is free software, and you are welcome to redistribute it")
