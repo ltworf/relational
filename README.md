@@ -54,11 +54,5 @@ to generate some .py files.
 To launch the application, run
 
 ```
-./relational_gui.py
-```
-
-or
-
-```
-python3 relational_gui.py
+./relational.py
 ```
