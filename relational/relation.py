@@ -412,22 +412,49 @@ class Relation:
     def __len__(self):
         return len(self.content)
 
-    def __str__(self):
-        m_len = [len(i) for i in self.header]  # Maximum lenght string
+    def __str__(self) -> str:
+        return self.pretty_string(tty=False)
+
+    def pretty_string(self, tty: bool) -> str:
+        '''
+        Returns a printable string.
+
+        If tty is enabled, it will attempt to add ANSI color codes
+        '''
+        c = lambda i, ansi: i
+        if not tty:
+            colorize = c
+        else:
+            from os import isatty
+            if isatty(1) and isatty(2):
+                try:
+                    from xtermcolor import colorize  # type: ignore
+                except ModuleNotFoundError:
+                    colorize = c
+            else:
+                colorize = c
+        m_len = [len(i) + 2 for i in self.header]  # Maximum lenght string
 
         for f in self.content:
             for col, i in enumerate(str(val) for val in f):
-                if len(i) > m_len[col]:
-                    m_len[col] = len(i)
+                if len(i) + 2 > m_len[col]:
+                    m_len[col] = len(i) + 2
 
         res = ""
         for f, attr in enumerate(self.header):
-            res += attr.ljust(2 + m_len[f])
+            res += colorize(attr.ljust(m_len[f]), ansi=3)
 
         for r in self.content:
             res += "\n"
-            for col, i in enumerate(str(val) for val in r):
-                res += i.ljust(2 + m_len[col])
+            for col, i in enumerate(r):
+                cell = str(i).ljust(m_len[col])
+                if isinstance(i, (int, float)):
+                    cell = colorize(cell, ansi=4)
+                elif i is None:
+                    cell = colorize(cell, ansi=1)
+                elif not isinstance(i, str):
+                    cell = colorize(cell, ansi=15)
+                res += cell
 
         return res
 
