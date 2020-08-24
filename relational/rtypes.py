@@ -24,6 +24,7 @@ import datetime
 import keyword
 import re
 from typing import Union, Set, Any, Callable
+from dataclasses import dataclass
 
 
 RELATION_NAME_REGEXP = re.compile(r'^[_a-z][_a-z0-9]*$', re.IGNORECASE)
@@ -56,17 +57,30 @@ def cast(value: str, guesses: Set) -> CastValue:
     if int in guesses:
         return int(value)
     if Rdate in guesses:
-        return Rdate(value)
+        return Rdate.create(value)
     if float in guesses:
         return float(value)
     return value
 
 
+@dataclass(frozen=True)
 class Rdate:
     '''Represents a date'''
+    year: int
+    month: int
+    day: int
 
-    def __init__(self, date):
-        '''date: A string representing a date'''
+    @property
+    def intdate(self) -> datetime.date:
+        return datetime.date(self.year, self.month, self.day)
+
+    @property
+    def weekday(self) -> int:
+        return self.intdate.weekday()
+
+    @staticmethod
+    def create(date: str) -> 'Rdate':
+        '''date: A string representing a date YYYY-MM-DD'''
         r = _date_regexp.match(date)
         if not r:
             raise ValueError(f'{date} is not a valid date')
@@ -74,24 +88,10 @@ class Rdate:
         year = int(r.group(1))
         month = int(r.group(3))
         day = int(r.group(5))
-        d = datetime.date(year, month, day)
-
-        self.intdate = d
-        self.day = d.day
-        self.month = d.month
-        self.weekday = d.weekday()
-        self.year = d.year
-
-    def __hash__(self):
-        return self.intdate.__hash__()
+        return Rdate(year, month, day)
 
     def __str__(self):
         return self.intdate.__str__()
-
-    def __eq__(self, other):
-        if not isinstance(other, Rdate):
-            return False
-        return self.intdate == other.intdate
 
     def __ge__(self, other):
         return self.intdate >= other.intdate
