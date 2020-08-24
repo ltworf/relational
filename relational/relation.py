@@ -21,7 +21,7 @@
 
 from itertools import chain, repeat, product as iproduct
 from collections import deque
-from typing import FrozenSet, Iterable, List, Dict, Tuple
+from typing import FrozenSet, Iterable, List, Dict, Tuple, Optional
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -83,7 +83,15 @@ class Relation:
         with open(filename) as fp:
             from json import load as jload
             from typedload import load
-            return load(jload(fp), Relation)
+            loaded = jload(fp)
+            header = Header(loaded['header'])
+            content = []
+            for row in loaded['content']:
+                if len(row) != len(header):
+                    raise ValueError(f'Line {row} contains an incorrect amount of values')
+                t_row: Tuple[Optional[Union[int, float, str, Rdate]], ...] = load(row, Tuple[Optional[Union[int, float, str, Rdate]], ...])
+                content.append(t_row)
+            return Relation(header, frozenset(content))
 
     def save(self, filename: Union[Path, str]) -> None:
         '''
