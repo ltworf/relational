@@ -23,7 +23,7 @@
 import datetime
 import keyword
 import re
-from typing import Union, Set, Any, Callable
+from typing import Union, Set, Any, Callable, Type
 from dataclasses import dataclass
 
 
@@ -34,8 +34,8 @@ _date_regexp = re.compile(
 CastValue = Union[str, int, float, 'Rdate']
 
 
-def guess_type(value: str) -> Set[Callable[[Any], Any]]:
-    r: Set[Callable[[Any], Any]] = {str}
+def guess_type(value: str) -> Set[Union[Callable[[Any], Any], Type['Rdate']]]:
+    r: Set[Union[Callable[[Any], Any], Type['Rdate']]] = {str}
     if _date_regexp.match(value) is not None:
         r.add(Rdate)
 
