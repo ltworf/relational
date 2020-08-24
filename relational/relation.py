@@ -436,13 +436,13 @@ class Relation:
         m_len = [len(i) + 2 for i in self.header]  # Maximum lenght string
 
         for f in self.content:
-            for col, i in enumerate(str(val) for val in f):
-                if len(i) + 2 > m_len[col]:
-                    m_len[col] = len(i) + 2
+            for col, k in enumerate(str(val) for val in f):
+                if len(k) + 2 > m_len[col]:
+                    m_len[col] = len(k) + 2
 
         res = ""
-        for f, attr in enumerate(self.header):
-            res += colorize(attr.ljust(m_len[f]), ansi=3)
+        for j, attr in enumerate(self.header):
+            res += colorize(attr.ljust(m_len[j]), ansi=3)
 
         for r in self.content:
             res += "\n"
