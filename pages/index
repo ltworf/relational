@@ -12,7 +12,7 @@
         <td><a href="download.html?tar.gz"><img alt="tux logo" src="images/linux-logo.png" /><img alt="apple logo" src="images/apple-logo.png" /></a></td>
     </tr>
     <tr>
-        <td><code>apt-get install relational</code></td>
+        <td><code>apt install relational</code></td>
         <td><a href="download.html?exe">Download setup</a></td>
         <td><a href="download.html?tar.gz">Download sources</a></td>
     </tr>

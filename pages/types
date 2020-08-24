@@ -50,3 +50,40 @@ The id field of the 1st tuple will be casted to <code>int</code>, but the same f
 
 <h4>Methods</h4>
 Objects of type <code>rdate</code> support the operators <code>+ - == > < >= <= !=</code>.
+
+<h3>Dates</h3>
+<p>When a field contains something like 2007-12-24, this will be considered as a date, and will have a particoular behaviour in selection operations.</p>
+
+<h4>Fields</h4>
+<table class="inline">
+    <tr class="row0">
+        <th class="col0"> Field </th><th class="col1"> Description </th>
+    </tr>
+    <tr class="row1">
+        <td class="col0"> intdate </td><td class="col1"> String representation of the date </td>
+    </tr>
+    <tr class="row2">
+        <td class="col0"> day </td><td class="col1 leftalign">  </td>
+    </tr>
+    <tr class="row3">
+        <td class="col0"> month </td><td class="col1"> </td>
+    </tr>
+    <tr class="row4">
+        <td class="col0"> weekday </td><td class="col1"> Day of the week (numeric) </td>
+    </tr>
+    <tr class="row5">
+        <td class="col0"> year </td><td class="col1"> </td>
+    </tr>
+</table>
+
+<h4>Examples</h4>
+<pre><code>Load the file dates.csv and set d as relation's name.
+We select every friday:
+σ date.weekday==4(d)
+
+We select every date before 2000:
+σ date.year<2000 (d)
+
+We rename the field and do the product, we add 2 days to d and see if it is greater than date
+σ d+2>date(ρdate➡d(d)*d)
+</code></pre>
