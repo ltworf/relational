@@ -23,7 +23,7 @@
 import datetime
 import keyword
 import re
-from typing import Union, Set, Any, Callable, Type
+from typing import Union, Set, Any, Callable, Type, Optional
 from dataclasses import dataclass
 
 
@@ -31,7 +31,7 @@ RELATION_NAME_REGEXP = re.compile(r'^[_a-z][_a-z0-9]*$', re.IGNORECASE)
 _date_regexp = re.compile(
         r'^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$'
     )
-CastValue = Union[str, int, float, 'Rdate']
+CastValue = Optional[Union[str, int, float, 'Rdate']]
 
 
 def guess_type(value: str) -> Set[Union[Callable[[Any], Any], Type['Rdate']]]:
