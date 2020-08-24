@@ -1,6 +1,11 @@
+Relational
+==========
+
 Relational an educational tool to provide a workspace for experimenting with *relational* *algebra*, an offshoot of first-order logic.
 
-It works on GNU/Linux, Windows and OS X.
+![screenshot](https://ltworf.github.io/relational/screenshots/3.png)
+
+I test it on GNU/Linux and Windows. It probably works on other systems too.
 
 It provides:
  * A GUI that can be used for executing relational queries
@@ -11,39 +16,21 @@ It provides:
 Official website
 ================
 
-More documentation can be found here http://ltworf.github.io/relational/
+More documentation can be found here https://ltworf.github.io/relational/
 
 
 Install
 =======
 
-Binary download for Windows can be obtained from the website.
-
-For Linux, check your distribution's packages, relational is available on Debian and Ubuntu.
-
-
-Syntax
-======
-These are some valid queries
-
-```
-σage > 25 and rank == weight(A)
-σ (name.upper().startswith('J') and age>21 )(people)
-Q ⋈ π a,b(A) ⋈ B
-ρid➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage > 25 or rank = weight(A)
-π a,b(π a,b(A))
-ρ id➡i,name➡n(π a,b(A))
-A ⋈ B
-```
+* Windows: https://ltworf.github.io/relational/download.html?exe
+* Debian based: `apt-get install relational`
+* Everyone else: Download the sources https://ltworf.github.io/relational/download.html?tar.gz
 
 
 Run from sources
 ================
-If it needs some dependencies:
- * Qt5
- * Python 3.4 or greater
- * PyQt5
- * pyuic5 and pyrcc5
+
+For the dependencies, check `debian/control` for the build dependencies.
 
 You will need to run
 ```
@@ -56,3 +43,26 @@ To launch the application, run
 ```
 ./relational.py
 ```
+
+Syntax
+======
+
+These are some valid queries (using the provided example dataset)
+
+```
+# Join people and skills
+people ⋈ skills
+
+# Select people within a certain age range
+σ age > 25 and age < 50 (people)
+
+# Selection with complicated expression requires an extra set of () around the expression
+σ (name.upper().startswith('J') and age > 21) (people)
+
+# Cartesian product of people with itself, including only name and id
+ρ id➡i, name➡n (people) * π name, id (people)
+```
+
+For the selection, python expressions are used.
+
+The syntax is explained here: https://ltworf.github.io/relational/allowed_expressions.html
