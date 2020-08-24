@@ -107,7 +107,10 @@ class UserInterface:
 
     def store(self, filename: str, name: str) -> None:
         '''Stores a relation to file.'''
-        raise Exception('Not implemented')
+        if filename.endswith('.csv'):
+            self.relations[name].save_csv(filename)
+        else:
+            self.relations[name].save(filename)
 
     def session_dump(self, filename: Optional[str] = None) -> Optional[str]:
         '''

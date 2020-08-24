@@ -292,13 +292,13 @@ class relForm(QtWidgets.QMainWindow):
         filename = QtWidgets.QFileDialog.getSaveFileName(
             self, QtWidgets.QApplication.translate("Form", "Save Relation"),
             "",
-            QtWidgets.QApplication.translate("Form", "Relations (*.csv)")
+            QtWidgets.QApplication.translate("Form", "Json relations (*.json);;CSV relations (*.csv)")
         )[0]
         if (len(filename) == 0):  # Returns if no file was selected
             return
 
         relname = self.ui.lstRelations.selectedItems()[0].text()
-        self.user_interface.relations[relname].save(filename)
+        self.user_interface.store(filename, relname)
 
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
@@ -422,7 +422,7 @@ class relForm(QtWidgets.QMainWindow):
                 "",
                 QtWidgets.QApplication.translate(
                     "Form",
-                    "Relations (*.csv);;Text Files (*.txt);;All Files (*)"
+                    "Relations (*.json *.csv);;Text Files (*.txt);;All Files (*)"
                 )
             )
             filenames = f[0]
