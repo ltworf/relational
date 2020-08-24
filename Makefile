@@ -29,7 +29,7 @@ deb-pkg: dist
 	cp -r debian /tmp/relational/
 	cd /tmp/relational/; dpkg-buildpackage --changes-option=-S
 	mkdir deb-pkg
-	mv /tmp/relational_* /tmp/python3-relational_*.deb deb-pkg
+	mv /tmp/relational* /tmp/python3-relational_*.deb deb-pkg
 	$(RM) -r /tmp/relational
 
 .PHONY: dist
