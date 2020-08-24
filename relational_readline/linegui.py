@@ -106,8 +106,7 @@ class SimpleCompleter:
                       repr(text), state, repr(response))
         return response
 
-
-relations = {}
+ui = maintenance.UserInterface()
 completer = SimpleCompleter(
     ['SURVEY', 'LIST', 'LOAD ', 'UNLOAD ', 'HELP ', 'QUIT', 'SAVE ', '_PRODUCT ', '_UNION ', '_INTERSECTION ',
      '_DIFFERENCE ', '_JOIN ', '_LJOIN ', '_RJOIN ', '_FJOIN ', '_PROJECTION ', '_RENAME_TO ', '_SELECTION ', '_RENAME ', '_DIVISION '])
@@ -137,7 +136,7 @@ def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
             "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
         return None
     try:
-        relations[defname] = relation.Relation.load(filename)
+        ui.load(filename, defname)
 
         completer.add_completion(defname)
         printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
@@ -204,7 +203,7 @@ def exec_line(command: str) -> None:
     elif command.startswith('HELP'):
         help(command)
     elif command == 'LIST':  # Lists all the loaded relations
-        for i in relations:
+        for i in ui.relations:
             if not i.startswith('_'):
                 print(i)
     elif command == 'SURVEY':
@@ -225,9 +224,10 @@ def exec_line(command: str) -> None:
         pars = command.split(' ')
         if len(pars) < 2:
             print(colorize("Missing parameter", ERROR_COLOR))
-            return
-        if pars[1] in relations:
-            del relations[pars[1]]
+        elif len(pars) > 2:
+            print(colorize("Too many parameter", ERROR_COLOR))
+        if pars[1] in ui.relations:
+            ui.unload(pars[1])
             completer.remove_completion(pars[1])
         else:
             print(colorize("No such relation %s" % pars[1], ERROR_COLOR))
@@ -240,11 +240,8 @@ def exec_line(command: str) -> None:
         filename = pars[1]
         defname = pars[2]
 
-        if defname not in relations:
-            print(colorize("No such relation %s" % defname, ERROR_COLOR))
-            return
         try:
-            relations[defname].save(filename)
+            ui.store(filename, defname)
         except Exception as e:
             print(colorize(e, ERROR_COLOR))
     else:
@@ -298,7 +295,7 @@ def exec_query(command: str) -> None:
     # Execute query
     try:
         pyquery = parser.parse(query)
-        result = pyquery(relations)
+        result = pyquery(ui.relations)
 
         printtty(colorize("-> query: %s" % pyquery, COLOR_GREEN))
 
@@ -306,7 +303,7 @@ def exec_query(command: str) -> None:
             print()
             print(result)
 
-        relations[relname] = result
+        ui.relations[relname] = result
 
         completer.add_completion(relname)
     except Exception as e:
