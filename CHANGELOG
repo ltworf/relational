@@ -1,4 +1,7 @@
 3.0
+- By default relations are saved as json. This allows to keep the type
+- Dates can no longer be added or subtracted
+- Types are now inferred by column, no longer by cell
 - Relations now use frozenset internally and are immutable
 - Refactored parser to use better typing
 - Refactored and fixed some optimizations

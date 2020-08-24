@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relation is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -90,8 +90,15 @@ class UserInterface:
 
     def load(self, filename: str, name: str) -> None:
         '''Loads a relation from file, and gives it a name to
-        be used in subsequent queries.'''
-        rel = Relation.load(filename)
+        be used in subsequent queries.
+
+        Files ending with .csv are loaded as csv, the others are
+        loaded as json.
+        '''
+        if filename.endswith('.csv'):
+            rel = Relation.load_csv(filename)
+        else:
+            rel = Relation.load(filename)
         self.set_relation(name, rel)
 
     def unload(self, name: str) -> None:
@@ -100,7 +107,10 @@ class UserInterface:
 
     def store(self, filename: str, name: str) -> None:
         '''Stores a relation to file.'''
-        raise Exception('Not implemented')
+        if filename.endswith('.csv'):
+            self.relations[name].save_csv(filename)
+        else:
+            self.relations[name].save(filename)
 
     def session_dump(self, filename: Optional[str] = None) -> Optional[str]:
         '''
@@ -161,8 +171,12 @@ class UserInterface:
         if len(name) == 0:
             return None
 
-        if (name.endswith(".csv")):  # removes the extension
-            name = name[:-4]
+        # Removing the extension
+        try:
+            pos = name.rindex('.')
+        except ValueError:
+            return None
+        name = name[:pos]
 
         if not is_valid_relation_name(name):
             return None

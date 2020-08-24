@@ -1,2 +1,1 @@
-id,name,chief,age,rating
-1,carl,0,20,6
+{"content": [[1, "carl", 0, 20, 6]], "header": ["id", "name", "chief", "age", "rating"]}

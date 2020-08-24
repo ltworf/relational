@@ -57,7 +57,7 @@ def load_relations():
 
             print ("Loading relation %s with name %s..." % (i, relname))
 
-            rels[relname] = relation.Relation.load('%s%s' % (examples_path, i))
+            rels[relname] = relation.Relation.load_csv('%s%s' % (examples_path, i))
             print('done')
 
 

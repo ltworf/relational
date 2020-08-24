@@ -1,18 +1,1 @@
-id,skill,name,chief,age
-4,C++,eve,0,25
-2,C,john,1,30
-1,Python,carl,0,20
-4,C,eve,0,25
-1,C++,carl,0,20
-7,C,alia,1,28
-9,Java,---,---,---
-2,PHP,john,1,30
-0,Python,jack,0,22
-4,Perl,eve,0,25
-5,C,duncan,4,30
-7,Python,alia,1,28
-1,System Admin,carl,0,20
-5,Perl,duncan,4,30
-7,PHP,alia,1,28
-0,C,jack,0,22
-3,C++,dean,1,33
+{"content": [[7, "C", "alia", 1, 28], [2, "PHP", "john", 1, 30], [4, "C++", "eve", 0, 25], [7, "Python", "alia", 1, 28], [0, "Python", "jack", 0, 22], [2, "C", "john", 1, 30], [1, "Python", "carl", 0, 20], [1, "System Admin", "carl", 0, 20], [3, "C++", "dean", 1, 33], [5, "Perl", "duncan", 4, 30], [5, "C", "duncan", 4, 30], [7, "PHP", "alia", 1, 28], [1, "C++", "carl", 0, 20], [0, "C", "jack", 0, 22], [9, "Java", null, null, null], [4, "C", "eve", 0, 25], [4, "Perl", "eve", 0, 25]], "header": ["id", "skill", "name", "chief", "age"]}

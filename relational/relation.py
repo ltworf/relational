@@ -19,10 +19,10 @@
 # This module provides a classes to represent relations and to perform
 # relational operations on them.
 
-import csv
 from itertools import chain, repeat, product as iproduct
 from collections import deque
-from typing import *
+from typing import FrozenSet, Iterable, List, Dict, Tuple, Optional
+from dataclasses import dataclass
 from pathlib import Path
 
 from relational.rtypes import *
@@ -33,8 +33,8 @@ __all__ = [
     'Header',
 ]
 
-
-class Relation(NamedTuple):
+@dataclass(repr=True, unsafe_hash=False, frozen=True)
+class Relation:
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
 
@@ -58,47 +58,57 @@ class Relation(NamedTuple):
     method.
     '''
     header: 'Header'
-    content: FrozenSet[Tuple[Rstring, ...]]
+    content: FrozenSet[Tuple[CastValue, ...]]
 
     @staticmethod
-    def load(filename: Union[str, Path]) -> 'Relation':
+    def load_csv(filename: Union[str, Path]) -> 'Relation':
         '''
         Load a relation object from a csv file.
 
         The 1st row is the header and the other rows are the content.
+
+        Types will be inferred automatically
         '''
+        import csv
         with open(filename) as fp:
             reader = csv.reader(fp)  # Creating a csv reader
             header = Header(next(reader))  # read 1st line
             return Relation.create_from(header, reader)
 
     @staticmethod
-    def create_from(header: Iterable[str], content: Iterable[Iterable[str]]) -> 'Relation':
+    def load(filename: Union[str, Path]) -> 'Relation':
         '''
-        Iterator for the header, and iterator for the content.
+        Load a relation object from a json file.
         '''
-        header = Header(header)
-        r_content: List[Tuple[Rstring, ...]] = []
-        for row in content:
-            content_row: Tuple[Rstring, ...] = tuple(Rstring(i) for i in row)
-            if len(content_row) != len(header):
-                raise ValueError(f'Line {row} contains an incorrect amount of values')
-            r_content.append(content_row)
-        return Relation(header, frozenset(r_content))
-
-
-    def __iter__(self):
-        return iter(self.content)
-
-    def __contains__(self, key):
-        return key in self.content
+        with open(filename) as fp:
+            from json import load as jload
+            from typedload import load
+            loaded = jload(fp)
+            header = Header(loaded['header'])
+            content = []
+            for row in loaded['content']:
+                if len(row) != len(header):
+                    raise ValueError(f'Line {row} contains an incorrect amount of values')
+                t_row: Tuple[Optional[Union[int, float, str, Rdate]], ...] = load(row, Tuple[Optional[Union[int, float, str, Rdate]], ...])  # type: ignore
+                content.append(t_row)
+            return Relation(header, frozenset(content))
 
     def save(self, filename: Union[Path, str]) -> None:
+        '''
+        Saves the relation in a file.
+        Will save using the json format
+        '''
+        with open(filename, 'w') as fp:
+            from json import dump as jdump
+            from typedload import dump
+            jdump(dump(self), fp)
+
+    def save_csv(self, filename: Union[Path, str]) -> None:
         '''
         Saves the relation in a file. Will save using the csv
         format as defined in RFC4180.
         '''
-
+        import csv
         with open(filename, 'w') as fp:
             writer = csv.writer(fp)  # Creating csv writer
 
@@ -108,6 +118,40 @@ class Relation(NamedTuple):
 
             # Writing content, already in the correct format
             writer.writerows(self.content)
+
+    @staticmethod
+    def create_from(header: Iterable[str], content: Iterable[List[str]]) -> 'Relation':
+        '''
+        Iterator for the header, and iterator for the content.
+
+        This will infer types.
+        '''
+        header = Header(header)
+        r_content = []
+        guessed_types = list(repeat({Rdate, float, int, str}, len(header)))
+
+        for row in content:
+            if len(row) != len(header):
+                raise ValueError(f'Line {row} contains an incorrect amount of values')
+            r_content.append(row)
+
+            # Guess types
+            for i, value in enumerate(row):
+                guessed_types[i] = guessed_types[i].intersection(guess_type(value))
+
+        typed_content = []
+        for r in r_content:
+            t = tuple(cast(v, guessed_types[i]) for i, v in enumerate(r))
+            typed_content.append(t)
+
+        return Relation(header, frozenset(typed_content))
+
+
+    def __iter__(self):
+        return iter(self.content)
+
+    def __contains__(self, key):
+        return key in self.content
 
     def _rearrange(self, other: 'Relation') -> 'Relation':
         '''If two relations share the same attributes in a different order, this method
@@ -129,8 +173,6 @@ class Relation(NamedTuple):
         '''
         Selection, expr must be a valid Python expression; can contain field names.
         '''
-        header = Header(self.header)
-
         try:
             c_expr = compile(expr, 'selection', 'eval')
         except:
@@ -139,7 +181,7 @@ class Relation(NamedTuple):
         content = []
         for i in self.content:
             # Fills the attributes dictionary with the values of the tuple
-            attributes = {attr: i[j].autocast()
+            attributes = {attr: i[j]
                           for j, attr in enumerate(self.header)
                           }
 
@@ -147,8 +189,8 @@ class Relation(NamedTuple):
                 if eval(c_expr, attributes):
                     content.append(i)
             except Exception as e:
-                raise Exception(f'Failed to evaluate {expr}\n{e}')
-        return Relation(header, frozenset(content))
+                raise Exception(f'Failed to evaluate {expr} with {attributes}\n{e}')
+        return Relation(self.header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
         '''
@@ -267,9 +309,7 @@ class Relation(NamedTuple):
     def outer_right(self, other: 'Relation') -> 'Relation':
         '''
         Outer right join. Considers self as left and param as right. If the
-        tuple has no corrispondence, empy attributes are filled with a "---"
-        string. This is due to the fact that the None token would cause
-        problems when saving and reloading the relation.
+        tuple has no corrispondence, empy attributes are filled with a None.
         Just like natural join, it works considering shared attributes.
         '''
         return other.outer_left(self)
@@ -278,7 +318,6 @@ class Relation(NamedTuple):
         '''
         See documentation for outer_right
         '''
-
         shared = self.header.intersection(other.header)
 
         # Creating the header with all the fields, done like that because order is
@@ -310,7 +349,7 @@ class Relation(NamedTuple):
                     added = True
             # If it didn't partecipate, adds it
             if not added:
-                item = chain(i, repeat(Rstring('---'), len(noid)))
+                item = chain(i, repeat(None, len(noid)))
                 content.append(tuple(item))
 
         return Relation(header, frozenset(content))
@@ -373,18 +412,18 @@ class Relation(NamedTuple):
         m_len = [len(i) for i in self.header]  # Maximum lenght string
 
         for f in self.content:
-            for col, i in enumerate(f):
+            for col, i in enumerate(str(val) for val in f):
                 if len(i) > m_len[col]:
                     m_len[col] = len(i)
 
         res = ""
         for f, attr in enumerate(self.header):
-            res += "%s" % (attr.ljust(2 + m_len[f]))
+            res += attr.ljust(2 + m_len[f])
 
         for r in self.content:
             res += "\n"
-            for col, i in enumerate(r):
-                res += "%s" % (i.ljust(2 + m_len[col]))
+            for col, i in enumerate(str(val) for val in r):
+                res += i.ljust(2 + m_len[col])
 
         return res
 

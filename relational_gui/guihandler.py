@@ -249,7 +249,13 @@ class relForm(QtWidgets.QMainWindow):
         for i in rel.content:
             item = QtWidgets.QTreeWidgetItem()
             for j,k in enumerate(i):
-                item.setText(j, k)
+                if k is None:
+                    item.setBackground(j, QtGui.QBrush(QtCore.Qt.darkRed, QtCore.Qt.Dense4Pattern))
+                elif isinstance(k, (int, float)):
+                    item.setForeground(j, QtGui.QPalette().link())
+                elif not isinstance(k, str):
+                    item.setForeground(j, QtGui.QPalette().brightText())
+                item.setText(j, str(k))
             self.ui.table.addTopLevelItem(item)
 
         # Sets columns
@@ -286,13 +292,13 @@ class relForm(QtWidgets.QMainWindow):
         filename = QtWidgets.QFileDialog.getSaveFileName(
             self, QtWidgets.QApplication.translate("Form", "Save Relation"),
             "",
-            QtWidgets.QApplication.translate("Form", "Relations (*.csv)")
+            QtWidgets.QApplication.translate("Form", "Json relations (*.json);;CSV relations (*.csv)")
         )[0]
         if (len(filename) == 0):  # Returns if no file was selected
             return
 
         relname = self.ui.lstRelations.selectedItems()[0].text()
-        self.user_interface.relations[relname].save(filename)
+        self.user_interface.store(filename, relname)
 
     def unloadRelation(self):
         for i in self.ui.lstRelations.selectedItems():
@@ -306,9 +312,15 @@ class relForm(QtWidgets.QMainWindow):
     def editRelation(self):
         from relational_gui import creator
         for i in self.ui.lstRelations.selectedItems():
-            result = creator.edit_relation(
-                self.user_interface.get_relation(i.text())
-            )
+            try:
+                result = creator.edit_relation(
+                    self.user_interface.get_relation(i.text())
+                )
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(
+                    self, QtWidgets.QApplication.translate("Form", "Error"), str(e)
+                )
+                return
             if result != None:
                 self.user_interface.set_relation(i.text(), result)
         self.updateRelations()
@@ -410,7 +422,7 @@ class relForm(QtWidgets.QMainWindow):
                 "",
                 QtWidgets.QApplication.translate(
                     "Form",
-                    "Relations (*.csv);;Text Files (*.txt);;All Files (*)"
+                    "Relations (*.json *.csv);;Text Files (*.txt);;All Files (*)"
                 )
             )
             filenames = f[0]

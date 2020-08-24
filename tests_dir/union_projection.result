@@ -1,8 +1,1 @@
-name,skill
-jack,C
-eve,Perl
-duncan,Perl
-duncan,C
-john,C
-alia,C
-eve,C
+{"content": [["jack", "C"], ["eve", "C"], ["duncan", "C"], ["alia", "C"], ["eve", "Perl"], ["duncan", "Perl"], ["john", "C"]], "header": ["name", "skill"]}
