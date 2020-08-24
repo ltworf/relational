@@ -1,3 +1,1 @@
-id,name,chief,age
-3,dean,1,33
-1,carl,0,20
+{"content": [[3, "dean", 1, 33], [1, "carl", 0, 20]], "header": ["id", "name", "chief", "age"]}

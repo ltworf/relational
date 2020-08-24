@@ -1,5 +1,1 @@
-id,name,chief,age,room,phone
----,---,---,---,"0","1515"
----,---,---,---,"3","1601"
----,---,---,---,"6","1424"
----,---,---,---,"7","1294"
+{"content": [[null, null, null, null, 0, 1515], [null, null, null, null, 7, 1294], [null, null, null, null, 3, 1601], [null, null, null, null, 6, 1424]], "header": ["id", "name", "chief", "age", "room", "phone"]}

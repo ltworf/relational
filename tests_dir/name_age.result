@@ -1,9 +1,1 @@
-name,age
-eve,25
-dean,33
-carl,20
-paul,30
-john,30
-jack,22
-duncan,30
-alia,28
+{"content": [["eve", 25], ["duncan", 30], ["paul", 30], ["carl", 20], ["alia", 28], ["dean", 33], ["jack", 22], ["john", 30]], "header": ["name", "age"]}
