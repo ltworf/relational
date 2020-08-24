@@ -301,7 +301,7 @@ def exec_query(command: str) -> None:
 
         if printrel:
             print()
-            print(result)
+            print(result.pretty_string(tty=True))
 
         ui.relations[relname] = result
 
