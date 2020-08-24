@@ -22,7 +22,8 @@
 import csv
 from itertools import chain, repeat, product as iproduct
 from collections import deque
-from typing import NamedTuple, FrozenSet, Iterable, List, Dict, Tuple
+from typing import FrozenSet, Iterable, List, Dict, Tuple
+from dataclasses import dataclass
 from pathlib import Path
 
 from relational.rtypes import *
@@ -33,8 +34,8 @@ __all__ = [
     'Header',
 ]
 
-
-class Relation(NamedTuple):
+@dataclass(repr=True, unsafe_hash=False, frozen=True)
+class Relation:
     '''
     This object defines a relation (as a group of consistent tuples) and operations.
 
