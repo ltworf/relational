@@ -1,74 +1,13 @@
 <h2>Optimizations</h2>
-<p>The optimize module provides a way to perform various optimizations on queries. It assumes that the query is correct.</p>
+<p>Relational provides a way to perform various optimizations on queries. It assumes that the query is correct.</p>
 
-<p>An optimized query should return the same result of the original query. If you find a non working query please submit a bug.</p>
-
-<h3>Usage</h3>
-<p>This code will perform all the available general optimizations on the expression, and will return the optimized expression.<br />
-</p>
-<pre><code>expression=optimizer.general_optimize(expression)</code></pre>
-
-<h3>Working with the tree</h3>
-
-<p>The expression tree allows to manipulate the expressions.</p>
-
-<p>
-To obtain the expression from the tree:
-</p>
-<pre><code>str(root)</code></pre>
-
-<p>To generate the tree: (expression is  a valid string representing a relational expression)</p>
-<pre><code>optimizer.tree(expression)</code></pre>
-
-<p>Each node will have a name, that corresponds to its string representation. Also a kind variable, that specifies if the node is a relation or an operator.</p>
-
-<p>Constants for kind.</p>
-
-<pre><code>optimizer.RELATION=0
-optimizer.UNARY=1
-optimizer.BINARY=2
-</code></pre>
-
-<h4>Unary operator</h4>
-<ul>
-<li class="level1">name: string representation
-</li>
-<li class="level1">child: child expression
-</li>
-<li class="level1">props: parameters of the operation
-</li>
-</ul>
-
-
-
-<h4>Binary operator</h4>
-<ul>
-<li class="level1">name: string representation
-</li>
-<li class="level1">left: left expression
-</li>
-<li class="level1">right: right expression
-</li>
-</ul>
-
-
-
-<h4>Relation</h4>
-<ul>
-<li class="level1">name: string representation
-</li>
-</ul>
-
+<p>An optimized query must return the same result of the original query. If you find a non working query please submit a bug report.</p>
 
 <h3>General optimizations</h3>
 
-<p>This class of optimizations do not need to have informations on the relations.</p>
-
-<p>The functions are implemented in the <code>optimizations.py</code> module.</p>
+<p>This class of optimizations does not need to have informations on the relations.</p>
 
 <p>They will work on the expression tree and will modify it. The return value is the number of changes performed on the tree.</p>
-
-
 
 <h4>Duplicated select</h4>
 <table class="inline">
@@ -89,9 +28,6 @@ The first one will work only if the expression is exactly the same. If the expre
 
 <h4>Down to unions subtractions intersections</h4>
 
-<p>
-Yes the name is crazy.
-</p>
 <table class="inline">
 	<tr class="row0">
 		<th class="col0"> Original </th><th class="col1"> Optimized </th>
@@ -119,7 +55,7 @@ Yes the name is crazy.
 	</tr>
 </table>
 
-<p>Doing two projection and in fact ignoring the result of the inner one isn&#039;t nice.</p>
+<p>Doing two projection and in fact ignoring the result of the inner one is useless.</p>
 
 
 
@@ -146,8 +82,7 @@ Yes the name is crazy.
 	</tr>
 </table>
 
-<p>
-renaming the attributes used in the selection, so the operation is still valid.<br />This is not really an heavy optimization, select is O(n) and rename is O(1), but it is an improvement and it might make other optimizations possible as well, in the next step.
+<p>Renaming the attributes used in the selection, so the operation is still valid.<br />This is not really an heavy optimization, select is O(n) and rename is O(1), but it might make other optimizations possible as well, in the next step.
 </p>
 
 
@@ -163,7 +98,7 @@ renaming the attributes used in the selection, so the operation is still valid.<
 </table>
 
 <p>
-This optimization is performed <strong>before</strong> performing <em>subsequent renames optimization</em>.<br />
+This optimization is performed <strong>before</strong> performing <em>subsequent renames optimization</em>.
 </p>
 
 
@@ -178,8 +113,7 @@ This optimization is performed <strong>before</strong> performing <em>subsequent
 	</tr>
 </table>
 
-<p>
-hence using a single rename operation.<br />If j,k will contain things like <code>a➡b,b➡c</code>, they will be replaced with <code>a➡c</code>.<br />If j.k will contain things like <code>a➡b,b➡a</code>, they will be removed. If all the transformations are removed, the rename itself is removed.<br />
+<p>Using a single rename operation.<br />If j,k will contain things like <code>a➡b,b➡c</code>, they will be replaced with <code>a➡c</code>.<br />If j.k will contain things like <code>a➡b,b➡a</code>, they will be removed. If all the transformations are removed, the rename itself is removed.<br />
 </p>
 
 
@@ -188,7 +122,7 @@ hence using a single rename operation.<br />If j,k will contain things like <cod
 
 <p>
 <em>A ⋈ A=A ⧑ A=A ⧒ A=A⧓A = A ᑌ A=A ᑎ A=A</em>.<br />So this optimization tries to locate unions, intersections and joins that share the same left and right operand, and replaces
-them with the operand itself.<br />Also <em>A - A=∅</em>.<br />So it locates subtractions that share the same left and right operand and replaces them with <em>σ <sub>False</sub>(A)</em>. This is not as fast as replacing with an empty relation, but there is no such operator in relational algebra. Anyway Selection is O(n) and subtraction is O(n<sup>2</sup>), so we&#039;re saving time anyway.
+them with the operand itself.<br />Also <em>A - A=∅</em>.<br />So it locates subtractions that share the same left and right operand and replaces them with <em>σ <sub>False</sub>(A)</em>. This is not as fast as replacing with an empty relation, but there is no such operator in relational algebra. Anyway Selection is O(n) and subtraction is O(n<sup>2</sup>), so we are saving time anyway.
 </p>
 
 <p>This function locates things like:</p>

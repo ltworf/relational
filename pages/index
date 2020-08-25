@@ -26,8 +26,6 @@
 <p>These are some valid queries</p>
 
 <pre><code>A ∪ B
-A ∩ B
-A ⋈ C
 σ (age==12) (A)
 π name,age (A)
 ρ age➡a,name➡n (A)
