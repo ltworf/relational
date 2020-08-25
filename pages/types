@@ -1,45 +1,12 @@
 <h2>Types and casting rules</h2>
 
-<p>When performing <strong>selection</strong>, implicit casting will be performed to allow the use of operators other than == and !=.</p>
+<h3>Supported types</h3>
 
-<h4>Rules</h4>
+<p>Relational supports the following types: <code>str int float None Rdate</code>. The Rdate type is specific to relational.</p>
 
-<ul>
-
-<li>If the string matches this regexp: <code>^[\+\-]{0,1}[0-9]+$</code> it will be casted to python's int type</li>
-<li>If the string matches this regexp: <code>^[\+\-]{0,1}[0-9]+(\.([0-9])+)?$</code> it will be casted to python's float type</li>
-<li>If the string matches this regexp: <code>^([0-9]{1,4})(\\|-|/)([0-9]{1,2})(\\|-|/)([0-9]{1,2})$</code> that represents <em>YYYY-MM-DD date</em>, and the values correctly represent a date, it will be casted to relational's internal rdate type</li>
-<li>Otherwise the string will be kept as a string type</li>
-</ul>
-
-<p>According to the regexp, a string like '.3' will not be casted to float. I've never liked this format and hence it is forbidden in relational.</p>
-
-
-<h3>Prevent casting</h3>
-<p>Consider the following relation:<p>
-
-<table class="inline">
-    <tr class="row0">
-        <th class="col0"> id </th><th class="col1"> product </th>
-    </tr>
-    <tr class="row1">
-        <td class="col0"> 113 </td><td class="col1"> scanner </td>
-    </tr>
-    <tr class="row2">
-        <td class="col0"> 113a </td><td class="col1"> new scanner </td>
-    </tr>
-</table>
-
-<p>
-The id field of the 1st tuple will be casted to <code>int</code>, but the same field of the 2nd tuple will not be casted. To avoid anomalies in queries dealing with such fields you must prevent implicit casting.<br />Achieving this is simple, just cast back to string, using <em>str()</em>
-</p>
-
-<h4>Example</h4>
-
-<code>σ (str(id).endswith(&#039;3&#039;)) (products)</code>
-
-<h3>Type rdate</h3>
-<h4>Fields</h4>
+<h4>Type Rdate</h4>
+<p>Strings in the format <code>YYYY-MM-DD</code> can be casted as Rdate.</p>
+<h5>Fields</h5>
 
 <ul>
 <li>day</li>
@@ -48,42 +15,20 @@ The id field of the 1st tuple will be casted to <code>int</code>, but the same f
 <li>year</li>
 </ul>
 
-<h4>Methods</h4>
-Objects of type <code>rdate</code> support the operators <code>+ - == > < >= <= !=</code>.
+<h3>Automatic casting and csv files</h3>
 
-<h3>Dates</h3>
-<p>When a field contains something like 2007-12-24, this will be considered as a date, and will have a particoular behaviour in selection operations.</p>
+<p>When loading csv files or editing a relation from the GUI, relational will perform automatic casting.
+<br>
+The casting is column based, so if a column contains only numbers, they will all be cast as <code>float</code> or <code>int</code>. If there is a string value in the column, they will all be considered <code>str</code>.
+<br>
+If a column contains all values in the format <code>YYYY-MM-DD</code> they will all be converted to Rdate.
+</p>
 
-<h4>Fields</h4>
-<table class="inline">
-    <tr class="row0">
-        <th class="col0"> Field </th><th class="col1"> Description </th>
-    </tr>
-    <tr class="row1">
-        <td class="col0"> intdate </td><td class="col1"> String representation of the date </td>
-    </tr>
-    <tr class="row2">
-        <td class="col0"> day </td><td class="col1 leftalign">  </td>
-    </tr>
-    <tr class="row3">
-        <td class="col0"> month </td><td class="col1"> </td>
-    </tr>
-    <tr class="row4">
-        <td class="col0"> weekday </td><td class="col1"> Day of the week (numeric) </td>
-    </tr>
-    <tr class="row5">
-        <td class="col0"> year </td><td class="col1"> </td>
-    </tr>
-</table>
+<p>Some queries return <code>None</code> (the Python equivalent of <code>null</code>). The <code>None</code> value can't be stored in csv files. When reloading it will just be a <code>&quot;None&quot;</code> string.
+<br>
+To properly save a relation keeping the types, use the json format.
+</p>
 
-<h4>Examples</h4>
-<pre><code>Load the file dates.csv and set d as relation's name.
-We select every friday:
-σ date.weekday==4(d)
+<h3>Json format</h3>
 
-We select every date before 2000:
-σ date.year<2000 (d)
-
-We rename the field and do the product, we add 2 days to d and see if it is greater than date
-σ d+2>date(ρdate➡d(d)*d)
-</code></pre>
+<p>The json format keeps type information, so no casting is performed.</p>

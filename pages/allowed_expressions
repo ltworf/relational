@@ -18,34 +18,34 @@ Operators without parameters work on two relations. The syntax for those operato
 
 <table class="inline">
     <tr class="row0">
-        <th class="col0"> Symbol </th><th class="col1"> Name </th><th class="col2"> Example </th>
+        <th class="col0">Symbol</th><th class="col1">Name</th><th class="col2">Example</th><th class="col3">Notes</th>
     </tr>
     <tr class="row1">
-        <td class="col0"> * </td><td class="col1">product</td><td class="col2"> A * B </td>
+        <td class="col0"> * </td><td class="col1">product</td><td class="col2"> A * B </td><td></td>
     </tr>
     <tr class="row2">
-        <td class="col0"> - </td><td class="col1">difference</td><td class="col2"> A - B </td>
+        <td class="col0"> - </td><td class="col1">difference</td><td class="col2"> A - B </td><td></td>
     </tr>
     <tr class="row3">
-        <td class="col0"> ∪ </td><td class="col1">union</td><td class="col2"> A ∪ B </td>
+        <td class="col0"> ∪ </td><td class="col1">union</td><td class="col2"> A ∪ B </td><td></td>
     </tr>
     <tr class="row4">
-        <td class="col0"> ∩ </td><td class="col1">intersection</td><td class="col2"> A ∩ B </td>
+        <td class="col0"> ∩ </td><td class="col1">intersection</td><td class="col2"> A ∩ B </td><td></td>
     </tr>
     <tr class="row5">
-        <td class="col0"> ÷ </td><td class="col1">division</td><td class="col2"> A ÷ B </td>
+        <td class="col0"> ÷ </td><td class="col1">division</td><td class="col2"> A ÷ B </td><td></td>
     </tr>
     <tr class="row6">
-        <td class="col0"> ⋈ </td><td class="col1">join</td><td class="col2"> A ⋈ B </td>
+        <td class="col0"> ⋈ </td><td class="col1">join</td><td class="col2"> A ⋈ B </td><td></td>
     </tr>
     <tr class="row7">
-        <td class="col0"> ⧑ </td><td class="col1">left outer join</td><td class="col2"> A ⧑ B </td>
+        <td class="col0"> ⧑ </td><td class="col1">left outer join</td><td class="col2"> A ⧑ B </td><td>All outer joins use a python <code>None</code> value when they have no value to place.</td>
     </tr>
     <tr class="row8">
-        <td class="col0"> ⧒ </td><td class="col1">right outer join</td><td class="col2"> A ⧒ B </td>
+        <td class="col0"> ⧒ </td><td class="col1">right outer join</td><td class="col2"> A ⧒ B </td><td></td>
     </tr>
     <tr class="row9">
-        <td class="col0"> ⧓ </td><td class="col1">full outer join</td><td class="col2"> A ⧓ B </td>
+        <td class="col0"> ⧓ </td><td class="col1">full outer join</td><td class="col2"> A ⧓ B </td><td></td>
     </tr>
 </table>
 
@@ -60,7 +60,7 @@ Operators with parameters work on a single relation, and the result will depend 
         <th class="col0"> Symbol </th><th class="col1"> Name </th><th class="col2"> Example </th><th class="col3"> Note </th>
     </tr>
     <tr class="row1">
-        <td class="col0"> σ </td><td class="col1">selection</td><td class="col2"> σ id==index or rank&gt;3 (A) </td><td class="col3"> Expression must be written in python. The variables have the names of the fields in the relation.</td>
+        <td class="col0"> σ </td><td class="col1">selection</td><td class="col2"> σ id==index or rank&gt;3 (A) </td><td class="col3"> Expression must be written in python. The variables have the names of the fields in the relation.<br>If the expression contains parenthesis, it <strong>must</strong> be surrounded by another pair of parenthesis.</td>
     </tr>
     <tr class="row2">
         <td class="col0"> π </td><td class="col1">projection</td><td class="col2"> π name,age (A) </td><td class="col3"></td>
@@ -72,11 +72,15 @@ Operators with parameters work on a single relation, and the result will depend 
 
 <p>The language is formally defined <a href="grammar.html">here</a>.</p>
 
-<h4>Complex queries</h4>
-<p>In any place where a relation is expected, a query can be used instead. For example, since a*b is a relation itself, you can evaluate π f1,f2 (a*b) ∪ R</p>
-
-<p>You can use parenthesis to change priority: a ⋈ (q ∪ d)
+<h4>Precedence</h4>
+<p>Queries in parenthesis take precedence.
+<br>
+Unary operators take precedence over binary operators.
+<br>
+Everything is executed left to right.
 </p>
+
+<p>You can use parenthesis to change priority: a ⋈ (q ∪ d)</p>
 
 <h3>Examples</h3>
 <p>These are some valid queries.</p>
@@ -95,4 +99,4 @@ people ⋈ skills
 ρ id➡i, name➡n (people) * π name, id (people)
 </code></pre>
 
-<p>For details on types: <a href="types.html">types in relational</a>, so it will try to use an appropriate type for the values.</p>
+<p>For details on types: <a href="types.html">types in relational</a>.</p>
