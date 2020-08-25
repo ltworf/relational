@@ -21,7 +21,9 @@
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
               <a href="optimizations.html">Optimizations</a> |
-              <a href="shortcuts.html">Shortcuts</a> |
+              <a href="grammar.html">Grammar</a> |
+              <a href="types.html">Types</a> |
+              <a href="shortcuts.html">GUI</a> |
             </section>
         </header>
     </div>
