@@ -137,7 +137,7 @@ def general_optimize(expression):
     return optimize_all(expression, None, specific=False, general=True)
 
 
-def recursive_scan(function, node, rels) -> Tuple[Node, int]:
+def recursive_scan(function, node: Node, rels: Optional[Dict[str, Any]]) -> Tuple[Node, int]:
     '''Does a recursive optimization on the tree.
 
     This function will recursively execute the function given
@@ -151,7 +151,7 @@ def recursive_scan(function, node, rels) -> Tuple[Node, int]:
     returned value.'''
 
     args = []
-    if rels:
+    if rels is not None:
         args.append(rels)
 
     changes = 0
