@@ -31,26 +31,49 @@ from relational import querysplit
 from relational.maintenance import UserInterface
 
 
-def optimize_program(code, rels: Dict[str, Relation]):
+def optimize_program(code: str, rels: Dict[str, Relation]) -> str:
     '''
     Optimize an entire program, composed by multiple expressions
     and assignments.
     '''
-    raise NotImplementedError()
     lines = code.split('\n')
-    context = {}
+    context: Dict[str, Node] = {}
 
     for line in  lines:
+        # skip comments or empty lines
         line = line.strip()
         if line.startswith(';') or not line:
             continue
+
+
         res, query = UserInterface.split_query(line)
         last_res = res
         parsed = tree(query)
-        optimizations.replace_leaves(parsed, context)
+        replace_leaves(parsed, context)
         context[res] = parsed
     node = optimize_all(context[last_res], rels, tostr=False)
     return querysplit.split(node, rels)
+
+
+def replace_leaves(node: Node, context: Dict[str, Node]) -> None:
+    '''
+    If a name appearing in node appears
+    also in context, the parse tree is
+    modified to replace the node with the
+    subtree found in context.
+    '''
+    if isinstance(node, Unary):
+        replace_leaves(node.child, context)
+
+        if isinstance(node.child, Variable) and node.child.name in context:
+            node.child = context[node.child.name]
+    elif isinstance(node, Binary):
+        replace_leaves(node.left, context)
+        replace_leaves(node.right, context)
+        if isinstance(node.left, Variable) and node.left.name in context:
+            node.left = context[node.left.name]
+        if isinstance(node.right, Variable) and node.right.name in context:
+            node.right = context[node.right.name]
 
 
 def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specific: bool = True, general: bool = True, debug: Optional[list] = None, tostr: bool = True) -> Union[str, Node]:
