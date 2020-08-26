@@ -85,8 +85,7 @@ Everything is executed left to right.
 <h3>Examples</h3>
 <p>These are some valid queries.</p>
 
-<pre><code>
-# Join people and skills
+<pre><code># Join people and skills
 people ⋈ skills
 
 # Select people within a certain age range
