@@ -181,8 +181,8 @@ def run_py_test(testname):
 
     print(colorize('ERROR', COLOR_RED))
     print(colorize('=====================================', COLOR_RED))
-    print("Expected %s" % exp_result)
-    print("Got %s" % result)
+    print("Expected %s" % exp_result.pretty_string(tty=True))
+    print("Got %s" % result.pretty_string(tty=True))
     print(colorize('=====================================', COLOR_RED))
     return False
 
@@ -265,11 +265,11 @@ def run_test(testname):
     print("Optimized query: %s -> %s" % (o_query, o_expr))
     print(colorize('=====================================', COLOR_RED))
     print(colorize("Expected result", COLOR_GREEN))
-    print(result_rel)
+    print(result_rel.pretty_string(tty=True))
     print(colorize("Result", COLOR_RED))
-    print(result)
+    print(result.pretty_string(tty=True))
     print(colorize("Optimized result", COLOR_RED))
-    print(o_result)
+    print(o_result.pretty_string(tty=True))
     print(colorize("optimized result match %s" %
            str(result_rel == o_result), COLOR_MAGENTA))
     print(colorize("result match %s" %
