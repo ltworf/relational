@@ -23,11 +23,14 @@ from typing import List, Dict, Tuple
 from relational.parser import Node, Binary, Unary, Variable
 
 
+__all__ = ['split']
+
+
 class Program:
     def __init__(self, rels) -> None:
         self.queries: List[Tuple[str, Node]] = []
         self.dictionary: Dict[str, Node] = {} # Key is the query, value is the relation
-        self.vgen = vargen(rels, 'optm_')
+        self.vgen = _vargen(rels, 'optm_')
 
     def __str__(self):
         r = ''
@@ -48,6 +51,7 @@ class Program:
         self.dictionary[strnode] = n
         return n
 
+
 def _separate(node: Node, program: Program) -> None:
     if isinstance(node, Unary) and isinstance(node.child, Variable):
         _separate(node.child, program)
@@ -64,7 +68,8 @@ def _separate(node: Node, program: Program) -> None:
             node.right = rel
     program.append_query(node)
 
-def vargen(avoid: str, prefix: str=''):
+
+def _vargen(avoid: str, prefix: str=''):
     '''
     Generates temp variables.
 
@@ -86,12 +91,15 @@ def vargen(avoid: str, prefix: str=''):
             yield r
         count += 1
 
+
 def split(node, rels) -> str:
     '''
     Split a query into a program.
 
-    The idea is that if there are duplicated subdtrees they
+    The idea is that if there are duplicated subtrees they
     get executed only once.
+
+    This is used by the optimizer module.
     '''
     p = Program(rels)
     _separate(node, p)
