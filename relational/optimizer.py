@@ -31,26 +31,49 @@ from relational import querysplit
 from relational.maintenance import UserInterface
 
 
-def optimize_program(code, rels: Dict[str, Relation]):
+def optimize_program(code: str, rels: Dict[str, Relation]) -> str:
     '''
     Optimize an entire program, composed by multiple expressions
     and assignments.
     '''
-    raise NotImplementedError()
     lines = code.split('\n')
-    context = {}
+    context: Dict[str, Node] = {}
 
     for line in  lines:
+        # skip comments or empty lines
         line = line.strip()
         if line.startswith(';') or not line:
             continue
+
+
         res, query = UserInterface.split_query(line)
         last_res = res
         parsed = tree(query)
-        optimizations.replace_leaves(parsed, context)
+        _replace_leaves(parsed, context)
         context[res] = parsed
     node = optimize_all(context[last_res], rels, tostr=False)
     return querysplit.split(node, rels)
+
+
+def _replace_leaves(node: Node, context: Dict[str, Node]) -> None:
+    '''
+    If a name appearing in node appears
+    also in context, the parse tree is
+    modified to replace the node with the
+    subtree found in context.
+    '''
+    if isinstance(node, Unary):
+        _replace_leaves(node.child, context)
+
+        if isinstance(node.child, Variable) and node.child.name in context:
+            node.child = context[node.child.name]
+    elif isinstance(node, Binary):
+        _replace_leaves(node.left, context)
+        _replace_leaves(node.right, context)
+        if isinstance(node.left, Variable) and node.left.name in context:
+            node.left = context[node.left.name]
+        if isinstance(node.right, Variable) and node.right.name in context:
+            node.right = context[node.right.name]
 
 
 def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specific: bool = True, general: bool = True, debug: Optional[list] = None, tostr: bool = True) -> Union[str, Node]:
@@ -70,20 +93,20 @@ def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specif
     elif isinstance(expression, Node):
         n = expression
     else:
-        raise (TypeError("expression must be a string or a node"))
+        raise TypeError('expression must be a string or a node')
 
     total = 1
     while total != 0:
         total = 0
         if specific:
             for i in optimizations.specific_optimizations:
-                n, c = recursive_scan(i, n, rels)
+                n, c = _recursive_scan(i, n, rels)
                 if c != 0 and isinstance(debug, list):
                     debug.append(str(n))
                 total += c
         if general:
             for j in optimizations.general_optimizations:
-                n, c = recursive_scan(j, n, None)
+                n, c = _recursive_scan(j, n, None)
                 if c != 0 and isinstance(debug, list):
                     debug.append(str(n))
                 total += c
@@ -93,28 +116,7 @@ def optimize_all(expression: Union[str, Node], rels: Dict[str, Relation], specif
         return n
 
 
-def specific_optimize(expression, rels: Dict[str, Relation]):
-    '''This function performs specific optimizations. Means that it will need to
-    know the fields used by the relations.
-
-    expression : see documentation of this module
-    rels: dic with relation name as key, and relation istance as value
-
-    Return value: this will return an optimized version of the expression'''
-    return optimize_all(expression, rels, specific=True, general=False)
-
-
-def general_optimize(expression):
-    '''This function performs general optimizations. Means that it will not need to
-    know the fields used by the relations
-
-    expression : see documentation of this module
-
-    Return value: this will return an optimized version of the expression'''
-    return optimize_all(expression, None, specific=False, general=True)
-
-
-def recursive_scan(function, node, rels) -> Tuple[Node, int]:
+def _recursive_scan(function, node: Node, rels: Optional[Dict[str, Any]]) -> Tuple[Node, int]:
     '''Does a recursive optimization on the tree.
 
     This function will recursively execute the function given
@@ -128,7 +130,7 @@ def recursive_scan(function, node, rels) -> Tuple[Node, int]:
     returned value.'''
 
     args = []
-    if rels:
+    if rels is not None:
         args.append(rels)
 
     changes = 0
@@ -136,11 +138,11 @@ def recursive_scan(function, node, rels) -> Tuple[Node, int]:
     changes += c
 
     if isinstance(node, Unary):
-        node.child, c = recursive_scan(function, node.child, rels)
+        node.child, c = _recursive_scan(function, node.child, rels)
         changes += c
     elif isinstance(node, Binary):
-        node.left, c = recursive_scan(function, node.left, rels)
+        node.left, c = _recursive_scan(function, node.left, rels)
         changes += c
-        node.right, c = recursive_scan(function, node.right, rels)
+        node.right, c = _recursive_scan(function, node.right, rels)
         changes += c
     return node, changes

@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2016  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2016-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,15 +18,19 @@
 #
 # This module splits a query into a program.
 
+from typing import List, Dict, Tuple
 
-from relational import parser
+from relational.parser import Node, Binary, Unary, Variable
+
+
+__all__ = ['split']
 
 
 class Program:
-    def __init__(self, rels):
-        self.queries = []
-        self.dictionary = {} # Key is the query, value is the relation
-        self.vgen = vargen(rels, 'optm_')
+    def __init__(self, rels) -> None:
+        self.queries: List[Tuple[str, Node]] = []
+        self.dictionary: Dict[str, Node] = {} # Key is the query, value is the relation
+        self.vgen = _vargen(rels, 'optm_')
 
     def __str__(self):
         r = ''
@@ -34,7 +38,7 @@ class Program:
             r += '%s = %s' % (q[0], q[1]) + '\n'
         return r.rstrip()
 
-    def append_query(self, node):
+    def append_query(self, node: Node) -> Node:
         strnode = str(node)
 
         rel = self.dictionary.get(strnode)
@@ -43,29 +47,29 @@ class Program:
 
         qname = next(self.vgen)
         self.queries.append((qname, node))
-        n = parser.Node()
-        n.kind = parser.RELATION
-        n.name = qname
+        n = Variable(qname)
         self.dictionary[strnode] = n
         return n
 
-def _separate(node, program):
-    if node.kind == parser.UNARY and node.child.kind != parser.RELATION:
+
+def _separate(node: Node, program: Program) -> None:
+    if isinstance(node, Unary) and isinstance(node.child, Variable):
         _separate(node.child, program)
         rel = program.append_query(node.child)
         node.child = rel
-    elif node.kind == parser.BINARY:
-        if node.left.kind != parser.RELATION:
+    elif isinstance(node, Binary):
+        if not isinstance(node.left, Variable):
             _separate(node.left, program)
             rel = program.append_query(node.left)
             node.left = rel
-        if node.right.kind != parser.RELATION:
+        if not isinstance(node.right, Variable):
             _separate(node.right, program)
             rel = program.append_query(node.right)
             node.right = rel
     program.append_query(node)
 
-def vargen(avoid, prefix=''):
+
+def _vargen(avoid: str, prefix: str=''):
     '''
     Generates temp variables.
 
@@ -87,12 +91,15 @@ def vargen(avoid, prefix=''):
             yield r
         count += 1
 
-def split(node, rels):
+
+def split(node, rels) -> str:
     '''
     Split a query into a program.
 
-    The idea is that if there are duplicated subdtrees they
+    The idea is that if there are duplicated subtrees they
     get executed only once.
+
+    This is used by the optimizer module.
     '''
     p = Program(rels)
     _separate(node, p)
