@@ -89,7 +89,11 @@ class Relation:
             for row in loaded['content']:
                 if len(row) != len(header):
                     raise ValueError(f'Line {row} contains an incorrect amount of values')
-                t_row: Tuple[Optional[Union[int, float, str, Rdate]], ...] = load(row, Tuple[Optional[Union[int, float, str, Rdate]], ...])  # type: ignore
+                t_row: Tuple[Optional[Union[int, float, str, Rdate]], ...] = load(
+                    row,
+                    Tuple[Optional[Union[int, float, str, Rdate]], ...],  # type: ignore
+                    basiccast=False
+                )
                 content.append(t_row)
             return Relation(header, frozenset(content))
 
