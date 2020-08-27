@@ -193,7 +193,7 @@ class Relation:
                 if eval(c_expr, attributes):
                     content.append(i)
             except Exception as e:
-                raise Exception(f'Failed to evaluate {expr} with {attributes}\n{e}')
+                raise Exception(f'Failed to evaluate {expr} with {i}\n{e}')
         return Relation(self.header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
