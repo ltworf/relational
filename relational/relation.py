@@ -113,7 +113,7 @@ class Relation:
         format as defined in RFC4180.
         '''
         import csv
-        with open(filename, 'w') as fp:
+        with open(filename, 'w', newline='\n') as fp:
             writer = csv.writer(fp)  # Creating csv writer
 
             # It wants an iterable containing iterables
