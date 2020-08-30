@@ -113,7 +113,7 @@ class Relation:
         format as defined in RFC4180.
         '''
         import csv
-        with open(filename, 'w') as fp:
+        with open(filename, 'w', newline='\n') as fp:
             writer = csv.writer(fp)  # Creating csv writer
 
             # It wants an iterable containing iterables
@@ -193,7 +193,7 @@ class Relation:
                 if eval(c_expr, attributes):
                     content.append(i)
             except Exception as e:
-                raise Exception(f'Failed to evaluate {expr} with {attributes}\n{e}')
+                raise Exception(f'Failed to evaluate {expr} with {i}\n{e}')
         return Relation(self.header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':

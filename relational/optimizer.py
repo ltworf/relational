@@ -39,7 +39,8 @@ def optimize_program(code: str, rels: Dict[str, Relation]) -> str:
     lines = code.split('\n')
     context: Dict[str, Node] = {}
 
-    for line in  lines:
+    last_res = None
+    for line in lines:
         # skip comments or empty lines
         line = line.strip()
         if line.startswith(';') or not line:
@@ -51,6 +52,9 @@ def optimize_program(code: str, rels: Dict[str, Relation]) -> str:
         parsed = tree(query)
         _replace_leaves(parsed, context)
         context[res] = parsed
+
+    if last_res is None:
+        return ''
     node = optimize_all(context[last_res], rels, tostr=False)
     return querysplit.split(node, rels)
 
