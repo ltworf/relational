@@ -26,7 +26,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 ; add the Parameters, WorkingDir and StatusMsg as you wish, just keep here
 ; the conditional installation Check
 Filename: "{tmp}\python-3.8.5-amd64.exe"; Parameters: "/passive InstallAllUsers=1";
-Filename: "powershell"; Parameters: "-file {tmp}\pipscript.bat"
+Filename: "{tmp}\pipscript.bat"
 
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
