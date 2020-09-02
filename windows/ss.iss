@@ -20,13 +20,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Run]
 ; add the Parameters, WorkingDir and StatusMsg as you wish, just keep here
 ; the conditional installation Check
 Filename: "{tmp}\python-3.8.5-amd64.exe"; Parameters: "/passive InstallAllUsers=1";
-Filename: "powershell"; Parameters: "-file {tmp}\pipscript.bat"
+Filename: "{tmp}\pipscript.bat"
 
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -40,11 +39,10 @@ Source: "samples\*"; DestDir: "{app}\samples"; Flags: ignoreversion recursesubdi
 
 
 [Icons]
-Name: "{group}\Relational"; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
+Name: "{group}\Relational"; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
 Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "https://ltworf.github.io/relational/"
 Name: "{group}\{cm:UninstallProgram,Relational}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Relational"; Tasks: desktopicon; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Tasks: quicklaunchicon; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
+Name: "{commondesktop}\Relational"; Tasks: desktopicon; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
 
 [Run]
-Description: "{cm:LaunchProgram,Relational}"; Flags: nowait postinstall skipifsilent; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
+Description: "{cm:LaunchProgram,Relational}"; Flags: nowait postinstall skipifsilent; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"

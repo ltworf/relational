@@ -254,7 +254,7 @@ class relForm(QtWidgets.QMainWindow):
                 elif isinstance(k, (int, float)):
                     item.setForeground(j, QtGui.QPalette().link())
                 elif not isinstance(k, str):
-                    item.setForeground(j, QtGui.QPalette().brightText())
+                    item.setBackground(j, QtGui.QBrush(QtCore.Qt.darkGreen, QtCore.Qt.Dense4Pattern))
                 item.setText(j, str(k))
             self.ui.table.addTopLevelItem(item)
 
