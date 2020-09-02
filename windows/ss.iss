@@ -20,7 +20,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Run]
 ; add the Parameters, WorkingDir and StatusMsg as you wish, just keep here
@@ -44,7 +43,6 @@ Name: "{group}\Relational"; Filename: "{win}\pyw.exe"; Parameters: "relational.p
 Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "https://ltworf.github.io/relational/"
 Name: "{group}\{cm:UninstallProgram,Relational}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Relational"; Tasks: desktopicon; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Tasks: quicklaunchicon; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
 
 [Run]
 Description: "{cm:LaunchProgram,Relational}"; Flags: nowait postinstall skipifsilent; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
