@@ -40,11 +40,11 @@ Source: "samples\*"; DestDir: "{app}\samples"; Flags: ignoreversion recursesubdi
 
 
 [Icons]
-Name: "{group}\Relational"; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
+Name: "{group}\Relational"; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
 Name: "{group}\{cm:ProgramOnTheWeb,Relational}"; Filename: "https://ltworf.github.io/relational/"
 Name: "{group}\{cm:UninstallProgram,Relational}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Relational"; Tasks: desktopicon; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Tasks: quicklaunchicon; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
+Name: "{commondesktop}\Relational"; Tasks: desktopicon; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Relational"; Tasks: quicklaunchicon; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
 
 [Run]
-Description: "{cm:LaunchProgram,Relational}"; Flags: nowait postinstall skipifsilent; Filename: "pyw"; Parameters: "relational.py"; WorkingDir: "{app}"
+Description: "{cm:LaunchProgram,Relational}"; Flags: nowait postinstall skipifsilent; Filename: "{win}\pyw.exe"; Parameters: "relational.py"; WorkingDir: "{app}"
