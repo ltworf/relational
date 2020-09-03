@@ -1,4 +1,4 @@
-relational (3.0-1) UNRELEASED; urgency=low
+relational (3.0-1) unstable; urgency=low
 
   * New upstream release
   * Bump compat to 13
@@ -8,7 +8,7 @@ relational (3.0-1) UNRELEASED; urgency=low
   * Require library and client versions to match exactly
   * Standards-Version: 4.5.0
 
- -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 02 May 2018 22:09:48 +0200
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Thu, 03 Sep 2020 11:50:39 +0200
 
 relational (2.5-2) unstable; urgency=high
 
