@@ -9,12 +9,9 @@ Contributions are welcome in this project.
 
 <p>If you encounter an error by running a query, please attach the relations that you are using, and the query that generates the error.</p>
 
-<h3>Patches</h3>
-<p>Patches are welcome, email them to me: <a href="mailto:tiposchi@tiscali.it">tiposchi@tiscali.it</a>, or open a pull request.</p>
-
-<p>Patches to the backend parser, optimizations, or data structure, should pass all the tests in the testsuite before submission. You can run <code><pre>make mypy && make test</pre></code> to make sure that your patch doesn't break things.</p>
-
 <h3>Things that could use contributors</h3>
+
+<p><strong>I only use GNU/Linux. Keeping supporting Windows has become a huge burden for me. It will possibly be abandoned soon if I do not get help.</strong></p>
 
 <p>Here's a list of ideas for possible contributions.</p>
 
@@ -22,10 +19,16 @@ Contributions are welcome in this project.
 
 <ul>
 <li>A proper icon</li>
-<li>A .app bundle for OsX</li>
+<li><span class="blink>→</span><strong>A .app bundle for OsX</strong></li>
+<li><span class="blink>→</span><strong>A better windows setup</strong></li>
 <li>Possibly easier documentation for newcomers</li>
 <li>Support in the parser to memoize operations that might benefit from it. Without doing so for every operation, because that would lead to excessive memory consumption.</li>
 <li>Support for parallel execution, with run-time decisions on splitting the tasks among processors.</li>
 <li>A website that works on phones</li>
 <li>Packages and inclusion in other distributions</li>
 </ul>
+
+<h3>Patches</h3>
+<p>Patches are welcome, email them to me: <a href="mailto:tiposchi@tiscali.it">tiposchi@tiscali.it</a>, or open a pull request.</p>
+
+<p>Patches to the backend parser, optimizations, or data structure, should pass all the tests in the testsuite before submission. You can run <code><pre>make mypy && make test</pre></code> to make sure that your patch doesn't break things.</p>
