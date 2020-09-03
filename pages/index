@@ -13,7 +13,7 @@
         <td><a href="download.html?tar.gz"><img alt="apple logo" src="images/apple-logo.png" /></a></td>
     </tr>
     <tr>
-        <td><code>apt install relational</code></td>
+        <td><code>apt install relational</code><br />or <a href="download.html?deb">Download .deb</a></td>
         <td><a href="download.html?exe">Download setup</a><br /><strong><a href="contribute.html"><span class="blink">Please contribute</span></a></strong></td>
         <td><a href="download.html?tar.gz">Download sources</a></td>
         <td><a href="download.html?tar.gz">Download sources</a><br /><strong><a href="contribute.html"><span class="blink">Please contribute</span></a></strong></td>
