@@ -20,8 +20,10 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
+              <a href="grammar.html">Grammar</a> |
+              <a href="types.html">Types</a> |
+              <a href="shortcuts.html">GUI</a> |
               <a href="optimizations.html">Optimizations</a> |
-              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -41,14 +43,21 @@
     <tr align="center">
         <td><img alt="Debian logo" src="images/debian-logo.png" /><img alt="Ubuntu logo" src="images/ubuntu-logo.png" /></td>
         <td><a href="download.html?exe"><img alt="windows logo" src="images/windows-logo.png" /></a></td>
-        <td><a href="download.html?tar.gz"><img alt="tux logo" src="images/linux-logo.png" /><img alt="apple logo" src="images/apple-logo.png" /></a></td>
+        <td><a href="download.html?tar.gz"><img alt="tux logo" src="images/linux-logo.png" /></a></td>
+        <td><a href="download.html?tar.gz"><img alt="apple logo" src="images/apple-logo.png" /></a></td>
     </tr>
     <tr>
-        <td><code>apt-get install relational</code></td>
-        <td><a href="download.html?exe">Download setup</a></td>
+        <td><code>apt install relational</code></td>
+        <td><a href="download.html?exe">Download setup</a><br /><strong><a href="contribute.html"><span class="blink">Please contribute</span></a></strong></td>
         <td><a href="download.html?tar.gz">Download sources</a></td>
+        <td><a href="download.html?tar.gz">Download sources</a><br /><strong><a href="contribute.html"><span class="blink">Please contribute</span></a></strong></td>
     </tr>
 </table>
+
+<p><span class="blink">NOTICE:</span><strong>I only use GNU/Linux. Keeping supporting Windows has become a huge burden for me. It will possibly be abandoned soon if I do not get help.</strong>
+<br>
+I have been developing this for 12 years. This software has thousands of downloads and <strong>zero</strong> meaningful contributions. I will continue to support it, but probably I will drop Windows, because it is extremely time consuming.
+</p>
 
 <h1><a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorial</h1>
 <a href="https://www.youtube.com/watch?v=B04rn-kp7aE&list=PLLqqzCxxkF91vkDPULyMwwh0cKTZxwsnw">Youtube tutorial</a>
@@ -58,8 +67,6 @@
 <p>These are some valid queries</p>
 
 <pre><code>A ∪ B
-A ∩ B
-A ⋈ C
 σ (age==12) (A)
 π name,age (A)
 ρ age➡a,name➡n (A)
@@ -83,7 +90,7 @@ A ∪ B ∪ σ id==3 (C)
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: April 13, 2018, 6:54 am</p>
+        <p>Last updated: September 3, 2020, 11:50 am</p>
       </footer>
     </div>
 

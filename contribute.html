@@ -20,8 +20,10 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
+              <a href="grammar.html">Grammar</a> |
+              <a href="types.html">Types</a> |
+              <a href="shortcuts.html">GUI</a> |
               <a href="optimizations.html">Optimizations</a> |
-              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -41,11 +43,6 @@ Contributions are welcome in this project.
 
 <p>If you encounter an error by running a query, please attach the relations that you are using, and the query that generates the error.</p>
 
-<h3>Patches</h3>
-<p>Patches are welcome, email them to me: <a href="mailto:tiposchi@tiscali.it">tiposchi@tiscali.it</a>.</p>
-
-<p>Patches to the backend parser, optimizations, or data structure, should pass all the tests in the testsuite before submission. You can run <code><pre>./driver.py</pre></code> to make sure that your patch doesn't break things.</p>
-
 <h3>Things that could use contributors</h3>
 
 <p>Here's a list of ideas for possible contributions.</p>
@@ -54,14 +51,19 @@ Contributions are welcome in this project.
 
 <ul>
 <li>A proper icon</li>
-<li>A .app bundle for OsX</li>
+<li><span class="blink">→</span><strong>A .app bundle for OsX</strong></li>
+<li><span class="blink">→</span><strong>A better windows setup</strong></li>
 <li>Possibly easier documentation for newcomers</li>
 <li>Support in the parser to memoize operations that might benefit from it. Without doing so for every operation, because that would lead to excessive memory consumption.</li>
 <li>Support for parallel execution, with run-time decisions on splitting the tasks among processors.</li>
 <li>A website that works on phones</li>
-<li>A 64 bit version for Windows</li>
 <li>Packages and inclusion in other distributions</li>
 </ul>
+
+<h3>Patches</h3>
+<p>Patches are welcome, email them to me: <a href="mailto:tiposchi@tiscali.it">tiposchi@tiscali.it</a>, or open a pull request.</p>
+
+<p>Patches to the backend parser, optimizations, or data structure, should pass all the tests in the testsuite before submission. You can run <code><pre>make mypy && make test</pre></code> to make sure that your patch doesn't break things.</p>
       </section>
     </div>
 
@@ -70,7 +72,7 @@ Contributions are welcome in this project.
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: April 13, 2018, 6:54 am</p>
+        <p>Last updated: September 3, 2020, 11:50 am</p>
       </footer>
     </div>
 

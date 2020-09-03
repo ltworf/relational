@@ -20,8 +20,10 @@
               <a href="download.html">Downloads</a> |
               <a href="screnshots.html">Screenshots</a> |
               <a href="allowed_expressions.html">Query language</a> |
+              <a href="grammar.html">Grammar</a> |
+              <a href="types.html">Types</a> |
+              <a href="shortcuts.html">GUI</a> |
               <a href="optimizations.html">Optimizations</a> |
-              <a href="shortcuts.html">Shortcuts</a> |
             </section>
         </header>
     </div>
@@ -38,53 +40,53 @@
 
 It has 2 class of operators:
 <ul>
-<li><a href="#noparam">Without parameters</a></li>
-<li><a href="#param"  >With parameters</a></li>
+<li><a href="#noparam">Binary operators</a></li>
+<li><a href="#param"  >Unary operators (with parameters)</a></li>
 </ul>
 
 <h4><a id="noparam">Binary operators</a></h4>
 
 <p>
-Operators without parameters work on two relations. The syntax for those operators is: <code>relation operator relation</code>.
+Operators without parameters work on two relations. The syntax for those operators is: <code>relation OPERATOR relation</code>.
 </p>
 
 <table class="inline">
     <tr class="row0">
-        <th class="col0"> Symbol </th><th class="col1"> Name </th><th class="col2"> Example </th>
+        <th class="col0">Symbol</th><th class="col1">Name</th><th class="col2">Example</th><th class="col3">Notes</th>
     </tr>
     <tr class="row1">
-        <td class="col0"> * </td><td class="col1">product</td><td class="col2"> A * B </td>
+        <td class="col0"> * </td><td class="col1">product</td><td class="col2"> A * B </td><td></td>
     </tr>
     <tr class="row2">
-        <td class="col0"> - </td><td class="col1">difference</td><td class="col2"> A - B </td>
+        <td class="col0"> - </td><td class="col1">difference</td><td class="col2"> A - B </td><td></td>
     </tr>
     <tr class="row3">
-        <td class="col0"> ∪ </td><td class="col1">union</td><td class="col2"> A ∪ B </td>
+        <td class="col0"> ∪ </td><td class="col1">union</td><td class="col2"> A ∪ B </td><td></td>
     </tr>
     <tr class="row4">
-        <td class="col0"> ∩ </td><td class="col1">intersection</td><td class="col2"> A ∩ B </td>
+        <td class="col0"> ∩ </td><td class="col1">intersection</td><td class="col2"> A ∩ B </td><td></td>
     </tr>
     <tr class="row5">
-        <td class="col0"> ÷ </td><td class="col1">division</td><td class="col2"> A ÷ B </td>
+        <td class="col0"> ÷ </td><td class="col1">division</td><td class="col2"> A ÷ B </td><td></td>
     </tr>
     <tr class="row6">
-        <td class="col0"> ⋈ </td><td class="col1">join</td><td class="col2"> A ⋈ B </td>
+        <td class="col0"> ⋈ </td><td class="col1">join</td><td class="col2"> A ⋈ B </td><td></td>
     </tr>
     <tr class="row7">
-        <td class="col0"> ⧑ </td><td class="col1">left outer join</td><td class="col2"> A ⧑ B </td>
+        <td class="col0"> ⧑ </td><td class="col1">left outer join</td><td class="col2"> A ⧑ B </td><td>All outer joins use a python <code>None</code> value when they have no value to place.</td>
     </tr>
     <tr class="row8">
-        <td class="col0"> ⧒ </td><td class="col1">right outer join</td><td class="col2"> A ⧒ B </td>
+        <td class="col0"> ⧒ </td><td class="col1">right outer join</td><td class="col2"> A ⧒ B </td><td></td>
     </tr>
     <tr class="row9">
-        <td class="col0"> ⧓ </td><td class="col1">full outer join</td><td class="col2"> A ⧓ B </td>
+        <td class="col0"> ⧓ </td><td class="col1">full outer join</td><td class="col2"> A ⧓ B </td><td></td>
     </tr>
 </table>
 
 <h4><a id="param">Unary operators</a></h4>
 
 <p>
-Operators with parameters work on a single relation, and the result will depend on the passed parameters. The syntax for those is: <code>operator parameters (relation)</code>
+Operators with parameters work on a single relation, and the result will depend on the passed parameters. The syntax for those is: <code>OPERATOR parameters (relation)</code>
 </p>
 
 <table class="inline">
@@ -92,7 +94,7 @@ Operators with parameters work on a single relation, and the result will depend 
         <th class="col0"> Symbol </th><th class="col1"> Name </th><th class="col2"> Example </th><th class="col3"> Note </th>
     </tr>
     <tr class="row1">
-        <td class="col0"> σ </td><td class="col1">selection</td><td class="col2"> σ id==index or rank&gt;3 (A) </td><td class="col3"> Expression must be written in python </td>
+        <td class="col0"> σ </td><td class="col1">selection</td><td class="col2"> σ id==index or rank&gt;3 (A) </td><td class="col3"> Expression must be written in python. The variables have the names of the fields in the relation.<br>If the expression contains parenthesis, it <strong>must</strong> be surrounded by another pair of parenthesis.</td>
     </tr>
     <tr class="row2">
         <td class="col0"> π </td><td class="col1">projection</td><td class="col2"> π name,age (A) </td><td class="col3"></td>
@@ -104,63 +106,33 @@ Operators with parameters work on a single relation, and the result will depend 
 
 <p>The language is formally defined <a href="grammar.html">here</a>.</p>
 
-<h4>Complex queries</h4>
-<p>In any place where a relation is expected, a query can be used instead. For example, since a*b is a relation itself, you can evaluate π f1,f2 (a*b) ∪ R</p>
-
-<p>You can use parenthesis to change priority: a ⋈ (q ∪ d)
+<h4>Precedence</h4>
+<p>Queries in parenthesis take precedence.
+<br>
+Unary operators take precedence over binary operators.
+<br>
+Everything is executed left to right.
 </p>
+
+<p>You can use parenthesis to change priority: a ⋈ (q ∪ d)</p>
 
 <h3>Examples</h3>
 <p>These are some valid queries.</p>
 
-<pre><code>
-σage > 25 and rank == weight(A)
-σ (name.upper().startswith('J') and age>21 )(people)
-Q ⋈ π a,b(A) ⋈ B
-ρ id➡i,name➡n(A) - π a,b(π a,b(A)) ∩ σage > 25 or rank = weight(A)
-π a,b(π a,b(A))
-ρ id➡i,name➡n(π a,b(A))
-A ⋈ B
+<pre><code># Join people and skills
+people ⋈ skills
+
+# Select people within a certain age range
+σ age > 25 and age < 50 (people)
+
+# Selection with complicated expression requires an extra set of () around the expression
+σ (name.upper().startswith('J') and age > 21) (people)
+
+# Cartesian product of people with itself, including only name and id
+ρ id➡i, name➡n (people) * π name, id (people)
 </code></pre>
 
-<p>Relational uses <a href="types.html">automatic casting</a>, so it will try to use an appropriate type for the values.</p>
-
-<h3>Dates</h3>
-<p>When a field contains something like 2007-12-24, this will be considered as a date, and will have a particoular behaviour in selection operations.</p>
-
-<h4>Fields</h4>
-<table class="inline">
-    <tr class="row0">
-        <th class="col0"> Field </th><th class="col1"> Description </th>
-    </tr>
-    <tr class="row1">
-        <td class="col0"> intdate </td><td class="col1"> String representation of the date </td>
-    </tr>
-    <tr class="row2">
-        <td class="col0"> day </td><td class="col1 leftalign">  </td>
-    </tr>
-    <tr class="row3">
-        <td class="col0"> month </td><td class="col1"> </td>
-    </tr>
-    <tr class="row4">
-        <td class="col0"> weekday </td><td class="col1"> Day of the week (numeric) </td>
-    </tr>
-    <tr class="row5">
-        <td class="col0"> year </td><td class="col1"> </td>
-    </tr>
-</table>
-
-<h4>Examples</h4>
-<pre><code>Load the file dates.csv and set d as relation's name.
-We select every friday:
-σ date.weekday==4(d)
-
-We select every date before 2000:
-σ date.year<2000 (d)
-
-We rename the field and do the product, we add 2 days to d and see if it is greater than date
-σ d+2>date(ρdate➡d(d)*d)
-</code></pre>
+<p>For details on types: <a href="types.html">types in relational</a>.</p>
       </section>
     </div>
 
@@ -169,7 +141,7 @@ We rename the field and do the product, we add 2 days to d and see if it is grea
       <footer class="inner">
         <p class="copyright">Relational maintained by <a href="http://ltworf.github.io/">Salvo 'LtWorf' Tomaselli</a></p>
         <p>Released under GPLv3. <a href="contribute.html">Contribute</a>.</p>
-        <p>Last updated: April 13, 2018, 6:54 am</p>
+        <p>Last updated: September 3, 2020, 11:50 am</p>
       </footer>
     </div>
 
