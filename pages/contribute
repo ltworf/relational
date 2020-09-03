@@ -11,16 +11,14 @@ Contributions are welcome in this project.
 
 <h3>Things that could use contributors</h3>
 
-<p><strong>I only use GNU/Linux. Keeping supporting Windows has become a huge burden for me. It will possibly be abandoned soon if I do not get help.</strong></p>
-
 <p>Here's a list of ideas for possible contributions.</p>
 
 <p>Remember to get in touch if you start working on something, to avoid duplicating work.</p>
 
 <ul>
 <li>A proper icon</li>
-<li><span class="blink>→</span><strong>A .app bundle for OsX</strong></li>
-<li><span class="blink>→</span><strong>A better windows setup</strong></li>
+<li><span class="blink">→</span><strong>A .app bundle for OsX</strong></li>
+<li><span class="blink">→</span><strong>A better windows setup</strong></li>
 <li>Possibly easier documentation for newcomers</li>
 <li>Support in the parser to memoize operations that might benefit from it. Without doing so for every operation, because that would lead to excessive memory consumption.</li>
 <li>Support for parallel execution, with run-time decisions on splitting the tasks among processors.</li>
