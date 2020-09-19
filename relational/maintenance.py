@@ -18,8 +18,6 @@
 #
 # Stuff non-related to relational algebra, but used for maintenance.
 
-import http.client
-import urllib.parse
 import os.path
 import pickle
 import base64
@@ -39,6 +37,8 @@ def send_survey(data) -> int:
 
     returns 0 in case of error
     returns -1 in case of swearwords'''
+    import urllib.parse
+    from http.client import HTTPConnection
 
     post = ''
     for i in data.keys():
@@ -53,7 +53,7 @@ def send_survey(data) -> int:
     params = urllib.parse.urlencode({'survey': post})
     headers = {"Content-type":
                "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
+    connection = HTTPConnection('feedback-ltworf.appspot.com')
     try:
         connection.request("POST", "/feedback/relational", params, headers)
         return connection.getresponse().status
@@ -65,7 +65,8 @@ def check_latest_version() -> Optional[str]:
     '''Returns the latest version available.
     Heavely dependent on server and server configurations
     not granted to work forever.'''
-    connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
+    from http.client import HTTPConnection
+    connection = HTTPConnection('feedback-ltworf.appspot.com')
     try:
         connection.request("GET", "/version/relational")
         r = connection.getresponse()
