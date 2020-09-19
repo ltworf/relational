@@ -64,19 +64,16 @@ def check_latest_version() -> Optional[str]:
     '''Returns the latest version available.
     Heavely dependent on server and server configurations
     not granted to work forever.'''
-    from http.client import HTTPConnection
-    connection = HTTPConnection('feedback-ltworf.appspot.com')
+    import json
+    import urllib.request
+
     try:
-        connection.request("GET", "/version/relational")
-        r = connection.getresponse()
+        req = urllib.request.Request('https://api.github.com/repos/ltworf/relational/releases')
+        with urllib.request.urlopen(req) as f:
+            data = json.load(f)
+        return data[0]['name']
     except:
         return None
-
-    # html
-    s = r.read()
-    if len(s) == 0:
-        return None
-    return s.decode().strip()
 
 
 class UserInterface:
