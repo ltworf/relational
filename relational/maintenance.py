@@ -28,9 +28,6 @@ from relational import parser
 from relational.rtypes import is_valid_relation_name
 
 
-SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
-
-
 def send_survey(data) -> int:
     '''Sends the survey. Data must be a dictionary.
     returns the http response.
@@ -39,6 +36,8 @@ def send_survey(data) -> int:
     returns -1 in case of swearwords'''
     import urllib.parse
     from http.client import HTTPConnection
+
+    SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
 
     post = ''
     for i in data.keys():
