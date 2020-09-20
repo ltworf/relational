@@ -1,7 +1,7 @@
 [Setup]
 AppId={{6F127615-6AD4-4BD7-8135-2444A335B5CD}
 AppName=Relational
-AppVerName=Relational ver. 3.0
+AppVerName=Relational ver. 3.1
 AppPublisher=Salvo 'LtWorf' Tomaselli
 AppPublisherURL=https://ltworf.github.io/relational/
 AppSupportURL=https://ltworf.github.io/relational/
