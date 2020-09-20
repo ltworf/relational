@@ -18,8 +18,6 @@
 #
 # Stuff non-related to relational algebra, but used for maintenance.
 
-import http.client
-import urllib.parse
 import os.path
 import pickle
 import base64
@@ -30,15 +28,16 @@ from relational import parser
 from relational.rtypes import is_valid_relation_name
 
 
-SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
-
-
 def send_survey(data) -> int:
     '''Sends the survey. Data must be a dictionary.
     returns the http response.
 
     returns 0 in case of error
     returns -1 in case of swearwords'''
+    import urllib.parse
+    from http.client import HTTPConnection
+
+    SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
 
     post = ''
     for i in data.keys():
@@ -53,7 +52,7 @@ def send_survey(data) -> int:
     params = urllib.parse.urlencode({'survey': post})
     headers = {"Content-type":
                "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
+    connection = HTTPConnection('feedback-ltworf.appspot.com')
     try:
         connection.request("POST", "/feedback/relational", params, headers)
         return connection.getresponse().status
@@ -65,18 +64,16 @@ def check_latest_version() -> Optional[str]:
     '''Returns the latest version available.
     Heavely dependent on server and server configurations
     not granted to work forever.'''
-    connection = http.client.HTTPConnection('feedback-ltworf.appspot.com')
+    import json
+    import urllib.request
+
     try:
-        connection.request("GET", "/version/relational")
-        r = connection.getresponse()
+        req = urllib.request.Request('https://api.github.com/repos/ltworf/relational/releases')
+        with urllib.request.urlopen(req) as f:
+            data = json.load(f)
+        return data[0]['name']
     except:
         return None
-
-    # html
-    s = r.read()
-    if len(s) == 0:
-        return None
-    return s.decode().strip()
 
 
 class UserInterface:
