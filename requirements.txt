@@ -1,0 +1,3 @@
+typedload
+pyqt5
+xtermcolor
