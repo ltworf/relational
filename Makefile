@@ -94,9 +94,12 @@ install-relational:
 .PHONY: install
 install: install-relational-cli install-python3-relational install-relational
 
-po/messages.pot: relational.py
+po/messages.pot: relational.py relational/*.py relational_readline/*.py relational_gui/*.py
 	xgettext --from-code=utf-8 -L Python -j -o po/messages.pot --package-name=relational \
-		relational.py
+		relational.py \
+		relational_readline/*.py \
+		relational_gui/*.py \
+		relational/*.py
 
 po/it.po: po/messages.pot
 	msgmerge --update po/it.po po/messages.pot
