@@ -1,0 +1,41 @@
+#: relational.py:37
+msgid ""
+"Copyright (C) 2008-2020 Salvo 'LtWorf' Tomaselli.\n"
+"\n"
+"This program comes with ABSOLUTELY NO WARRANTY.\n"
+"This is free software, and you are welcome to redistribute it\n"
+"under certain conditions.\n"
+"For details see the GPLv3 Licese.\n"
+"\n"
+"Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>\n"
+"\n"
+"https://ltworf.github.io/relational/"
+msgstr ""
+
+#: relational.py:56
+msgid "  -v            Print version and exits"
+msgstr ""
+
+#: relational.py:57
+msgid "  -h            Print this help and exits"
+msgstr ""
+
+#: relational.py:58
+msgid "  -q            Uses Qt user interface"
+msgstr ""
+
+#: relational.py:59
+msgid "  -r            Uses readline user interface"
+msgstr ""
+
+#: relational.py:92
+msgid ""
+"Module relational_gui is missing.\n"
+"Please install relational package or run make."
+msgstr ""
+
+#: relational.py:128
+msgid ""
+"Module relational_readline is missing.\n"
+"Please install relational-cli package."
+msgstr ""
