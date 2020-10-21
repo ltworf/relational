@@ -24,6 +24,7 @@ import os.path
 import os
 import sys
 from typing import Optional
+from gettext import gettext as _
 
 from relational import relation, parser, rtypes
 from relational import maintenance
@@ -122,7 +123,7 @@ def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
     '''
     if not os.path.isfile(filename):
         print(colorize(
-            f'{filename} is not a file', ERROR_COLOR), file=sys.stderr)
+            _(f'{filename} is not a file'), ERROR_COLOR), file=sys.stderr)
         return None
 
     if defname is None:
@@ -132,14 +133,14 @@ def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
             defname = defname[:-4]
 
     if not rtypes.is_valid_relation_name(defname):
-        print(colorize(
-            "%s is not a valid relation name" % defname, ERROR_COLOR), file=sys.stderr)
+        print(colorize(_(
+            '%s is not a valid relation name') % defname, ERROR_COLOR), file=sys.stderr)
         return None
     try:
         ui.load(filename, defname)
 
         completer.add_completion(defname)
-        printtty(colorize("Loaded relation %s" % defname, COLOR_GREEN))
+        printtty(colorize(_('Loaded relation %s' % defname, COLOR_GREEN))
         return defname
     except Exception as e:
         print(colorize(str(e), ERROR_COLOR), file=sys.stderr)
@@ -157,14 +158,14 @@ def survey() -> None:
         post[i] = a
     response = maintenance.send_survey(post)
     if response == -1:
-        print('Yeah, not sending that.')
+        print(_('Yeah, not sending that.'))
 
 
 def help(command: str) -> None:
     '''Prints help on the various functions'''
     p = command.split(' ', 1)
     if len(p) == 1:
-        print(
+        print(_(
             'HELP [command]\n'
             '\n'
             'Comments are obtained starting with a ;\n'
@@ -179,20 +180,20 @@ def help(command: str) -> None:
             'To insert relational operators, type _OPNAME, they will be internally replaced with the correct symbol.\n'
             '\n'
             'Rember: completion is enabled and can be very helpful if you can\'t remember something.'
-        )
+        ))
         return
     cmd = p[1]
 
     cmdhelp = {
-        'QUIT': 'Quits the program',
-        'LIST': 'Lists the relations loaded',
-        'LOAD': 'LOAD filename [relationame]\nLoads a relation into memory',
-        'UNLOAD': 'UNLOAD relationame\nUnloads a relation from memory',
-        'SAVE': 'SAVE filename relationame\nSaves a relation in a file',
-        'HELP': 'Prints the help on a command',
-        'SURVEY': 'Fill and send a survey',
+        'QUIT': _('Quits the program'),
+        'LIST': _('Lists the relations loaded'),
+        'LOAD': _('LOAD filename [relationame]\nLoads a relation into memory'),
+        'UNLOAD': _('UNLOAD relationame\nUnloads a relation from memory'),
+        'SAVE': _('SAVE filename relationame\nSaves a relation in a file'),
+        'HELP': _('Prints the help on a command'),
+        'SURVEY': _('Fill and send a survey'),
     }
-    print(cmdhelp.get(cmd, 'Unknown command: %s' % cmd))
+    print(cmdhelp.get(cmd, _('Unknown command: %s') % cmd))
 
 
 def exec_line(command: str) -> None:
@@ -218,7 +219,7 @@ def exec_line(command: str) -> None:
     elif command.startswith('LOAD '):  # Loads a relation
         pars = command.split(' ')
         if len(pars) == 1:
-            print(colorize("Missing parameter", ERROR_COLOR))
+            print(colorize(_("Missing parameter"), ERROR_COLOR))
             return
 
         filename = pars[1]
@@ -230,18 +231,18 @@ def exec_line(command: str) -> None:
     elif command.startswith('UNLOAD '):
         pars = command.split(' ')
         if len(pars) < 2:
-            print(colorize("Missing parameter", ERROR_COLOR))
+            print(colorize(_("Missing parameter"), ERROR_COLOR))
         elif len(pars) > 2:
-            print(colorize("Too many parameter", ERROR_COLOR))
+            print(colorize(_("Too many parameter"), ERROR_COLOR))
         if pars[1] in ui.relations:
             ui.unload(pars[1])
             completer.remove_completion(pars[1])
         else:
-            print(colorize("No such relation %s" % pars[1], ERROR_COLOR))
+            print(colorize(_("No such relation %s") % pars[1], ERROR_COLOR))
     elif command.startswith('SAVE '):
         pars = command.split(' ')
         if len(pars) != 3:
-            print(colorize("Missing parameter", ERROR_COLOR))
+            print(colorize(_("Missing parameter"), ERROR_COLOR))
             return
 
         filename = pars[1]
@@ -318,9 +319,9 @@ def exec_query(command: str) -> None:
 
 
 def main(files=[]):
-    printtty(colorize('> ', PROMPT_COLOR) + "; Type HELP to get the HELP")
+    printtty(colorize('> ', PROMPT_COLOR) + _("; Type HELP to get the HELP"))
     printtty(colorize('> ', PROMPT_COLOR) +
-           "; Completion is activated using the tab (if supported by the terminal)")
+           _("; Completion is activated using the tab (if supported by the terminal)"))
 
     for i in files:
         load_relation(i, None)
