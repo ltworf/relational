@@ -1,3 +1,20 @@
+# Header entry was created by Lokalize.
+#
+#: relational.py:37
+# Salvo Tomaselli <tiposchi@tiscali.it>, 2020.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Salvo Tomaselli <tiposchi@tiscali.it>\n"
+"PO-Revision-Date: 2020-10-21 08:20+0200\n"
+"Project-Id-Version: \n"
+"Language-Team: Italian <kde-i18n-it@kde.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.04.3\n"
+
 #: relational.py:37
 msgid ""
 "Copyright (C) 2008-2020 Salvo 'LtWorf' Tomaselli.\n"
@@ -14,28 +31,32 @@ msgstr ""
 
 #: relational.py:56
 msgid "  -v            Print version and exits"
-msgstr ""
+msgstr "  -v            mostra le informazioni sulla versione ed esce"
 
 #: relational.py:57
 msgid "  -h            Print this help and exits"
-msgstr ""
+msgstr "  -h            mostra questo aiuto ed esce"
 
 #: relational.py:58
 msgid "  -q            Uses Qt user interface"
-msgstr ""
+msgstr "  -q            Usa l'interfaccia Qt"
 
 #: relational.py:59
 msgid "  -r            Uses readline user interface"
-msgstr ""
+msgstr "  -r            Usa l'interfaccia readline"
 
 #: relational.py:92
 msgid ""
 "Module relational_gui is missing.\n"
 "Please install relational package or run make."
 msgstr ""
+"Il modulo relational_gui manca. "
+"Installare il pacchetto relational o eseguire make."
 
 #: relational.py:128
 msgid ""
 "Module relational_readline is missing.\n"
 "Please install relational-cli package."
 msgstr ""
+"Il modulo relational_readline manca. "
+"Installare il pacchetto relational-cli."
