@@ -24,6 +24,7 @@ from collections import deque
 from typing import FrozenSet, Iterable, List, Dict, Tuple, Optional
 from dataclasses import dataclass
 from pathlib import Path
+from gettext import gettext as _
 
 from relational.rtypes import *
 
@@ -88,7 +89,7 @@ class Relation:
             content = []
             for row in loaded['content']:
                 if len(row) != len(header):
-                    raise ValueError(f'Line {row} contains an incorrect amount of values')
+                    raise ValueError(_(f'Line {row} contains an incorrect amount of values'))
                 t_row: Tuple[Optional[Union[int, float, str, Rdate]], ...] = load(
                     row,
                     Tuple[Optional[Union[int, float, str, Rdate]], ...],  # type: ignore
@@ -136,7 +137,7 @@ class Relation:
 
         for row in content:
             if len(row) != len(header):
-                raise ValueError(f'Line {row} contains an incorrect amount of values')
+                raise ValueError(_(f'Line {row} contains an incorrect amount of values'))
             r_content.append(row)
 
             # Guess types
@@ -169,7 +170,7 @@ class Relation:
             return other
         elif len(self.header) == len(other.header) and self.header.sharedAttributes(other.header) == len(self.header):
             return other.projection(self.header)
-        raise TypeError('Relations differ: [%s] [%s]' % (
+        raise TypeError(_('Relations differ: [%s] [%s]') % (
             ','.join(self.header), ','.join(other.header)
         ))
 
@@ -180,7 +181,7 @@ class Relation:
         try:
             c_expr = compile(expr, 'selection', 'eval')
         except:
-            raise Exception(f'Failed to compile expression: {expr}')
+            raise Exception(_(f'Failed to compile expression: {expr}'))
 
         content = []
         for i in self.content:
@@ -193,7 +194,7 @@ class Relation:
                 if eval(c_expr, attributes):
                     content.append(i)
             except Exception as e:
-                raise Exception(f'Failed to evaluate {expr} with {i}\n{e}')
+                raise Exception(_(f'Failed to evaluate {expr} with {i}\n{e}'))
         return Relation(self.header, frozenset(content))
 
     def product(self, other: 'Relation') -> 'Relation':
@@ -205,7 +206,7 @@ class Relation:
             raise Exception('Operand must be a relation')
         if self.header.sharedAttributes(other.header) != 0:
             raise Exception(
-                'Unable to perform product on relations with colliding attributes'
+                _('Unable to perform product on relations with colliding attributes')
             )
         header = Header(self.header + other.header)
 
@@ -231,7 +232,7 @@ class Relation:
         ids = self.header.getAttributesId(attributes)
 
         if len(ids) == 0:
-            raise Exception('Invalid attributes for projection')
+            raise Exception(_('Invalid attributes for projection'))
         header = Header((self.header[i] for i in ids))
 
         content = frozenset(tuple((i[j] for j in ids)) for i in self.content)
@@ -472,7 +473,7 @@ class Header(tuple):
 
         for i in self:
             if not is_valid_relation_name(i):
-                raise Exception(f'"{i}" is not a valid attribute name')
+                raise Exception(_(f'"{i}" is not a valid attribute name'))
 
         if len(self) != len(set(self)):
             raise Exception('Attribute names must be unique')
@@ -488,12 +489,12 @@ class Header(tuple):
         attrs = list(self)
         for old, new in params.items():
             if not is_valid_relation_name(new):
-                raise Exception(f'{new} is not a valid attribute name')
+                raise Exception(_(f'{new} is not a valid attribute name'))
             try:
                 id_ = attrs.index(old)
                 attrs[id_] = new
             except:
-                raise Exception(f'Field not found: {old}')
+                raise Exception(_(f'Field not found: {old}'))
         return Header(attrs)
 
     def sharedAttributes(self, other: 'Header') -> int:

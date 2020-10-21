@@ -26,6 +26,7 @@
 # http://ltworf.github.io/relational/grammar.html
 from typing import Optional, Union, List, Any, Dict, Literal
 from dataclasses import dataclass
+from gettext import gettext as _
 
 from relational import rtypes
 
@@ -54,6 +55,7 @@ __all__ = [
     'tree',
     'parse',
 ]
+
 
 PRODUCT = '*'
 DIFFERENCE = '-'
@@ -305,7 +307,7 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
         expression = expression[0]
 
     if len(expression) == 0:
-        raise ParserException('Failed to parse empty expression')
+        raise ParserException(_('Failed to parse empty expression'))
 
     # The list contains only 1 string. Means it is the name of a relation
     if len(expression) == 1:
@@ -330,28 +332,28 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
 
             if len(expression[:i]) == 0:
                 raise ParserException(
-                    f'Expected left operand for {expression[i]!r}')
+                    _(f'Expected left operand for {expression[i]!r}'))
 
             if len(expression[i + 1:]) == 0:
                 raise ParserException(
-                    f'Expected right operand for {expression[i]!r}')
+                    _(f'Expected right operand for {expression[i]!r}'))
             return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))  # type: ignore
     '''Searches for unary operators, parsing from right to left'''
     for i in range(len(expression)):
         if expression[i] in u_operators:  # Unary operator
             if len(expression) <= i + 2:
                 raise ParserException(
-                    f'Expected more tokens in {expression[i]!r}')
+                    _(f'Expected more tokens in {expression[i]!r}'))
             elif len(expression) > i + 3:
                 raise ParserException(
-                    f'Too many tokens in {expression[i]!r}')
+                    _(f'Too many tokens in {expression[i]!r}'))
 
             return Unary(
                 expression[i],  # type: ignore
                 prop=expression[1 + i].strip(),  # type: ignore
                 child=parse_tokens(expression[2 + i])  # type: ignore
             )
-    raise ParserException(f'Parse error on {expression!r}')
+    raise ParserException(_(f'Parse error on {expression!r}'))
 
 
 def _find_matching_parenthesis(expression: str, start=0, openpar='(', closepar=')') -> Optional[int]:
@@ -421,7 +423,7 @@ def tokenize(expression: str) -> list:
             end = _find_matching_parenthesis(expression)
             if end is None:
                 raise TokenizerException(
-                    "Missing matching ')' in '%s'" % expression)
+                    _(f'Missing matching \')\' in \'{expression}\''))
             # Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
             # Removes the entire parentesis and content from the expression
