@@ -21,22 +21,29 @@ import sys
 import os
 import os.path
 import getopt
+import gettext
+
+
+gettext.bindtextdomain('relational')
+gettext.textdomain('relational')
+_ = gettext.gettext
+
 
 version = "3.1"
 
 
 def printver(exit=True):
     print ("Relational %s" % version)
-    print ("Copyright (C) 2008-2020 Salvo 'LtWorf' Tomaselli.")
-    print ()
-    print ("This program comes with ABSOLUTELY NO WARRANTY.")
-    print ("This is free software, and you are welcome to redistribute it")
-    print ("under certain conditions.")
-    print ("For details see the GPLv3 Licese.")
-    print ()
-    print ("Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>")
-    print ()
-    print ("https://ltworf.github.io/relational/")
+    print (_("Copyright (C) 2008-2020 Salvo 'LtWorf' Tomaselli.\n"
+        "\n"
+        "This program comes with ABSOLUTELY NO WARRANTY.\n"
+        "This is free software, and you are welcome to redistribute it\n"
+        "under certain conditions.\n"
+        "For details see the GPLv3 Licese.\n"
+        "\n"
+        "Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>\n"
+        "\n"
+        "https://ltworf.github.io/relational/"))
     if exit:
         sys.exit(0)
 
@@ -46,15 +53,10 @@ def printhelp(code=0):
     print ()
     print ("Usage: %s [options] [files]" % sys.argv[0])
     print ()
-    print ("  -v            Print version and exits")
-    print ("  -h            Print this help and exits")
-
-    if sys.argv[0].endswith('relational-cli'):
-        print ("  -q            Uses QT user interface")
-        print ("  -r            Uses readline user interface (default)")
-    else:
-        print ("  -q            Uses QT user interface (default)")
-        print ("  -r            Uses readline user interface")
+    print (_('  -v            Print version and exits'))
+    print (_('  -h            Print this help and exits'))
+    print (_('  -q            Uses Qt user interface'))
+    print (_('  -r            Uses readline user interface'))
     sys.exit(code)
 
 if __name__ == "__main__":
@@ -87,8 +89,7 @@ if __name__ == "__main__":
             from relational_gui import guihandler, about, surveyForm
         except:
             print (
-                "Module relational_gui is missing.\n"
-                "Please install relational package or run make.",
+                _('Module relational_gui is missing.\nPlease install relational package or run make.'),
                 file=sys.stderr
             )
             sys.exit(3)
@@ -124,7 +125,7 @@ if __name__ == "__main__":
                 printver(False)
         except:
             print (
-                "Module relational_readline is missing.\nPlease install relational-cli package.",
+                _('Module relational_readline is missing.\nPlease install relational-cli package.'),
                 file=sys.stderr
             )
             sys.exit(3)
