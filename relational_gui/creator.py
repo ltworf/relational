@@ -16,6 +16,8 @@
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
+from gettext import gettext as _
+
 from PyQt5 import QtGui, QtWidgets
 
 from relational_gui import rel_edit
@@ -86,8 +88,8 @@ class creatorForm(QtWidgets.QDialog):
         try:
             header = relation.Header(h)
         except Exception as e:
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate("Form", "Error"), "%s\n%s" % (
-                QtWidgets.QApplication.translate("Form", "Header error!"), e.__str__()))
+            QtWidgets.QMessageBox.information(None, _("Error"), "%s\n%s" % (
+                _("Header error!"), e.__str__()))
             return None
 
         content = []
@@ -97,8 +99,7 @@ class creatorForm(QtWidgets.QDialog):
                 try:
                     hlist.append(self.table.item(i, j).text())
                 except:
-                    QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
-                        "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unset value in %d,%d!" % (i + 1, j + 1)))
+                    QtWidgets.QMessageBox.information(None, _("Error"), _(f'Unset value in {i + 1},{j + 1}!'))
                     return None
             content.append(hlist)
         return relation.Relation.create_from(header, content)

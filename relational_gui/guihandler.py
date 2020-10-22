@@ -16,6 +16,7 @@
 #
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 import sys
+from gettext import gettext as _
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 
@@ -115,19 +116,15 @@ class relForm(QtWidgets.QMainWindow):
         online = maintenance.check_latest_version()
 
         if online is None:
-            r = QtWidgets.QApplication.translate("Form", "Network error")
+            r = _('Network error')
         elif online > version:
-            r = QtWidgets.QApplication.translate(
-                "Form", "New version available online: %s." % online)
+            r = _(f'New version available online: {online}.')
         elif online == version:
-            r = QtWidgets.QApplication.translate(
-                "Form", "Latest version installed.")
+            r = _('Latest version installed.')
         else:
-            r = QtWidgets.QApplication.translate(
-                "Form", "You are using an unstable version.")
+            r = _('You are using an unstable version.')
 
-        QtWidgets.QMessageBox.information(
-            self, QtWidgets.QApplication.translate("Form", "Version"), r)
+        QtWidgets.QMessageBox.information(_('Version'), r)
 
     def setHistoryShown(self, history_shown):
         self.history_shown = history_shown
@@ -241,7 +238,7 @@ class relForm(QtWidgets.QMainWindow):
 
         if rel is None:  # No relation to show
             self.ui.table.setColumnCount(1)
-            self.ui.table.headerItem().setText(0, "Empty relation")
+            self.ui.table.headerItem().setText(0, _('Empty relation'))
             return
         self.ui.table.setColumnCount(len(rel.header))
 
@@ -282,17 +279,14 @@ class relForm(QtWidgets.QMainWindow):
 
     def saveRelation(self):
         if not self.ui.lstRelations.selectedItems():
-            r = QtWidgets.QApplication.translate(
-                "Form", "Select a relation first."
-            )
             QtWidgets.QMessageBox.information(
-                self, QtWidgets.QApplication.translate("Form", "Error"), r
+                self, _('Error'), _('Select a relation first.')
             )
             return
         filename = QtWidgets.QFileDialog.getSaveFileName(
-            self, QtWidgets.QApplication.translate("Form", "Save Relation"),
+            self, _("Save Relation"),
             "",
-            QtWidgets.QApplication.translate("Form", "Json relations (*.json);;CSV relations (*.csv)")
+            _("Json relations (*.json);;CSV relations (*.csv)")
         )[0]
         if (len(filename) == 0):  # Returns if no file was selected
             return
@@ -318,7 +312,7 @@ class relForm(QtWidgets.QMainWindow):
                 )
             except Exception as e:
                 QtWidgets.QMessageBox.warning(
-                    self, QtWidgets.QApplication.translate("Form", "Error"), str(e)
+                    self, _("Error"), str(e)
                 )
                 return
             if result != None:
@@ -328,7 +322,7 @@ class relForm(QtWidgets.QMainWindow):
     def error(self, exception):
         print (exception)
         QtWidgets.QMessageBox.information(
-            None, QtWidgets.QApplication.translate("Form", "Error"),
+            None, _("Error"),
             str(exception)
         )
 
@@ -336,21 +330,16 @@ class relForm(QtWidgets.QMainWindow):
         while True:
             res = QtWidgets.QInputDialog.getText(
                 self,
-                QtWidgets.QApplication.translate("Form", "New relation"),
-                QtWidgets.QApplication.translate(
-                    "Form", "Insert the name for the new relation"),
+                _("New relation"),
+                _("Insert the name for the new relation"),
                 QtWidgets.QLineEdit.Normal, ''
             )
             if res[1] == False:  # or len(res[0]) == 0:
                 return None
             name = res[0]
             if not rtypes.is_valid_relation_name(name):
-                r = QtWidgets.QApplication.translate(
-                    "Form", str(
-                        "Wrong name for destination relation: %s." % name)
-                )
                 QtWidgets.QMessageBox.information(
-                    self, QtWidgets.QApplication.translate("Form", "Error"), r
+                    self, _("Error"), _('Wrong name for destination relation: {name}.')
                 )
                 continue
             return name
@@ -418,12 +407,9 @@ class relForm(QtWidgets.QMainWindow):
         if not filenames:
             f = QtWidgets.QFileDialog.getOpenFileNames(
                 self,
-                QtWidgets.QApplication.translate("Form", "Load Relation"),
+                _("Load Relation"),
                 "",
-                QtWidgets.QApplication.translate(
-                    "Form",
-                    "Relations (*.json *.csv);;Text Files (*.txt);;All Files (*)"
-                )
+                _("Relations (*.json *.csv);;Text Files (*.txt);;All Files (*)")
             )
             filenames = f[0]
 
