@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2017  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
 #
 # Relational is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 import platform
 import locale
+from gettext import gettext as _
 
 from PyQt5 import QtWidgets
 
@@ -86,13 +87,10 @@ class surveyForm (QtWidgets.QWidget):
         response = maintenance.send_survey(post)
 
         if response == 200:
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
-                "Form", "Thanks"), QtWidgets.QApplication.translate("Form", "Thanks for sending!"))
+            QtWidgets.QMessageBox.information(None, _('Thanks'), _('Thanks for sending!'))
         elif response == -1:
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
-                "Form", "Seriously?"), QtWidgets.QApplication.translate("Form", "Yeah, not sending that."))
+            QtWidgets.QMessageBox.information(None, _('Seriously?'), _('Yeah, not sending that.'))
         else:
-            QtWidgets.QMessageBox.information(None, QtWidgets.QApplication.translate(
-                "Form", "Error"), QtWidgets.QApplication.translate("Form", "Unable to send the data!"))
+            QtWidgets.QMessageBox.information(None, _('Error'), _('Unable to send the data!'))
 
         self.hide()
