@@ -140,7 +140,7 @@ def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
         ui.load(filename, defname)
 
         completer.add_completion(defname)
-        printtty(colorize(_('Loaded relation %s' % defname, COLOR_GREEN))
+        printtty(colorize(_('Loaded relation %s') % defname, COLOR_GREEN))
         return defname
     except Exception as e:
         print(colorize(str(e), ERROR_COLOR), file=sys.stderr)
