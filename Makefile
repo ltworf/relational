@@ -1,16 +1,19 @@
 .PHONY: gui
 gui: relational_gui/survey.py relational_gui/maingui.py relational_gui/rel_edit.py relational_gui/resources.py
 
-relational_gui/survey.py:
-	pyuic5 relational_gui/survey.ui > relational_gui/survey.py
-
-relational_gui/maingui.py:
-	pyuic5 relational_gui/maingui.ui > relational_gui/maingui.py
-	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' relational_gui/maingui.py
-	echo 'from . import editor' >> relational_gui/maingui.py
-
-relational_gui/rel_edit.py:
-	pyuic5 relational_gui/rel_edit.ui > relational_gui/rel_edit.py
+relational_gui/maingui.py relational_gui/survey.py relational_gui/rel_edit.py:
+	# Create .py file
+	pyuic5 $(basename $@).ui > $@
+	# Use my custom editor class
+	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' $@
+	echo 'from . import editor' >> $@
+	# Use gettext instead of Qt translations
+	echo 'from gettext import gettext as _' >> $@
+	sed -i \
+		-e 's/_translate("MainWindow", /_(/g' \
+		-e 's/_translate("Dialog", /_(/g' \
+		-e 's/_translate("Form", /_(/g' \
+		$@
 
 relational_gui/resources.py:
 	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
