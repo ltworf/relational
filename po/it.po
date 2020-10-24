@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-24 18:25+0200\n"
-"PO-Revision-Date: 2020-10-24 19:36+0200\n"
+"PO-Revision-Date: 2020-10-24 19:38+0200\n"
 "Last-Translator: Salvo Tomaselli <tiposchi@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -484,7 +484,7 @@ msgstr ""
 
 #: relational_gui/maingui.py:622
 msgid "&Quit"
-msgstr "%Esci"
+msgstr "&Esci"
 
 #: relational_gui/maingui.py:623
 msgid "Ctrl+Q"
