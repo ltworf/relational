@@ -84,7 +84,7 @@ class Rdate:
         '''date: A string representing a date YYYY-MM-DD'''
         r = _date_regexp.match(date)
         if not r:
-            raise ValueError(_(f'{date} is not a valid date'))
+            raise ValueError(_('%s is not a valid date') % date)
 
         year = int(r.group(1))
         month = int(r.group(3))

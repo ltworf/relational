@@ -118,7 +118,7 @@ class relForm(QtWidgets.QMainWindow):
         if online is None:
             r = _('Network error')
         elif online > version:
-            r = _(f'New version available online: {online}.')
+            r = _('New version available online: %s.') % online
         elif online == version:
             r = _('Latest version installed.')
         else:

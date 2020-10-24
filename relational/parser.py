@@ -332,28 +332,28 @@ def parse_tokens(expression: List[Union[list, str]]) -> Node:
 
             if len(expression[:i]) == 0:
                 raise ParserException(
-                    _(f'Expected left operand for {expression[i]!r}'))
+                    _('Expected left operand for %s') % repr(expression[i]))
 
             if len(expression[i + 1:]) == 0:
                 raise ParserException(
-                    _(f'Expected right operand for {expression[i]!r}'))
+                    _('Expected right operand for %s') % repr(expression[i]))
             return Binary(expression[i], parse_tokens(expression[:i]), parse_tokens(expression[i + 1:]))  # type: ignore
     '''Searches for unary operators, parsing from right to left'''
     for i in range(len(expression)):
         if expression[i] in u_operators:  # Unary operator
             if len(expression) <= i + 2:
                 raise ParserException(
-                    _(f'Expected more tokens in {expression[i]!r}'))
+                    _('Expected more tokens in %s') % repr(expression[i]))
             elif len(expression) > i + 3:
                 raise ParserException(
-                    _(f'Too many tokens in {expression[i]!r}'))
+                    _('Too many tokens in %s') % repr(expression[i]))
 
             return Unary(
                 expression[i],  # type: ignore
                 prop=expression[1 + i].strip(),  # type: ignore
                 child=parse_tokens(expression[2 + i])  # type: ignore
             )
-    raise ParserException(_(f'Parse error on {expression!r}'))
+    raise ParserException(_('Parse error on %s') % repr(expression))
 
 
 def _find_matching_parenthesis(expression: str, start=0, openpar='(', closepar=')') -> Optional[int]:
@@ -423,7 +423,7 @@ def tokenize(expression: str) -> list:
             end = _find_matching_parenthesis(expression)
             if end is None:
                 raise TokenizerException(
-                    _(f'Missing matching \')\' in \'{expression}\''))
+                    _('Missing matching \')\' in \'%s\'') % expression)
             # Appends the tokenization of the content of the parenthesis
             items.append(tokenize(expression[1:end]))
             # Removes the entire parentesis and content from the expression

@@ -123,7 +123,7 @@ def load_relation(filename: str, defname: Optional[str]) -> Optional[str]:
     '''
     if not os.path.isfile(filename):
         print(colorize(
-            _(f'{filename} is not a file'), ERROR_COLOR), file=sys.stderr)
+            _('%s is not a file') % filename, ERROR_COLOR), file=sys.stderr)
         return None
 
     if defname is None:
