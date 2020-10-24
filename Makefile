@@ -102,10 +102,10 @@ po/messages.pot: relational.py relational/*.py relational_readline/*.py relation
 		relational/*.py
 
 po/it.po: po/messages.pot
-	msgmerge --update po/it.po po/messages.pot
+	msgmerge --update $@ po/messages.pot
 
 po/it.mo: po/it.po
-	msgfmt po/it.po --output-file po/it.mo
+	msgfmt po/it.po --output-file $@
 
 .PHONY: translations
 translations: po/it.mo
