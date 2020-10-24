@@ -1,3 +1,6 @@
+.PHONY: all
+all: gui translations
+
 .PHONY: gui
 gui: relational_gui/survey.py relational_gui/maingui.py relational_gui/rel_edit.py relational_gui/resources.py
 
@@ -65,6 +68,7 @@ clean:
 	rm -f relational_gui/maingui.py
 	rm -f relational_gui/rel_edit.py
 	rm -f relational_gui/resources.py
+	$(RM) po/*.mo
 
 .PHONY: install-relational-cli
 install-relational-cli:
@@ -74,7 +78,7 @@ install-relational-cli:
 	install -D relational-cli.1 $${DESTDIR:-/}/usr/share/man/man1/relational-cli.1
 
 .PHONY: install-python3-relational
-install-python3-relational:
+install-python3-relational: install_translations
 	python3 setup/python3-relational.setup.py install --root=$${DESTDIR:-/};
 	rm -rf build;
 
@@ -89,3 +93,23 @@ install-relational:
 
 .PHONY: install
 install: install-relational-cli install-python3-relational install-relational
+
+po/messages.pot: relational.py relational/*.py relational_readline/*.py relational_gui/*.py
+	xgettext --from-code=utf-8 -L Python -j -o po/messages.pot --package-name=relational \
+		relational.py \
+		relational_readline/*.py \
+		relational_gui/*.py \
+		relational/*.py
+
+po/it.po: po/messages.pot
+	msgmerge --update $@ po/messages.pot
+
+po/it.mo: po/it.po
+	msgfmt po/it.po --output-file $@
+
+.PHONY: translations
+translations: po/it.mo
+
+.PHONY: install_translations
+install_translations:
+	install -m644 -D po/it.mo $${DESTDIR:-/}/usr/share/locale/it/LC_MESSAGES/relational.mo

@@ -25,6 +25,7 @@ import keyword
 import re
 from typing import Union, Set, Any, Callable, Type, Optional
 from dataclasses import dataclass
+from gettext import gettext as _
 
 
 RELATION_NAME_REGEXP = re.compile(r'^[_a-z][_a-z0-9]*$', re.IGNORECASE)
@@ -83,7 +84,7 @@ class Rdate:
         '''date: A string representing a date YYYY-MM-DD'''
         r = _date_regexp.match(date)
         if not r:
-            raise ValueError(f'{date} is not a valid date')
+            raise ValueError(_('%s is not a valid date') % date)
 
         year = int(r.group(1))
         month = int(r.group(3))

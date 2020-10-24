@@ -1,0 +1,714 @@
+# Header entry was created by Lokalize.
+#
+# Salvo Tomaselli <tiposchi@tiscali.it>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-24 18:25+0200\n"
+"PO-Revision-Date: 2020-10-24 19:38+0200\n"
+"Last-Translator: Salvo Tomaselli <tiposchi@tiscali.it>\n"
+"Language-Team: Italian <kde-i18n-it@kde.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.04.3\n"
+
+#: relational.py:37
+msgid ""
+"Copyright (C) 2008-2020 Salvo 'LtWorf' Tomaselli.\n"
+"\n"
+"This program comes with ABSOLUTELY NO WARRANTY.\n"
+"This is free software, and you are welcome to redistribute it\n"
+"under certain conditions.\n"
+"For details see the GPLv3 Licese.\n"
+"\n"
+"Written by Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>\n"
+"\n"
+"https://ltworf.github.io/relational/"
+msgstr ""
+
+#: relational.py:56
+msgid "  -v            Print version and exits"
+msgstr "  -v            mostra le informazioni sulla versione ed esce"
+
+#: relational.py:57
+msgid "  -h            Print this help and exits"
+msgstr "  -h            mostra questo aiuto ed esce"
+
+#: relational.py:58
+msgid "  -q            Uses Qt user interface"
+msgstr "  -q            Usa l'interfaccia Qt"
+
+#: relational.py:59
+msgid "  -r            Uses readline user interface"
+msgstr "  -r            Usa l'interfaccia readline"
+
+#: relational.py:92
+msgid ""
+"Module relational_gui is missing.\n"
+"Please install relational package or run make."
+msgstr ""
+"Il modulo relational_gui manca. Installare il pacchetto relational o "
+"eseguire make."
+
+#: relational.py:128
+msgid ""
+"Module relational_readline is missing.\n"
+"Please install relational-cli package."
+msgstr ""
+"Il modulo relational_readline manca. Installare il pacchetto relational-cli."
+
+#: relational_readline/linegui.py:126
+#, python-format
+msgid "%s is not a file"
+msgstr "%s non è un file"
+
+#: relational_readline/linegui.py:137
+#, python-format
+msgid "%s is not a valid relation name"
+msgstr "%s non è un nome valido per una relazione"
+
+#: relational_readline/linegui.py:143
+#, python-format
+msgid "Loaded relation %s"
+msgstr "Relazione caricata %s"
+
+#: relational_readline/linegui.py:161 relational_gui/surveyForm.py:92
+msgid "Yeah, not sending that."
+msgstr "Non manderò questo."
+
+#: relational_readline/linegui.py:169
+msgid ""
+"HELP [command]\n"
+"\n"
+"Comments are obtained starting with a ;\n"
+"\n"
+"To execute a query:\n"
+"[relation =] query\n"
+"\n"
+"If the 1st part is omitted, the result will be stored in the relation "
+"last_.\n"
+"\n"
+"To prevent from printing the relation, append a ; to the end of the query.\n"
+"\n"
+"To insert relational operators, type _OPNAME, they will be internally "
+"replaced with the correct symbol.\n"
+"\n"
+"Rember: completion is enabled and can be very helpful if you can't remember "
+"something."
+msgstr ""
+"HELP [comando] "
+"I commenti si ottengono iniziando una riga con ; "
+"Per eseguire una query: "
+"[relazione =] query "
+"Se la prima parte è omessa, il risultato verrà salvato nella "
+"relazione last_. "
+"Per non stampare la relazione, aggiungere un ; alla fine della query. "
+"Per inserire gli operatori relazionali, scrivere _NOMEOP, questi saranno "
+"internamente sostituiti dal simbolo corretto. "
+"Ricordare: Il completamento è abilitato e può essere utile se non si "
+"ricorda qualcosa."
+
+#: relational_readline/linegui.py:188
+msgid "Quits the program"
+msgstr "Termina il programma"
+
+#: relational_readline/linegui.py:189
+msgid "Lists the relations loaded"
+msgstr "Elenca le relazioni caricate"
+
+#: relational_readline/linegui.py:190
+msgid ""
+"LOAD filename [relationame]\n"
+"Loads a relation into memory"
+msgstr ""
+"LOAD nomefile {nomerelazione} "
+"Carica una relazione in memoria"
+
+#: relational_readline/linegui.py:191
+msgid ""
+"UNLOAD relationame\n"
+"Unloads a relation from memory"
+msgstr ""
+"UNLOAD nomerelazione "
+"Rimuove una relazione dalla memoria"
+
+#: relational_readline/linegui.py:192
+msgid ""
+"SAVE filename relationame\n"
+"Saves a relation in a file"
+msgstr ""
+"SAVE nomefile nomerelazione "
+"Salva la relazione in un file"
+
+#: relational_readline/linegui.py:193
+msgid "Prints the help on a command"
+msgstr "Stampa la guida di un comando"
+
+#: relational_readline/linegui.py:194
+msgid "Fill and send a survey"
+msgstr "Compila e invia un sondaggio"
+
+#: relational_readline/linegui.py:196
+#, python-format
+msgid "Unknown command: %s"
+msgstr "Comando sconosciuto: %s"
+
+#: relational_readline/linegui.py:222 relational_readline/linegui.py:234
+#: relational_readline/linegui.py:245
+msgid "Missing parameter"
+msgstr "Parametro mancante"
+
+#: relational_readline/linegui.py:236
+msgid "Too many parameter"
+msgstr "Troppi parametri"
+
+#: relational_readline/linegui.py:241
+#, python-format
+msgid "No such relation %s"
+msgstr "Nessuna relazione %s"
+
+#: relational_readline/linegui.py:322
+msgid "; Type HELP to get the HELP"
+msgstr "; Scrivere HELP per leggere la guida"
+
+#: relational_readline/linegui.py:324
+msgid "; Completion is activated using the tab (if supported by the terminal)"
+msgstr ""
+"; Il completamento è attivato con il tasto tab (se il terminale lo supporta)"
+
+#: relational_gui/creator.py:91 relational_gui/creator.py:102
+#: relational_gui/guihandler.py:283 relational_gui/guihandler.py:315
+#: relational_gui/guihandler.py:325 relational_gui/guihandler.py:342
+#: relational_gui/surveyForm.py:94
+msgid "Error"
+msgstr "Errore"
+
+#: relational_gui/creator.py:92
+msgid "Header error!"
+msgstr "Errore nell'header!"
+
+#: relational_gui/creator.py:102
+#, python-format
+msgid "Unset value in %d,%d!"
+msgstr "Valore non impostato in %d,%d!"
+
+#: relational_gui/guihandler.py:119
+msgid "Network error"
+msgstr "Errore di rete"
+
+#: relational_gui/guihandler.py:121
+#, python-format
+msgid "New version available online: %s."
+msgstr "Nuova versione disponibile online: %s."
+
+#: relational_gui/guihandler.py:123
+msgid "Latest version installed."
+msgstr "Ultima versione installata."
+
+#: relational_gui/guihandler.py:125
+msgid "You are using an unstable version."
+msgstr "Si sta usando una versione non stabile."
+
+#: relational_gui/guihandler.py:127
+msgid "Version"
+msgstr "Versione"
+
+#: relational_gui/guihandler.py:241
+msgid "Empty relation"
+msgstr "Relazione vuota"
+
+#: relational_gui/guihandler.py:283
+msgid "Select a relation first."
+msgstr "Selezionare una relazione"
+
+#: relational_gui/guihandler.py:287
+msgid "Save Relation"
+msgstr "Salva relazione"
+
+#: relational_gui/guihandler.py:289
+msgid "Json relations (*.json);;CSV relations (*.csv)"
+msgstr "Relazioni json (*.json);;Relazioni CSV (*.csv)"
+
+#: relational_gui/guihandler.py:333
+msgid "New relation"
+msgstr "Nuova relazione"
+
+#: relational_gui/guihandler.py:334
+msgid "Insert the name for the new relation"
+msgstr "Inserire il nome per la nuova relazione"
+
+#: relational_gui/guihandler.py:342
+#, python-brace-format
+msgid "Wrong name for destination relation: {name}."
+msgstr "Nome errato per la relazione di destinazione: {name}."
+
+#: relational_gui/guihandler.py:410
+msgid "Load Relation"
+msgstr "Apri relazione"
+
+#: relational_gui/guihandler.py:412
+msgid "Relations (*.json *.csv);;Text Files (*.txt);;All Files (*)"
+msgstr "Relazioni (*.json *.csv);;File di testo (*.txt);;Tutti i file (*)"
+
+#: relational_gui/maingui.py:558
+msgid "Relational"
+msgstr "Relational"
+
+#: relational_gui/maingui.py:559
+msgid "result=query"
+msgstr "risultato=query"
+
+#: relational_gui/maingui.py:560 relational_gui/maingui.py:572
+msgid "⌫"
+msgstr ""
+
+#: relational_gui/maingui.py:561 relational_gui/maingui.py:573
+msgid "Ctrl+Shift+Backspace"
+msgstr ""
+
+#: relational_gui/maingui.py:562 relational_gui/maingui.py:574
+msgid "Execute"
+msgstr "Esegui"
+
+#: relational_gui/maingui.py:563 relational_gui/maingui.py:575
+msgid "Ctrl+Return"
+msgstr ""
+
+#: relational_gui/maingui.py:564 relational_gui/maingui.py:566
+msgid "Optimize"
+msgstr "Ottimizza"
+
+#: relational_gui/maingui.py:565 relational_gui/maingui.py:568
+msgid "Undo optimize"
+msgstr "Annulla ottimizza"
+
+#: relational_gui/maingui.py:567
+msgid "Ctrl+Shift+O"
+msgstr ""
+
+#: relational_gui/maingui.py:569
+msgid "Ctrl+Shift+U"
+msgstr ""
+
+#: relational_gui/maingui.py:570
+msgid "Clear history"
+msgstr "Cancella cronologia"
+
+#: relational_gui/maingui.py:571
+msgid "Ctrl+Shift+C"
+msgstr ""
+
+#: relational_gui/maingui.py:576
+msgid "Processing…"
+msgstr "Calcolo..."
+
+#: relational_gui/maingui.py:577
+msgid "&File"
+msgstr "&File"
+
+#: relational_gui/maingui.py:578
+msgid "Help"
+msgstr "Aiuto"
+
+#: relational_gui/maingui.py:579
+msgid "Relations"
+msgstr "Relazioni"
+
+#: relational_gui/maingui.py:580
+msgid "Setti&ngs"
+msgstr "Impostazio&ni"
+
+#: relational_gui/maingui.py:581
+msgid "Operators"
+msgstr "Operatori"
+
+#: relational_gui/maingui.py:582
+msgid "Left outer join"
+msgstr "Join esterno sinistro"
+
+#: relational_gui/maingui.py:583
+msgid "Alt+J, Alt+L"
+msgstr ""
+
+#: relational_gui/maingui.py:584
+msgid "Alt+A"
+msgstr ""
+
+#: relational_gui/maingui.py:585
+msgid "Union"
+msgstr "Unione"
+
+#: relational_gui/maingui.py:586
+msgid "Alt+U"
+msgstr ""
+
+#: relational_gui/maingui.py:587
+msgid "Difference"
+msgstr "Differenza"
+
+#: relational_gui/maingui.py:588
+msgid "Rename"
+msgstr "Rinomina"
+
+#: relational_gui/maingui.py:589
+msgid "Alt+R"
+msgstr ""
+
+#: relational_gui/maingui.py:590
+msgid "Division"
+msgstr "Divisione"
+
+#: relational_gui/maingui.py:591
+msgid "Alt+D"
+msgstr ""
+
+#: relational_gui/maingui.py:592
+msgid "Full outer join"
+msgstr "Join esterno completo"
+
+#: relational_gui/maingui.py:593
+msgid "Alt+J, Alt+O"
+msgstr ""
+
+#: relational_gui/maingui.py:594
+msgid "Intersection"
+msgstr "Intersezione"
+
+#: relational_gui/maingui.py:595
+msgid "Alt+I"
+msgstr ""
+
+#: relational_gui/maingui.py:596
+msgid "Product"
+msgstr "Prodotto"
+
+#: relational_gui/maingui.py:597
+msgid "Right outer join"
+msgstr "Join esterno destro"
+
+#: relational_gui/maingui.py:598
+msgid "Alt+J, Alt+R"
+msgstr ""
+
+#: relational_gui/maingui.py:599
+msgid "Projection"
+msgstr "Proiezione"
+
+#: relational_gui/maingui.py:600
+msgid "Alt+P"
+msgstr ""
+
+#: relational_gui/maingui.py:601
+msgid "Selection"
+msgstr "Selezione"
+
+#: relational_gui/maingui.py:602
+msgid "Alt+S"
+msgstr ""
+
+#: relational_gui/maingui.py:603
+msgid "Natural join"
+msgstr "Join naturale"
+
+#: relational_gui/maingui.py:604
+msgid "Alt+J, Alt+J"
+msgstr ""
+
+#: relational_gui/maingui.py:605
+msgid "Attrib&utes"
+msgstr "Attrib&uti"
+
+#: relational_gui/maingui.py:606
+msgid "Re&lations"
+msgstr "Re&lazioni"
+
+#: relational_gui/maingui.py:608
+msgid "New"
+msgstr "Nuova"
+
+#: relational_gui/maingui.py:609 relational_gui/rel_edit.py:66
+msgid "Edit"
+msgstr "Modifica"
+
+#: relational_gui/maingui.py:610
+msgid "Load"
+msgstr "Apri"
+
+#: relational_gui/maingui.py:611
+msgid "Save"
+msgstr "Salva"
+
+#: relational_gui/maingui.py:612
+msgid "Unload all"
+msgstr "Chiudi tutte"
+
+#: relational_gui/maingui.py:613
+msgid "Unload"
+msgstr "Chiudi"
+
+#: relational_gui/maingui.py:614
+msgid "Menu"
+msgstr "Menu"
+
+#: relational_gui/maingui.py:615
+msgid "About"
+msgstr "Informazioni su Relational"
+
+#: relational_gui/maingui.py:616 relational_gui/survey.py:124
+msgid "Survey"
+msgstr "Sondaggio"
+
+#: relational_gui/maingui.py:617
+msgid "&About"
+msgstr "Informazioni su"
+
+#: relational_gui/maingui.py:618
+msgid "&Load relation"
+msgstr "Apri re&lazione"
+
+#: relational_gui/maingui.py:619
+msgid "Ctrl+O"
+msgstr ""
+
+#: relational_gui/maingui.py:620
+msgid "&Save relation"
+msgstr "&Salva relazione"
+
+#: relational_gui/maingui.py:621
+msgid "Ctrl+S"
+msgstr ""
+
+#: relational_gui/maingui.py:622
+msgid "&Quit"
+msgstr "&Esci"
+
+#: relational_gui/maingui.py:623
+msgid "Ctrl+Q"
+msgstr ""
+
+#: relational_gui/maingui.py:624
+msgid "&Check for new versions"
+msgstr "&Controlla nuove versioni"
+
+#: relational_gui/maingui.py:625
+msgid "&New relation"
+msgstr "&Nuova relazione"
+
+#: relational_gui/maingui.py:626
+msgid "Ctrl+N"
+msgstr ""
+
+#: relational_gui/maingui.py:627
+msgid "&Edit relation"
+msgstr "Modifica r&elazione"
+
+#: relational_gui/maingui.py:628
+msgid "Ctrl+E"
+msgstr ""
+
+#: relational_gui/maingui.py:629
+msgid "&Unload relation"
+msgstr "Chi&udi relazione"
+
+#: relational_gui/maingui.py:630
+msgid "&Multi-line mode"
+msgstr "&Modalità multi riga"
+
+#: relational_gui/maingui.py:631
+msgid "Ctrl+L"
+msgstr ""
+
+#: relational_gui/maingui.py:632
+msgid "Show history"
+msgstr "Mostra cronologia"
+
+#: relational_gui/rel_edit.py:65
+msgid "Relation editor"
+msgstr "Editor di relazioni"
+
+#: relational_gui/rel_edit.py:67
+msgid "Add tuple"
+msgstr "Aggiungi tupla"
+
+#: relational_gui/rel_edit.py:68
+msgid "Remove tuple"
+msgstr "Rimuovi tupla"
+
+#: relational_gui/rel_edit.py:69
+msgid "Add column"
+msgstr "Aggiungi colonna"
+
+#: relational_gui/rel_edit.py:70
+msgid "Remove column"
+msgstr "Rimuovi colonna"
+
+#: relational_gui/rel_edit.py:71
+msgid ""
+"Remember that new relations and modified relations are not automatically "
+"saved"
+msgstr ""
+"Ricorda che le relazioni nuove e modificate non sono salvate automaticamente"
+
+#: relational_gui/surveyForm.py:90
+msgid "Thanks"
+msgstr "Grazie"
+
+#: relational_gui/surveyForm.py:90
+msgid "Thanks for sending!"
+msgstr "Grazie per l'invio!"
+
+#: relational_gui/surveyForm.py:92
+msgid "Seriously?"
+msgstr "Sul serio?"
+
+#: relational_gui/surveyForm.py:94
+msgid "Unable to send the data!"
+msgstr "Impossibile inviare i dati"
+
+#: relational_gui/survey.py:125
+msgid "Country"
+msgstr "Nazione"
+
+#: relational_gui/survey.py:126
+msgid "School"
+msgstr "Scuola"
+
+#: relational_gui/survey.py:127
+msgid "Age"
+msgstr "Età"
+
+#: relational_gui/survey.py:128
+msgid "How did you find relational"
+msgstr "Come hai trovato Relational"
+
+#: relational_gui/survey.py:129
+msgid "System"
+msgstr "Sistema"
+
+#: relational_gui/survey.py:130
+msgid "Comments"
+msgstr "Commenti"
+
+#: relational_gui/survey.py:131
+msgid "Email (only if you want a reply)"
+msgstr "Email (solo se si desidera una risposta)"
+
+#: relational_gui/survey.py:132
+msgid "Cancel"
+msgstr "Annulla"
+
+#: relational_gui/survey.py:133
+msgid "Clear"
+msgstr "Cancella"
+
+#: relational_gui/survey.py:134
+msgid "Send"
+msgstr "Invia"
+
+#: relational/maintenance.py:157 relational/maintenance.py:188
+msgid "Invalid name for destination relation"
+msgstr "Nome non valido per la relazione di destinazione"
+
+#: relational/maintenance.py:230
+#, python-format
+msgid ""
+"Error in query: %s\n"
+"%s"
+msgstr ""
+"Errore nella query: %s "
+"%s"
+
+#: relational/maintenance.py:235
+msgid "No query executed"
+msgstr "Nessuna query eseguita"
+
+#: relational/parser.py:310
+msgid "Failed to parse empty expression"
+msgstr "Espressione vuota"
+
+#: relational/parser.py:335
+#, python-format
+msgid "Expected left operand for %s"
+msgstr "Expected left operand for %s"
+
+#: relational/parser.py:339
+#, python-format
+msgid "Expected right operand for %s"
+msgstr "Atteso operatore destro per %s"
+
+#: relational/parser.py:346
+#, python-format
+msgid "Expected more tokens in %s"
+msgstr "Attesi più token in %s"
+
+#: relational/parser.py:349
+#, python-format
+msgid "Too many tokens in %s"
+msgstr "Troppi token in %s"
+
+#: relational/parser.py:356
+#, python-format
+msgid "Parse error on %s"
+msgstr "Errore di parsing in %s"
+
+#: relational/parser.py:426
+#, python-format
+msgid "Missing matching ')' in '%s'"
+msgstr "')' corrispondente mancante in '%s'"
+
+#: relational/relation.py:92 relational/relation.py:140
+#, python-format
+msgid "Line %d contains an incorrect amount of values"
+msgstr "La riga %d contiene un numero incorretto di valori"
+
+#: relational/relation.py:173
+#, python-format
+msgid "Relations differ: [%s] [%s]"
+msgstr "Le relazioni differiscono: [%s] [%s]"
+
+#: relational/relation.py:184
+#, python-format
+msgid "Failed to compile expression: %s"
+msgstr "Compilazione dell'espressione fallita: %s"
+
+#: relational/relation.py:197
+#, python-brace-format
+msgid ""
+"Failed to evaluate {expr} with {i}\n"
+"{e}"
+msgstr ""
+"Impossibile valutare {expr} con {i} "
+"{e}"
+
+#: relational/relation.py:209
+msgid "Unable to perform product on relations with colliding attributes"
+msgstr ""
+"Impossibile eseguire il prodotto su relazioni con attributi che collidono"
+
+#: relational/relation.py:235
+msgid "Invalid attributes for projection"
+msgstr "Attributi invalidi per la proiezione"
+
+#: relational/relation.py:476
+#, python-format
+msgid "\"%s\" is not a valid attribute name"
+msgstr "\"%s\" non è un nome di attributo valido"
+
+#: relational/relation.py:492
+#, python-format
+msgid "%s is not a valid attribute name"
+msgstr "%s non è un nome di attributo valido"
+
+#: relational/relation.py:497
+#, python-format
+msgid "Field not found: %s"
+msgstr "File non trovato: %s"
+
+#: relational/rtypes.py:87
+#, python-format
+msgid "%s is not a valid date"
+msgstr "%s non è una data valida"

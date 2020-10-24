@@ -22,6 +22,7 @@ import os.path
 import pickle
 import base64
 from typing import Optional, Tuple
+from gettext import gettext as _
 
 from relational.relation import Relation
 from relational import parser
@@ -153,7 +154,7 @@ class UserInterface:
     def set_relation(self, name: str, rel: Relation) -> None:
         '''Sets the relation corresponding to name.'''
         if not is_valid_relation_name(name):
-            raise Exception('Invalid name for destination relation')
+            raise Exception(_('Invalid name for destination relation'))
         self.relations[name] = rel
 
     def suggest_name(self, filename: str) -> Optional[str]:
@@ -184,7 +185,7 @@ class UserInterface:
         relname is not None, adds the result to the
         dictionary, with the name given in relname.'''
         if not is_valid_relation_name(relname):
-            raise Exception('Invalid name for destination relation')
+            raise Exception(_('Invalid name for destination relation'))
 
         expr = parser.parse(query)
         result = expr(self.relations)
@@ -226,10 +227,10 @@ class UserInterface:
             try:
                 r = self.execute(query, relname)
             except Exception as e:
-                raise Exception('Error in query: %s\n%s' % (
+                raise Exception(_('Error in query: %s\n%s') % (
                     query,
                     str(e)
                 ))
         if r is None:
-            raise Exception('No query executed')
+            raise Exception(_('No query executed'))
         return r

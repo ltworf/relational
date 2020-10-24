@@ -99,7 +99,7 @@ class creatorForm(QtWidgets.QDialog):
                 try:
                     hlist.append(self.table.item(i, j).text())
                 except:
-                    QtWidgets.QMessageBox.information(None, _("Error"), _(f'Unset value in {i + 1},{j + 1}!'))
+                    QtWidgets.QMessageBox.information(None, _("Error"), _('Unset value in %d,%d!') % (i + 1, j + 1))
                     return None
             content.append(hlist)
         return relation.Relation.create_from(header, content)
