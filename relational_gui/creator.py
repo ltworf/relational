@@ -56,7 +56,7 @@ class creatorForm(QtWidgets.QDialog):
             self.table.insertRow(self.table.rowCount())
             for j, value in enumerate(i):
                 if value is None:
-                    raise Exception('Relation contains a None value and cannot be edited from the GUI')
+                    raise Exception(_('Relation contains a None value and cannot be edited from the GUI'))
                 item = QtWidgets.QTableWidgetItem()
                 item.setText(str(value))
                 self.table.setItem(self.table.rowCount() - 1, j, item)
@@ -71,10 +71,10 @@ class creatorForm(QtWidgets.QDialog):
         i01 = QtWidgets.QTableWidgetItem()
         i10 = QtWidgets.QTableWidgetItem()
         i11 = QtWidgets.QTableWidgetItem()
-        i00.setText('Field name 1')
-        i01.setText('Field name 2')
-        i10.setText('Value 1')
-        i11.setText('Value 2')
+        i00.setText(_('Field name 1'))
+        i01.setText(_('Field name 2'))
+        i10.setText(_('Value 1'))
+        i11.setText(_('Value 2'))
 
         self.table.setItem(0, 0, i00)
         self.table.setItem(0, 1, i01)

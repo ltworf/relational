@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-24 18:25+0200\n"
-"PO-Revision-Date: 2020-10-24 19:38+0200\n"
+"POT-Creation-Date: 2020-10-25 18:55+0100\n"
+"PO-Revision-Date: 2020-10-25 18:56+0100\n"
 "Last-Translator: Salvo Tomaselli <tiposchi@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -100,17 +100,13 @@ msgid ""
 "Rember: completion is enabled and can be very helpful if you can't remember "
 "something."
 msgstr ""
-"HELP [comando] "
-"I commenti si ottengono iniziando una riga con ; "
-"Per eseguire una query: "
-"[relazione =] query "
-"Se la prima parte è omessa, il risultato verrà salvato nella "
-"relazione last_. "
-"Per non stampare la relazione, aggiungere un ; alla fine della query. "
-"Per inserire gli operatori relazionali, scrivere _NOMEOP, questi saranno "
-"internamente sostituiti dal simbolo corretto. "
-"Ricordare: Il completamento è abilitato e può essere utile se non si "
-"ricorda qualcosa."
+"HELP [comando] I commenti si ottengono iniziando una riga con ; Per eseguire "
+"una query: [relazione =] query Se la prima parte è omessa, il risultato "
+"verrà salvato nella relazione last_. Per non stampare la relazione, "
+"aggiungere un ; alla fine della query. Per inserire gli operatori "
+"relazionali, scrivere _NOMEOP, questi saranno internamente sostituiti dal "
+"simbolo corretto. Ricordare: Il completamento è abilitato e può essere utile "
+"se non si ricorda qualcosa."
 
 #: relational_readline/linegui.py:188
 msgid "Quits the program"
@@ -124,25 +120,19 @@ msgstr "Elenca le relazioni caricate"
 msgid ""
 "LOAD filename [relationame]\n"
 "Loads a relation into memory"
-msgstr ""
-"LOAD nomefile {nomerelazione} "
-"Carica una relazione in memoria"
+msgstr "LOAD nomefile {nomerelazione} Carica una relazione in memoria"
 
 #: relational_readline/linegui.py:191
 msgid ""
 "UNLOAD relationame\n"
 "Unloads a relation from memory"
-msgstr ""
-"UNLOAD nomerelazione "
-"Rimuove una relazione dalla memoria"
+msgstr "UNLOAD nomerelazione Rimuove una relazione dalla memoria"
 
 #: relational_readline/linegui.py:192
 msgid ""
 "SAVE filename relationame\n"
 "Saves a relation in a file"
-msgstr ""
-"SAVE nomefile nomerelazione "
-"Salva la relazione in un file"
+msgstr "SAVE nomefile nomerelazione Salva la relazione in un file"
 
 #: relational_readline/linegui.py:193
 msgid "Prints the help on a command"
@@ -618,9 +608,7 @@ msgstr "Nome non valido per la relazione di destinazione"
 msgid ""
 "Error in query: %s\n"
 "%s"
-msgstr ""
-"Errore nella query: %s "
-"%s"
+msgstr "Errore nella query: %s %s"
 
 #: relational/maintenance.py:235
 msgid "No query executed"
@@ -680,9 +668,7 @@ msgstr "Compilazione dell'espressione fallita: %s"
 msgid ""
 "Failed to evaluate {expr} with {i}\n"
 "{e}"
-msgstr ""
-"Impossibile valutare {expr} con {i} "
-"{e}"
+msgstr "Impossibile valutare {expr} con {i} {e}"
 
 #: relational/relation.py:209
 msgid "Unable to perform product on relations with colliding attributes"
@@ -712,3 +698,24 @@ msgstr "File non trovato: %s"
 #, python-format
 msgid "%s is not a valid date"
 msgstr "%s non è una data valida"
+
+#: relational_gui/creator.py:59
+msgid "Relation contains a None value and cannot be edited from the GUI"
+msgstr ""
+"La relazione contiene un valore None e non può essere modificata nella GUI"
+
+#: relational_gui/creator.py:74
+msgid "Field name 1"
+msgstr "Campo 1"
+
+#: relational_gui/creator.py:75
+msgid "Field name 2"
+msgstr "Campo 2"
+
+#: relational_gui/creator.py:76
+msgid "Value 1"
+msgstr "Valore 1"
+
+#: relational_gui/creator.py:77
+msgid "Value 2"
+msgstr "Valore 2"
