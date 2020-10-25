@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: relational\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-24 18:25+0200\n"
+"POT-Creation-Date: 2020-10-25 18:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -685,4 +685,24 @@ msgstr ""
 #: relational/rtypes.py:87
 #, python-format
 msgid "%s is not a valid date"
+msgstr ""
+
+#: relational_gui/creator.py:59
+msgid "Relation contains a None value and cannot be edited from the GUI"
+msgstr ""
+
+#: relational_gui/creator.py:74
+msgid "Field name 1"
+msgstr ""
+
+#: relational_gui/creator.py:75
+msgid "Field name 2"
+msgstr ""
+
+#: relational_gui/creator.py:76
+msgid "Value 1"
+msgstr ""
+
+#: relational_gui/creator.py:77
+msgid "Value 2"
 msgstr ""
