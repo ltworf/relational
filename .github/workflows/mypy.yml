@@ -13,5 +13,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: pip install -r test-requirements.txt
+    - name: Workaround mypy issue
+      run: find / | grep pyi$
     - name: mypy
       run: make mypy
