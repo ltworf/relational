@@ -124,7 +124,7 @@ class relForm(QtWidgets.QMainWindow):
         else:
             r = _('You are using an unstable version.')
 
-        QtWidgets.QMessageBox.information(_('Version'), r)
+        QtWidgets.QMessageBox.information(self, _('Version'), r)
 
     def setHistoryShown(self, history_shown):
         self.history_shown = history_shown
