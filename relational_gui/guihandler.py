@@ -322,7 +322,7 @@ class relForm(QtWidgets.QMainWindow):
     def error(self, exception):
         print (exception)
         QtWidgets.QMessageBox.information(
-            None, _("Error"),
+            self, _("Error"),
             str(exception)
         )
 
