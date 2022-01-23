@@ -93,7 +93,7 @@ class UserInterface:
         Files ending with .csv are loaded as csv, the others are
         loaded as json.
         '''
-        if filename.endswith('.csv'):
+        if filename.lower().endswith('.csv'):
             rel = Relation.load_csv(filename)
         else:
             rel = Relation.load(filename)
@@ -105,7 +105,7 @@ class UserInterface:
 
     def store(self, filename: str, name: str) -> None:
         '''Stores a relation to file.'''
-        if filename.endswith('.csv'):
+        if filename.lower().endswith('.csv'):
             self.relations[name].save_csv(filename)
         else:
             self.relations[name].save(filename)
