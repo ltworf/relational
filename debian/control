@@ -2,7 +2,7 @@ Source: relational
 Section: math
 Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
-Build-Depends: debhelper-compat (= 13), debhelper (>= 13), python3, dh-python, python3-xtermcolor, pyqt5-dev-tools,
+Build-Depends: debhelper-compat (= 13), debhelper (>= 13), python3, dh-python, python3-xtermcolor, pyqt6-dev-tools,
  python3-distutils, python3-typedload
 Standards-Version: 4.5.0
 X-Python3-Version: >= 3.8
@@ -22,7 +22,7 @@ Description: Educational tool for relational algebra (standalone module)
 
 Package: relational
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-relational (= ${binary:Version}), python3-pyqt5
+Depends: ${misc:Depends}, ${python3:Depends}, python3-relational (= ${binary:Version}), python3-pyqt6
 Description: Educational tool for relational algebra (graphical user interface)
  Relational is primarily a tool to provide a workspace for experimenting with
  relational algebra, an offshoot of first-order logic.

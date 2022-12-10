@@ -6,7 +6,7 @@ gui: relational_gui/survey.py relational_gui/maingui.py relational_gui/rel_edit.
 
 relational_gui/maingui.py relational_gui/survey.py relational_gui/rel_edit.py:
 	# Create .py file
-	pyuic5 $(basename $@).ui > $@
+	pyuic6 $(basename $@).ui > $@
 	# Use my custom editor class
 	sed -i 's/QtWidgets.QPlainTextEdit/editor.Editor/g' $@
 	echo 'from . import editor' >> $@
@@ -19,7 +19,7 @@ relational_gui/maingui.py relational_gui/survey.py relational_gui/rel_edit.py:
 		$@
 
 relational_gui/resources.py:
-	pyrcc5 relational_gui/resources.qrc > relational_gui/resources.py
+	pyrcc6 relational_gui/resources.qrc > relational_gui/resources.py
 
 .PHONY: mypy
 mypy:
