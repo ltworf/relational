@@ -74,6 +74,7 @@ h1 {
 h2 {
   padding-bottom: 10px;
   font-size: 32px;
+  background: url('../images/bg_hr.png') repeat-x bottom;
 }
 
 h3 {
@@ -138,13 +139,6 @@ img {
   max-width: 739px;
   padding: 5px;
   margin: 10px 0 10px 0;
-  border: 1px solid #ebebeb;
-
-  box-shadow: 0 0 5px #ebebeb;
-  -webkit-box-shadow: 0 0 5px #ebebeb;
-  -moz-box-shadow: 0 0 5px #ebebeb;
-  -o-box-shadow: 0 0 5px #ebebeb;
-  -ms-box-shadow: 0 0 5px #ebebeb;
 }
 
 p img {
@@ -229,6 +223,7 @@ hr {
   height: 1px;
   margin-bottom: 5px;
   border: none;
+  background: url('../images/bg_hr.png') repeat-x center;
 }
 
 table {
@@ -264,7 +259,7 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 85%;
+  max-width: 640px;
   padding: 20px 10px;
   margin: 0 auto;
 }
@@ -284,6 +279,21 @@ Full-Width Styles
   border-bottom-right-radius: 2px;
 }
 
+#donate_banner {
+  display: block;
+  position: absolute;
+  top:0;
+  left: 10px;
+  width: 83px;
+  z-index: 10;
+  background: url('../images/donate.svg') #f6c915 no-repeat 95% 50%;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #00000000;
+}
+
 #header_wrap {
   background: #212121;
   background: -moz-linear-gradient(top, #373737, #212121);
@@ -294,7 +304,7 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 10px 10px 15px 10px;
+  padding: 50px 10px 30px 10px;
 }
 
 #project_title {
@@ -358,10 +368,12 @@ Full-Width Styles
   border-bottom: 1px solid #111;
 }
 
+#main_content {
+  padding-top: 40px;
+}
+
 #footer_wrap {
-/*   background: red; /*#212121;*/ */
-    background: url(../images/GPLv3_Logo.svg);
-/*     ../images/GPLv3_Logo.svg); */
+  background: #212121;
 }
 
 
@@ -418,29 +430,4 @@ Small Device Styles
     font-size: 11px;
   }
 
-}
-
-.blink {
-    animation:1s blinker linear infinite;
-    -webkit-animation:1s blinker linear infinite;
-    -moz-animation:1s blinker linear infinite;
-    color: red;
-}
-
-@-moz-keyframes blinker {
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
-
-@-webkit-keyframes blinker {
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
-
-@keyframes blinker {
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
 }
