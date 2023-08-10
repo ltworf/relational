@@ -2,6 +2,7 @@ relational (3.1-1) unstable; urgency=low
 
   * New upstream release
   * Fix debian/watch
+  * Switch distutils to setuptools
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Son, 20 Sep 2020 21:40:29 +0200
 
