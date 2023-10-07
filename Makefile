@@ -40,12 +40,12 @@ deb-pkg: dist
 
 .PHONY: dist
 dist: clean
-	rm -rf /tmp/relational/
-	rm -rf /tmp/relational-*
+	$(RM) -r /tmp/relational/
+	$(RM) -r /tmp/relational-*
 	mkdir /tmp/relational/
 	cp -R * /tmp/relational/
-	rm -rf /tmp/relational/windows
-	rm -rf /tmp/relational/debian/
+	$(RM) -r /tmp/relational/windows
+	$(RM) -r /tmp/relational/debian/
 
 	#mv /tmp/relational /tmp/relational-`./relational.py -v | grep Relational | cut -d" " -f2`
 	#(cd /tmp; tar -zcf relational.tar.gz relational-*/)
@@ -56,36 +56,36 @@ dist: clean
 .PHONY: clean
 clean:
 	$(RM) -r deb-pkg
-	rm -rf `find -name "*~"`
-	rm -rf `find -name "*pyc"`
-	rm -rf `find -name "*pyo"`
-	rm -rf relational*.tar.gz
-	rm -rf relational*.tar.gz.asc
-	rm -rf data
-	rm -rf *tar.bz
-	rm -rf *.deb
-	rm -f relational_gui/survey.py
-	rm -f relational_gui/maingui.py
-	rm -f relational_gui/rel_edit.py
-	rm -f relational_gui/resources.py
+	$(RM) -r `find -name "*~"`
+	$(RM) -r `find -name "*pyc"`
+	$(RM) -r `find -name "*pyo"`
+	$(RM) -r relational*.tar.gz
+	$(RM) -r relational*.tar.gz.asc
+	$(RM) -r data
+	$(RM) -r *tar.bz
+	$(RM) -r *.deb
+	$(RM) relational_gui/survey.py
+	$(RM) relational_gui/maingui.py
+	$(RM) relational_gui/rel_edit.py
+	$(RM) relational_gui/resources.py
 	$(RM) po/*.mo
 
 .PHONY: install-relational-cli
 install-relational-cli:
 	python3 setup/relational-cli.setup.py install --root=$${DESTDIR:-/};
-	rm -rf build;
+	$(RM) -r build;
 	install -D relational.py $${DESTDIR:-/}/usr/bin/relational-cli
 	install -D relational-cli.1 $${DESTDIR:-/}/usr/share/man/man1/relational-cli.1
 
 .PHONY: install-python3-relational
 install-python3-relational: install_translations
 	python3 setup/python3-relational.setup.py install --root=$${DESTDIR:-/};
-	rm -rf build;
+	$(RM) -r build;
 
 .PHONY: install-relational
 install-relational:
 	python3 setup/relational.setup.py install --root=$${DESTDIR:-/};
-	rm -rf build;
+	$(RM) -r build;
 	install -D relational.py $${DESTDIR:-/}/usr/bin/relational
 	install -m0644 -D relational.desktop $${DESTDIR:-/}/usr/share/applications/relational.desktop
 	install -m0644 -D relational_gui/resources/relational.png $${DESTDIR:-/}/usr/share/pixmaps/relational.png
