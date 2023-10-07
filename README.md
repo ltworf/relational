@@ -12,6 +12,8 @@ It provides:
  * A standalone Python module that can be used for executing relational queries, parsing relational expressions and optimizing them
  * A command line interface
 
+[![Donate to LtWorf](docs/donate.svg)](https://liberapay.com/ltworf/donate)
+
 
 Official website
 ================
