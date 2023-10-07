@@ -64,6 +64,8 @@ class Ui_Dialog(object):
         self.label_4 = QtWidgets.QLabel(self.groupBox_2)
         self.label_4.setObjectName("label_4")
         self.verticalLayout_6.addWidget(self.label_4)
+        self.label_donate = QtWidgets.QLabel(self.groupBox_2)
+        self.verticalLayout_6.addWidget(self.label_donate)
         self.verticalLayout_3.addWidget(self.groupBox_2)
         self.tabWidget.addTab(self.tab, "")
         self.License = QtWidgets.QWidget()
@@ -117,6 +119,11 @@ class Ui_Dialog(object):
             "Dialog", "<a href=\"http://ltworf.github.io/relational/\">http://ltworf.github.io/relational/</a>", None))
         self.label_4.setOpenExternalLinks(True)
         self.label_4.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse)
+        self.label_donate.setText(QtWidgets.QApplication.translate(
+            "Dialog", "<a href=\"https://liberapay.com/ltworf/donate\">Donate</a>", None))
+        self.label_donate.setOpenExternalLinks(True)
+        self.label_donate.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByMouse)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate(
             "Dialog", "About", None))
