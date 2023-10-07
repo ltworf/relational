@@ -48,11 +48,11 @@ dist: clean
 	$(RM) -r /tmp/relational/windows
 	$(RM) -r /tmp/relational/debian/
 
-	#mv /tmp/relational /tmp/relational-`./relational.py -v | grep Relational | cut -d" " -f2`
+	#mv /tmp/relational /tmp/relational-`head -1 CHANGELOG`
 	#(cd /tmp; tar -zcf relational.tar.gz relational-*/)
 	(cd /tmp; tar -zcf relational.tar.gz relational/)
-	mv /tmp/relational.tar.gz ./relational_`./relational.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
-	gpg --sign --armor --detach-sign ./relational_`./relational.py -v | grep Relational | cut -d" " -f2`.orig.tar.gz
+	mv /tmp/relational.tar.gz ./relational_`head -1 CHANGELOG`.orig.tar.gz
+	gpg --sign --armor --detach-sign ./relational_`head -1 CHANGELOG`.orig.tar.gz
 
 .PHONY: clean
 clean:
