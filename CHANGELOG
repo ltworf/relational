@@ -2,6 +2,7 @@
 - Fix version check
 - Add support for localization
 - Add Italian localization
+- Use setuptools because python dropped distutil -_-'
 
 3.0
 - UI shows different colours for different types
