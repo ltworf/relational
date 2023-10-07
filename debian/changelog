@@ -3,8 +3,10 @@ relational (3.1-1) unstable; urgency=low
   * New upstream release
   * Fix debian/watch
   * Switch distutils to setuptools
+  * Improved clean in the upstream makefile
+  * Bump Standards-Version: 4.6.2
 
- -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Son, 20 Sep 2020 21:40:29 +0200
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Sat, 07 Oct 2023 09:16:09 +0200
 
 relational (3.0-1) unstable; urgency=low
 
