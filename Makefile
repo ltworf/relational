@@ -37,6 +37,7 @@ deb-pkg: dist
 	mkdir deb-pkg
 	mv /tmp/relational* /tmp/python3-relational_*.deb deb-pkg
 	$(RM) -r /tmp/relational
+	lintian --pedantic -E --color auto -i -I deb-pkg/*changes
 
 .PHONY: dist
 dist: clean
