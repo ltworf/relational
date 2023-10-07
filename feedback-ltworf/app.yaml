@@ -1,9 +1,0 @@
-application: feedback-ltworf
-version: 4
-runtime: python27
-api_version: 1
-threadsafe: true
-
-handlers:
-- url: /.*
-  script: feedback.application

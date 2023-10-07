@@ -3,6 +3,7 @@
 - Add support for localization
 - Add Italian localization
 - Use setuptools because python dropped distutil -_-'
+- Fix survey
 
 3.0
 - UI shows different colours for different types

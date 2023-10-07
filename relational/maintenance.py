@@ -1,5 +1,5 @@
 # Relational
-# Copyright (C) 2008-2020  Salvo "LtWorf" Tomaselli
+# Copyright (C) 2008-2023  Salvo "LtWorf" Tomaselli
 #
 # Relation is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,15 +29,18 @@ from relational import parser
 from relational.rtypes import is_valid_relation_name
 
 
-def send_survey(data) -> int:
+def send_survey(data: dict[str, str]) -> int:
     '''Sends the survey. Data must be a dictionary.
     returns the http response.
 
     returns 0 in case of error
     returns -1 in case of swearwords'''
     import urllib.parse
-    from http.client import HTTPConnection
+    from http.client import HTTPSConnection
+    import ssl
 
+
+    # Scan for swearwords
     SWEARWORDS = {'fuck', 'shit', 'suck', 'merda', 'mierda', 'merde'}
 
     post = ''
@@ -50,14 +53,21 @@ def send_survey(data) -> int:
             return -1
 
     # sends the string
-    params = urllib.parse.urlencode({'survey': post})
-    headers = {"Content-type":
-               "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    connection = HTTPConnection('feedback-ltworf.appspot.com')
+    headers = {
+        "Accept": "text/plain",
+        "X-Survey": "relational",
+    }
+    for k, v in data.items():
+        headers[f'X-Survey-{k}'] = v
+    connection = HTTPSConnection(
+        'tomaselli.page',
+        context = ssl._create_unverified_context() # Of course python can't find the root cert
+    )
+
     try:
-        connection.request("POST", "/feedback/relational", params, headers)
+        connection.request("GET", "feedback.py", headers=headers)
         return connection.getresponse().status
-    except:
+    except Exception:
         return 0
 
 
