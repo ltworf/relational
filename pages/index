@@ -9,15 +9,17 @@
     <tr align="center">
         <td><img alt="Debian logo" src="images/debian-logo.png" /><img alt="Ubuntu logo" src="images/ubuntu-logo.png" /></td>
         <td><a href="download.html?tar.gz"><img alt="tux logo" src="images/linux-logo.png" /></a></td>
+        <td><a><img alt="windows logo" src="images/windows-logo.png" /></a></td>
+        <td><a><img alt="apple logo" src="images/apple-logo.png" /></a></td>
     </tr>
     <tr>
         <td><code>apt install relational</code><br />or <a href="download.html?deb">Download .deb</a></td>
         <td><a href="download.html?tar.gz">Download sources</a></td>
+        <td colspan="2">Help if you want it back</td>
     </tr>
 </table>
 
-<p><span class="blink">NOTICE:</span><strong>I only use GNU/Linux. Keeping supporting Windows has become a huge burden for me. It eventually got dropped because nobody of the thousands who downloaded it helped.</strong>
-<br>
+<p>
 I have been developing this for 12 years. If you want support for windows and osx to be back, instead of sending an email to ask me to do it, send me an email offering to help.
 </p>
 
