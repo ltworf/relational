@@ -69,6 +69,8 @@ clean:
 	$(RM) relational_gui/rel_edit.py
 	$(RM) relational_gui/resources.py
 	$(RM) po/*.mo
+	$(RM) -r build
+	$(RM) -r *.egg-info
 
 .PHONY: install-relational-cli
 install-relational-cli:
