@@ -4,6 +4,7 @@ relational (3.1-1) unstable; urgency=low
   * Fix debian/watch
   * Switch distutils to setuptools
   * Improved clean in the upstream makefile
+  * Bump Standards-Version: 4.6.2
 
  -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Sat, 07 Oct 2023 09:16:09 +0200
 
