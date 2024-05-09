@@ -1,3 +1,9 @@
+THE PROJECT HAS MOVED
+=====================
+
+[The new repository is https://codeberg.org/ltworf/relational](https://codeberg.org/ltworf/relational)
+
+
 Relational
 ==========
 
