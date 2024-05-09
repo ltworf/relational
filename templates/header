@@ -3,6 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <meta name="description" content="Relational : Educational tool for relational algebra">
+    <meta http-equiv="Refresh" content="0; url='https://ltworf.codeberg.page/relational'" />
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <title>Relational</title>
   </head>
