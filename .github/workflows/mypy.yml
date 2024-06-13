@@ -13,5 +13,9 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: pip install -r test-requirements.txt
+    - name: Find py files
+      run: find / 2> /dev/null | grep pyi$
+    - name: Workaround pyqt5 issue
+      run: sudo touch /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages/PyQt5/typed.py
     - name: mypy
       run: make mypy
